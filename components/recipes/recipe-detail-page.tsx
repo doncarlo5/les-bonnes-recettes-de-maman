@@ -20,14 +20,18 @@ export function RecipeDetailPage({
     <main className="min-h-screen bg-white text-stone-700">
       <article className="mx-auto min-h-screen w-full max-w-md bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.04)]">
         <header className="relative min-h-[34rem] overflow-hidden bg-stone-900">
-          <Image
-            src={recipe.heroImageUrl}
-            alt=""
-            fill
-            priority
-            sizes="(max-width: 448px) 100vw, 448px"
-            className="object-cover"
-          />
+          {recipe.heroImageUrl ? (
+            <Image
+              src={recipe.heroImageUrl}
+              alt=""
+              fill
+              priority
+              sizes="(max-width: 448px) 100vw, 448px"
+              className="object-cover"
+            />
+          ) : (
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,#fcd069_0,#fab005_28%,#644702_78%)]" />
+          )}
           <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/10 to-black/55" />
 
           <Link
@@ -41,7 +45,7 @@ export function RecipeDetailPage({
           <div className="absolute inset-x-0 bottom-0 px-7 pb-7 text-white">
             <div className="mb-4 flex items-center gap-2 text-lg font-extrabold text-white/75">
               <Clock3 className="size-6" />
-              <span>{recipe.totalMinutes} min.</span>
+              <span>{recipe.timeLabel}</span>
             </div>
             <h1 className="font-heading text-6xl font-black leading-[0.86] tracking-normal drop-shadow-sm">
               {recipe.title}
@@ -57,14 +61,18 @@ export function RecipeDetailPage({
             {recipe.description}
           </p>
 
+          <RecipeMeta dict={dict} recipe={recipe} />
+
           <section className="mt-10">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="font-heading text-3xl font-bold text-stone-950">
                 {dict.recipeDetail.ingredients}
               </h2>
-              <p className="rounded-full bg-pale-amber-100 px-3 py-1 text-sm font-extrabold text-pale-amber-800">
-                {recipe.servings.quantity} {recipe.servings.unit}
-              </p>
+              {recipe.servings ? (
+                <p className="rounded-full bg-pale-amber-100 px-3 py-1 text-sm font-extrabold text-pale-amber-800">
+                  {recipe.servings.quantity} {recipe.servings.unit}
+                </p>
+              ) : null}
             </div>
             <ul className="divide-y divide-stone-100">
               {recipe.ingredients.map((ingredient) => (
@@ -74,6 +82,11 @@ export function RecipeDetailPage({
                 >
                   <span className="font-bold text-stone-700">
                     {ingredient.name}
+                    {ingredient.notes ? (
+                      <span className="mt-1 block text-sm font-semibold text-stone-400">
+                        {ingredient.notes}
+                      </span>
+                    ) : null}
                   </span>
                   <span className="shrink-0 font-extrabold text-stone-400">
                     {formatQuantity(ingredient)}
@@ -105,9 +118,85 @@ export function RecipeDetailPage({
               </div>
             ))}
           </section>
+
+          {recipe.subRecipes.length > 0 ? (
+            <section className="mt-10 space-y-6">
+              <h2 className="font-heading text-3xl font-bold text-stone-950">
+                {dict.recipeDetail.subRecipes}
+              </h2>
+              {recipe.subRecipes.map((subRecipe) => (
+                <div key={subRecipe.title}>
+                  <h3 className="mb-2 text-base font-black text-stone-700">
+                    {subRecipe.title}
+                  </h3>
+                  <ul className="divide-y divide-stone-100">
+                    {subRecipe.ingredients.map((ingredient) => (
+                      <li
+                        key={`${subRecipe.title}-${ingredient.name}-${ingredient.unit}`}
+                        className="flex items-baseline justify-between gap-4 py-3 text-base"
+                      >
+                        <span className="font-bold text-stone-700">
+                          {ingredient.name}
+                        </span>
+                        <span className="shrink-0 font-extrabold text-stone-400">
+                          {formatQuantity(ingredient)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </section>
+          ) : null}
+
+          {recipe.notes.length > 0 ? (
+            <section className="mt-10">
+              <h2 className="mb-3 font-heading text-3xl font-bold text-stone-950">
+                {dict.recipeDetail.notes}
+              </h2>
+              <ul className="space-y-2 text-base font-semibold leading-7 text-stone-400">
+                {recipe.notes.map((note) => (
+                  <li key={note}>{note}</li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
         </div>
       </article>
     </main>
+  );
+}
+
+function RecipeMeta({
+  dict,
+  recipe,
+}: {
+  dict: Dictionary;
+  recipe: Recipe;
+}) {
+  const meta = [
+    [dict.recipeDetail.prepTime, recipe.prepTime],
+    [dict.recipeDetail.cookTime, recipe.cookTime],
+    [dict.recipeDetail.totalTime, recipe.totalTime],
+    [dict.recipeDetail.temperature, recipe.temperature],
+  ].filter(([, value]) => value);
+
+  if (meta.length === 0) return null;
+
+  return (
+    <dl className="mt-8 grid grid-cols-2 gap-3">
+      {meta.map(([label, value]) => (
+        <div
+          key={label}
+          className="rounded-md bg-pale-amber-50 px-4 py-3 ring-1 ring-pale-amber-200"
+        >
+          <dt className="text-xs font-black uppercase tracking-[0.16em] text-soft-peach-600">
+            {label}
+          </dt>
+          <dd className="mt-1 text-base font-black text-stone-700">{value}</dd>
+        </div>
+      ))}
+    </dl>
   );
 }
 

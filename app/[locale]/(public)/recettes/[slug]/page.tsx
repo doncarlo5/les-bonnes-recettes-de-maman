@@ -15,7 +15,7 @@ type PageProps = {
 export default async function Page({ params }: PageProps) {
   const { locale, slug } = await params;
   const dict = await getDictionary(locale);
-  const recipe = await fetchQuery(api.recipes.getBySlug, { slug });
+  const recipe = await fetchQuery(api.recipes.getBySlug, { locale, slug });
 
   if (!recipe) {
     notFound();

@@ -10,7 +10,13 @@
   "recipeDetail": {
     "backToList": "Back to the recipe list",
     "recipeBy": "Recipe by",
-    "ingredients": "Ingredients"
+    "ingredients": "Ingredients",
+    "prepTime": "Prep",
+    "cookTime": "Cook",
+    "totalTime": "Total",
+    "temperature": "Oven",
+    "notes": "Notes",
+    "subRecipes": "Sub-recipes"
   },
   "loading": {
     "recipes": "Loading recipes"

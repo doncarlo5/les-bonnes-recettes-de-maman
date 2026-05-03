@@ -1,0 +1,2170 @@
+[
+  {
+    "title": "Amandin",
+    "slug": "amandin",
+    "author": "Maman",
+    "description": "Gâteau aux amandes, citron et blancs montés en neige, avec glaçage citron facultatif.",
+    "heroImageUrl": "",
+    "servings": null,
+    "prepTime": "",
+    "cookTime": "35 min",
+    "totalTime": "",
+    "temperature": "160 °C",
+    "ingredients": [
+      {
+        "name": "sucre",
+        "quantity": "250",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "œufs",
+        "quantity": "4",
+        "unit": "",
+        "notes": "blancs et jaunes séparés"
+      },
+      {
+        "name": "amandes en poudre",
+        "quantity": "200",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "citron",
+        "quantity": "1/2",
+        "unit": "",
+        "notes": "jus + zeste"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Séparer les blancs d’œufs des jaunes.",
+          "Ajouter le sucre dans les jaunes, puis la poudre d’amandes, puis le jus de 1/2 citron et le zeste.",
+          "Monter les blancs en neige et les ajouter délicatement au mélange aux amandes."
+        ]
+      },
+      {
+        "title": "Cuisson",
+        "steps": [
+          "Cuire 35 min à 160 °C."
+        ]
+      },
+      {
+        "title": "Glaçage facultatif",
+        "steps": [
+          "Mélanger un peu de jus de citron avec du sucre glace et déposer sur le gâteau refroidi."
+        ]
+      }
+    ],
+    "notes": []
+  },
+  {
+    "title": "Tarte aux amandes et confiture de framboises",
+    "slug": "tarte-aux-amandes-et-confiture-de-framboises",
+    "author": "Maman",
+    "description": "Tarte sur pâte sablée, garnie de confiture de framboises et d’une préparation aux amandes.",
+    "heroImageUrl": "",
+    "servings": null,
+    "prepTime": "",
+    "cookTime": "30 à 35 min",
+    "totalTime": "",
+    "temperature": "160 °C",
+    "ingredients": [
+      {
+        "name": "pâte sablée",
+        "quantity": "1",
+        "unit": "",
+        "notes": "Pierre Hermé ou autre"
+      },
+      {
+        "name": "beurre",
+        "quantity": "100",
+        "unit": "g",
+        "notes": "ramolli"
+      },
+      {
+        "name": "sucre",
+        "quantity": "100",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "amandes en poudre",
+        "quantity": "150",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "œufs",
+        "quantity": "2",
+        "unit": "",
+        "notes": "blancs et jaunes séparés"
+      },
+      {
+        "name": "confiture de framboises",
+        "quantity": "2 à 3",
+        "unit": "c. à s.",
+        "notes": ""
+      },
+      {
+        "name": "amandes effilées grillées",
+        "quantity": "",
+        "unit": "",
+        "notes": "pour le décor"
+      },
+      {
+        "name": "sucre glace",
+        "quantity": "",
+        "unit": "",
+        "notes": "pour le décor"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Mélanger le beurre ramolli avec le sucre et les jaunes d’œufs.",
+          "Ajouter les amandes, puis les blancs d’œufs montés en neige.",
+          "Étaler la confiture sur la pâte, puis ajouter le mélange aux amandes."
+        ]
+      },
+      {
+        "title": "Cuisson",
+        "steps": [
+          "Cuire 30 à 35 min à 160 °C."
+        ]
+      },
+      {
+        "title": "Décor",
+        "steps": [
+          "Décorer avec des amandes effilées grillées et du sucre glace."
+        ]
+      }
+    ],
+    "notes": []
+  },
+  {
+    "title": "Gâteau aux pommes",
+    "slug": "gateau-aux-pommes",
+    "author": "Virginie",
+    "description": "Gâteau aux pommes avec une pâte simple et une crème versée en cours de cuisson.",
+    "heroImageUrl": "",
+    "servings": {
+      "quantity": 4,
+      "unit": "personnes"
+    },
+    "prepTime": "",
+    "cookTime": "",
+    "totalTime": "",
+    "temperature": "four moyen",
+    "ingredients": [
+      {
+        "name": "farine",
+        "quantity": "5",
+        "unit": "c. à s.",
+        "notes": "pâte x2"
+      },
+      {
+        "name": "sucre",
+        "quantity": "4",
+        "unit": "c. à s.",
+        "notes": "pâte x2"
+      },
+      {
+        "name": "lait",
+        "quantity": "3",
+        "unit": "c. à s.",
+        "notes": "pâte x2"
+      },
+      {
+        "name": "huile",
+        "quantity": "2",
+        "unit": "c. à s.",
+        "notes": "pâte x2"
+      },
+      {
+        "name": "pommes",
+        "quantity": "2",
+        "unit": "belles",
+        "notes": "pâte x2"
+      },
+      {
+        "name": "œuf",
+        "quantity": "1",
+        "unit": "",
+        "notes": "pâte x2"
+      },
+      {
+        "name": "sel",
+        "quantity": "1",
+        "unit": "pincée",
+        "notes": "pâte x2"
+      },
+      {
+        "name": "levure",
+        "quantity": "1/2",
+        "unit": "paquet",
+        "notes": "pâte x2"
+      },
+      {
+        "name": "beurre",
+        "quantity": "80",
+        "unit": "g",
+        "notes": "crème"
+      },
+      {
+        "name": "sucre",
+        "quantity": "100",
+        "unit": "g",
+        "notes": "crème"
+      },
+      {
+        "name": "œuf",
+        "quantity": "1",
+        "unit": "",
+        "notes": "crème"
+      },
+      {
+        "name": "vanille",
+        "quantity": "",
+        "unit": "",
+        "notes": "crème"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Mélanger la farine, le sucre, la levure et le sel.",
+          "Ajouter le lait, l’œuf et l’huile.",
+          "Travailler le tout.",
+          "Verser dans un moule à manqué garni de tranches de pommes.",
+          "Mettre à four moyen."
+        ]
+      },
+      {
+        "title": "Crème",
+        "steps": [
+          "Faire fondre le beurre dans une casserole.",
+          "Ajouter le sucre, l’œuf et la vanille."
+        ]
+      },
+      {
+        "title": "Suite de la cuisson",
+        "steps": [
+          "Au bout de 25 min, quand le gâteau commence à monter et à dorer, ajouter la crème et continuer la cuisson."
+        ]
+      },
+      {
+        "title": "Conservation",
+        "steps": [
+          "Ce gâteau se conserve 3 à 4 jours."
+        ]
+      }
+    ],
+    "notes": [
+      "Le « x2 » est noté pour la pâte."
+    ]
+  },
+  {
+    "title": "Vacherin",
+    "slug": "vacherin",
+    "author": "Maman",
+    "description": "Dessert glacé en moule couronne à base d’œufs, crème fraîche et meringues.",
+    "heroImageUrl": "",
+    "servings": {
+      "quantity": 8,
+      "unit": "à 10 personnes"
+    },
+    "prepTime": "20 min",
+    "cookTime": "",
+    "totalTime": "3 h de congélation",
+    "temperature": "",
+    "ingredients": [
+      {
+        "name": "huile",
+        "quantity": "un peu",
+        "unit": "",
+        "notes": "pour le moule"
+      },
+      {
+        "name": "œufs",
+        "quantity": "4",
+        "unit": "",
+        "notes": "blancs et jaunes séparés"
+      },
+      {
+        "name": "sucre semoule",
+        "quantity": "50",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "sucre glace",
+        "quantity": "50",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "crème fraîche épaisse",
+        "quantity": "200",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "extrait de vanille",
+        "quantity": "1",
+        "unit": "c. à c.",
+        "notes": ""
+      },
+      {
+        "name": "meringues",
+        "quantity": "2",
+        "unit": "grosses",
+        "notes": ""
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Huiler le moule en couronne.",
+          "Battre énergiquement les jaunes d’œufs et le sucre semoule jusqu’à ce que le mélange blanchisse.",
+          "Ajouter l’extrait de vanille et la crème.",
+          "Battre les blancs en neige en ajoutant à la fin le sucre glace.",
+          "Ajouter délicatement les blancs à la préparation et verser la moitié dans le moule.",
+          "Déposer les meringues grossièrement écrasées, puis terminer par le reste de la préparation.",
+          "Faire congeler 3 h.",
+          "Pour démouler, tremper le moule quelques secondes dans l’eau tiède."
+        ]
+      }
+    ],
+    "notes": []
+  },
+  {
+    "title": "Macaron tante Maria",
+    "slug": "macaron-tante-maria",
+    "author": "Tante Maria",
+    "description": "Gâteau macaron aux blancs d’œufs, amandes et extrait d’amande amère, accompagné d’une crème au café.",
+    "heroImageUrl": "",
+    "servings": {
+      "quantity": 8,
+      "unit": "personnes"
+    },
+    "prepTime": "",
+    "cookTime": "3/4 h",
+    "totalTime": "",
+    "temperature": "140 °C",
+    "ingredients": [
+      {
+        "name": "blancs d’œufs",
+        "quantity": "6",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "sucre fin",
+        "quantity": "340",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "amandes",
+        "quantity": "340",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "levure",
+        "quantity": "1",
+        "unit": "pincée",
+        "notes": ""
+      },
+      {
+        "name": "extrait d’amande amère",
+        "quantity": "1",
+        "unit": "c. à c.",
+        "notes": ""
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation du macaron",
+        "steps": [
+          "Battre les blancs en neige très ferme.",
+          "Tourner avec le sucre 5 min au batteur électrique.",
+          "Ajouter ensuite les amandes et la levure."
+        ]
+      },
+      {
+        "title": "Cuisson",
+        "steps": [
+          "Cuire à four doux, 140 °C, pendant 3/4 h."
+        ]
+      },
+      {
+        "title": "Crème au café",
+        "steps": [
+          "Faire bouillir 1/2 litre de lait avec 1 c. à café très rase de Maïzena.",
+          "Mélanger 6 jaunes d’œufs avec 100 g de sucre fin.",
+          "Ajouter le lait bouillant en tournant.",
+          "Remettre dans la casserole et faire prendre la crème 1 à 2 min à peine.",
+          "Ajouter 2 c. à c. d’extrait de café.",
+          "Servir frais."
+        ]
+      }
+    ],
+    "subRecipes": [
+      {
+        "title": "Crème au café",
+        "ingredients": [
+          {
+            "name": "jaunes d’œufs",
+            "quantity": "6",
+            "unit": "",
+            "notes": ""
+          },
+          {
+            "name": "lait",
+            "quantity": "1/2",
+            "unit": "litre",
+            "notes": ""
+          },
+          {
+            "name": "sucre fin",
+            "quantity": "100",
+            "unit": "g",
+            "notes": ""
+          },
+          {
+            "name": "extrait de café",
+            "quantity": "2",
+            "unit": "c. à c.",
+            "notes": ""
+          },
+          {
+            "name": "Maïzena",
+            "quantity": "1",
+            "unit": "c. à café très rase",
+            "notes": ""
+          }
+        ]
+      }
+    ],
+    "notes": [
+      "Le titre manuscrit paraît être « Macaron tante Maria »."
+    ]
+  },
+  {
+    "title": "Gâteau au chocolat",
+    "slug": "gateau-au-chocolat",
+    "author": "Dominique",
+    "description": "Gâteau au chocolat simple avec blancs montés en neige.",
+    "heroImageUrl": "",
+    "servings": null,
+    "prepTime": "",
+    "cookTime": "1/2 h",
+    "totalTime": "",
+    "temperature": "180 °C",
+    "ingredients": [
+      {
+        "name": "sucre",
+        "quantity": "200",
+        "unit": "g",
+        "notes": "150 g noté entre parenthèses"
+      },
+      {
+        "name": "chocolat",
+        "quantity": "200",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "œufs",
+        "quantity": "4",
+        "unit": "",
+        "notes": "blancs en neige"
+      },
+      {
+        "name": "beurre",
+        "quantity": "150",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "farine",
+        "quantity": "2",
+        "unit": "c. à s.",
+        "notes": "rases"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Faire fondre le chocolat avec le beurre.",
+          "Mélanger le sucre et les jaunes d’œufs.",
+          "Ajouter le chocolat et la farine, puis les blancs en neige."
+        ]
+      },
+      {
+        "title": "Cuisson",
+        "steps": [
+          "Cuire à four moyen pendant 1/2 h, à 180 °C."
+        ]
+      }
+    ],
+    "notes": []
+  },
+  {
+    "title": "Moka",
+    "slug": "moka",
+    "author": "Maman",
+    "description": "Recette de moka au chocolat et extrait de café. La préparation n’était pas indiquée sur la page.",
+    "heroImageUrl": "",
+    "servings": null,
+    "prepTime": "",
+    "cookTime": "",
+    "totalTime": "",
+    "temperature": "",
+    "ingredients": [
+      {
+        "name": "beurre",
+        "quantity": "125",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "chocolat",
+        "quantity": "200",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "œufs",
+        "quantity": "4",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "sucre",
+        "quantity": "4",
+        "unit": "c. à s.",
+        "notes": ""
+      },
+      {
+        "name": "fécule",
+        "quantity": "4",
+        "unit": "c. à s.",
+        "notes": ""
+      },
+      {
+        "name": "farine",
+        "quantity": "4",
+        "unit": "c. à s.",
+        "notes": ""
+      },
+      {
+        "name": "extrait de café",
+        "quantity": "1",
+        "unit": "c. à c.",
+        "notes": ""
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Préparation non indiquée sur la page transmise."
+        ]
+      }
+    ],
+    "notes": []
+  },
+  {
+    "title": "Gâteau au citron",
+    "slug": "gateau-au-citron",
+    "author": "Maman",
+    "description": "Gâteau de Vichy garni ou accompagné d’une crème au citron.",
+    "heroImageUrl": "",
+    "servings": {
+      "quantity": 6,
+      "unit": "personnes"
+    },
+    "prepTime": "",
+    "cookTime": "3/4 h",
+    "totalTime": "",
+    "temperature": "four moyen",
+    "ingredients": [
+      {
+        "name": "œufs",
+        "quantity": "4",
+        "unit": "",
+        "notes": "pour le gâteau"
+      },
+      {
+        "name": "farine",
+        "quantity": "poids de 2 1/2 œufs",
+        "unit": "",
+        "notes": "pour le gâteau"
+      },
+      {
+        "name": "sucre",
+        "quantity": "poids de 4 œufs",
+        "unit": "",
+        "notes": "pour le gâteau"
+      },
+      {
+        "name": "œufs",
+        "quantity": "2",
+        "unit": "",
+        "notes": "pour la crème au citron"
+      },
+      {
+        "name": "citrons",
+        "quantity": "2",
+        "unit": "",
+        "notes": "jus + zeste"
+      },
+      {
+        "name": "sucre",
+        "quantity": "100",
+        "unit": "g",
+        "notes": "pour la crème au citron"
+      },
+      {
+        "name": "beurre",
+        "quantity": "50",
+        "unit": "g",
+        "notes": "pour la crème au citron"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Gâteau de Vichy",
+        "steps": [
+          "Mélanger le sucre avec 3 jaunes d’œufs + 1 œuf entier.",
+          "Battre les blancs en neige ferme.",
+          "Les incorporer à la pâte en intercalant la farine.",
+          "Cuire à four moyen pendant 3/4 h."
+        ]
+      },
+      {
+        "title": "Crème au citron",
+        "steps": [
+          "Casser les œufs, ajouter le sucre et le beurre.",
+          "Faire fondre.",
+          "Râper finement le zeste de citron, l’ajouter ainsi que le jus à la composition.",
+          "Tourner sur le feu pour faire prendre la crème, mais attention qu’elle ne tourne pas."
+        ]
+      }
+    ],
+    "notes": []
+  },
+  {
+    "title": "Tiramisu",
+    "slug": "tiramisu",
+    "author": "Agnès",
+    "description": "Tiramisu au mascarpone, café et biscuits à la cuillère, parfumé au marsala, xérès ou malaga.",
+    "heroImageUrl": "",
+    "servings": null,
+    "prepTime": "",
+    "cookTime": "",
+    "totalTime": "10 à 12 h de repos",
+    "temperature": "",
+    "ingredients": [
+      {
+        "name": "mascarpone",
+        "quantity": "250",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "œufs",
+        "quantity": "4",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "sucre glace",
+        "quantity": "35",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "sucre fin",
+        "quantity": "35",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "café",
+        "quantity": "1/2",
+        "unit": "cafetière",
+        "notes": ""
+      },
+      {
+        "name": "biscuits à la cuillère",
+        "quantity": "250",
+        "unit": "g",
+        "notes": "1 boîte"
+      },
+      {
+        "name": "marsala, xérès ou malaga",
+        "quantity": "1",
+        "unit": "c. à s.",
+        "notes": ""
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Faire le café.",
+          "Battre les blancs et ajouter le sucre glace.",
+          "Battre les jaunes avec le sucre fin.",
+          "Incorporer le mascarpone aux jaunes, délicatement.",
+          "Incorporer les blancs aux jaunes et au mascarpone.",
+          "Mélanger le café et la c. à s. d’alcool.",
+          "Tremper les gâteaux 1 par 1 et les mettre dans le plat.",
+          "Écraser les gâteaux + compact.",
+          "Ajouter le mélange.",
+          "Saupoudrer de chocolat en poudre."
+        ]
+      },
+      {
+        "title": "Repos",
+        "steps": [
+          "Mettre au frigo 10 à 12 h."
+        ]
+      }
+    ],
+    "notes": [
+      "Les anciennes lignes barrées n’ont pas été conservées."
+    ]
+  },
+  {
+    "title": "Pâte feuilletée Maman",
+    "slug": "pate-feuilletee-maman",
+    "author": "Maman",
+    "description": "Pâte feuilletée maison à base de farine, margarine Astra, sel et eau.",
+    "heroImageUrl": "",
+    "servings": null,
+    "prepTime": "",
+    "cookTime": "",
+    "totalTime": "1/4 h de repos",
+    "temperature": "",
+    "ingredients": [
+      {
+        "name": "farine",
+        "quantity": "750",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "Astra",
+        "quantity": "500",
+        "unit": "g",
+        "notes": "margarine"
+      },
+      {
+        "name": "sel",
+        "quantity": "2",
+        "unit": "c. à c.",
+        "notes": ""
+      },
+      {
+        "name": "eau",
+        "quantity": "1",
+        "unit": "verre",
+        "notes": ""
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Mettre la farine sur le plan de travail.",
+          "Faire un puits et mettre la margarine en morceaux, puis le sel et l’eau.",
+          "Garder 70 g de margarine.",
+          "Malaxer et ajouter l’eau au fur et à mesure.",
+          "Étaler et tartiner sur toute la surface.",
+          "Replier : 2 fois dans un bout, 1 fois l’autre.",
+          "Étaler et plier à nouveau.",
+          "Laisser reposer 1/4 h avant utilisation."
+        ]
+      }
+    ],
+    "notes": [
+      "La formulation exacte du pliage était difficile à lire."
+    ]
+  },
+  {
+    "title": "Crumble aux pommes du verger",
+    "slug": "crumble-aux-pommes-du-verger",
+    "author": "Maman",
+    "description": "Crumble aux pommes, cassonade, poudre d’amandes, cannelle et calvados.",
+    "heroImageUrl": "",
+    "servings": {
+      "quantity": 4,
+      "unit": "à 6 personnes"
+    },
+    "prepTime": "15 min",
+    "cookTime": "35 min",
+    "totalTime": "",
+    "temperature": "180 °C",
+    "ingredients": [
+      {
+        "name": "pommes",
+        "quantity": "1,2",
+        "unit": "kg",
+        "notes": ""
+      },
+      {
+        "name": "farine semi-complète",
+        "quantity": "100",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "beurre salé tempéré",
+        "quantity": "100",
+        "unit": "g",
+        "notes": "découpé en petits dés"
+      },
+      {
+        "name": "beurre",
+        "quantity": "20",
+        "unit": "g",
+        "notes": "pour le plat"
+      },
+      {
+        "name": "cassonade en poudre",
+        "quantity": "120",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "poudre d’amandes",
+        "quantity": "50",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "cannelle en poudre",
+        "quantity": "1",
+        "unit": "c. à c.",
+        "notes": ""
+      },
+      {
+        "name": "calvados",
+        "quantity": "4",
+        "unit": "c. à s.",
+        "notes": ""
+      },
+      {
+        "name": "sel",
+        "quantity": "1",
+        "unit": "pincée",
+        "notes": ""
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Préchauffer le four à 180 °C.",
+          "Éplucher les pommes, les couper en 4, ôter le cœur et les pépins, puis les détailler en tranches épaisses.",
+          "Les déposer dans une assiette creuse et les arroser de calvados.",
+          "Dans un grand bol, mélanger la farine, la poudre d’amandes, la cannelle, la cassonade et le beurre.",
+          "Ajouter la pincée de sel. Remuer délicatement.",
+          "Beurrer le plat et disposer les tranches de pommes parfumées au calvados.",
+          "Les couvrir du mélange farine-poudre d’amandes-beurre-cassonade et mettre au four pendant 35 min environ.",
+          "Déguster le crumble tiède ou froid."
+        ]
+      }
+    ],
+    "notes": [
+      "Matériel : plat à gratin."
+    ]
+  },
+  {
+    "title": "Cake orange",
+    "slug": "cake-orange",
+    "author": "Maman",
+    "description": "Cake à l’orange et au beurre salé avec glaçage ou sirop à l’orange.",
+    "heroImageUrl": "",
+    "servings": null,
+    "prepTime": "",
+    "cookTime": "40 min",
+    "totalTime": "",
+    "temperature": "180 °C",
+    "ingredients": [
+      {
+        "name": "orange",
+        "quantity": "1",
+        "unit": "",
+        "notes": "jus + zeste"
+      },
+      {
+        "name": "œufs",
+        "quantity": "3",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "beurre salé",
+        "quantity": "150",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "sucre",
+        "quantity": "160",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "farine",
+        "quantity": "160",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "levure",
+        "quantity": "1/2",
+        "unit": "c. à c.",
+        "notes": "grand moule"
+      },
+      {
+        "name": "sucre glace",
+        "quantity": "",
+        "unit": "",
+        "notes": "pour le glaçage"
+      },
+      {
+        "name": "jus d’orange",
+        "quantity": "un peu",
+        "unit": "",
+        "notes": "pour le glaçage"
+      },
+      {
+        "name": "jus d’orange",
+        "quantity": "1",
+        "unit": "",
+        "notes": "pour le sirop"
+      },
+      {
+        "name": "sucre",
+        "quantity": "50",
+        "unit": "g",
+        "notes": "pour le sirop"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Mélanger les œufs et le sucre jusqu’à obtenir un mélange mousseux.",
+          "Ajouter la farine et la levure.",
+          "Ajouter le beurre fondu, puis le jus d’orange et le zeste."
+        ]
+      },
+      {
+        "title": "Cuisson",
+        "steps": [
+          "Cuire 40 min à 180 °C."
+        ]
+      },
+      {
+        "title": "Finition",
+        "steps": [
+          "Pour un glaçage : mélanger du sucre glace avec un peu de jus d’orange.",
+          "Ou pour un sirop : faire chauffer 1 jus d’orange avec 50 g de sucre."
+        ]
+      }
+    ],
+    "notes": []
+  },
+  {
+    "title": "Cake d’été tout vert",
+    "slug": "cake-d-ete-tout-vert",
+    "author": "Maman",
+    "description": "Cake salé aux herbes, pesto ou tapenade verte, gruyère et noisettes.",
+    "heroImageUrl": "",
+    "servings": {
+      "quantity": 1,
+      "unit": "moule tablette ou 12 mini cakes"
+    },
+    "prepTime": "",
+    "cookTime": "40 min grand cake ou 30 min petits cakes",
+    "totalTime": "",
+    "temperature": "180 °C",
+    "ingredients": [
+      {
+        "name": "persil",
+        "quantity": "1",
+        "unit": "bouquet",
+        "notes": ""
+      },
+      {
+        "name": "ciboulette",
+        "quantity": "1",
+        "unit": "beau bouquet",
+        "notes": ""
+      },
+      {
+        "name": "farine",
+        "quantity": "150",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "levure",
+        "quantity": "1",
+        "unit": "sachet",
+        "notes": ""
+      },
+      {
+        "name": "œufs",
+        "quantity": "3",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "lait",
+        "quantity": "10",
+        "unit": "cl",
+        "notes": ""
+      },
+      {
+        "name": "huile d’olive",
+        "quantity": "7",
+        "unit": "cl",
+        "notes": ""
+      },
+      {
+        "name": "gruyère râpé",
+        "quantity": "80",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "tapenade verte ou pesto vert",
+        "quantity": "4",
+        "unit": "c. à s.",
+        "notes": ""
+      },
+      {
+        "name": "noisettes concassées",
+        "quantity": "120",
+        "unit": "g",
+        "notes": ""
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Préchauffer le four à 180 °C.",
+          "Poser le moule, beurré si pas en silicone, sur la plaque alu perforée.",
+          "Laver et égoutter les herbes, les ciseler ou les couper à l’éminceur.",
+          "Dans un cul-de-poule, mélanger la farine et la levure.",
+          "Ajouter les œufs, puis le lait, l’huile et le gruyère, bien mélanger.",
+          "Terminer par les herbes, la tapenade ou le pesto, les noisettes, et assaisonner si nécessaire.",
+          "Verser dans le moule à cake, puis enfourner pendant environ 40 min pour un grand cake ou 30 min pour des petits.",
+          "La lame du couteau doit ressortir sèche.",
+          "Laisser refroidir et démouler."
+        ]
+      },
+      {
+        "title": "Service",
+        "steps": [
+          "Accompagner d’une salade verte."
+        ]
+      }
+    ],
+    "notes": [
+      "Meilleur préparé la veille."
+    ]
+  },
+  {
+    "title": "Clafoutis poires et framboises",
+    "slug": "clafoutis-poires-et-framboises",
+    "author": "Maman",
+    "description": "Clafoutis aux poires, avec quelques framboises facultatives.",
+    "heroImageUrl": "",
+    "servings": null,
+    "prepTime": "",
+    "cookTime": "10 min + 35 à 40 min",
+    "totalTime": "",
+    "temperature": "200 °C puis 180 °C",
+    "ingredients": [
+      {
+        "name": "sucre",
+        "quantity": "100",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "farine",
+        "quantity": "80",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "amandes en poudre",
+        "quantity": "40",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "sel",
+        "quantity": "1",
+        "unit": "pincée",
+        "notes": ""
+      },
+      {
+        "name": "cannelle",
+        "quantity": "",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "œufs",
+        "quantity": "3",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "crème",
+        "quantity": "20",
+        "unit": "cl",
+        "notes": ""
+      },
+      {
+        "name": "lait",
+        "quantity": "20",
+        "unit": "cl",
+        "notes": ""
+      },
+      {
+        "name": "framboises",
+        "quantity": "quelques",
+        "unit": "",
+        "notes": "facultatif"
+      },
+      {
+        "name": "poires",
+        "quantity": "2 à 3",
+        "unit": "",
+        "notes": "noté « 2/3 poires »"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Allumer le four à 200 °C.",
+          "Mélanger le sucre, la farine, les amandes en poudre, le sel et la cannelle.",
+          "Ajouter ensuite 3 œufs, 20 cl de crème et 20 cl de lait.",
+          "Mixer le tout.",
+          "Mettre les poires dans le moule, puis verser la pâte."
+        ]
+      },
+      {
+        "title": "Cuisson",
+        "steps": [
+          "Cuire 10 min à 200 °C puis 35 à 40 min à 180 °C."
+        ]
+      }
+    ],
+    "notes": [
+      "« 2/3 poires » a été interprété comme 2 à 3 poires."
+    ]
+  },
+  {
+    "title": "Velouté de courgettes",
+    "slug": "veloute-de-courgettes",
+    "author": "Jeanine",
+    "description": "Velouté de courgettes avec pomme de terre, ail, oignon, crème fraîche et fromage fondu.",
+    "heroImageUrl": "",
+    "servings": null,
+    "prepTime": "",
+    "cookTime": "15 min",
+    "totalTime": "",
+    "temperature": "",
+    "ingredients": [
+      {
+        "name": "petites courgettes",
+        "quantity": "1",
+        "unit": "kg",
+        "notes": ""
+      },
+      {
+        "name": "pomme de terre",
+        "quantity": "1",
+        "unit": "",
+        "notes": "PDT sur la recette"
+      },
+      {
+        "name": "ail",
+        "quantity": "1",
+        "unit": "gousse",
+        "notes": ""
+      },
+      {
+        "name": "oignon",
+        "quantity": "1",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "crème fraîche liquide",
+        "quantity": "25",
+        "unit": "cl",
+        "notes": ""
+      },
+      {
+        "name": "Vache qui rit / Kiri",
+        "quantity": "2",
+        "unit": "portions",
+        "notes": "Carré frais indiqué par correction utilisateur"
+      },
+      {
+        "name": "thym",
+        "quantity": "",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "sel",
+        "quantity": "",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "poivre",
+        "quantity": "",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "muscade",
+        "quantity": "",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "eau",
+        "quantity": "50",
+        "unit": "cl",
+        "notes": "pour la cuisson"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Faire cuire tous ces légumes dans 50 cl d’eau avec du sel.",
+          "Laisser mijoter 15 min puis mixer.",
+          "Ajouter le fromage fondu et la crème."
+        ]
+      }
+    ],
+    "notes": []
+  },
+  {
+    "title": "Osso buco",
+    "slug": "osso-buco",
+    "author": "Maman",
+    "description": "Osso buco de jarret de veau aux tomates, carottes, vin blanc et bouquet garni.",
+    "heroImageUrl": "",
+    "servings": {
+      "quantity": 4,
+      "unit": "personnes"
+    },
+    "prepTime": "",
+    "cookTime": "45 min",
+    "totalTime": "",
+    "temperature": "feu doux",
+    "ingredients": [
+      {
+        "name": "jarret de veau",
+        "quantity": "4",
+        "unit": "tranches",
+        "notes": "200 g indiqué sur la recette"
+      },
+      {
+        "name": "huile",
+        "quantity": "10",
+        "unit": "cl",
+        "notes": ""
+      },
+      {
+        "name": "ail",
+        "quantity": "3",
+        "unit": "gousses",
+        "notes": ""
+      },
+      {
+        "name": "oignons",
+        "quantity": "2",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "tomates concassées",
+        "quantity": "1",
+        "unit": "boîte de 400 g",
+        "notes": ""
+      },
+      {
+        "name": "carottes",
+        "quantity": "200",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "vin blanc",
+        "quantity": "20",
+        "unit": "cl",
+        "notes": ""
+      },
+      {
+        "name": "bouquet garni",
+        "quantity": "1",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "farine",
+        "quantity": "",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "sel",
+        "quantity": "",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "poivre",
+        "quantity": "",
+        "unit": "",
+        "notes": ""
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Fariner la viande.",
+          "Faire dorer sur toutes les faces dans la cocotte avec un fond d’huile.",
+          "Ajouter les carottes coupées en rondelles épaisses, les oignons émincés et l’ail haché.",
+          "Ajouter les tomates et le vin blanc.",
+          "Saler, poivrer et ajouter le bouquet garni.",
+          "Cuire 45 min à feu doux après rotation de la soupape."
+        ]
+      }
+    ],
+    "notes": []
+  },
+  {
+    "title": "Cake moelleux au citron de Pierre Hermé",
+    "slug": "cake-moelleux-au-citron-de-pierre-herme",
+    "author": "Pierre Hermé",
+    "description": "Cake moelleux au citron imbibé d’un sirop citronné.",
+    "heroImageUrl": "",
+    "servings": {
+      "quantity": 1,
+      "unit": "cake"
+    },
+    "prepTime": "10 min",
+    "cookTime": "60 min",
+    "totalTime": "1 h 10 min",
+    "temperature": "165 °C",
+    "ingredients": [
+      {
+        "name": "farine",
+        "quantity": "190",
+        "unit": "g",
+        "notes": "pour le cake"
+      },
+      {
+        "name": "levure chimique",
+        "quantity": "1/2",
+        "unit": "c. à c.",
+        "notes": "pour le cake"
+      },
+      {
+        "name": "zeste de citron",
+        "quantity": "1",
+        "unit": "gros citron",
+        "notes": "ou 2 petits"
+      },
+      {
+        "name": "sucre",
+        "quantity": "200",
+        "unit": "g",
+        "notes": "pour le cake"
+      },
+      {
+        "name": "œufs",
+        "quantity": "3",
+        "unit": "",
+        "notes": "pour le cake"
+      },
+      {
+        "name": "crème liquide",
+        "quantity": "10",
+        "unit": "cl",
+        "notes": "pour le cake"
+      },
+      {
+        "name": "rhum",
+        "quantity": "2",
+        "unit": "c. à s.",
+        "notes": "pour le cake"
+      },
+      {
+        "name": "sel",
+        "quantity": "1",
+        "unit": "pincée",
+        "notes": "pour le cake"
+      },
+      {
+        "name": "beurre fondu et refroidi",
+        "quantity": "65",
+        "unit": "g",
+        "notes": "pour le cake"
+      },
+      {
+        "name": "eau",
+        "quantity": "75",
+        "unit": "g",
+        "notes": "pour le sirop, note manuscrite 0,08 l"
+      },
+      {
+        "name": "sucre",
+        "quantity": "30",
+        "unit": "g",
+        "notes": "pour le sirop"
+      },
+      {
+        "name": "jus de citron",
+        "quantity": "3",
+        "unit": "c. à s.",
+        "notes": "pour le sirop"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Préchauffer le four à 165 °C.",
+          "Mélanger le zeste de citron avec le sucre.",
+          "Ajouter les œufs 1 à 1 et bien mélanger.",
+          "Ajouter la crème fraîche.",
+          "Ajouter le rhum et le sel.",
+          "Mélanger la farine et la levure.",
+          "Ajouter la farine et la levure en plusieurs fois au mélange.",
+          "Ajouter le beurre et mélanger.",
+          "Beurrer et fariner le moule à cake.",
+          "Verser la préparation et cuire environ 60 min.",
+          "Préparer le sirop : porter à ébullition l’eau et le sucre.",
+          "Ajouter le jus de citron hors du feu.",
+          "Sortir le cake du four et l’imbiber de sirop.",
+          "Laisser refroidir sur une grille avant de déguster."
+        ]
+      }
+    ],
+    "notes": []
+  },
+  {
+    "title": "Gougères",
+    "slug": "gougeres",
+    "author": "Maman",
+    "description": "Gougères au comté, poivre et noix de muscade.",
+    "heroImageUrl": "",
+    "servings": {
+      "quantity": 20,
+      "unit": "environ"
+    },
+    "prepTime": "",
+    "cookTime": "30 min",
+    "totalTime": "",
+    "temperature": "190 °C",
+    "ingredients": [
+      {
+        "name": "beurre",
+        "quantity": "80",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "comté râpé",
+        "quantity": "100",
+        "unit": "g",
+        "notes": "+ pour déco"
+      },
+      {
+        "name": "farine",
+        "quantity": "150",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "eau",
+        "quantity": "25",
+        "unit": "cl",
+        "notes": ""
+      },
+      {
+        "name": "œufs",
+        "quantity": "4",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "sel",
+        "quantity": "1",
+        "unit": "c. à c.",
+        "notes": ""
+      },
+      {
+        "name": "poivre",
+        "quantity": "",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "noix de muscade",
+        "quantity": "",
+        "unit": "",
+        "notes": ""
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Faire fondre le beurre dans l’eau avec le sel.",
+          "Quand ça mousse, ajouter la farine tamisée.",
+          "Laisser 2 min dans la casserole pour l’évaporation de l’eau.",
+          "Ajouter le poivre et la muscade, puis les œufs 1 à 1, et enfin le fromage râpé.",
+          "Faire des petits tas sur une plaque et mettre un peu de comté pour décorer."
+        ]
+      },
+      {
+        "title": "Cuisson",
+        "steps": [
+          "Cuire 30 min à 190 °C."
+        ]
+      }
+    ],
+    "notes": []
+  },
+  {
+    "title": "Cake chèvre / noix / olives",
+    "slug": "cake-chevre-noix-olives",
+    "author": "Maman",
+    "description": "Cake salé au chèvre, noix, olives et comté râpé.",
+    "heroImageUrl": "",
+    "servings": null,
+    "prepTime": "",
+    "cookTime": "1/2 h",
+    "totalTime": "",
+    "temperature": "180 °C",
+    "ingredients": [
+      {
+        "name": "farine",
+        "quantity": "175",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "œufs",
+        "quantity": "3",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "huile d’olive",
+        "quantity": "2",
+        "unit": "c. à s.",
+        "notes": ""
+      },
+      {
+        "name": "comté râpé",
+        "quantity": "100",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "chèvre",
+        "quantity": "150",
+        "unit": "g",
+        "notes": "écrit « chivre » sur la recette"
+      },
+      {
+        "name": "lait",
+        "quantity": "1",
+        "unit": "petit verre",
+        "notes": ""
+      },
+      {
+        "name": "noix",
+        "quantity": "70",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "olives entières",
+        "quantity": "50",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "sel",
+        "quantity": "",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "poivre",
+        "quantity": "",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "levure",
+        "quantity": "1/2",
+        "unit": "sachet",
+        "notes": ""
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Mélanger les œufs, la farine, la levure, le sel et le poivre.",
+          "Ajouter petit à petit l’huile et le lait chaud avec le fromage râpé.",
+          "Ajouter le chèvre écrasé, les noix et les olives."
+        ]
+      },
+      {
+        "title": "Cuisson",
+        "steps": [
+          "Cuire 1/2 h à 180 °C."
+        ]
+      }
+    ],
+    "notes": []
+  },
+  {
+    "title": "Cake au chèvre et courgettes",
+    "slug": "cake-au-chevre-et-courgettes",
+    "author": "Mimi",
+    "description": "Cake salé au chèvre, courgette, gruyère râpé et cerfeuil.",
+    "heroImageUrl": "",
+    "servings": null,
+    "prepTime": "",
+    "cookTime": "45 min",
+    "totalTime": "",
+    "temperature": "180 °C",
+    "ingredients": [
+      {
+        "name": "œufs",
+        "quantity": "3",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "farine",
+        "quantity": "150",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "levure",
+        "quantity": "1",
+        "unit": "sachet",
+        "notes": ""
+      },
+      {
+        "name": "huile de tournesol",
+        "quantity": "8",
+        "unit": "cl",
+        "notes": ""
+      },
+      {
+        "name": "lait entier",
+        "quantity": "12,5",
+        "unit": "cl",
+        "notes": ""
+      },
+      {
+        "name": "gruyère râpé",
+        "quantity": "100",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "chèvre bûche",
+        "quantity": "200",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "courgette",
+        "quantity": "1",
+        "unit": "belle",
+        "notes": ""
+      },
+      {
+        "name": "huile d’olive",
+        "quantity": "2",
+        "unit": "c. à s.",
+        "notes": ""
+      },
+      {
+        "name": "cerfeuil",
+        "quantity": "1",
+        "unit": "bouquet",
+        "notes": "correction utilisateur"
+      },
+      {
+        "name": "sel",
+        "quantity": "2",
+        "unit": "pincées",
+        "notes": ""
+      },
+      {
+        "name": "poivre",
+        "quantity": "",
+        "unit": "",
+        "notes": ""
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Faire rissoler la courgette coupée en rondelles dans l’huile d’olive pendant 15 min, puis disposer sur du sopalin.",
+          "Fouetter les œufs, la farine, la levure, le sel et le poivre.",
+          "Incorporer petit à petit l’huile et le lait chauffé.",
+          "Ajouter le gruyère râpé et mélanger.",
+          "Incorporer les courgettes, le chèvre coupé en morceaux et le cerfeuil ciselé.",
+          "Mélanger le tout et mettre dans un moule non graissé."
+        ]
+      },
+      {
+        "title": "Cuisson",
+        "steps": [
+          "Cuire 45 min à 180 °C."
+        ]
+      }
+    ],
+    "notes": []
+  },
+  {
+    "title": "Cocotte de cabillaud aux courgettes et curry",
+    "slug": "cocotte-de-cabillaud-aux-courgettes-et-curry",
+    "author": "Maman",
+    "description": "Cocottes de cabillaud aux courgettes, curry, crème liquide et parmesan.",
+    "heroImageUrl": "",
+    "servings": {
+      "quantity": 6,
+      "unit": "personnes"
+    },
+    "prepTime": "20 min",
+    "cookTime": "30 min",
+    "totalTime": "50 min",
+    "temperature": "180 °C",
+    "ingredients": [
+      {
+        "name": "filet de cabillaud sans peau et sans arêtes",
+        "quantity": "500",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "courgettes",
+        "quantity": "900",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "sel",
+        "quantity": "",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "poivre du moulin",
+        "quantity": "",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "oignon",
+        "quantity": "1",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "huile d’olive",
+        "quantity": "1",
+        "unit": "c. à s.",
+        "notes": ""
+      },
+      {
+        "name": "persil",
+        "quantity": "1/2",
+        "unit": "bouquet",
+        "notes": ""
+      },
+      {
+        "name": "curry en poudre",
+        "quantity": "1",
+        "unit": "c. à c.",
+        "notes": ""
+      },
+      {
+        "name": "parmesan râpé",
+        "quantity": "50",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "crème liquide",
+        "quantity": "25",
+        "unit": "cl",
+        "notes": ""
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Peler l’oignon et l’émincer.",
+          "Peler les courgettes et les couper en petits cubes.",
+          "Hacher le persil.",
+          "Couper les filets de cabillaud en morceaux.",
+          "Dans une poêle, faire revenir l’oignon émincé avec les courgettes sur feu moyen pendant 10 min environ.",
+          "Saler, poivrer, saupoudrer de curry et ajouter le persil haché.",
+          "Mélanger et poursuivre la cuisson quelques minutes.",
+          "Retirer du feu, ajouter les morceaux de filet de cabillaud aux courgettes et mélanger.",
+          "Préchauffer le four à 180 °C.",
+          "Répartir la préparation dans les cocottes.",
+          "Arroser de crème liquide et saupoudrer de parmesan."
+        ]
+      },
+      {
+        "title": "Finition",
+        "steps": [
+          "Glisser au four pendant 15 à 20 min environ.",
+          "Servir dès la sortie du four."
+        ]
+      }
+    ],
+    "notes": []
+  },
+  {
+    "title": "Pâte sucrée de Pierre Hermé",
+    "slug": "pate-sucree-de-pierre-herme",
+    "author": "Pierre Hermé",
+    "description": "Pâte sucrée sablée pour tartes, à base de beurre pommade, sucre glace et poudre d’amandes.",
+    "heroImageUrl": "",
+    "servings": null,
+    "prepTime": "",
+    "cookTime": "",
+    "totalTime": "2 à 3 h de repos, idéalement 1 nuit",
+    "temperature": "",
+    "ingredients": [
+      {
+        "name": "beurre à température ambiante",
+        "quantity": "140",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "sucre glace",
+        "quantity": "75",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "farine T55",
+        "quantity": "250",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "poudre d’amandes",
+        "quantity": "25",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "œuf",
+        "quantity": "1",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "sel",
+        "quantity": "1",
+        "unit": "pincée",
+        "notes": ""
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Dans un saladier, mettre le beurre pommade.",
+          "Ajouter le sucre glace et mélanger vigoureusement à l’aide d’une cuillère en bois pour obtenir une texture homogène.",
+          "Verser l’œuf légèrement battu, la pincée de sel, la poudre d’amandes et la farine tamisée.",
+          "Mélanger grossièrement à l’aide de la cuillère en bois.",
+          "Placer la pâte sur le plan de travail.",
+          "Avec la paume de la main, fraiser légèrement pour obtenir une pâte homogène.",
+          "Former une boule.",
+          "Placer la boule entre 2 feuilles de papier sulfurisé et l’abaisser sur une épaisseur de 3 à 4 mm.",
+          "Mettre au frigo 2 à 3 h, idéalement 1 nuit."
+        ]
+      }
+    ],
+    "notes": [
+      "La note manuscrite « 3/4 mm » a été normalisée en « 3 à 4 mm »."
+    ]
+  },
+  {
+    "title": "Pain de poisson",
+    "slug": "pain-de-poisson",
+    "author": "Zabelh",
+    "description": "Pain de poisson au concentré de tomate, crème fraîche et œufs, servi froid avec mayonnaise maison.",
+    "heroImageUrl": "",
+    "servings": null,
+    "prepTime": "30 min",
+    "cookTime": "40 min",
+    "totalTime": "",
+    "temperature": "th. 7 / 210 °C",
+    "ingredients": [
+      {
+        "name": "poisson",
+        "quantity": "800",
+        "unit": "g",
+        "notes": "lotte à l’origine, ou mélange saumon, cabillaud, julienne"
+      },
+      {
+        "name": "concentré de tomate",
+        "quantity": "1/2",
+        "unit": "petite boîte",
+        "notes": ""
+      },
+      {
+        "name": "crème fraîche",
+        "quantity": "100",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "œufs",
+        "quantity": "4",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "Maïzena",
+        "quantity": "1",
+        "unit": "c. à s.",
+        "notes": ""
+      },
+      {
+        "name": "beurre",
+        "quantity": "",
+        "unit": "",
+        "notes": "pour le moule"
+      },
+      {
+        "name": "sel",
+        "quantity": "",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "poivre",
+        "quantity": "",
+        "unit": "",
+        "notes": ""
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Préparer un moule à cake avec du papier sulfurisé au fond.",
+          "Cuire le poisson au court-bouillon acheté tout prêt selon la quantité, environ 10 à 15 min.",
+          "Mélanger dans une jatte le concentré, les œufs, la crème et la Maïzena diluée.",
+          "Ajouter le sel et le poivre, puis goûter pour vérifier l’assaisonnement.",
+          "Ajouter le poisson dans la jatte et mélanger le tout au robot pour obtenir la consistance souhaitée et réduire les arêtes s’il y en a.",
+          "Verser le tout dans le moule beurré.",
+          "Cuire au bain-marie dans un four à th. 7 pendant 40 min.",
+          "Vérifier la cuisson avec un couteau ; le dessus doit être légèrement doré.",
+          "Laisser bien refroidir avant de démouler."
+        ]
+      },
+      {
+        "title": "Service",
+        "steps": [
+          "Servir avec une belle mayonnaise maison et garnir de salade autour du plat."
+        ]
+      }
+    ],
+    "notes": [
+      "Titre normalisé en « Pain de poisson » à la demande de l’utilisateur."
+    ]
+  },
+  {
+    "title": "Coulants au chocolat",
+    "slug": "coulants-au-chocolat",
+    "author": "Maman",
+    "description": "Petits coulants au chocolat noir à servir tièdes avec une boule de glace vanille.",
+    "heroImageUrl": "",
+    "servings": {
+      "quantity": 6,
+      "unit": "moules"
+    },
+    "prepTime": "",
+    "cookTime": "10 min",
+    "totalTime": "",
+    "temperature": "180 °C",
+    "ingredients": [
+      {
+        "name": "chocolat noir",
+        "quantity": "100",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "œufs",
+        "quantity": "2",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "farine",
+        "quantity": "25",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "beurre",
+        "quantity": "50",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "sucre semoule",
+        "quantity": "50",
+        "unit": "g",
+        "notes": ""
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Faire fondre le beurre et le chocolat 2 min au micro-ondes.",
+          "Mélanger les œufs, le sucre et la farine.",
+          "Verser cette préparation dans le mélange beurre-chocolat.",
+          "Répartir dans les 6 moules."
+        ]
+      },
+      {
+        "title": "Cuisson",
+        "steps": [
+          "Cuire 10 min à four chaud à 180 °C."
+        ]
+      },
+      {
+        "title": "Service",
+        "steps": [
+          "Laisser refroidir avant de démouler avec 1 c. à s.",
+          "Servir tiède avec une boule de glace vanille."
+        ]
+      }
+    ],
+    "notes": [
+      "La phrase « avec 1 c. à s. » est conservée telle quelle car son sens exact n’est pas totalement explicite."
+    ]
+  },
+  {
+    "title": "Flan au lait concentré sucré Nestlé",
+    "slug": "flan-au-lait-concentre-sucre-nestle",
+    "author": "Maman",
+    "description": "Flan au lait concentré sucré cuit au bain-marie avec caramel.",
+    "heroImageUrl": "",
+    "servings": null,
+    "prepTime": "",
+    "cookTime": "30 à 45 min",
+    "totalTime": "",
+    "temperature": "170 °C",
+    "ingredients": [
+      {
+        "name": "lait concentré sucré",
+        "quantity": "1",
+        "unit": "boîte",
+        "notes": "397 g"
+      },
+      {
+        "name": "œufs",
+        "quantity": "3",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "lait entier",
+        "quantity": "1 1/3",
+        "unit": "boîte",
+        "notes": "mesuré avec la boîte vide"
+      },
+      {
+        "name": "sucre",
+        "quantity": "80",
+        "unit": "g",
+        "notes": "pour le caramel"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Casser les œufs.",
+          "Ajouter la boîte de lait concentré sucré Nestlé.",
+          "Avec la boîte vide, mesurer 1 boîte et 1/3 de lait entier.",
+          "Mixer le mélange au plongeur mixeur pendant 5 min.",
+          "Napper le moule à cake avec le caramel.",
+          "Verser le mélange doucement.",
+          "Placer dans un bain-marie au four préchauffé à 170 °C pendant 30 à 45 min.",
+          "Le flan est cuit quand la lame ressort sèche.",
+          "Laisser refroidir, mettre au frigo et démouler au moment de servir."
+        ]
+      },
+      {
+        "title": "Notes de cuisson",
+        "steps": [
+          "Le bain-marie doit être bouillant au moment de mettre le flan.",
+          "Faire le caramel dans la poêle sans eau.",
+          "Ne pas remuer."
+        ]
+      }
+    ],
+    "notes": []
+  }
+]

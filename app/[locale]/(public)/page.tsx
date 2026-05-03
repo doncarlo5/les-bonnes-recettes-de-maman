@@ -13,7 +13,7 @@ type PageProps = {
 export default async function Page({ params }: PageProps) {
   const { locale } = await params;
   const dict = await getDictionary(locale);
-  const recipes = await fetchQuery(api.recipes.list);
+  const recipes = await fetchQuery(api.recipes.list, { locale });
 
   return <RecipeListPage locale={locale} dict={dict} recipes={recipes} />;
 }

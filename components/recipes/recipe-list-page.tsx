@@ -43,19 +43,25 @@ export function RecipeListPage({ locale, dict, recipes }: RecipeListPageProps) {
               className="group grid w-full grid-cols-[6.5rem_1fr] overflow-hidden rounded-lg bg-white text-left shadow-sm ring-1 ring-black/5 transition duration-200 hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-soft-peach-500"
             >
               <span className="relative min-h-32 overflow-hidden">
-                <Image
-                  src={recipe.heroImageUrl}
-                  alt=""
-                  fill
-                  sizes="104px"
-                  className="object-cover transition duration-300 group-hover:scale-105"
-                />
+                {recipe.heroImageUrl ? (
+                  <Image
+                    src={recipe.heroImageUrl}
+                    alt=""
+                    fill
+                    sizes="104px"
+                    className="object-cover transition duration-300 group-hover:scale-105"
+                  />
+                ) : (
+                  <span className="flex h-full min-h-32 w-full items-center justify-center bg-gradient-to-br from-soft-peach-100 to-pale-amber-200 font-heading text-4xl font-black text-soft-peach-600">
+                    {recipe.title.charAt(0)}
+                  </span>
+                )}
               </span>
               <span className="flex min-w-0 flex-col justify-between gap-4 p-4">
                 <span>
                   <span className="mb-2 inline-flex items-center gap-1.5 text-xs font-bold text-stone-400">
                     <Clock3 className="size-3.5" />
-                    {recipe.totalMinutes} min.
+                    {recipe.timeLabel}
                   </span>
                   <span className="block font-heading text-3xl font-bold leading-none text-stone-950">
                     {recipe.title}

@@ -10,7 +10,13 @@
   "recipeDetail": {
     "backToList": "Retour à la liste des recettes",
     "recipeBy": "Recette de",
-    "ingredients": "Ingrédients"
+    "ingredients": "Ingrédients",
+    "prepTime": "Préparation",
+    "cookTime": "Cuisson",
+    "totalTime": "Temps total",
+    "temperature": "Four",
+    "notes": "Notes",
+    "subRecipes": "Sous-recettes"
   },
   "loading": {
     "recipes": "Chargement des recettes"
