@@ -1,0 +1,36 @@
+{
+  "site": {
+    "title": "Les bonnes recettes de maman",
+    "description": "Les recettes familiales de maman."
+  },
+  "recipeList": {
+    "eyebrow": "Carnet familial",
+    "emptyDescription": "Aucune recette publiée pour le moment. Lance la mutation de seed Convex pour ajouter le coulant au chocolat."
+  },
+  "recipeDetail": {
+    "backToList": "Retour à la liste des recettes",
+    "recipeBy": "Recette de",
+    "ingredients": "Ingrédients"
+  },
+  "loading": {
+    "recipes": "Chargement des recettes"
+  },
+  "notFound": {
+    "globalEyebrow": "404",
+    "globalTitle": "Page introuvable",
+    "globalDescription": "Cette page n'existe pas ou a été déplacée.",
+    "globalAction": "Voir les recettes",
+    "recipeEyebrow": "Recette",
+    "recipeTitle": "Recette introuvable",
+    "recipeDescription": "Cette recette n'est pas encore dans le carnet ou son lien a changé.",
+    "recipeAction": "Retour aux recettes"
+  },
+  "error": {
+    "eyebrow": "Erreur",
+    "title": "Impossible de charger les recettes",
+    "description": "Une erreur inattendue est survenue.",
+    "retry": "Réessayer",
+    "globalEyebrow": "Erreur critique",
+    "globalTitle": "Le carnet ne peut pas s’ouvrir"
+  }
+}

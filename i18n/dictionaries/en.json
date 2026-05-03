@@ -1,0 +1,36 @@
+{
+  "site": {
+    "title": "Mom's favorite recipes",
+    "description": "Family recipes from mom."
+  },
+  "recipeList": {
+    "eyebrow": "Family notebook",
+    "emptyDescription": "No recipes are published yet. Run the Convex seed mutation to add the chocolate lava cakes."
+  },
+  "recipeDetail": {
+    "backToList": "Back to the recipe list",
+    "recipeBy": "Recipe by",
+    "ingredients": "Ingredients"
+  },
+  "loading": {
+    "recipes": "Loading recipes"
+  },
+  "notFound": {
+    "globalEyebrow": "404",
+    "globalTitle": "Page not found",
+    "globalDescription": "This page does not exist or has moved.",
+    "globalAction": "View recipes",
+    "recipeEyebrow": "Recipe",
+    "recipeTitle": "Recipe not found",
+    "recipeDescription": "This recipe is not in the notebook yet or its link has changed.",
+    "recipeAction": "Back to recipes"
+  },
+  "error": {
+    "eyebrow": "Error",
+    "title": "Unable to load recipes",
+    "description": "An unexpected error occurred.",
+    "retry": "Try again",
+    "globalEyebrow": "Critical error",
+    "globalTitle": "The recipe notebook cannot open"
+  }
+}
