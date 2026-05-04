@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Geist_Mono, Nunito_Sans, Playfair_Display } from "next/font/google";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { hasLocale, locales } from "@/i18n/config";
+import { ConvexClientProvider } from "@/components/convex-client-provider";
 import "../globals.css";
 
 const nunitoSans = Nunito_Sans({
@@ -70,7 +71,9 @@ export default async function RootLayout({
       lang={locale}
       className={`${nunitoSans.variable} ${playfairDisplay.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ConvexClientProvider>{children}</ConvexClientProvider>
+      </body>
     </html>
   );
 }

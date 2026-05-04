@@ -22,6 +22,13 @@ export type Recipe = {
   _creationTime: number;
   slug: string;
   heroImageUrl: string;
+  imageCredit?: {
+    provider: "unsplash";
+    photographerName: string;
+    photographerUrl: string;
+    photoUrl: string;
+    alt: string;
+  };
   defaultLocale: "fr" | "en";
   tags: string[];
   status: "draft" | "published";

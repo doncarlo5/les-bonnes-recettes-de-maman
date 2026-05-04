@@ -40,10 +40,20 @@ const localizedRecipe = v.object({
   notes: v.array(v.string()),
 });
 
+const imageCredit = v.object({
+  provider: v.literal("unsplash"),
+  photographerName: v.string(),
+  photographerUrl: v.string(),
+  photoUrl: v.string(),
+  alt: v.string(),
+});
+
 export default defineSchema({
   recipes: defineTable({
     slug: v.string(),
+    heroImageStorageId: v.optional(v.id("_storage")),
     heroImageUrl: v.string(),
+    imageCredit: v.optional(imageCredit),
     defaultLocale: v.union(v.literal("fr"), v.literal("en")),
     translations: v.object({
       fr: localizedRecipe,

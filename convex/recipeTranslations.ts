@@ -59,6 +59,61 @@ export type SeedRecipe = {
   status: "published";
 };
 
+const defaultHeroImageUrl =
+  "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=1400&q=85";
+
+const fallbackHeroImageUrls: Record<string, string> = {
+  amandin:
+    "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=85",
+  "tarte-aux-amandes-et-confiture-de-framboises":
+    "https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=1400&q=85",
+  "gateau-aux-pommes":
+    "https://images.unsplash.com/photo-1568571780765-9276ac8b75a2?auto=format&fit=crop&w=1400&q=85",
+  vacherin:
+    "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=1400&q=85",
+  "macaron-tante-maria":
+    "https://images.unsplash.com/photo-1569864358642-9d1684040f43?auto=format&fit=crop&w=1400&q=85",
+  "gateau-au-chocolat":
+    "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1400&q=85",
+  moka: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1400&q=85",
+  "gateau-au-citron":
+    "https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=1400&q=85",
+  tiramisu:
+    "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=1400&q=85",
+  "pate-feuilletee-maman":
+    "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=85",
+  "crumble-aux-pommes-du-verger":
+    "https://images.unsplash.com/photo-1601000937859-3031d2be1caa?auto=format&fit=crop&w=1400&q=85",
+  "cake-orange":
+    "https://images.unsplash.com/photo-1587132137056-bfbf0166836e?auto=format&fit=crop&w=1400&q=85",
+  "cake-d-ete-tout-vert":
+    "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1400&q=85",
+  "clafoutis-poires-et-framboises":
+    "https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?auto=format&fit=crop&w=1400&q=85",
+  "veloute-de-courgettes":
+    "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=1400&q=85",
+  "osso-buco":
+    "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1400&q=85",
+  "cake-moelleux-au-citron-de-pierre-herme":
+    "https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=1400&q=85",
+  gougeres:
+    "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=1400&q=85",
+  "cake-chevre-noix-olives":
+    "https://images.unsplash.com/photo-1543353071-10c8ba85a904?auto=format&fit=crop&w=1400&q=85",
+  "cake-au-chevre-et-courgettes":
+    "https://images.unsplash.com/photo-1543353071-10c8ba85a904?auto=format&fit=crop&w=1400&q=85",
+  "cocotte-de-cabillaud-aux-courgettes-et-curry":
+    "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=1400&q=85",
+  "pate-sucree-de-pierre-herme":
+    "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=85",
+  "pain-de-poisson":
+    "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=1400&q=85",
+  "coulants-au-chocolat":
+    "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1400&q=85",
+  "flan-au-lait-concentre-sucre-nestle":
+    "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=1400&q=85",
+};
+
 const titleTranslations: Record<string, string> = {
   Amandin: "Amandin Almond Cake",
   "Tarte aux amandes et confiture de framboises":
@@ -714,7 +769,10 @@ export function localizeRecipe(recipe: SourceRecipe, locale: Locale): LocalizedR
 export function toSeedRecipe(recipe: SourceRecipe): SeedRecipe {
   return {
     slug: recipe.slug,
-    heroImageUrl: recipe.heroImageUrl,
+    heroImageUrl:
+      recipe.heroImageUrl ||
+      fallbackHeroImageUrls[recipe.slug] ||
+      defaultHeroImageUrl,
     defaultLocale: "fr",
     translations: {
       fr: localizeRecipe(recipe, "fr"),
