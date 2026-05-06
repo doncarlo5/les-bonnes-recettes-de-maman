@@ -1,7 +1,26 @@
 {
   "site": {
     "title": "Les bonnes recettes de maman",
-    "description": "Les recettes familiales de maman."
+    "description": "Les recettes familiales de maman.",
+    "tagline": "Le carnet de cuisine familial",
+    "wordmark": "Les Bonnes Recettes de Maman"
+  },
+  "nav": {
+    "home": "Accueil",
+    "recipes": "Recettes",
+    "about": "À propos"
+  },
+  "home": {
+    "eyebrow": "Recettes de famille",
+    "lead": "Un carnet de cuisine transmis de génération en génération — desserts du dimanche, plats mijotés, petites douceurs du quotidien.",
+    "featuredEyebrow": "À la une",
+    "featuredCta": "Lire la recette",
+    "allRecipesTitle": "Toutes les recettes",
+    "allRecipesEyebrow": "Le carnet"
+  },
+  "footer": {
+    "tagline": "Cuisiné avec amour, transmis avec soin.",
+    "rights": "Tous droits réservés."
   },
   "recipeList": {
     "eyebrow": "Carnet familial",

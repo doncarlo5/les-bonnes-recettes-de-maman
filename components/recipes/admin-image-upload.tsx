@@ -193,7 +193,7 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
   }
 
   return (
-    <main className="min-h-screen bg-pale-amber-50 px-5 py-8 text-stone-900 sm:px-6">
+    <main className="min-h-screen px-5 py-8 text-stone-900 sm:px-6">
       <section className="mx-auto w-full max-w-3xl">
         <div className="mb-8">
           <p className="mb-3 text-xs font-black uppercase tracking-[0.28em] text-soft-peach-600">
@@ -305,7 +305,7 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
                 {unsplashResults.map((photo) => (
                   <div
                     key={photo.id}
-                    className="overflow-hidden rounded-sm border border-stone-100 bg-pale-amber-50"
+                    className="overflow-hidden rounded-sm border border-stone-100 bg-pale-blue-50"
                   >
                     <div className="relative aspect-[4/3] bg-stone-100">
                       <Image

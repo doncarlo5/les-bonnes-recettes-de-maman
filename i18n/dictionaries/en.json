@@ -1,7 +1,26 @@
 {
   "site": {
     "title": "Mom's favorite recipes",
-    "description": "Family recipes from mom."
+    "description": "Family recipes from mom.",
+    "tagline": "The family cookbook",
+    "wordmark": "Mom's Favorite Recipes"
+  },
+  "nav": {
+    "home": "Home",
+    "recipes": "Recipes",
+    "about": "About"
+  },
+  "home": {
+    "eyebrow": "Family recipes",
+    "lead": "A cookbook handed down from one generation to the next — Sunday desserts, slow-cooked dinners, everyday little treats.",
+    "featuredEyebrow": "Featured",
+    "featuredCta": "Read the recipe",
+    "allRecipesTitle": "Every recipe",
+    "allRecipesEyebrow": "The notebook"
+  },
+  "footer": {
+    "tagline": "Cooked with love, passed on with care.",
+    "rights": "All rights reserved."
   },
   "recipeList": {
     "eyebrow": "Family notebook",

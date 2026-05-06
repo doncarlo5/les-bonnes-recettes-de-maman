@@ -1,5 +1,5 @@
 import { fetchQuery } from "convex/nextjs";
-import { RecipeListPage } from "@/components/recipes/recipe-list-page";
+import { HomePage } from "@/components/home/home-page";
 import { api } from "@/convex/_generated/api";
 import { getDictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
@@ -15,5 +15,5 @@ export default async function Page({ params }: PageProps) {
   const dict = await getDictionary(locale);
   const recipes = await fetchQuery(api.recipes.list, { locale });
 
-  return <RecipeListPage locale={locale} dict={dict} recipes={recipes} />;
+  return <HomePage locale={locale} dict={dict} recipes={recipes} />;
 }
