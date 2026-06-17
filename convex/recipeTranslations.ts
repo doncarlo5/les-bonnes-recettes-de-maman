@@ -144,6 +144,8 @@ const titleTranslations: Record<string, string> = {
   "Coulants au chocolat": "Chocolate Lava Cakes",
   "Flan au lait concentré sucré Nestlé": "Nestlé Sweetened Condensed Milk Flan",
   "Crème au café": "Coffee Custard",
+  "Banana bread du Kona Inn": "Kona Inn Banana Bread",
+  "Garniture intérieure facultative": "Optional Inner Filling",
 };
 
 const descriptionTranslations: Record<string, string> = {
@@ -197,6 +199,8 @@ const descriptionTranslations: Record<string, string> = {
     "Small dark-chocolate lava cakes served warm with a scoop of vanilla ice cream.",
   "Flan au lait concentré sucré cuit au bain-marie avec caramel.":
     "Sweetened condensed milk flan baked in a water bath with caramel.",
+  "Banana bread moelleux aux bananes bien mûres, parfait avec une salade de poulet.":
+    "Moist banana bread made with very ripe bananas, perfect with chicken salad.",
 };
 
 const sectionTranslations: Record<string, string> = {
@@ -208,6 +212,7 @@ const sectionTranslations: Record<string, string> = {
   Décor: "Decoration",
   Finition: "Finishing",
   "Glaçage facultatif": "Optional Glaze",
+  "Garniture intérieure facultative": "Optional Inner Filling",
   "Gâteau de Vichy": "Vichy Cake",
   "Notes de cuisson": "Baking Notes",
   Préparation: "Preparation",
@@ -230,6 +235,8 @@ const ingredientTranslations: Record<string, string> = {
   "beurre salé": "salted butter",
   "beurre salé tempéré": "salted butter, at room temperature",
   "beurre à température ambiante": "butter at room temperature",
+  "bananes bien mûres": "very ripe bananas",
+  "bicarbonate de soude": "baking soda",
   "biscuits à la cuillère": "ladyfingers",
   "blancs d’œufs": "egg whites",
   "bouquet garni": "bouquet garni",
@@ -239,6 +246,7 @@ const ingredientTranslations: Record<string, string> = {
   "cannelle en poudre": "ground cinnamon",
   carottes: "carrots",
   "cassonade en poudre": "brown sugar",
+  "cassonade foncée": "dark brown sugar",
   cerfeuil: "chervil",
   chocolat: "chocolate",
   "chocolat noir": "dark chocolate",
@@ -263,6 +271,7 @@ const ingredientTranslations: Record<string, string> = {
   "extrait de vanille": "vanilla extract",
   "extrait d’amande amère": "bitter almond extract",
   farine: "flour",
+  "farine à gâteau": "cake flour",
   "farine T55": "T55 flour",
   "farine semi-complète": "semi-wholemeal flour",
   "filet de cabillaud sans peau et sans arêtes": "skinless, boneless cod fillet",
@@ -287,6 +296,7 @@ const ingredientTranslations: Record<string, string> = {
   muscade: "nutmeg",
   "noisettes concassées": "chopped hazelnuts",
   noix: "walnuts",
+  "noix de pécan hachées": "chopped pecans",
   "noix de muscade": "nutmeg",
   oignon: "onion",
   oignons: "onions",
@@ -358,6 +368,10 @@ const noteTranslations: Record<string, string> = {
   "mesuré avec la boîte vide": "measured with the empty can",
   "noté « 2/3 poires »": "noted as “2/3 pears”",
   "ou 2 petits": "or 2 small ones",
+  "ajout manuscrit possible": "possible handwritten addition",
+  "bien battus": "well beaten",
+  "La note manuscrite semble indiquer 7 bananes comme variante.":
+    "The handwritten note appears to indicate 7 bananas as a variation.",
   "pour la crème au citron": "for the lemon cream",
   "pour la cuisson": "for cooking",
   "pour le cake": "for the cake",
@@ -369,6 +383,10 @@ const noteTranslations: Record<string, string> = {
   "pour le plat": "for the dish",
   "pour le sirop": "for the syrup",
   "pour le sirop, note manuscrite 0,08 l": "for the syrup; handwritten note 0.08 l",
+  "écrasées, environ 3 tasses": "mashed, about 3 cups",
+  "ou farine pâtissière": "or pastry flour",
+  "Un incontournable avec les salades de poulet.":
+    "A classic with chicken salads.",
   "pâte x2": "batter x2",
   ramolli: "softened",
   rases: "level",
@@ -684,6 +702,28 @@ const stepTranslations: Record<string, string> = {
   "Faire le caramel dans la poêle sans eau.":
     "Make the caramel in a pan without water.",
   "Ne pas remuer.": "Do not stir.",
+  "Préchauffer le four à 175 °C.": "Preheat the oven to 175 °C.",
+  "À l’aide d’un batteur électrique, battre le sucre et le beurre jusqu’à obtenir un mélange léger et mousseux.":
+    "Using an electric mixer, beat the sugar and butter until light and fluffy.",
+  "Ajouter les bananes écrasées et les œufs, puis battre jusqu’à ce que le mélange soit homogène.":
+    "Add the mashed bananas and eggs, then beat until smooth.",
+  "Tamiser ensemble les ingrédients secs trois fois.":
+    "Sift the dry ingredients together three times.",
+  "Incorporer les ingrédients secs au mélange à la banane sans trop mélanger.":
+    "Fold the dry ingredients into the banana mixture without overmixing.",
+  "Verser la pâte dans 2 moules à cake légèrement graissés.":
+    "Pour the batter into 2 lightly greased loaf pans.",
+  "Cuire 45 min à 1 h, jusqu’à ce que le centre soit ferme et que les bords commencent à se détacher des moules.":
+    "Bake for 45 min to 1 h, until the center is firm and the edges begin to pull away from the pans.",
+  "Laisser refroidir sur une grille pendant 10 min avant de démouler.":
+    "Let cool on a rack for 10 min before unmolding.",
+  "Mélanger les noix de pécan hachées, la cassonade foncée et la cannelle.":
+    "Mix the chopped pecans, dark brown sugar and cinnamon.",
+  "Verser la moitié de la pâte dans le moule, saupoudrer avec ce mélange, puis ajouter le reste de pâte.":
+    "Pour half the batter into the pan, sprinkle with this mixture, then add the remaining batter.",
+  "S’il reste du mélange, en mettre sur le dessus et l’enfoncer légèrement.":
+    "If any mixture remains, sprinkle it on top and press it in lightly.",
+  "Ce banana bread se congèle très bien.": "This banana bread freezes very well.",
 };
 
 const unitTranslations: Record<string, string> = {
@@ -694,9 +734,11 @@ const unitTranslations: Record<string, string> = {
   belles: "large",
   bouquet: "bunch",
   cafetière: "coffee pot",
+  "c. à café": "tsp",
   "c. à café très rase": "very level tsp",
   "c. à c.": "tsp",
   "c. à s.": "tbsp",
+  cakes: "loaves",
   cl: "cl",
   environ: "about",
   g: "g",
@@ -711,6 +753,8 @@ const unitTranslations: Record<string, string> = {
   pincée: "pinch",
   pincées: "pinches",
   sachet: "packet",
+  tasse: "cup",
+  tasses: "cups",
   verre: "glass",
 };
 
@@ -828,6 +872,8 @@ function inferTags(recipe: SourceRecipe, locale: Locale) {
       "flan",
       "chocolat",
       "citron",
+      "banana bread",
+      "bananes",
     ].some((word) => text.includes(word))
   ) {
     tags.push("dessert");

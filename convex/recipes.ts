@@ -64,6 +64,20 @@ const editableRecipeValidator = v.object({
   status: v.union(v.literal("draft"), v.literal("published")),
 });
 
+const openverseImageCreditValidator = v.object({
+  title: v.string(),
+  creator: v.string(),
+  creatorUrl: v.string(),
+  imageUrl: v.string(),
+  landingUrl: v.string(),
+  license: v.string(),
+  licenseVersion: v.string(),
+  licenseUrl: v.string(),
+  source: v.string(),
+  attribution: v.string(),
+  alt: v.string(),
+});
+
 const recipes = (rawRecipes as SourceRecipe[]).map(toSeedRecipe);
 
 export const list = query({
@@ -139,23 +153,12 @@ export const generateUploadUrl = mutation({
   },
 });
 
-export const updateWithPassword = mutation({
+export const update = mutation({
   args: {
     slug: v.string(),
-    adminPassword: v.string(),
     recipe: editableRecipeValidator,
   },
   handler: async (ctx, args) => {
-    const expectedPassword = process.env.RECIPE_ADMIN_PASSWORD;
-
-    if (!expectedPassword) {
-      throw new Error("ADMIN_PASSWORD_NOT_CONFIGURED");
-    }
-
-    if (args.adminPassword !== expectedPassword) {
-      throw new Error("INVALID_ADMIN_PASSWORD");
-    }
-
     const existing = await ctx.db
       .query("recipes")
       .withIndex("by_slug", (q) => q.eq("slug", args.slug))
@@ -203,6 +206,7 @@ export const setHeroImage = mutation({
 
     await ctx.db.patch(recipe._id, {
       heroImageStorageId: args.storageId,
+      imageCredit: undefined,
     });
 
     return {
@@ -233,6 +237,7 @@ export const setUnsplashHeroImage = mutation({
     }
 
     await ctx.db.patch(recipe._id, {
+      heroImageStorageId: undefined,
       heroImageUrl: args.imageUrl,
       imageCredit: {
         provider: "unsplash",
@@ -247,6 +252,44 @@ export const setUnsplashHeroImage = mutation({
       recipeId: recipe._id,
       slug: recipe.slug,
       heroImageUrl: args.imageUrl,
+    };
+  },
+});
+
+export const setOpenverseHeroImage = mutation({
+  args: {
+    slug: v.string(),
+    storageId: v.id("_storage"),
+    imageCredit: openverseImageCreditValidator,
+  },
+  handler: async (ctx, args) => {
+    const recipe = await ctx.db
+      .query("recipes")
+      .withIndex("by_slug", (q) => q.eq("slug", args.slug))
+      .unique();
+
+    if (!recipe) {
+      throw new Error(`Recipe ${args.slug} was not found`);
+    }
+
+    const storedImage = await ctx.db.system.get(args.storageId);
+
+    if (!storedImage) {
+      throw new Error("Image was not found in Convex Storage");
+    }
+
+    await ctx.db.patch(recipe._id, {
+      heroImageStorageId: args.storageId,
+      imageCredit: {
+        provider: "openverse",
+        ...args.imageCredit,
+      },
+    });
+
+    return {
+      recipeId: recipe._id,
+      slug: recipe.slug,
+      storageId: args.storageId,
     };
   },
 });
@@ -307,7 +350,8 @@ async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
     _creationTime: recipe._creationTime,
     slug: recipe.slug,
     heroImageUrl: storedHeroImageUrl ?? recipe.heroImageUrl,
-    ...(!storedHeroImageUrl && recipe.imageCredit
+    ...((!storedHeroImageUrl || recipe.imageCredit?.provider === "openverse") &&
+    recipe.imageCredit
       ? { imageCredit: recipe.imageCredit }
       : {}),
     defaultLocale: recipe.defaultLocale,

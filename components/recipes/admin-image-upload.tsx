@@ -31,6 +31,22 @@ type UnsplashPhoto = {
   downloadLocation: string;
 };
 
+type OpenversePhoto = {
+  id: string;
+  title: string;
+  imageUrl: string;
+  previewUrl: string;
+  landingUrl: string;
+  creator: string;
+  creatorUrl: string;
+  license: string;
+  licenseVersion: string;
+  licenseUrl: string;
+  source: string;
+  attribution: string;
+  alt: string;
+};
+
 export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
   const generateUploadUrl = useMutation(api.recipes.generateUploadUrl);
   const setHeroImage = useMutation(api.recipes.setHeroImage);
@@ -39,6 +55,12 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
   const [file, setFile] = useState<File | null>(null);
   const [searchQuery, setSearchQuery] = useState(recipes[0]?.title ?? "");
   const [unsplashResults, setUnsplashResults] = useState<UnsplashPhoto[]>([]);
+  const [openverseQuery, setOpenverseQuery] = useState(
+    recipes[0]?.title ?? "",
+  );
+  const [openverseResults, setOpenverseResults] = useState<OpenversePhoto[]>(
+    [],
+  );
   const [status, setStatus] = useState<UploadStatus>({
     type: "idle",
     message: "Choisis une recette et une image.",
@@ -192,6 +214,105 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
     }
   }
 
+  async function handleOpenverseSearch(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!openverseQuery.trim()) {
+      setStatus({
+        type: "error",
+        message: "Ajoute quelques mots-clés pour chercher une image.",
+      });
+      return;
+    }
+
+    try {
+      setStatus({
+        type: "loading",
+        message: "Recherche Openverse en cours...",
+      });
+
+      const response = await fetch(
+        `/api/admin/openverse/search?query=${encodeURIComponent(openverseQuery)}`,
+      );
+      const data = (await response.json()) as {
+        results?: OpenversePhoto[];
+        error?: string;
+      };
+
+      if (!response.ok) {
+        throw new Error(data.error ?? "La recherche Openverse a échoué.");
+      }
+
+      setOpenverseResults(data.results ?? []);
+      setStatus({
+        type: data.results?.length ? "success" : "idle",
+        message: data.results?.length
+          ? `${data.results.length} images Openverse trouvées.`
+          : "Aucune image Openverse trouvée pour ces mots-clés.",
+      });
+    } catch (error) {
+      setOpenverseResults([]);
+      setStatus({
+        type: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "La recherche Openverse a échoué.",
+      });
+    }
+  }
+
+  async function handleUseOpenverseImage(photo: OpenversePhoto) {
+    if (!selectedSlug) return;
+
+    try {
+      setStatus({
+        type: "loading",
+        message: "Import de l’image Openverse dans Convex...",
+      });
+
+      const response = await fetch("/api/admin/openverse/import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slug: selectedSlug,
+          imageUrl: photo.imageUrl,
+          title: photo.title,
+          creator: photo.creator,
+          creatorUrl: photo.creatorUrl,
+          landingUrl: photo.landingUrl,
+          license: photo.license,
+          licenseVersion: photo.licenseVersion,
+          licenseUrl: photo.licenseUrl,
+          source: photo.source,
+          attribution: photo.attribution,
+          alt: photo.alt,
+        }),
+      });
+      const data = (await response.json()) as {
+        error?: string;
+      };
+
+      if (!response.ok) {
+        throw new Error(data.error ?? "L’import Openverse a échoué.");
+      }
+
+      setStatus({
+        type: "success",
+        message:
+          "Image Openverse importée et associée. Recharge la page pour voir l’image Convex.",
+      });
+    } catch (error) {
+      setStatus({
+        type: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Impossible d’associer cette image Openverse.",
+      });
+    }
+  }
+
   return (
     <main className="min-h-screen px-5 py-8 text-stone-900 sm:px-6">
       <section className="mx-auto w-full max-w-3xl">
@@ -221,7 +342,9 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
 
                 setSelectedSlug(nextSlug);
                 setSearchQuery(nextRecipe?.title ?? "");
+                setOpenverseQuery(nextRecipe?.title ?? "");
                 setUnsplashResults([]);
+                setOpenverseResults([]);
               }}
               className="h-12 rounded-sm border border-stone-200 bg-white px-3 text-base font-semibold text-stone-900 outline-none transition focus:border-soft-peach-500 focus:ring-2 focus:ring-soft-peach-200"
             >
@@ -248,26 +371,7 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
                 />
               </div>
               {selectedRecipe.imageCredit ? (
-                <p className="text-xs font-bold text-stone-400">
-                  Photo par{" "}
-                  <a
-                    href={selectedRecipe.imageCredit.photographerUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-soft-peach-700 underline-offset-4 hover:underline"
-                  >
-                    {selectedRecipe.imageCredit.photographerName}
-                  </a>{" "}
-                  sur{" "}
-                  <a
-                    href={selectedRecipe.imageCredit.photoUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-soft-peach-700 underline-offset-4 hover:underline"
-                  >
-                    Unsplash
-                  </a>
-                </p>
+                <ImageCreditLine imageCredit={selectedRecipe.imageCredit} />
               ) : null}
               <a
                 href={`/${locale}/recettes/${selectedRecipe.slug}`}
@@ -343,6 +447,73 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
             ) : null}
           </form>
 
+          <form
+            onSubmit={handleOpenverseSearch}
+            className="grid gap-4 border-t border-stone-100 pt-6"
+          >
+            <label className="grid gap-2 text-sm font-black text-stone-700">
+              Recherche Openverse
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <input
+                  type="search"
+                  value={openverseQuery}
+                  onChange={(event) => setOpenverseQuery(event.target.value)}
+                  className="h-12 min-w-0 flex-1 rounded-sm border border-stone-200 bg-white px-3 text-base font-semibold text-stone-900 outline-none transition focus:border-soft-peach-500 focus:ring-2 focus:ring-soft-peach-200"
+                  placeholder="amandin cake, tarte fraise..."
+                />
+                <button
+                  type="submit"
+                  disabled={status.type === "loading"}
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-stone-950 px-5 text-base font-black text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  <Search className="size-5" />
+                  Chercher
+                </button>
+              </div>
+            </label>
+
+            {openverseResults.length > 0 ? (
+              <div className="grid gap-4 sm:grid-cols-2">
+                {openverseResults.map((photo) => (
+                  <div
+                    key={photo.id}
+                    className="overflow-hidden rounded-sm border border-stone-100 bg-pale-blue-50"
+                  >
+                    <div className="aspect-[4/3] bg-stone-100">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={photo.previewUrl}
+                        alt={photo.alt}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <div className="grid gap-3 p-4">
+                      <div className="grid gap-1">
+                        <p className="text-sm font-black text-stone-800">
+                          {photo.title}
+                        </p>
+                        <p className="text-xs font-bold text-stone-500">
+                          {photo.creator} · {formatLicense(photo)}
+                        </p>
+                        <p className="text-xs font-bold uppercase tracking-[0.16em] text-stone-400">
+                          {photo.source}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        disabled={status.type === "loading"}
+                        onClick={() => handleUseOpenverseImage(photo)}
+                        className="h-10 rounded-full bg-soft-peach-500 px-4 text-sm font-black text-white transition hover:bg-soft-peach-600 disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        Utiliser cette image
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </form>
+
           <form onSubmit={handleSubmit} className="grid gap-4 border-t border-stone-100 pt-6">
             <label className="grid gap-2 text-sm font-black text-stone-700">
               Upload Convex Storage
@@ -381,4 +552,79 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
       </section>
     </main>
   );
+}
+
+function ImageCreditLine({
+  imageCredit,
+}: {
+  imageCredit: NonNullable<Recipe["imageCredit"]>;
+}) {
+  if (imageCredit.provider === "unsplash") {
+    return (
+      <p className="text-xs font-bold text-stone-400">
+        Photo par{" "}
+        <a
+          href={imageCredit.photographerUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="text-soft-peach-700 underline-offset-4 hover:underline"
+        >
+          {imageCredit.photographerName}
+        </a>{" "}
+        sur{" "}
+        <a
+          href={imageCredit.photoUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="text-soft-peach-700 underline-offset-4 hover:underline"
+        >
+          Unsplash
+        </a>
+      </p>
+    );
+  }
+
+  return (
+    <p className="text-xs font-bold text-stone-400">
+      Photo par{" "}
+      <a
+        href={imageCredit.creatorUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="text-soft-peach-700 underline-offset-4 hover:underline"
+      >
+        {imageCredit.creator}
+      </a>{" "}
+      via{" "}
+      <a
+        href={imageCredit.landingUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="text-soft-peach-700 underline-offset-4 hover:underline"
+      >
+        {imageCredit.source}
+      </a>{" "}
+      ·{" "}
+      <a
+        href={imageCredit.licenseUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="text-soft-peach-700 underline-offset-4 hover:underline"
+      >
+        {formatLicense(imageCredit)}
+      </a>
+    </p>
+  );
+}
+
+function formatLicense({
+  license,
+  licenseVersion,
+}: {
+  license: string;
+  licenseVersion: string;
+}) {
+  return [license ? `CC ${license.toUpperCase()}` : "", licenseVersion]
+    .filter(Boolean)
+    .join(" ");
 }

@@ -11,6 +11,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import type { requestRecipeAdminAccessAction } from "@/app/[locale]/(public)/recettes/[slug]/actions";
+import { EditRecipeAccess } from "./edit-recipe-access";
 import type { Ingredient, Recipe } from "./types";
 
 const defaultRecipeImageUrl =
@@ -20,12 +22,16 @@ type RecipeDetailPageProps = {
   locale: Locale;
   dict: Dictionary;
   recipe: Recipe;
+  hasAdminAccess: boolean;
+  requestAdminAccessAction: typeof requestRecipeAdminAccessAction;
 };
 
 export function RecipeDetailPage({
   locale,
   dict,
   recipe,
+  hasAdminAccess,
+  requestAdminAccessAction,
 }: RecipeDetailPageProps) {
   return (
     <main className="text-stone-700">
@@ -49,27 +55,15 @@ export function RecipeDetailPage({
           <ChevronLeft className="size-6 stroke-[1.8]" />
         </Link>
 
+        <EditRecipeAccess
+          locale={locale}
+          slug={recipe.slug}
+          hasAdminAccess={hasAdminAccess}
+          action={requestAdminAccessAction}
+        />
+
         {recipe.imageCredit ? (
-          <p className="absolute right-4 top-5 z-10 text-right text-[0.65rem] font-bold uppercase tracking-[0.16em] text-white/70 lg:right-10 lg:top-8 lg:text-[0.7rem] lg:tracking-[0.18em]">
-            Photo{" "}
-            <a
-              href={recipe.imageCredit.photographerUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="underline-offset-4 hover:text-white hover:underline"
-            >
-              {recipe.imageCredit.photographerName}
-            </a>{" "}
-            /{" "}
-            <a
-              href={recipe.imageCredit.photoUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="underline-offset-4 hover:text-white hover:underline"
-            >
-              Unsplash
-            </a>
-          </p>
+          <HeroImageCredit imageCredit={recipe.imageCredit} />
         ) : null}
 
         <div className="absolute inset-x-0 bottom-0 z-10">
@@ -369,4 +363,79 @@ function RecipeMeta({ dict, recipe }: { dict: Dictionary; recipe: Recipe }) {
 function formatQuantity(ingredient: Ingredient) {
   if (!ingredient.quantity) return "";
   return `${ingredient.quantity}${ingredient.unit ? ` ${ingredient.unit}` : ""}`;
+}
+
+function HeroImageCredit({
+  imageCredit,
+}: {
+  imageCredit: NonNullable<Recipe["imageCredit"]>;
+}) {
+  if (imageCredit.provider === "unsplash") {
+    return (
+      <p className="absolute right-4 top-5 z-10 text-right text-[0.65rem] font-bold uppercase tracking-[0.16em] text-white/70 lg:right-10 lg:top-8 lg:text-[0.7rem] lg:tracking-[0.18em]">
+        Photo{" "}
+        <a
+          href={imageCredit.photographerUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="underline-offset-4 hover:text-white hover:underline"
+        >
+          {imageCredit.photographerName}
+        </a>{" "}
+        /{" "}
+        <a
+          href={imageCredit.photoUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="underline-offset-4 hover:text-white hover:underline"
+        >
+          Unsplash
+        </a>
+      </p>
+    );
+  }
+
+  return (
+    <p className="absolute right-4 top-5 z-10 max-w-[18rem] text-right text-[0.65rem] font-bold uppercase tracking-[0.16em] text-white/70 lg:right-10 lg:top-8 lg:text-[0.7rem] lg:tracking-[0.18em]">
+      Photo{" "}
+      <a
+        href={imageCredit.creatorUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="underline-offset-4 hover:text-white hover:underline"
+      >
+        {imageCredit.creator}
+      </a>{" "}
+      /{" "}
+      <a
+        href={imageCredit.landingUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="underline-offset-4 hover:text-white hover:underline"
+      >
+        {imageCredit.source}
+      </a>{" "}
+      /{" "}
+      <a
+        href={imageCredit.licenseUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="underline-offset-4 hover:text-white hover:underline"
+      >
+        {formatOpenverseLicense(imageCredit)}
+      </a>
+    </p>
+  );
+}
+
+function formatOpenverseLicense({
+  license,
+  licenseVersion,
+}: {
+  license: string;
+  licenseVersion: string;
+}) {
+  return [license ? `CC ${license.toUpperCase()}` : "", licenseVersion]
+    .filter(Boolean)
+    .join(" ");
 }

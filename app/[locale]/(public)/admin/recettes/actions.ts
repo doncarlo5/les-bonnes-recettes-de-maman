@@ -19,7 +19,6 @@ export async function updateRecipeAction(
 ): Promise<UpdateRecipeState> {
   const locale = String(formData.get("locale") ?? "");
   const slug = String(formData.get("slug") ?? "").trim();
-  const adminPassword = String(formData.get("adminPassword") ?? "");
   const recipeJson = String(formData.get("recipeJson") ?? "");
 
   if (!hasLocale(locale)) {
@@ -36,13 +35,6 @@ export async function updateRecipeAction(
     };
   }
 
-  if (!adminPassword) {
-    return {
-      type: "error",
-      message: "Ajoute le mot de passe admin.",
-    };
-  }
-
   let recipe: EditableRecipeContent;
 
   try {
@@ -55,9 +47,8 @@ export async function updateRecipeAction(
   }
 
   try {
-    const result = await fetchMutation(api.recipes.updateWithPassword, {
+    const result = await fetchMutation(api.recipes.update, {
       slug,
-      adminPassword,
       recipe,
     });
 
@@ -70,24 +61,10 @@ export async function updateRecipeAction(
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
 
-    if (message.includes("INVALID_ADMIN_PASSWORD")) {
-      return {
-        type: "error",
-        message: "Mot de passe invalide.",
-      };
-    }
-
     if (message.includes("RECIPE_NOT_FOUND")) {
       return {
         type: "error",
         message: "Recette introuvable.",
-      };
-    }
-
-    if (message.includes("ADMIN_PASSWORD_NOT_CONFIGURED")) {
-      return {
-        type: "error",
-        message: "Mot de passe admin non configure dans Convex.",
       };
     }
 

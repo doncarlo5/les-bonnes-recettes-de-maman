@@ -8,16 +8,22 @@ type PageProps = {
   params: Promise<{
     locale: Locale;
   }>;
+  searchParams: Promise<{
+    slug?: string | string[];
+  }>;
 };
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params, searchParams }: PageProps) {
   const { locale } = await params;
+  const { slug } = await searchParams;
   const recipes = await fetchQuery(api.recipes.listForEditing, { locale });
+  const initialSlug = Array.isArray(slug) ? slug[0] : slug;
 
   return (
     <AdminRecipeEditor
       locale={locale}
       recipes={recipes}
+      initialSlug={initialSlug}
       action={updateRecipeAction}
     />
   );

@@ -2166,5 +2166,139 @@
       }
     ],
     "notes": []
+  },
+  {
+    "title": "Banana bread du Kona Inn",
+    "slug": "banana-bread-du-kona-inn",
+    "author": "Kona Inn",
+    "description": "Banana bread moelleux aux bananes bien mûres, parfait avec une salade de poulet.",
+    "heroImageUrl": "",
+    "servings": {
+      "quantity": 2,
+      "unit": "cakes"
+    },
+    "prepTime": "20 min",
+    "cookTime": "45 à 60 min",
+    "totalTime": "1 h 05 à 1 h 20",
+    "temperature": "175 °C",
+    "ingredients": [
+      {
+        "name": "sucre semoule",
+        "quantity": "2",
+        "unit": "tasses",
+        "notes": ""
+      },
+      {
+        "name": "beurre",
+        "quantity": "1",
+        "unit": "tasse",
+        "notes": "ramolli"
+      },
+      {
+        "name": "bananes bien mûres",
+        "quantity": "6",
+        "unit": "",
+        "notes": "écrasées, environ 3 tasses"
+      },
+      {
+        "name": "œufs",
+        "quantity": "4",
+        "unit": "",
+        "notes": "bien battus"
+      },
+      {
+        "name": "farine à gâteau",
+        "quantity": "2 1/2",
+        "unit": "tasses",
+        "notes": "ou farine pâtissière"
+      },
+      {
+        "name": "bicarbonate de soude",
+        "quantity": "2",
+        "unit": "c. à café",
+        "notes": ""
+      },
+      {
+        "name": "sel",
+        "quantity": "1",
+        "unit": "c. à café",
+        "notes": ""
+      },
+      {
+        "name": "noix de pécan hachées",
+        "quantity": "1/2",
+        "unit": "tasse",
+        "notes": "ajout manuscrit possible"
+      },
+      {
+        "name": "cannelle",
+        "quantity": "2",
+        "unit": "pincées",
+        "notes": "ajout manuscrit possible"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Préchauffer le four à 175 °C.",
+          "À l’aide d’un batteur électrique, battre le sucre et le beurre jusqu’à obtenir un mélange léger et mousseux.",
+          "Ajouter les bananes écrasées et les œufs, puis battre jusqu’à ce que le mélange soit homogène.",
+          "Tamiser ensemble les ingrédients secs trois fois.",
+          "Incorporer les ingrédients secs au mélange à la banane sans trop mélanger."
+        ]
+      },
+      {
+        "title": "Cuisson",
+        "steps": [
+          "Verser la pâte dans 2 moules à cake légèrement graissés.",
+          "Cuire 45 min à 1 h, jusqu’à ce que le centre soit ferme et que les bords commencent à se détacher des moules.",
+          "Laisser refroidir sur une grille pendant 10 min avant de démouler."
+        ]
+      },
+      {
+        "title": "Garniture intérieure facultative",
+        "steps": [
+          "Mélanger les noix de pécan hachées, la cassonade foncée et la cannelle.",
+          "Verser la moitié de la pâte dans le moule, saupoudrer avec ce mélange, puis ajouter le reste de pâte.",
+          "S’il reste du mélange, en mettre sur le dessus et l’enfoncer légèrement."
+        ]
+      },
+      {
+        "title": "Conservation",
+        "steps": [
+          "Ce banana bread se congèle très bien."
+        ]
+      }
+    ],
+    "subRecipes": [
+      {
+        "title": "Garniture intérieure facultative",
+        "ingredients": [
+          {
+            "name": "noix de pécan hachées",
+            "quantity": "1",
+            "unit": "tasse",
+            "notes": ""
+          },
+          {
+            "name": "cassonade foncée",
+            "quantity": "4",
+            "unit": "c. à s.",
+            "notes": ""
+          },
+          {
+            "name": "cannelle",
+            "quantity": "1",
+            "unit": "c. à s.",
+            "notes": ""
+          }
+        ]
+      }
+    ],
+    "notes": [
+      "La note manuscrite semble indiquer 7 bananes comme variante.",
+      "Un incontournable avec les salades de poulet."
+    ]
   }
 ]

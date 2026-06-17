@@ -40,13 +40,29 @@ const localizedRecipe = v.object({
   notes: v.array(v.string()),
 });
 
-const imageCredit = v.object({
-  provider: v.literal("unsplash"),
-  photographerName: v.string(),
-  photographerUrl: v.string(),
-  photoUrl: v.string(),
-  alt: v.string(),
-});
+const imageCredit = v.union(
+  v.object({
+    provider: v.literal("unsplash"),
+    photographerName: v.string(),
+    photographerUrl: v.string(),
+    photoUrl: v.string(),
+    alt: v.string(),
+  }),
+  v.object({
+    provider: v.literal("openverse"),
+    title: v.string(),
+    creator: v.string(),
+    creatorUrl: v.string(),
+    imageUrl: v.string(),
+    landingUrl: v.string(),
+    license: v.string(),
+    licenseVersion: v.string(),
+    licenseUrl: v.string(),
+    source: v.string(),
+    attribution: v.string(),
+    alt: v.string(),
+  }),
+);
 
 export default defineSchema({
   recipes: defineTable({

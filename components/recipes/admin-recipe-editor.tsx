@@ -9,6 +9,7 @@ import type { EditableRecipe, EditableRecipeContent } from "./types";
 type AdminRecipeEditorProps = {
   locale: Locale;
   recipes: EditableRecipe[];
+  initialSlug?: string;
   action: typeof updateRecipeAction;
 };
 
@@ -20,16 +21,19 @@ const initialState = {
 export function AdminRecipeEditor({
   locale,
   recipes,
+  initialSlug,
   action,
 }: AdminRecipeEditorProps) {
   const [state, formAction, isPending] = useActionState(action, initialState);
-  const [selectedSlug, setSelectedSlug] = useState(recipes[0]?.slug ?? "");
+  const initialRecipe =
+    recipes.find((recipe) => recipe.slug === initialSlug) ?? recipes[0] ?? null;
+  const [selectedSlug, setSelectedSlug] = useState(initialRecipe?.slug ?? "");
   const selectedRecipe = useMemo(
     () => recipes.find((recipe) => recipe.slug === selectedSlug) ?? null,
     [recipes, selectedSlug],
   );
   const [recipeJson, setRecipeJson] = useState(() =>
-    selectedRecipe ? stringifyEditableRecipe(selectedRecipe) : "",
+    initialRecipe ? stringifyEditableRecipe(initialRecipe) : "",
   );
 
   if (recipes.length === 0) {
@@ -102,16 +106,6 @@ export function AdminRecipeEditor({
               onChange={(event) => setRecipeJson(event.target.value)}
               spellCheck={false}
               className="min-h-[32rem] rounded-sm border border-stone-200 bg-stone-950 p-4 font-mono text-sm leading-6 text-stone-50 outline-none transition focus:border-soft-peach-500 focus:ring-2 focus:ring-soft-peach-200"
-            />
-          </label>
-
-          <label className="grid gap-2 text-sm font-black text-stone-700">
-            Mot de passe admin
-            <input
-              name="adminPassword"
-              type="password"
-              autoComplete="current-password"
-              className="h-12 rounded-sm border border-stone-200 bg-white px-3 text-base font-semibold text-stone-900 outline-none transition focus:border-soft-peach-500 focus:ring-2 focus:ring-soft-peach-200"
             />
           </label>
 
