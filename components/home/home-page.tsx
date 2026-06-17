@@ -32,19 +32,14 @@ export function HomePage({ locale, dict, recipes }: HomePageProps) {
   return (
     <main>
       {/* Editorial hero */}
-      <section className="relative overflow-hidden bg-pale-blue-50 px-6 py-20 lg:px-10 lg:py-28">
+      <section className="relative overflow-hidden bg-muted px-6 py-20 lg:px-10 lg:py-28">
         <div className="mx-auto max-w-4xl text-center">
-          <p className="mb-6 text-xs font-bold uppercase tracking-[0.32em] text-soft-peach-700">
-            {dict.home.eyebrow}
-          </p>
-          <h1 className="font-heading text-6xl font-black leading-[0.92] tracking-tight text-stone-950 sm:text-7xl lg:text-8xl">
+          <p className="eyebrow mb-6">{dict.home.eyebrow}</p>
+          <h1 className="font-heading text-display text-foreground">
             {dict.site.title}
           </h1>
-          <div
-            aria-hidden
-            className="mx-auto my-8 h-px w-16 bg-pale-blue-300"
-          />
-          <p className="mx-auto max-w-2xl font-heading text-xl italic leading-relaxed text-pale-blue-800 sm:text-2xl">
+          <div aria-hidden className="mx-auto my-8 h-px w-16 bg-border" />
+          <p className="mx-auto max-w-2xl font-heading text-xl italic leading-relaxed text-foreground/80 sm:text-2xl">
             {dict.home.lead}
           </p>
         </div>
@@ -53,16 +48,14 @@ export function HomePage({ locale, dict, recipes }: HomePageProps) {
       {/* Featured recipe */}
       <section className="px-6 pb-20 lg:px-10 lg:pb-24">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-8 flex items-baseline justify-between gap-4 border-b border-stone-200 pb-4">
-            <p className="text-xs font-bold uppercase tracking-[0.28em] text-soft-peach-700">
-              {dict.home.featuredEyebrow}
-            </p>
+          <div className="mb-8 flex items-baseline justify-between gap-4 border-b border-border pb-4">
+            <p className="eyebrow">{dict.home.featuredEyebrow}</p>
           </div>
           <Link
             href={`/${locale}/recettes/${featured.slug}`}
             className="group grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:items-center lg:gap-14"
           >
-            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xl bg-stone-200 sm:aspect-[5/4] lg:aspect-[4/5]">
+            <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-muted shadow-card transition duration-300 group-hover:shadow-card-hover sm:aspect-[5/4] lg:aspect-[4/5]">
               <Image
                 src={featured.heroImageUrl || defaultRecipeImageUrl}
                 alt={featured.imageCredit?.alt ?? ""}
@@ -73,22 +66,22 @@ export function HomePage({ locale, dict, recipes }: HomePageProps) {
               />
             </div>
             <div className="lg:pr-6">
-              <p className="mb-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-soft-peach-700">
+              <p className="mb-4 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-primary">
                 <Clock3 className="size-4 stroke-[1.8]" />
                 {featured.timeLabel}
               </p>
-              <h2 className="font-heading text-5xl font-black leading-[0.95] tracking-tight text-stone-950 lg:text-6xl">
+              <h2 className="font-heading text-5xl font-black leading-[0.95] tracking-tight text-foreground lg:text-6xl">
                 {featured.title}
               </h2>
-              <p className="mt-3 font-heading text-lg italic text-stone-500">
+              <p className="mt-3 font-heading text-lg italic text-muted-foreground">
                 {dict.recipeDetail.recipeBy} {featured.author}
               </p>
               {featured.description ? (
-                <p className="mt-6 text-lg leading-relaxed text-stone-700">
+                <p className="mt-6 max-w-[60ch] text-lg leading-relaxed text-foreground/80">
                   {featured.description}
                 </p>
               ) : null}
-              <span className="mt-8 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.22em] text-soft-peach-700 transition group-hover:gap-3">
+              <span className="mt-8 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-[0.22em] text-primary transition group-hover:gap-3">
                 {dict.home.featuredCta}
                 <ArrowRight className="size-4 stroke-[2]" />
               </span>
@@ -99,14 +92,12 @@ export function HomePage({ locale, dict, recipes }: HomePageProps) {
 
       {/* All recipes grid */}
       {rest.length > 0 ? (
-        <section className="bg-pale-blue-50 px-6 py-24 lg:px-10 lg:py-32">
+        <section className="bg-muted px-6 py-24 lg:px-10 lg:py-32">
           <div className="mx-auto max-w-6xl">
-            <div className="mb-10 flex items-baseline justify-between gap-4 border-b border-pale-blue-200/70 pb-4">
+            <div className="mb-10 flex items-baseline justify-between gap-4 border-b border-border pb-4">
               <div>
-                <p className="mb-2 text-xs font-bold uppercase tracking-[0.28em] text-soft-peach-700">
-                  {dict.home.allRecipesEyebrow}
-                </p>
-                <h2 className="font-heading text-4xl font-black tracking-tight text-stone-950 lg:text-5xl">
+                <p className="eyebrow mb-2">{dict.home.allRecipesEyebrow}</p>
+                <h2 className="font-heading text-section text-foreground">
                   {dict.home.allRecipesTitle}
                 </h2>
               </div>

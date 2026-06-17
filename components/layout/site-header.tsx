@@ -7,6 +7,7 @@ import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils";
 import { LocaleSwitcher } from "./locale-switcher";
+import { ThemeToggle } from "./theme-toggle";
 
 type SiteHeaderProps = {
   locale: Locale;
@@ -47,7 +48,7 @@ export function SiteHeader({ locale, dict }: SiteHeaderProps) {
   return (
     <header
       className={cn(
-        "sticky z-40 border-b border-stone-200/60 backdrop-blur transition-all duration-200",
+        "sticky z-40 border-b border-border/60 backdrop-blur transition-all duration-200",
         isHeaderHidden ? "-top-24" : "top-0",
         isHeaderScrolled
           ? "bg-background/85 supports-[backdrop-filter]:bg-background/70"
@@ -57,28 +58,32 @@ export function SiteHeader({ locale, dict }: SiteHeaderProps) {
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-6 px-6 py-5 lg:px-10">
         <Link
           href={`/${locale}`}
-          className="font-heading text-xl font-black leading-none tracking-tight text-stone-950 sm:text-2xl"
+          className="font-heading text-xl font-black leading-none tracking-tight text-foreground sm:text-2xl"
         >
           {dict.site.wordmark}
         </Link>
 
-        <nav className="hidden items-center gap-8 text-sm font-bold uppercase tracking-[0.18em] text-stone-600 md:flex">
+        <nav className="hidden items-center gap-8 text-sm font-bold uppercase tracking-[0.18em] text-muted-foreground md:flex">
           <Link
             href={`/${locale}`}
-            className="transition hover:text-soft-peach-700"
+            className="transition hover:text-primary"
           >
             {dict.nav.recipes}
           </Link>
           <span
             aria-disabled
-            className="cursor-default text-stone-300"
+            className="cursor-default text-muted-foreground/50"
             title="—"
           >
             {dict.nav.about}
           </span>
         </nav>
 
-        <LocaleSwitcher current={locale} />
+        <div className="flex items-center gap-3">
+          <LocaleSwitcher current={locale} />
+          <span aria-hidden className="h-4 w-px bg-border" />
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );

@@ -314,23 +314,21 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
   }
 
   return (
-    <main className="min-h-screen px-5 py-8 text-stone-900 sm:px-6">
+    <main className="min-h-screen px-5 py-8 text-foreground sm:px-6">
       <section className="mx-auto w-full max-w-3xl">
         <div className="mb-8">
-          <p className="mb-3 text-xs font-black uppercase tracking-[0.28em] text-soft-peach-600">
-            Admin images
-          </p>
-          <h1 className="font-heading text-5xl font-black leading-[0.95] text-stone-950">
+          <p className="eyebrow mb-3">Admin images</p>
+          <h1 className="font-heading text-5xl font-black leading-[0.95] text-foreground">
             Images des recettes
           </h1>
-          <p className="mt-4 max-w-2xl text-lg font-semibold leading-8 text-stone-500">
+          <p className="mt-4 max-w-2xl text-lg font-semibold leading-8 text-muted-foreground">
             L’image uploadée dans Convex Storage sera utilisée en priorité. Si
             elle manque, la recette garde son fallback Unsplash choisi ici.
           </p>
         </div>
 
-        <div className="grid gap-6 rounded-sm bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-7">
-          <label className="grid gap-2 text-sm font-black text-stone-700">
+        <div className="grid gap-6 rounded-2xl bg-card p-5 shadow-card ring-1 ring-border sm:p-7">
+          <label className="grid gap-2 text-sm font-black text-foreground">
             Recette
             <select
               value={selectedSlug}
@@ -346,7 +344,7 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
                 setUnsplashResults([]);
                 setOpenverseResults([]);
               }}
-              className="h-12 rounded-sm border border-stone-200 bg-white px-3 text-base font-semibold text-stone-900 outline-none transition focus:border-soft-peach-500 focus:ring-2 focus:ring-soft-peach-200"
+              className="h-12 rounded-lg border border-input bg-card px-3 text-base font-semibold text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-ring/30"
             >
               {recipes.map((recipe) => (
                 <option key={recipe._id} value={recipe.slug}>
@@ -358,10 +356,10 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
 
           {selectedRecipe ? (
             <div className="grid gap-3">
-              <p className="text-sm font-black text-stone-700">
+              <p className="text-sm font-black text-foreground">
                 Image actuelle
               </p>
-              <div className="relative aspect-[16/9] overflow-hidden rounded-sm bg-stone-100">
+              <div className="relative aspect-[16/9] overflow-hidden rounded-xl bg-muted">
                 <Image
                   src={selectedRecipe.heroImageUrl}
                   alt={selectedRecipe.imageCredit?.alt ?? ""}
@@ -375,7 +373,7 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
               ) : null}
               <a
                 href={`/${locale}/recettes/${selectedRecipe.slug}`}
-                className="text-sm font-black text-soft-peach-700 underline-offset-4 hover:underline"
+                className="text-sm font-black text-primary underline-offset-4 hover:underline"
               >
                 Voir la recette publique
               </a>
@@ -383,20 +381,20 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
           ) : null}
 
           <form onSubmit={handleUnsplashSearch} className="grid gap-4">
-            <label className="grid gap-2 text-sm font-black text-stone-700">
+            <label className="grid gap-2 text-sm font-black text-foreground">
               Recherche Unsplash
               <div className="flex flex-col gap-3 sm:flex-row">
                 <input
                   type="search"
                   value={searchQuery}
                   onChange={(event) => setSearchQuery(event.target.value)}
-                  className="h-12 min-w-0 flex-1 rounded-sm border border-stone-200 bg-white px-3 text-base font-semibold text-stone-900 outline-none transition focus:border-soft-peach-500 focus:ring-2 focus:ring-soft-peach-200"
+                  className="h-12 min-w-0 flex-1 rounded-lg border border-input bg-card px-3 text-base font-semibold text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-ring/30"
                   placeholder="cake citron, chocolate lava cake..."
                 />
                 <button
                   type="submit"
                   disabled={status.type === "loading"}
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-stone-950 px-5 text-base font-black text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-foreground px-5 text-base font-black text-background transition hover:bg-foreground/90 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <Search className="size-5" />
                   Chercher
@@ -409,9 +407,9 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
                 {unsplashResults.map((photo) => (
                   <div
                     key={photo.id}
-                    className="overflow-hidden rounded-sm border border-stone-100 bg-pale-blue-50"
+                    className="overflow-hidden rounded-xl border border-border bg-muted"
                   >
-                    <div className="relative aspect-[4/3] bg-stone-100">
+                    <div className="relative aspect-[4/3] bg-muted">
                       <Image
                         src={photo.previewUrl}
                         alt={photo.alt}
@@ -421,13 +419,13 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
                       />
                     </div>
                     <div className="grid gap-3 p-4">
-                      <p className="text-xs font-bold text-stone-500">
+                      <p className="text-xs font-bold text-muted-foreground">
                         Photo par{" "}
                         <a
                           href={photo.photographerUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-soft-peach-700 underline-offset-4 hover:underline"
+                          className="text-primary underline-offset-4 hover:underline"
                         >
                           {photo.photographerName}
                         </a>
@@ -436,7 +434,7 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
                         type="button"
                         disabled={status.type === "loading"}
                         onClick={() => handleUseUnsplashImage(photo)}
-                        className="h-10 rounded-full bg-soft-peach-500 px-4 text-sm font-black text-white transition hover:bg-soft-peach-600 disabled:cursor-not-allowed disabled:opacity-60"
+                        className="h-10 rounded-full bg-primary px-4 text-sm font-black text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
                       >
                         Utiliser cette image
                       </button>
@@ -449,22 +447,22 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
 
           <form
             onSubmit={handleOpenverseSearch}
-            className="grid gap-4 border-t border-stone-100 pt-6"
+            className="grid gap-4 border-t border-border pt-6"
           >
-            <label className="grid gap-2 text-sm font-black text-stone-700">
+            <label className="grid gap-2 text-sm font-black text-foreground">
               Recherche Openverse
               <div className="flex flex-col gap-3 sm:flex-row">
                 <input
                   type="search"
                   value={openverseQuery}
                   onChange={(event) => setOpenverseQuery(event.target.value)}
-                  className="h-12 min-w-0 flex-1 rounded-sm border border-stone-200 bg-white px-3 text-base font-semibold text-stone-900 outline-none transition focus:border-soft-peach-500 focus:ring-2 focus:ring-soft-peach-200"
+                  className="h-12 min-w-0 flex-1 rounded-lg border border-input bg-card px-3 text-base font-semibold text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-ring/30"
                   placeholder="amandin cake, tarte fraise..."
                 />
                 <button
                   type="submit"
                   disabled={status.type === "loading"}
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-stone-950 px-5 text-base font-black text-white transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-foreground px-5 text-base font-black text-background transition hover:bg-foreground/90 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   <Search className="size-5" />
                   Chercher
@@ -477,9 +475,9 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
                 {openverseResults.map((photo) => (
                   <div
                     key={photo.id}
-                    className="overflow-hidden rounded-sm border border-stone-100 bg-pale-blue-50"
+                    className="overflow-hidden rounded-xl border border-border bg-muted"
                   >
-                    <div className="aspect-[4/3] bg-stone-100">
+                    <div className="aspect-[4/3] bg-muted">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={photo.previewUrl}
@@ -489,13 +487,13 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
                     </div>
                     <div className="grid gap-3 p-4">
                       <div className="grid gap-1">
-                        <p className="text-sm font-black text-stone-800">
+                        <p className="text-sm font-black text-foreground">
                           {photo.title}
                         </p>
-                        <p className="text-xs font-bold text-stone-500">
+                        <p className="text-xs font-bold text-muted-foreground">
                           {photo.creator} · {formatLicense(photo)}
                         </p>
-                        <p className="text-xs font-bold uppercase tracking-[0.16em] text-stone-400">
+                        <p className="text-xs font-bold uppercase tracking-[0.16em] text-muted-foreground">
                           {photo.source}
                         </p>
                       </div>
@@ -503,7 +501,7 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
                         type="button"
                         disabled={status.type === "loading"}
                         onClick={() => handleUseOpenverseImage(photo)}
-                        className="h-10 rounded-full bg-soft-peach-500 px-4 text-sm font-black text-white transition hover:bg-soft-peach-600 disabled:cursor-not-allowed disabled:opacity-60"
+                        className="h-10 rounded-full bg-primary px-4 text-sm font-black text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
                       >
                         Utiliser cette image
                       </button>
@@ -514,21 +512,21 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
             ) : null}
           </form>
 
-          <form onSubmit={handleSubmit} className="grid gap-4 border-t border-stone-100 pt-6">
-            <label className="grid gap-2 text-sm font-black text-stone-700">
+          <form onSubmit={handleSubmit} className="grid gap-4 border-t border-border pt-6">
+            <label className="grid gap-2 text-sm font-black text-foreground">
               Upload Convex Storage
               <input
                 type="file"
                 accept="image/*"
                 onChange={(event) => setFile(event.target.files?.[0] ?? null)}
-                className="rounded-sm border border-stone-200 bg-white p-3 text-sm font-semibold file:mr-4 file:rounded-full file:border-0 file:bg-soft-peach-500 file:px-4 file:py-2 file:text-sm file:font-black file:text-white"
+                className="rounded-lg border border-input bg-card p-3 text-sm font-semibold file:mr-4 file:rounded-full file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-black file:text-primary-foreground"
               />
             </label>
 
             <button
               type="submit"
               disabled={status.type === "loading"}
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-soft-peach-500 px-6 text-base font-black text-white transition hover:bg-soft-peach-600 disabled:cursor-not-allowed disabled:opacity-60 sm:justify-self-end"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-6 text-base font-black text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60 sm:justify-self-end"
             >
               <Upload className="size-5" />
               Uploader dans Convex
@@ -539,10 +537,10 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
             <p
               className={
                 status.type === "error"
-                  ? "text-sm font-bold text-red-700"
+                  ? "text-sm font-bold text-destructive"
                   : status.type === "success"
-                    ? "text-sm font-bold text-green-700"
-                    : "text-sm font-bold text-stone-500"
+                    ? "text-sm font-bold text-green-600 dark:text-green-400"
+                    : "text-sm font-bold text-muted-foreground"
               }
             >
               {status.message}
@@ -561,13 +559,13 @@ function ImageCreditLine({
 }) {
   if (imageCredit.provider === "unsplash") {
     return (
-      <p className="text-xs font-bold text-stone-400">
+      <p className="text-xs font-bold text-muted-foreground">
         Photo par{" "}
         <a
           href={imageCredit.photographerUrl}
           target="_blank"
           rel="noreferrer"
-          className="text-soft-peach-700 underline-offset-4 hover:underline"
+          className="text-primary underline-offset-4 hover:underline"
         >
           {imageCredit.photographerName}
         </a>{" "}
@@ -576,7 +574,7 @@ function ImageCreditLine({
           href={imageCredit.photoUrl}
           target="_blank"
           rel="noreferrer"
-          className="text-soft-peach-700 underline-offset-4 hover:underline"
+          className="text-primary underline-offset-4 hover:underline"
         >
           Unsplash
         </a>
@@ -585,13 +583,13 @@ function ImageCreditLine({
   }
 
   return (
-    <p className="text-xs font-bold text-stone-400">
+    <p className="text-xs font-bold text-muted-foreground">
       Photo par{" "}
       <a
         href={imageCredit.creatorUrl}
         target="_blank"
         rel="noreferrer"
-        className="text-soft-peach-700 underline-offset-4 hover:underline"
+        className="text-primary underline-offset-4 hover:underline"
       >
         {imageCredit.creator}
       </a>{" "}
@@ -600,7 +598,7 @@ function ImageCreditLine({
         href={imageCredit.landingUrl}
         target="_blank"
         rel="noreferrer"
-        className="text-soft-peach-700 underline-offset-4 hover:underline"
+        className="text-primary underline-offset-4 hover:underline"
       >
         {imageCredit.source}
       </a>{" "}
@@ -609,7 +607,7 @@ function ImageCreditLine({
         href={imageCredit.licenseUrl}
         target="_blank"
         rel="noreferrer"
-        className="text-soft-peach-700 underline-offset-4 hover:underline"
+        className="text-primary underline-offset-4 hover:underline"
       >
         {formatLicense(imageCredit)}
       </a>

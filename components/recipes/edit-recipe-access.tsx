@@ -58,12 +58,12 @@ export function EditRecipeAccess({
         <Pencil className="size-4 stroke-[1.8]" />
         Éditer
       </DialogTrigger>
-      <DialogContent className="rounded-sm bg-white p-6 text-stone-900 sm:max-w-md">
+      <DialogContent className="rounded-2xl bg-card p-6 text-foreground sm:max-w-md">
         <DialogHeader className="">
-          <DialogTitle className="font-heading text-2xl font-black text-stone-950">
+          <DialogTitle className="font-heading text-2xl font-black text-foreground">
             Accès admin
           </DialogTitle>
-          <DialogDescription className="text-sm font-semibold leading-6 text-stone-500">
+          <DialogDescription className="text-sm font-semibold leading-6 text-muted-foreground">
             Entre le mot de passe pour modifier cette recette.
           </DialogDescription>
         </DialogHeader>
@@ -71,22 +71,22 @@ export function EditRecipeAccess({
         <form action={formAction} className="grid gap-4">
           <input type="hidden" name="locale" value={locale} />
           <input type="hidden" name="slug" value={slug} />
-          <label className="grid gap-2 text-sm font-black text-stone-700">
+          <label className="grid gap-2 text-sm font-black text-foreground">
             Mot de passe
             <input
               name="password"
               type="password"
               autoComplete="current-password"
-              className="h-12 rounded-sm border border-stone-200 bg-white px-3 text-base font-semibold text-stone-900 outline-none transition focus:border-soft-peach-500 focus:ring-2 focus:ring-soft-peach-200"
+              className="h-12 rounded-lg border border-input bg-card px-3 text-base font-semibold text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-ring/30"
             />
           </label>
           {state.type === "error" ? (
-            <p className="text-sm font-bold text-red-700">{state.message}</p>
+            <p className="text-sm font-bold text-destructive">{state.message}</p>
           ) : null}
           <button
             type="submit"
             disabled={isPending}
-            className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-soft-peach-500 px-6 text-base font-black text-white transition hover:bg-soft-peach-600 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-6 text-base font-black text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Pencil className="size-5" />
             {isPending ? "Vérification..." : "Ouvrir l'admin"}

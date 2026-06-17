@@ -36,7 +36,7 @@ export function RecipeGrid({
           >
             <Link
               href={`/${locale}/recettes/${recipe.slug}`}
-              className={`group relative block w-full overflow-hidden rounded-xl bg-stone-900 text-left ring-1 ring-black/5 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-soft-peach-500 ${
+              className={`group relative block w-full overflow-hidden rounded-2xl bg-stone-900 text-left ring-1 ring-black/5 shadow-card transition duration-300 hover:-translate-y-0.5 hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                 isFeatured ? "h-[26rem] lg:h-[30rem]" : "h-72 lg:h-80"
               }`}
             >
@@ -103,10 +103,8 @@ export function RecipeListPage({ locale, dict, recipes }: RecipeListPageProps) {
     <main className="px-6 py-16 lg:px-10 lg:py-20">
       <section className="mx-auto w-full max-w-6xl">
         <div className="mb-12 max-w-2xl">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.28em] text-soft-peach-700">
-            {dict.recipeList.eyebrow}
-          </p>
-          <h1 className="font-heading text-5xl font-black leading-[0.95] tracking-tight text-stone-950 lg:text-7xl">
+          <p className="eyebrow mb-3">{dict.recipeList.eyebrow}</p>
+          <h1 className="font-heading text-5xl font-black leading-[0.95] tracking-tight text-foreground lg:text-7xl">
             {dict.site.title}
           </h1>
         </div>

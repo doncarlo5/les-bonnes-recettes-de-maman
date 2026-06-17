@@ -26,7 +26,7 @@ export function LocaleSwitcher({ current }: LocaleSwitcherProps) {
         return (
           <span key={locale} className="flex items-center gap-1">
             {index > 0 ? (
-              <span className="text-stone-300" aria-hidden>
+              <span className="text-muted-foreground/40" aria-hidden>
                 /
               </span>
             ) : null}
@@ -35,8 +35,8 @@ export function LocaleSwitcher({ current }: LocaleSwitcherProps) {
               aria-current={isActive ? "true" : undefined}
               className={
                 isActive
-                  ? "text-soft-peach-700"
-                  : "text-stone-400 transition hover:text-soft-peach-600"
+                  ? "text-primary"
+                  : "text-muted-foreground transition hover:text-primary"
               }
             >
               {locale}
