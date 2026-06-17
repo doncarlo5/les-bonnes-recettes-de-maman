@@ -46,3 +46,42 @@ export type Recipe = {
   subRecipes: SubRecipe[];
   notes: string[];
 };
+
+export type EditableRecipeContent = {
+  defaultLocale: "fr" | "en";
+  translations: {
+    fr: Omit<
+      Recipe,
+      | "_id"
+      | "_creationTime"
+      | "slug"
+      | "heroImageUrl"
+      | "imageCredit"
+      | "defaultLocale"
+      | "tags"
+      | "status"
+    >;
+    en: Omit<
+      Recipe,
+      | "_id"
+      | "_creationTime"
+      | "slug"
+      | "heroImageUrl"
+      | "imageCredit"
+      | "defaultLocale"
+      | "tags"
+      | "status"
+    >;
+  };
+  tags: string[];
+  status: "draft" | "published";
+};
+
+export type EditableRecipe = {
+  _id: Id<"recipes">;
+  _creationTime: number;
+  slug: string;
+  title: string;
+  heroImageUrl: string;
+  imageCredit?: Recipe["imageCredit"];
+} & EditableRecipeContent;
