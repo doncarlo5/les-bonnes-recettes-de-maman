@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import { Geist_Mono, Nunito_Sans, Playfair_Display } from "next/font/google";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { hasLocale, locales } from "@/i18n/config";
+import { siteUrl } from "@/lib/site";
 import { ConvexClientProvider } from "@/components/convex-client-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -56,12 +57,47 @@ export async function generateMetadata({
   }
 
   const dict = await getDictionary(locale);
+  const ogLocale = locale === "fr" ? "fr_FR" : "en_US";
 
   return {
-    title: dict.site.title,
+    metadataBase: new URL(siteUrl),
+    title: {
+      default: dict.site.title,
+      template: `%s · ${dict.site.wordmark}`,
+    },
     description: dict.site.description,
+    applicationName: dict.site.wordmark,
+    openGraph: {
+      type: "website",
+      siteName: dict.site.wordmark,
+      locale: ogLocale,
+      title: dict.site.title,
+      description: dict.site.description,
+      url: `/${locale}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: dict.site.title,
+      description: dict.site.description,
+    },
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        fr: "/fr",
+        en: "/en",
+        "x-default": "/fr",
+      },
+    },
   };
 }
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FBF6EE" },
+    { media: "(prefers-color-scheme: dark)", color: "#2A2118" },
+  ],
+  colorScheme: "light dark",
+};
 
 export default async function RootLayout({
   children,
