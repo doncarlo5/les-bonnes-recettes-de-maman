@@ -1,22 +1,20 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { hasLocale } from "@/i18n/config";
+import {
+  getRecipeAdminPassword,
+  grantRecipeAdminAccess,
+  hasRecipeAdminAccess,
+  verifyRecipeAdminPassword,
+} from "@/lib/recipe-admin-auth";
 
 export type RecipeAdminAccessState = {
   type: "idle" | "error";
   message: string;
 };
 
-const adminAccessCookieName = "recipe-admin-access";
-const adminAccessCookieValue = "granted";
-const oneYearInSeconds = 60 * 60 * 24 * 365;
-
-export async function hasRecipeAdminAccess() {
-  const cookieStore = await cookies();
-  return cookieStore.get(adminAccessCookieName)?.value === adminAccessCookieValue;
-}
+export { hasRecipeAdminAccess };
 
 export async function requestRecipeAdminAccessAction(
   _previousState: RecipeAdminAccessState,
@@ -33,32 +31,21 @@ export async function requestRecipeAdminAccessAction(
     };
   }
 
-  const expectedPassword = process.env.RECIPE_ADMIN_PASSWORD;
-
-  if (!expectedPassword) {
+  if (!getRecipeAdminPassword()) {
     return {
       type: "error",
       message: "Mot de passe admin non configuré.",
     };
   }
 
-  if (password !== expectedPassword) {
+  if (!verifyRecipeAdminPassword(password)) {
     return {
       type: "error",
       message: "Mot de passe invalide.",
     };
   }
 
-  const cookieStore = await cookies();
-  cookieStore.set({
-    name: adminAccessCookieName,
-    value: adminAccessCookieValue,
-    httpOnly: true,
-    sameSite: "lax",
-    path: "/",
-    maxAge: oneYearInSeconds,
-    secure: process.env.NODE_ENV === "production",
-  });
+  await grantRecipeAdminAccess();
 
   redirect(`/${locale}/admin/recettes?slug=${encodeURIComponent(slug)}`);
 }

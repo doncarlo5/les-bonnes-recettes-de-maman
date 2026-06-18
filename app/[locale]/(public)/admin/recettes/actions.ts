@@ -1,11 +1,17 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { fetchMutation } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
 import { hasLocale, locales } from "@/i18n/config";
+import {
+  getRecipeAdminAccess,
+  getRecipeAdminPassword,
+  grantRecipeAdminAccess,
+  hasRecipeAdminAccess,
+  verifyRecipeAdminPassword,
+} from "@/lib/recipe-admin-auth";
 import { editableRecipeContentSchema } from "@/components/recipes/recipe-form-schema";
 
 export type SaveRecipeState = {
@@ -20,16 +26,9 @@ export type AdminAccessState = {
   message: string;
 };
 
-const adminAccessCookieName = "recipe-admin-access";
-const adminAccessCookieValue = "granted";
-const oneYearInSeconds = 60 * 60 * 24 * 365;
-
 const initialErrorMessage = "Impossible d'enregistrer cette recette.";
 
-export async function hasRecipeAdminAccess() {
-  const cookieStore = await cookies();
-  return cookieStore.get(adminAccessCookieName)?.value === adminAccessCookieValue;
-}
+export { hasRecipeAdminAccess };
 
 export async function requestRecipesAdminAccessAction(
   _previousState: AdminAccessState,
@@ -45,32 +44,21 @@ export async function requestRecipesAdminAccessAction(
     };
   }
 
-  const expectedPassword = process.env.RECIPE_ADMIN_PASSWORD;
-
-  if (!expectedPassword) {
+  if (!getRecipeAdminPassword()) {
     return {
       type: "error",
       message: "Mot de passe admin non configure.",
     };
   }
 
-  if (password !== expectedPassword) {
+  if (!verifyRecipeAdminPassword(password)) {
     return {
       type: "error",
       message: "Mot de passe invalide.",
     };
   }
 
-  const cookieStore = await cookies();
-  cookieStore.set({
-    name: adminAccessCookieName,
-    value: adminAccessCookieValue,
-    httpOnly: true,
-    sameSite: "lax",
-    path: "/",
-    maxAge: oneYearInSeconds,
-    secure: process.env.NODE_ENV === "production",
-  });
+  await grantRecipeAdminAccess();
 
   redirect(`/${locale}/admin/recettes`);
 }
@@ -105,10 +93,12 @@ export async function saveRecipeAction(
     };
   }
 
-  if (!(await hasRecipeAdminAccess())) {
+  const adminAccess = await getRecipeAdminAccess();
+
+  if (!adminAccess.ok) {
     return {
       type: "error",
-      message: "Acces admin requis.",
+      message: adminAccess.message,
     };
   }
 
@@ -141,10 +131,12 @@ export async function saveRecipeAction(
               ...validation.data,
               status: "draft",
             },
+            adminPassword: adminAccess.adminPassword,
           })
         : await fetchMutation(api.recipes.update, {
             slug,
             recipe: validation.data,
+            adminPassword: adminAccess.adminPassword,
           });
 
     revalidateRecipePaths(result.slug);

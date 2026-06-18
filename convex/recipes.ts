@@ -149,8 +149,11 @@ export const listForEditing = query({
 export const create = mutation({
   args: {
     recipe: editableRecipeValidator,
+    adminPassword: v.string(),
   },
   handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
+
     const title = args.recipe.translations.fr.title.trim();
     const baseSlug = slugify(title || "nouvelle-recette");
     const slug = await getAvailableSlug(ctx, baseSlug);
@@ -173,8 +176,12 @@ export const create = mutation({
 });
 
 export const generateUploadUrl = mutation({
-  args: {},
-  handler: async (ctx) => {
+  args: {
+    adminPassword: v.string(),
+  },
+  handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
+
     return await ctx.storage.generateUploadUrl();
   },
 });
@@ -183,8 +190,11 @@ export const update = mutation({
   args: {
     slug: v.string(),
     recipe: editableRecipeValidator,
+    adminPassword: v.string(),
   },
   handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
+
     const existing = await ctx.db
       .query("recipes")
       .withIndex("by_slug", (q) => q.eq("slug", args.slug))
@@ -213,8 +223,11 @@ export const setHeroImage = mutation({
   args: {
     slug: v.string(),
     storageId: v.id("_storage"),
+    adminPassword: v.string(),
   },
   handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
+
     const recipe = await ctx.db
       .query("recipes")
       .withIndex("by_slug", (q) => q.eq("slug", args.slug))
@@ -251,8 +264,11 @@ export const setUnsplashHeroImage = mutation({
     photographerName: v.string(),
     photographerUrl: v.string(),
     photoUrl: v.string(),
+    adminPassword: v.string(),
   },
   handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
+
     const recipe = await ctx.db
       .query("recipes")
       .withIndex("by_slug", (q) => q.eq("slug", args.slug))
@@ -287,8 +303,11 @@ export const setOpenverseHeroImage = mutation({
     slug: v.string(),
     storageId: v.id("_storage"),
     imageCredit: openverseImageCreditValidator,
+    adminPassword: v.string(),
   },
   handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
+
     const recipe = await ctx.db
       .query("recipes")
       .withIndex("by_slug", (q) => q.eq("slug", args.slug))
@@ -321,8 +340,12 @@ export const setOpenverseHeroImage = mutation({
 });
 
 export const seed = mutation({
-  args: {},
-  handler: async (ctx) => {
+  args: {
+    adminPassword: v.string(),
+  },
+  handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
+
     let inserted = 0;
     let updated = 0;
 
@@ -402,6 +425,14 @@ async function getAvailableSlug(ctx: MutationCtx, baseSlug: string) {
   }
 
   return candidate;
+}
+
+function assertRecipeAdminPassword(adminPassword: string) {
+  const expectedPassword = process.env.RECIPE_ADMIN_PASSWORD;
+
+  if (!expectedPassword || adminPassword !== expectedPassword) {
+    throw new Error("RECIPE_ADMIN_REQUIRED");
+  }
 }
 
 function slugify(value: string) {

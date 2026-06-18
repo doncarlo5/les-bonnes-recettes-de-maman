@@ -3,8 +3,6 @@
 import Image from "next/image";
 import { useState, type FormEvent } from "react";
 import { Search, Upload } from "lucide-react";
-import { useMutation } from "convex/react";
-import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import type { Locale } from "@/i18n/config";
 import type { Recipe } from "./types";
@@ -48,9 +46,6 @@ type OpenversePhoto = {
 };
 
 export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
-  const generateUploadUrl = useMutation(api.recipes.generateUploadUrl);
-  const setHeroImage = useMutation(api.recipes.setHeroImage);
-  const setUnsplashHeroImage = useMutation(api.recipes.setUnsplashHeroImage);
   const [selectedSlug, setSelectedSlug] = useState(recipes[0]?.slug ?? "");
   const [file, setFile] = useState<File | null>(null);
   const [searchQuery, setSearchQuery] = useState(recipes[0]?.title ?? "");
@@ -83,8 +78,21 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
     try {
       setStatus({ type: "loading", message: "Upload de l’image..." });
 
-      const uploadUrl = await generateUploadUrl();
-      const response = await fetch(uploadUrl, {
+      const uploadUrlResponse = await fetch("/api/admin/recipes/upload-url", {
+        method: "POST",
+      });
+      const uploadUrlData = (await uploadUrlResponse.json()) as {
+        uploadUrl?: string;
+        error?: string;
+      };
+
+      if (!uploadUrlResponse.ok || !uploadUrlData.uploadUrl) {
+        throw new Error(
+          uploadUrlData.error ?? "Impossible de preparer l’upload.",
+        );
+      }
+
+      const response = await fetch(uploadUrlData.uploadUrl, {
         method: "POST",
         headers: { "Content-Type": file.type },
         body: file,
@@ -98,7 +106,20 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
         storageId: Id<"_storage">;
       };
 
-      await setHeroImage({ slug: selectedSlug, storageId });
+      const heroImageResponse = await fetch("/api/admin/recipes/hero-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: selectedSlug, storageId }),
+      });
+      const heroImageData = (await heroImageResponse.json()) as {
+        error?: string;
+      };
+
+      if (!heroImageResponse.ok) {
+        throw new Error(
+          heroImageData.error ?? "Impossible d’associer cette image.",
+        );
+      }
 
       setStatus({
         type: "success",
@@ -189,14 +210,30 @@ export function AdminImageUpload({ locale, recipes }: AdminImageUploadProps) {
         );
       }
 
-      await setUnsplashHeroImage({
-        slug: selectedSlug,
-        imageUrl: photo.imageUrl,
-        alt: photo.alt,
-        photographerName: photo.photographerName,
-        photographerUrl: photo.photographerUrl,
-        photoUrl: photo.photoUrl,
-      });
+      const imageResponse = await fetch(
+        "/api/admin/recipes/unsplash-hero-image",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            slug: selectedSlug,
+            imageUrl: photo.imageUrl,
+            alt: photo.alt,
+            photographerName: photo.photographerName,
+            photographerUrl: photo.photographerUrl,
+            photoUrl: photo.photoUrl,
+          }),
+        },
+      );
+      const imageData = (await imageResponse.json()) as {
+        error?: string;
+      };
+
+      if (!imageResponse.ok) {
+        throw new Error(
+          imageData.error ?? "Impossible d’associer cette image Unsplash.",
+        );
+      }
 
       setStatus({
         type: "success",

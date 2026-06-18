@@ -2,6 +2,10 @@ import { fetchMutation } from "convex/nextjs";
 import { NextRequest } from "next/server";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
+import {
+  adminUnauthorizedResponse,
+  getRecipeAdminAccess,
+} from "@/lib/recipe-admin-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -21,6 +25,12 @@ type OpenverseImportBody = {
 };
 
 export async function POST(request: NextRequest) {
+  const adminAccess = await getRecipeAdminAccess();
+
+  if (!adminAccess.ok) {
+    return adminUnauthorizedResponse(adminAccess);
+  }
+
   const body = (await request.json()) as OpenverseImportBody;
   const slug = body.slug?.trim();
   const imageUrl = body.imageUrl?.trim();
@@ -63,7 +73,9 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const uploadUrl = await fetchMutation(api.recipes.generateUploadUrl, {});
+  const uploadUrl = await fetchMutation(api.recipes.generateUploadUrl, {
+    adminPassword: adminAccess.adminPassword,
+  });
   const uploadResponse = await fetch(uploadUrl, {
     method: "POST",
     headers: {
@@ -86,6 +98,7 @@ export async function POST(request: NextRequest) {
   const result = await fetchMutation(api.recipes.setOpenverseHeroImage, {
     slug,
     storageId,
+    adminPassword: adminAccess.adminPassword,
     imageCredit: {
       title: body.title ?? "Image Openverse",
       creator: body.creator ?? "Createur inconnu",
