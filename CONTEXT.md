@@ -17,6 +17,10 @@ _Avoid_: Tag technique, source, collection
 Action de retrouver des Recettes a partir de mots presents dans leur titre ou leurs ingredients.
 _Avoid_: Recherche plein texte, recherche globale
 
+**Image principale de recette**:
+Image unique associee a une Recette, utilisee comme couverture dans la liste, le detail et les apercus de partage.
+_Avoid_: Galerie, illustration, image admin
+
 ## Example Dialogue
 
 Dev: "Est-ce qu'une Recette brouillon peut avoir une traduction anglaise incomplete ?"

@@ -56,6 +56,7 @@ import {
   editableRecipeContentSchema,
   type RecipeFormPayload,
 } from "./recipe-form-schema";
+import { AdminRecipeImagePanel } from "./admin-recipe-image-panel";
 import type { EditableRecipe } from "./types";
 
 type AdminRecipeEditorProps = {
@@ -245,10 +246,6 @@ export function AdminRecipeEditor({
             <h1 className="font-heading text-5xl font-black leading-[0.95] text-foreground">
               Recettes
             </h1>
-            <p className="max-w-3xl text-base font-semibold leading-7 text-muted-foreground">
-              Cree des brouillons et modifie les champs publics sans toucher au
-              JSON. Les images restent gerees dans l&apos;admin images.
-            </p>
           </div>
           <Button type="button" onClick={createRecipe}>
             <CirclePlus data-icon="inline-start" />
@@ -300,6 +297,12 @@ export function AdminRecipeEditor({
             </div>
 
             <SaveStateAlert state={state} />
+
+            <AdminRecipeImagePanel
+              key={selectedRecipe?.slug ?? "new-recipe-image"}
+              locale={locale}
+              recipe={selectedRecipe}
+            />
 
             <FieldGroup>
               <div className="grid gap-4 md:grid-cols-3">
