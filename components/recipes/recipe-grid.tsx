@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Clock3 } from "lucide-react";
+import { Clock3, Plus } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import type { Recipe } from "./types";
@@ -14,6 +14,7 @@ type RecipeGridProps = {
   recipes: Recipe[];
   /** First card spans full width as a featured tile. */
   featureFirst?: boolean;
+  showAddRecipeCard?: boolean;
 };
 
 export function RecipeGrid({
@@ -21,6 +22,7 @@ export function RecipeGrid({
   dict,
   recipes,
   featureFirst = true,
+  showAddRecipeCard = false,
 }: RecipeGridProps) {
   if (recipes.length === 0) return null;
 
@@ -77,6 +79,29 @@ export function RecipeGrid({
           </li>
         );
       })}
+      {showAddRecipeCard ? (
+        <li>
+          <Link
+            href={`/${locale}/admin/recettes?new=1`}
+            className="group flex h-72 w-full flex-col items-center justify-center gap-5 overflow-hidden rounded-2xl border border-dashed border-primary/40 bg-card text-center shadow-card transition duration-300 hover:-translate-y-0.5 hover:border-primary hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:h-80"
+          >
+            <span
+              aria-hidden
+              className="flex size-20 items-center justify-center rounded-full bg-primary/10 text-primary transition duration-300 group-hover:scale-105 group-hover:bg-primary group-hover:text-primary-foreground"
+            >
+              <Plus className="size-10 stroke-[1.8]" />
+            </span>
+            <span className="grid gap-2 px-8">
+              <span className="font-heading text-3xl font-black leading-none text-foreground">
+                {dict.recipeList.addRecipeTitle}
+              </span>
+              <span className="text-sm font-bold text-muted-foreground">
+                {dict.recipeList.addRecipeDescription}
+              </span>
+            </span>
+          </Link>
+        </li>
+      ) : null}
     </ul>
   );
 }

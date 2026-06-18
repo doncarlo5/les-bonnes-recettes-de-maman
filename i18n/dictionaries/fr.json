@@ -40,6 +40,8 @@
     "resultsSingular": "recette",
     "resultsPlural": "recettes",
     "reset": "Réinitialiser",
+    "addRecipeTitle": "Ajouter une recette",
+    "addRecipeDescription": "Créer un nouveau brouillon",
     "noResultsTitle": "Aucune recette trouvée",
     "noResultsDescription": "Essaie une autre recherche ou retire un filtre pour retrouver plus de recettes."
   },

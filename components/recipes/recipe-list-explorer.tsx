@@ -155,6 +155,7 @@ export function RecipeListExplorer({
           dict={dict}
           recipes={filteredRecipes}
           featureFirst={!hasActiveFilters}
+          showAddRecipeCard={!hasActiveFilters}
         />
       ) : (
         <div className="rounded-lg border border-dashed border-border px-6 py-12 text-center">

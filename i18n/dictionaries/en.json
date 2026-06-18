@@ -40,6 +40,8 @@
     "resultsSingular": "recipe",
     "resultsPlural": "recipes",
     "reset": "Reset",
+    "addRecipeTitle": "Add a recipe",
+    "addRecipeDescription": "Create a new draft",
     "noResultsTitle": "No recipes found",
     "noResultsDescription": "Try another search or remove a filter to bring more recipes back."
   },

@@ -63,6 +63,7 @@ type AdminRecipeEditorProps = {
   locale: Locale;
   recipes: EditableRecipe[];
   initialSlug?: string;
+  startInCreateMode?: boolean;
 };
 
 type SaveRecipeState = {
@@ -124,12 +125,17 @@ export function AdminRecipeEditor({
   locale,
   recipes,
   initialSlug,
+  startInCreateMode = false,
 }: AdminRecipeEditorProps) {
   const router = useRouter();
   const [state, setState] = useState<SaveRecipeState>(initialState);
   const [isPending, setIsPending] = useState(false);
   const initialRecipe =
-    recipes.find((recipe) => recipe.slug === initialSlug) ?? recipes[0] ?? null;
+    startInCreateMode
+      ? null
+      : recipes.find((recipe) => recipe.slug === initialSlug) ??
+        recipes[0] ??
+        null;
   const [selectedSlug, setSelectedSlug] = useState(initialRecipe?.slug ?? "");
   const [mode, setMode] = useState<RecipeFormMode>(
     initialRecipe ? "update" : "create",
@@ -187,7 +193,7 @@ export function AdminRecipeEditor({
     setMode("create");
     setSelectedSlug("");
     reset(cloneRecipe(blankRecipe));
-    router.replace(`/${locale}/admin/recettes`);
+    router.replace(`/${locale}/admin/recettes?new=1`);
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {

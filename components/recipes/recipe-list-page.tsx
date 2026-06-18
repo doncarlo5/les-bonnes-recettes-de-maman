@@ -9,10 +9,16 @@ import { RecipeListExplorer } from "./recipe-list-explorer";
 type RecipeListPageProps = {
   locale: Locale;
   dict: Dictionary;
+  hasInitialFilters?: boolean;
   recipes: Recipe[];
 };
 
-export function RecipeListPage({ locale, dict, recipes }: RecipeListPageProps) {
+export function RecipeListPage({
+  locale,
+  dict,
+  hasInitialFilters = false,
+  recipes,
+}: RecipeListPageProps) {
   if (recipes.length === 0) {
     return (
       <EmptyState
@@ -33,7 +39,14 @@ export function RecipeListPage({ locale, dict, recipes }: RecipeListPageProps) {
           </h1>
         </div>
         <Suspense
-          fallback={<RecipeGrid locale={locale} dict={dict} recipes={recipes} />}
+          fallback={
+            <RecipeGrid
+              locale={locale}
+              dict={dict}
+              recipes={recipes}
+              showAddRecipeCard={!hasInitialFilters}
+            />
+          }
         >
           <RecipeListExplorer locale={locale} dict={dict} recipes={recipes} />
         </Suspense>

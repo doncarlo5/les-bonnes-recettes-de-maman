@@ -11,12 +11,14 @@ export const dynamic = "force-dynamic";
 type AccessBody = {
   locale?: string;
   password?: string;
+  redirectTo?: string;
 };
 
 export async function POST(request: NextRequest) {
   const body = (await request.json()) as AccessBody;
   const locale = body.locale ?? "";
   const password = body.password ?? "";
+  const redirectTo = getSafeAdminRedirect(locale, body.redirectTo);
 
   if (!hasLocale(locale)) {
     return Response.json(
@@ -53,6 +55,20 @@ export async function POST(request: NextRequest) {
   return Response.json({
     type: "success",
     message: "Acces admin ouvert.",
-    redirectTo: `/${locale}/admin/recettes`,
+    redirectTo,
   });
+}
+
+function getSafeAdminRedirect(locale: string, redirectTo?: string) {
+  const fallback = `/${locale}/admin/recettes`;
+
+  if (
+    redirectTo === fallback ||
+    redirectTo === `${fallback}?new=1` ||
+    redirectTo?.startsWith(`${fallback}?slug=`)
+  ) {
+    return redirectTo;
+  }
+
+  return fallback;
 }

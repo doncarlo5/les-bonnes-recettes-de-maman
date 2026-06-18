@@ -17,6 +17,7 @@ import { Spinner } from "@/components/ui/spinner";
 
 type AdminAccessFormProps = {
   locale: Locale;
+  redirectTo?: string;
 };
 
 type AdminAccessState = {
@@ -30,7 +31,7 @@ const initialState: AdminAccessState = {
   message: "",
 };
 
-export function AdminAccessForm({ locale }: AdminAccessFormProps) {
+export function AdminAccessForm({ locale, redirectTo }: AdminAccessFormProps) {
   const router = useRouter();
   const [state, setState] = useState<AdminAccessState>(initialState);
   const [isPending, setIsPending] = useState(false);
@@ -51,6 +52,7 @@ export function AdminAccessForm({ locale }: AdminAccessFormProps) {
         body: JSON.stringify({
           locale,
           password: String(formData.get("password") ?? ""),
+          redirectTo,
         }),
       });
       const data = (await response.json()) as AdminAccessState;
