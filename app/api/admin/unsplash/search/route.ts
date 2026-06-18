@@ -1,4 +1,8 @@
 import { NextRequest } from "next/server";
+import {
+  adminUnauthorizedResponse,
+  getRecipeAdminAccess,
+} from "@/lib/recipe-admin-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -29,6 +33,12 @@ type UnsplashSearchResponse = {
 const utmSource = "les_bonnes_recettes_de_maman";
 
 export async function GET(request: NextRequest) {
+  const adminAccess = await getRecipeAdminAccess();
+
+  if (!adminAccess.ok) {
+    return adminUnauthorizedResponse(adminAccess);
+  }
+
   const accessKey = process.env.UNSPLASH_ACCESS_KEY;
 
   if (!accessKey) {

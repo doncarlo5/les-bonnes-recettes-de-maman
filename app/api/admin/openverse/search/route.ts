@@ -1,4 +1,8 @@
 import { NextRequest } from "next/server";
+import {
+  adminUnauthorizedResponse,
+  getRecipeAdminAccess,
+} from "@/lib/recipe-admin-auth";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +28,12 @@ type OpenverseSearchResponse = {
 };
 
 export async function GET(request: NextRequest) {
+  const adminAccess = await getRecipeAdminAccess();
+
+  if (!adminAccess.ok) {
+    return adminUnauthorizedResponse(adminAccess);
+  }
+
   const query = request.nextUrl.searchParams.get("query")?.trim();
 
   if (!query) {
