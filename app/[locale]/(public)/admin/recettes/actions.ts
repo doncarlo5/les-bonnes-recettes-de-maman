@@ -1,25 +1,76 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { fetchMutation } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
-import { hasLocale, type Locale } from "@/i18n/config";
-import type { EditableRecipeContent } from "@/components/recipes/types";
+import { hasLocale, locales } from "@/i18n/config";
+import {
+  getRecipeAdminAccess,
+  getRecipeAdminPassword,
+  grantRecipeAdminAccess,
+  hasRecipeAdminAccess,
+  verifyRecipeAdminPassword,
+} from "@/lib/recipe-admin-auth";
+import { editableRecipeContentSchema } from "@/components/recipes/recipe-form-schema";
 
-export type UpdateRecipeState = {
+export type SaveRecipeState = {
   type: "idle" | "success" | "error";
+  message: string;
+  slug?: string;
+  fieldErrors?: Record<string, string>;
+};
+
+export type AdminAccessState = {
+  type: "idle" | "error";
   message: string;
 };
 
 const initialErrorMessage = "Impossible d'enregistrer cette recette.";
 
-export async function updateRecipeAction(
-  _previousState: UpdateRecipeState,
+export { hasRecipeAdminAccess };
+
+export async function requestRecipesAdminAccessAction(
+  _previousState: AdminAccessState,
   formData: FormData,
-): Promise<UpdateRecipeState> {
+): Promise<AdminAccessState> {
   const locale = String(formData.get("locale") ?? "");
+  const password = String(formData.get("password") ?? "");
+
+  if (!hasLocale(locale)) {
+    return {
+      type: "error",
+      message: "Impossible d'ouvrir l'admin recettes.",
+    };
+  }
+
+  if (!getRecipeAdminPassword()) {
+    return {
+      type: "error",
+      message: "Mot de passe admin non configure.",
+    };
+  }
+
+  if (!verifyRecipeAdminPassword(password)) {
+    return {
+      type: "error",
+      message: "Mot de passe invalide.",
+    };
+  }
+
+  await grantRecipeAdminAccess();
+
+  redirect(`/${locale}/admin/recettes`);
+}
+
+export async function saveRecipeAction(
+  _previousState: SaveRecipeState,
+  formData: FormData,
+): Promise<SaveRecipeState> {
+  const locale = String(formData.get("locale") ?? "");
+  const mode = String(formData.get("mode") ?? "");
   const slug = String(formData.get("slug") ?? "").trim();
-  const recipeJson = String(formData.get("recipeJson") ?? "");
+  const payload = String(formData.get("recipePayload") ?? "");
 
   if (!hasLocale(locale)) {
     return {
@@ -28,35 +79,72 @@ export async function updateRecipeAction(
     };
   }
 
-  if (!slug) {
+  if (mode !== "create" && mode !== "update") {
+    return {
+      type: "error",
+      message: "Mode d'enregistrement invalide.",
+    };
+  }
+
+  if (mode === "update" && !slug) {
     return {
       type: "error",
       message: "Recette introuvable.",
     };
   }
 
-  let recipe: EditableRecipeContent;
+  const adminAccess = await getRecipeAdminAccess();
+
+  if (!adminAccess.ok) {
+    return {
+      type: "error",
+      message: adminAccess.message,
+    };
+  }
+
+  let parsedPayload: unknown;
 
   try {
-    recipe = JSON.parse(recipeJson) as EditableRecipeContent;
+    parsedPayload = JSON.parse(payload);
   } catch {
     return {
       type: "error",
-      message: "JSON invalide.",
+      message: "Donnees du formulaire invalides.",
+    };
+  }
+
+  const validation = editableRecipeContentSchema.safeParse(parsedPayload);
+
+  if (!validation.success) {
+    return {
+      type: "error",
+      message: "Corrige les champs indiques avant d'enregistrer.",
+      fieldErrors: flattenIssues(validation.error.issues),
     };
   }
 
   try {
-    const result = await fetchMutation(api.recipes.update, {
-      slug,
-      recipe,
-    });
+    const result =
+      mode === "create"
+        ? await fetchMutation(api.recipes.create, {
+            recipe: {
+              ...validation.data,
+              status: "draft",
+            },
+            adminPassword: adminAccess.adminPassword,
+          })
+        : await fetchMutation(api.recipes.update, {
+            slug,
+            recipe: validation.data,
+            adminPassword: adminAccess.adminPassword,
+          });
 
-    revalidateRecipePaths(locale, result.slug);
+    revalidateRecipePaths(result.slug);
 
     return {
       type: "success",
-      message: `Recette enregistrée: ${result.title}`,
+      message: `Recette enregistree: ${result.title}`,
+      slug: result.slug,
     };
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
@@ -75,8 +163,25 @@ export async function updateRecipeAction(
   }
 }
 
-function revalidateRecipePaths(locale: Locale, slug: string) {
-  revalidatePath(`/${locale}`);
-  revalidatePath(`/${locale}/recettes/${slug}`);
-  revalidatePath(`/${locale}/admin/recettes`);
+export const updateRecipeAction = saveRecipeAction;
+
+function revalidateRecipePaths(slug: string) {
+  for (const locale of locales) {
+    revalidatePath(`/${locale}`);
+    revalidatePath(`/${locale}/recettes`);
+    revalidatePath(`/${locale}/recettes/${slug}`);
+    revalidatePath(`/${locale}/admin/recettes`);
+  }
+}
+
+function flattenIssues(issues: { path: PropertyKey[]; message: string }[]) {
+  return issues.reduce<Record<string, string>>((accumulator, issue) => {
+    const key = issue.path
+      .filter((part) => typeof part === "string" || typeof part === "number")
+      .join(".");
+    if (key && !accumulator[key]) {
+      accumulator[key] = issue.message;
+    }
+    return accumulator;
+  }, {});
 }

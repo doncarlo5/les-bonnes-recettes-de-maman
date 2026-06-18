@@ -4,7 +4,7 @@ import { ArrowRight, Clock3 } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import type { Recipe } from "@/components/recipes/types";
-import { RecipeGrid } from "@/components/recipes/recipe-list-page";
+import { RecipeGrid } from "@/components/recipes/recipe-grid";
 import { EmptyState } from "@/components/recipes/empty-state";
 
 const defaultRecipeImageUrl =

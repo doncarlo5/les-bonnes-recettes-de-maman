@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation, query, type QueryCtx } from "./_generated/server";
+import { mutation, query, type MutationCtx, type QueryCtx } from "./_generated/server";
 import type { Doc } from "./_generated/dataModel";
 import rawRecipes from "./recettes.json";
 import { toSeedRecipe, type SourceRecipe } from "./recipeTranslations";
@@ -124,12 +124,12 @@ export const listForEditing = query({
     locale: localeValidator,
   },
   handler: async (ctx, args) => {
-    const publishedRecipes = await ctx.db
+    const editableRecipes = await ctx.db
       .query("recipes")
-      .withIndex("by_status", (q) => q.eq("status", "published"))
-      .collect();
+      .order("desc")
+      .take(200);
 
-    return publishedRecipes
+    return editableRecipes
       .map((recipe) => ({
         _id: recipe._id,
         _creationTime: recipe._creationTime,
@@ -146,9 +146,42 @@ export const listForEditing = query({
   },
 });
 
+export const create = mutation({
+  args: {
+    recipe: editableRecipeValidator,
+    adminPassword: v.string(),
+  },
+  handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
+
+    const title = args.recipe.translations.fr.title.trim();
+    const baseSlug = slugify(title || "nouvelle-recette");
+    const slug = await getAvailableSlug(ctx, baseSlug);
+
+    const recipeId = await ctx.db.insert("recipes", {
+      slug,
+      heroImageUrl: "",
+      defaultLocale: args.recipe.defaultLocale,
+      translations: args.recipe.translations,
+      tags: args.recipe.tags,
+      status: "draft",
+    });
+
+    return {
+      recipeId,
+      slug,
+      title: title || "Nouvelle recette",
+    };
+  },
+});
+
 export const generateUploadUrl = mutation({
-  args: {},
-  handler: async (ctx) => {
+  args: {
+    adminPassword: v.string(),
+  },
+  handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
+
     return await ctx.storage.generateUploadUrl();
   },
 });
@@ -157,8 +190,11 @@ export const update = mutation({
   args: {
     slug: v.string(),
     recipe: editableRecipeValidator,
+    adminPassword: v.string(),
   },
   handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
+
     const existing = await ctx.db
       .query("recipes")
       .withIndex("by_slug", (q) => q.eq("slug", args.slug))
@@ -187,8 +223,11 @@ export const setHeroImage = mutation({
   args: {
     slug: v.string(),
     storageId: v.id("_storage"),
+    adminPassword: v.string(),
   },
   handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
+
     const recipe = await ctx.db
       .query("recipes")
       .withIndex("by_slug", (q) => q.eq("slug", args.slug))
@@ -225,8 +264,11 @@ export const setUnsplashHeroImage = mutation({
     photographerName: v.string(),
     photographerUrl: v.string(),
     photoUrl: v.string(),
+    adminPassword: v.string(),
   },
   handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
+
     const recipe = await ctx.db
       .query("recipes")
       .withIndex("by_slug", (q) => q.eq("slug", args.slug))
@@ -261,8 +303,11 @@ export const setOpenverseHeroImage = mutation({
     slug: v.string(),
     storageId: v.id("_storage"),
     imageCredit: openverseImageCreditValidator,
+    adminPassword: v.string(),
   },
   handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
+
     const recipe = await ctx.db
       .query("recipes")
       .withIndex("by_slug", (q) => q.eq("slug", args.slug))
@@ -295,8 +340,12 @@ export const setOpenverseHeroImage = mutation({
 });
 
 export const seed = mutation({
-  args: {},
-  handler: async (ctx) => {
+  args: {
+    adminPassword: v.string(),
+  },
+  handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
+
     let inserted = 0;
     let updated = 0;
 
@@ -359,4 +408,40 @@ async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
     status: recipe.status,
     ...translation,
   };
+}
+
+async function getAvailableSlug(ctx: MutationCtx, baseSlug: string) {
+  let candidate = baseSlug;
+  let suffix = 2;
+
+  while (
+    await ctx.db
+      .query("recipes")
+      .withIndex("by_slug", (q) => q.eq("slug", candidate))
+      .unique()
+  ) {
+    candidate = `${baseSlug}-${suffix}`;
+    suffix += 1;
+  }
+
+  return candidate;
+}
+
+function assertRecipeAdminPassword(adminPassword: string) {
+  const expectedPassword = process.env.RECIPE_ADMIN_PASSWORD;
+
+  if (!expectedPassword || adminPassword !== expectedPassword) {
+    throw new Error("RECIPE_ADMIN_REQUIRED");
+  }
+}
+
+function slugify(value: string) {
+  const slug = value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return slug || "nouvelle-recette";
 }

@@ -1,8 +1,13 @@
 import { fetchQuery } from "convex/nextjs";
+import { AdminAccessForm } from "@/components/recipes/admin-access-form";
 import { AdminRecipeEditor } from "@/components/recipes/admin-recipe-editor";
 import { api } from "@/convex/_generated/api";
 import type { Locale } from "@/i18n/config";
-import { updateRecipeAction } from "./actions";
+import {
+  hasRecipeAdminAccess,
+  requestRecipesAdminAccessAction,
+  saveRecipeAction,
+} from "./actions";
 
 type PageProps = {
   params: Promise<{
@@ -16,6 +21,17 @@ type PageProps = {
 export default async function Page({ params, searchParams }: PageProps) {
   const { locale } = await params;
   const { slug } = await searchParams;
+  const hasAdminAccess = await hasRecipeAdminAccess();
+
+  if (!hasAdminAccess) {
+    return (
+      <AdminAccessForm
+        locale={locale}
+        action={requestRecipesAdminAccessAction}
+      />
+    );
+  }
+
   const recipes = await fetchQuery(api.recipes.listForEditing, { locale });
   const initialSlug = Array.isArray(slug) ? slug[0] : slug;
 
@@ -24,7 +40,7 @@ export default async function Page({ params, searchParams }: PageProps) {
       locale={locale}
       recipes={recipes}
       initialSlug={initialSlug}
-      action={updateRecipeAction}
+      action={saveRecipeAction}
     />
   );
 }

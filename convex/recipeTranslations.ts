@@ -59,6 +59,35 @@ export type SeedRecipe = {
   status: "published";
 };
 
+const recipeCategoryTags: Record<string, string[]> = {
+  amandin: ["dessert", "sucre"],
+  "banana-bread-du-kona-inn": ["dessert", "sucre"],
+  "cake-au-chevre-et-courgettes": ["sale"],
+  "cake-chevre-noix-olives": ["sale"],
+  "cake-d-ete-tout-vert": ["sale"],
+  "cake-moelleux-au-citron-de-pierre-herme": ["dessert", "sucre"],
+  "cake-orange": ["dessert", "sucre"],
+  "clafoutis-poires-et-framboises": ["dessert", "sucre"],
+  "cocotte-de-cabillaud-aux-courgettes-et-curry": ["plat", "sale"],
+  "coulants-au-chocolat": ["dessert", "sucre"],
+  "crumble-aux-pommes-du-verger": ["dessert", "sucre"],
+  "flan-au-lait-concentre-sucre-nestle": ["dessert", "sucre"],
+  "gateau-au-chocolat": ["dessert", "sucre"],
+  "gateau-au-citron": ["dessert", "sucre"],
+  "gateau-aux-pommes": ["dessert", "sucre"],
+  gougeres: ["sale"],
+  "macaron-tante-maria": ["dessert", "sucre"],
+  moka: ["dessert", "sucre"],
+  "osso-buco": ["plat", "sale"],
+  "pain-de-poisson": ["plat", "sale"],
+  "pate-feuilletee-maman": ["sucre", "sale"],
+  "pate-sucree-de-pierre-herme": ["dessert", "sucre"],
+  "tarte-aux-amandes-et-confiture-de-framboises": ["dessert", "sucre"],
+  tiramisu: ["dessert", "sucre"],
+  vacherin: ["dessert", "sucre"],
+  "veloute-de-courgettes": ["plat", "sale"],
+};
+
 const defaultHeroImageUrl =
   "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=1400&q=85";
 
@@ -758,16 +787,6 @@ const unitTranslations: Record<string, string> = {
   verre: "glass",
 };
 
-const tagTranslations: Record<string, string> = {
-  dessert: "dessert",
-  chocolat: "chocolate",
-  four: "oven",
-  sucre: "sweet",
-  salé: "savory",
-  poisson: "fish",
-  végétarien: "vegetarian",
-};
-
 export function localizeRecipe(recipe: SourceRecipe, locale: Locale): LocalizedRecipe {
   if (locale === "fr") {
     return {
@@ -822,7 +841,7 @@ export function toSeedRecipe(recipe: SourceRecipe): SeedRecipe {
       fr: localizeRecipe(recipe, "fr"),
       en: localizeRecipe(recipe, "en"),
     },
-    tags: inferTags(recipe, "fr"),
+    tags: inferTags(recipe),
     status: "published",
   };
 }
@@ -856,44 +875,8 @@ function getTimeLabel(recipe: SourceRecipe, locale: Locale) {
   return fallback;
 }
 
-function inferTags(recipe: SourceRecipe, locale: Locale) {
-  const text = `${recipe.title} ${recipe.description} ${recipe.ingredients
-    .map((ingredient) => ingredient.name)
-    .join(" ")}`.toLowerCase();
-  const tags: string[] = [];
-
-  if (
-    [
-      "gâteau",
-      "tarte",
-      "crumble",
-      "clafoutis",
-      "tiramisu",
-      "flan",
-      "chocolat",
-      "citron",
-      "banana bread",
-      "bananes",
-    ].some((word) => text.includes(word))
-  ) {
-    tags.push("dessert");
-  }
-
-  if (["cabillaud", "poisson"].some((word) => text.includes(word))) {
-    tags.push("poisson");
-  }
-
-  if (["cake salé", "gougères", "courgettes", "chèvre"].some((word) => text.includes(word))) {
-    tags.push("salé");
-  }
-
-  if (text.includes("chocolat")) tags.push("chocolat");
-  if (text.includes("four") || recipe.temperature) tags.push("four");
-
-  const normalizedTags = tags.length ? tags : ["recette"];
-  return locale === "fr"
-    ? normalizedTags
-    : normalizedTags.map((tag) => translate(tagTranslations, tag));
+function inferTags(recipe: SourceRecipe) {
+  return recipeCategoryTags[recipe.slug] ?? ["sucre", "sale"];
 }
 
 function translate(translations: Record<string, string>, value: string) {
