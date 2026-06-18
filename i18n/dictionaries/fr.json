@@ -13,8 +13,6 @@
   "home": {
     "eyebrow": "Recettes de famille",
     "lead": "Un carnet de cuisine transmis de génération en génération — desserts du dimanche, plats mijotés, petites douceurs du quotidien.",
-    "featuredEyebrow": "À la une",
-    "featuredCta": "Lire la recette",
     "allRecipesTitle": "Toutes les recettes",
     "allRecipesEyebrow": "Le carnet"
   },
@@ -29,6 +27,16 @@
     "searchLabel": "Rechercher une recette",
     "searchPlaceholder": "Rechercher par titre ou ingrédient",
     "searchSubmit": "Rechercher",
+    "viewLabel": "Mode d’affichage des recettes",
+    "views": {
+      "cards": "Vue cartes",
+      "list": "Vue liste"
+    },
+    "sortLabel": "Tri des recettes",
+    "sorts": {
+      "alpha": "Alphabétique",
+      "date": "Date d’ajout"
+    },
     "categoriesLabel": "Catégories de recettes",
     "categories": {
       "dessert": "Dessert",

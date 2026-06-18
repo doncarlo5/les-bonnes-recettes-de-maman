@@ -13,8 +13,6 @@
   "home": {
     "eyebrow": "Family recipes",
     "lead": "A cookbook handed down from one generation to the next — Sunday desserts, slow-cooked dinners, everyday little treats.",
-    "featuredEyebrow": "Featured",
-    "featuredCta": "Read the recipe",
     "allRecipesTitle": "Every recipe",
     "allRecipesEyebrow": "The notebook"
   },
@@ -29,6 +27,16 @@
     "searchLabel": "Search recipes",
     "searchPlaceholder": "Search by title or ingredient",
     "searchSubmit": "Search",
+    "viewLabel": "Recipe display mode",
+    "views": {
+      "cards": "Card view",
+      "list": "List view"
+    },
+    "sortLabel": "Recipe sort",
+    "sorts": {
+      "alpha": "Alphabetical",
+      "date": "Date added"
+    },
     "categoriesLabel": "Recipe categories",
     "categories": {
       "dessert": "Dessert",

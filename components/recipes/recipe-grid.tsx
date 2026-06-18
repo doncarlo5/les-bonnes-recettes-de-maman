@@ -12,8 +12,6 @@ type RecipeGridProps = {
   locale: Locale;
   dict: Dictionary;
   recipes: Recipe[];
-  /** First card spans full width as a featured tile. */
-  featureFirst?: boolean;
   showAddRecipeCard?: boolean;
 };
 
@@ -21,36 +19,25 @@ export function RecipeGrid({
   locale,
   dict,
   recipes,
-  featureFirst = true,
   showAddRecipeCard = false,
 }: RecipeGridProps) {
   if (recipes.length === 0) return null;
 
   return (
     <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
-      {recipes.map((recipe, index) => {
-        const isFeatured = featureFirst && index === 0;
+      {recipes.map((recipe) => {
         return (
-          <li
-            key={recipe._id}
-            className={isFeatured ? "md:col-span-2" : undefined}
-          >
+          <li key={recipe._id}>
             <Link
               href={`/${locale}/recettes/${recipe.slug}`}
-              className={`group relative block w-full overflow-hidden rounded-2xl bg-stone-900 text-left ring-1 ring-black/5 shadow-card transition duration-300 hover:-translate-y-0.5 hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
-                isFeatured ? "h-[26rem] lg:h-[30rem]" : "h-72 lg:h-80"
-              }`}
+              className="group relative block h-72 w-full overflow-hidden rounded-2xl bg-stone-900 text-left ring-1 ring-black/5 shadow-card transition duration-300 hover:-translate-y-0.5 hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:h-80"
             >
               <span className="absolute inset-0 overflow-hidden">
                 <Image
                   src={recipe.heroImageUrl || defaultRecipeImageUrl}
                   alt=""
                   fill
-                  sizes={
-                    isFeatured
-                      ? "(max-width: 1024px) 100vw, 1100px"
-                      : "(max-width: 768px) 100vw, 540px"
-                  }
+                  sizes="(max-width: 768px) 100vw, 540px"
                   className="object-cover transition duration-500 group-hover:scale-[1.04]"
                 />
               </span>
@@ -61,9 +48,7 @@ export function RecipeGrid({
                   {recipe.timeLabel}
                 </span>
                 <span
-                  className={`block max-w-[18ch] font-heading font-black leading-[0.95] text-white drop-shadow-sm ${
-                    isFeatured ? "text-5xl lg:text-7xl" : "text-4xl lg:text-5xl"
-                  }`}
+                  className="block max-w-[18ch] font-heading text-4xl font-black leading-[0.95] text-white drop-shadow-sm lg:text-5xl"
                 >
                   {recipe.title}
                 </span>

@@ -1,7 +1,7 @@
 "use client";
 
 import { type FormEvent, useMemo, useState } from "react";
-import { Search, X } from "lucide-react";
+import { ArrowDownAZ, CalendarDays, LayoutGrid, List, Search, X } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
@@ -10,10 +10,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { Recipe } from "./types";
 import { RecipeGrid } from "./recipe-grid";
+import { RecipeListRows } from "./recipe-list-rows";
 
 const categoryValues = ["dessert", "plat", "sucre", "sale"] as const;
+const viewValues = ["cards", "list"] as const;
+const sortValues = ["alpha", "date"] as const;
 
 type RecipeCategory = (typeof categoryValues)[number];
+type RecipeView = (typeof viewValues)[number];
+type RecipeSort = (typeof sortValues)[number];
 
 type RecipeListExplorerProps = {
   locale: Locale;
@@ -29,12 +34,14 @@ export function RecipeListExplorer({
   const searchParams = useSearchParams();
   const query = searchParams.get("q")?.trim() ?? "";
   const activeCategories = getActiveCategories(searchParams);
+  const activeView = getActiveView(searchParams);
+  const activeSort = getActiveSort(searchParams);
   const [draftState, setDraftState] = useState({ query, value: query });
   const draftQuery = draftState.query === query ? draftState.value : query;
 
   const filteredRecipes = useMemo(
-    () => filterRecipes(recipes, query, activeCategories),
-    [activeCategories, query, recipes],
+    () => sortRecipes(filterRecipes(recipes, query, activeCategories), activeSort, locale),
+    [activeCategories, activeSort, locale, query, recipes],
   );
   const hasActiveFilters = query.length > 0 || activeCategories.length > 0;
 
@@ -43,6 +50,8 @@ export function RecipeListExplorer({
     updateUrl({
       query: draftQuery.trim(),
       categories: activeCategories,
+      view: activeView,
+      sort: activeSort,
       mode: "push",
     });
   }
@@ -55,13 +64,41 @@ export function RecipeListExplorer({
     updateUrl({
       query,
       categories: nextCategories,
+      view: activeView,
+      sort: activeSort,
       mode: "push",
     });
   }
 
   function resetFilters() {
     setDraftState({ query: "", value: "" });
-    updateUrl({ query: "", categories: [], mode: "push" });
+    updateUrl({
+      query: "",
+      categories: [],
+      view: activeView,
+      sort: activeSort,
+      mode: "push",
+    });
+  }
+
+  function setView(view: RecipeView) {
+    updateUrl({
+      query,
+      categories: activeCategories,
+      view,
+      sort: activeSort,
+      mode: "push",
+    });
+  }
+
+  function setSort(sort: RecipeSort) {
+    updateUrl({
+      query,
+      categories: activeCategories,
+      view: activeView,
+      sort,
+      mode: "push",
+    });
   }
 
   return (
@@ -147,16 +184,80 @@ export function RecipeListExplorer({
             ) : null}
           </div>
         </div>
+
+        <div className="flex flex-col gap-3 border-t border-border pt-4 md:flex-row md:items-center md:justify-between">
+          <div
+            className="flex flex-wrap gap-2"
+            aria-label={dict.recipeList.viewLabel}
+          >
+            {viewValues.map((view) => {
+              const isActive = activeView === view;
+              const Icon = view === "cards" ? LayoutGrid : List;
+              return (
+                <button
+                  key={view}
+                  type="button"
+                  aria-pressed={isActive}
+                  onClick={() => setView(view)}
+                  className={cn(
+                    "inline-flex h-9 items-center gap-2 rounded-full border px-4 text-sm font-black transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                    isActive
+                      ? "border-foreground bg-foreground text-background"
+                      : "border-border bg-background text-foreground hover:border-foreground/60",
+                  )}
+                >
+                  <Icon className="size-4 stroke-[1.8]" />
+                  {dict.recipeList.views[view]}
+                </button>
+              );
+            })}
+          </div>
+
+          <div
+            className="flex flex-wrap gap-2"
+            aria-label={dict.recipeList.sortLabel}
+          >
+            {sortValues.map((sort) => {
+              const isActive = activeSort === sort;
+              const Icon = sort === "alpha" ? ArrowDownAZ : CalendarDays;
+              return (
+                <button
+                  key={sort}
+                  type="button"
+                  aria-pressed={isActive}
+                  onClick={() => setSort(sort)}
+                  className={cn(
+                    "inline-flex h-9 items-center gap-2 rounded-full border px-4 text-sm font-black transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                    isActive
+                      ? "border-foreground bg-foreground text-background"
+                      : "border-border bg-background text-foreground hover:border-foreground/60",
+                  )}
+                >
+                  <Icon className="size-4 stroke-[1.8]" />
+                  {dict.recipeList.sorts[sort]}
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </section>
 
       {filteredRecipes.length > 0 ? (
-        <RecipeGrid
-          locale={locale}
-          dict={dict}
-          recipes={filteredRecipes}
-          featureFirst={!hasActiveFilters}
-          showAddRecipeCard={!hasActiveFilters}
-        />
+        activeView === "list" ? (
+          <RecipeListRows
+            locale={locale}
+            dict={dict}
+            recipes={filteredRecipes}
+            showAddRecipeRow={!hasActiveFilters}
+          />
+        ) : (
+          <RecipeGrid
+            locale={locale}
+            dict={dict}
+            recipes={filteredRecipes}
+            showAddRecipeCard={!hasActiveFilters}
+          />
+        )
       ) : (
         <div className="rounded-lg border border-dashed border-border px-6 py-12 text-center">
           <p className="font-heading text-3xl font-black text-foreground">
@@ -190,6 +291,16 @@ function filterRecipes(
   });
 }
 
+function sortRecipes(recipes: Recipe[], sort: RecipeSort, locale: Locale) {
+  return [...recipes].sort((recipeA, recipeB) => {
+    if (sort === "date") {
+      return recipeB._creationTime - recipeA._creationTime;
+    }
+
+    return recipeA.title.localeCompare(recipeB.title, locale);
+  });
+}
+
 function getRecipeSearchText(recipe: Recipe) {
   return normalizeSearchText(
     [recipe.title, ...recipe.ingredients.map((ingredient) => ingredient.name)].join(
@@ -214,18 +325,34 @@ function getActiveCategories(searchParams: { getAll: (name: string) => string[] 
     );
 }
 
+function getActiveView(searchParams: { get: (name: string) => string | null }) {
+  const value = searchParams.get("view");
+  return viewValues.includes(value as RecipeView) ? (value as RecipeView) : "cards";
+}
+
+function getActiveSort(searchParams: { get: (name: string) => string | null }) {
+  const value = searchParams.get("sort");
+  return sortValues.includes(value as RecipeSort) ? (value as RecipeSort) : "alpha";
+}
+
 function updateUrl({
   query,
   categories,
+  view,
+  sort,
   mode,
 }: {
   query: string;
   categories: RecipeCategory[];
+  view: RecipeView;
+  sort: RecipeSort;
   mode: "push" | "replace";
 }) {
   const params = new URLSearchParams(window.location.search);
   params.delete("q");
   params.delete("cat");
+  params.delete("view");
+  params.delete("sort");
 
   if (query) {
     params.set("q", query);
@@ -234,6 +361,9 @@ function updateUrl({
   for (const category of categories) {
     params.append("cat", category);
   }
+
+  params.set("view", view);
+  params.set("sort", sort);
 
   const nextUrl = params.toString()
     ? `${window.location.pathname}?${params.toString()}`

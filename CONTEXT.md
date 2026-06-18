@@ -21,6 +21,11 @@ _Avoid_: Recherche plein texte, recherche globale
 Image unique associee a une Recette, utilisee comme couverture dans la liste, le detail et les apercus de partage.
 _Avoid_: Galerie, illustration, image admin
 
+**Date d'ajout**:
+Date technique de creation d'une Recette dans le carnet, utilisee pour le tri public par date.
+Elle ne signifie pas date de publication ni derniere modification.
+_Avoid_: Date de publication, date de mise a jour
+
 ## Example Dialogue
 
 Dev: "Est-ce qu'une Recette brouillon peut avoir une traduction anglaise incomplete ?"
