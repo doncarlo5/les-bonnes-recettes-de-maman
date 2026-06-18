@@ -72,14 +72,6 @@ export const editableRecipeContentSchema = z
     ]);
     addPublishedIssue(ctx, fr.author, ["translations", "fr", "author"]);
 
-    if (!fr.servings || fr.servings.quantity <= 0 || !fr.servings.unit.trim()) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Les portions FR sont obligatoires pour publier.",
-        path: ["translations", "fr", "servings"],
-      });
-    }
-
     if (!hasTime) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

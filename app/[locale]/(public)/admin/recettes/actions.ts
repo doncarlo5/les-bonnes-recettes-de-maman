@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { fetchMutation } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
-import { hasLocale, type Locale } from "@/i18n/config";
+import { hasLocale, locales } from "@/i18n/config";
 import { editableRecipeContentSchema } from "@/components/recipes/recipe-form-schema";
 
 export type SaveRecipeState = {
@@ -147,7 +147,7 @@ export async function saveRecipeAction(
             recipe: validation.data,
           });
 
-    revalidateRecipePaths(locale, result.slug);
+    revalidateRecipePaths(result.slug);
 
     return {
       type: "success",
@@ -173,10 +173,13 @@ export async function saveRecipeAction(
 
 export const updateRecipeAction = saveRecipeAction;
 
-function revalidateRecipePaths(locale: Locale, slug: string) {
-  revalidatePath(`/${locale}`);
-  revalidatePath(`/${locale}/recettes/${slug}`);
-  revalidatePath(`/${locale}/admin/recettes`);
+function revalidateRecipePaths(slug: string) {
+  for (const locale of locales) {
+    revalidatePath(`/${locale}`);
+    revalidatePath(`/${locale}/recettes`);
+    revalidatePath(`/${locale}/recettes/${slug}`);
+    revalidatePath(`/${locale}/admin/recettes`);
+  }
 }
 
 function flattenIssues(issues: { path: PropertyKey[]; message: string }[]) {
