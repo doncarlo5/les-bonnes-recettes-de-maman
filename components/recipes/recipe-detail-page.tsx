@@ -11,7 +11,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import type { requestRecipeAdminAccessAction } from "@/app/[locale]/(public)/recettes/[slug]/actions";
 import { EditRecipeAccess } from "./edit-recipe-access";
 import type { Ingredient, Recipe } from "./types";
 
@@ -22,16 +21,12 @@ type RecipeDetailPageProps = {
   locale: Locale;
   dict: Dictionary;
   recipe: Recipe;
-  hasAdminAccess: boolean;
-  requestAdminAccessAction: typeof requestRecipeAdminAccessAction;
 };
 
 export function RecipeDetailPage({
   locale,
   dict,
   recipe,
-  hasAdminAccess,
-  requestAdminAccessAction,
 }: RecipeDetailPageProps) {
   return (
     <main className="text-foreground">
@@ -58,8 +53,6 @@ export function RecipeDetailPage({
         <EditRecipeAccess
           locale={locale}
           slug={recipe.slug}
-          hasAdminAccess={hasAdminAccess}
-          action={requestAdminAccessAction}
         />
 
         {recipe.imageCredit ? (
