@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -18,7 +18,6 @@ import {
   Save,
   Trash2,
 } from "lucide-react";
-import type { saveRecipeAction } from "@/app/[locale]/(public)/admin/recettes/actions";
 import type { Locale } from "@/i18n/config";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -63,7 +62,13 @@ type AdminRecipeEditorProps = {
   locale: Locale;
   recipes: EditableRecipe[];
   initialSlug?: string;
-  action: typeof saveRecipeAction;
+};
+
+type SaveRecipeState = {
+  type: "idle" | "success" | "error";
+  message: string;
+  slug?: string;
+  fieldErrors?: Record<string, string>;
 };
 
 type RecipeFormMode = "create" | "update";
@@ -118,10 +123,10 @@ export function AdminRecipeEditor({
   locale,
   recipes,
   initialSlug,
-  action,
 }: AdminRecipeEditorProps) {
   const router = useRouter();
-  const [state, formAction, isPending] = useActionState(action, initialState);
+  const [state, setState] = useState<SaveRecipeState>(initialState);
+  const [isPending, setIsPending] = useState(false);
   const initialRecipe =
     recipes.find((recipe) => recipe.slug === initialSlug) ?? recipes[0] ?? null;
   const [selectedSlug, setSelectedSlug] = useState(initialRecipe?.slug ?? "");
@@ -166,12 +171,6 @@ export function AdminRecipeEditor({
     name: "tags",
   });
 
-  useEffect(() => {
-    if (state.type === "success" && state.slug) {
-      router.replace(`/${locale}/admin/recettes?slug=${state.slug}`);
-    }
-  }, [locale, router, state.slug, state.type]);
-
   function selectRecipe(slug: string) {
     const recipe = recipes.find((item) => item.slug === slug) ?? null;
     setMode(recipe ? "update" : "create");
@@ -190,20 +189,51 @@ export function AdminRecipeEditor({
     router.replace(`/${locale}/admin/recettes`);
   }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    if (submitRequestedRef.current) {
-      submitRequestedRef.current = false;
-      return;
-    }
-
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    if (submitRequestedRef.current || isPending) return;
+
+    const recipePayload = JSON.stringify(normalizePayload(getValues()));
     if (payloadRef.current) {
-      payloadRef.current.value = JSON.stringify(normalizePayload(getValues()));
+      payloadRef.current.value = recipePayload;
     }
 
     submitRequestedRef.current = true;
-    formRef.current?.requestSubmit();
+    setIsPending(true);
+
+    try {
+      const response = await fetch("/api/admin/recipes/save", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          locale,
+          mode,
+          slug: selectedSlug,
+          recipePayload,
+        }),
+      });
+      const data = (await response.json()) as SaveRecipeState;
+
+      setState(data);
+
+      if (response.ok && data.type === "success" && data.slug) {
+        setMode("update");
+        setSelectedSlug(data.slug);
+        router.replace(`/${locale}/admin/recettes?slug=${data.slug}`);
+        router.refresh();
+      }
+    } catch {
+      setState({
+        type: "error",
+        message: "Impossible d'enregistrer cette recette.",
+      });
+    } finally {
+      submitRequestedRef.current = false;
+      setIsPending(false);
+    }
   }
 
   return (
@@ -235,7 +265,6 @@ export function AdminRecipeEditor({
 
           <form
             ref={formRef}
-            action={formAction}
             onSubmit={handleSubmit}
             className="flex flex-col gap-6 rounded-lg border bg-card p-5 shadow-card"
           >

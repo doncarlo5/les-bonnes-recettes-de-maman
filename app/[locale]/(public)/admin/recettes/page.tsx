@@ -3,11 +3,7 @@ import { AdminAccessForm } from "@/components/recipes/admin-access-form";
 import { AdminRecipeEditor } from "@/components/recipes/admin-recipe-editor";
 import { api } from "@/convex/_generated/api";
 import type { Locale } from "@/i18n/config";
-import {
-  hasRecipeAdminAccess,
-  requestRecipesAdminAccessAction,
-  saveRecipeAction,
-} from "./actions";
+import { hasRecipeAdminAccess } from "@/lib/recipe-admin-auth";
 
 type PageProps = {
   params: Promise<{
@@ -24,12 +20,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   const hasAdminAccess = await hasRecipeAdminAccess();
 
   if (!hasAdminAccess) {
-    return (
-      <AdminAccessForm
-        locale={locale}
-        action={requestRecipesAdminAccessAction}
-      />
-    );
+    return <AdminAccessForm locale={locale} />;
   }
 
   const recipes = await fetchQuery(api.recipes.listForEditing, { locale });
@@ -40,7 +31,6 @@ export default async function Page({ params, searchParams }: PageProps) {
       locale={locale}
       recipes={recipes}
       initialSlug={initialSlug}
-      action={saveRecipeAction}
     />
   );
 }

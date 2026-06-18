@@ -1,11 +1,8 @@
 "use client";
 
-import { useActionState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { LockKeyhole } from "lucide-react";
-import type {
-  AdminAccessState,
-  requestRecipesAdminAccessAction,
-} from "@/app/[locale]/(public)/admin/recettes/actions";
 import type { Locale } from "@/i18n/config";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -20,7 +17,12 @@ import { Spinner } from "@/components/ui/spinner";
 
 type AdminAccessFormProps = {
   locale: Locale;
-  action: typeof requestRecipesAdminAccessAction;
+};
+
+type AdminAccessState = {
+  type: "idle" | "success" | "error";
+  message: string;
+  redirectTo?: string;
 };
 
 const initialState: AdminAccessState = {
@@ -28,8 +30,50 @@ const initialState: AdminAccessState = {
   message: "",
 };
 
-export function AdminAccessForm({ locale, action }: AdminAccessFormProps) {
-  const [state, formAction, isPending] = useActionState(action, initialState);
+export function AdminAccessForm({ locale }: AdminAccessFormProps) {
+  const router = useRouter();
+  const [state, setState] = useState<AdminAccessState>(initialState);
+  const [isPending, setIsPending] = useState(false);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setIsPending(true);
+    setState(initialState);
+
+    const formData = new FormData(event.currentTarget);
+
+    try {
+      const response = await fetch("/api/admin/recipes/access", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          locale,
+          password: String(formData.get("password") ?? ""),
+        }),
+      });
+      const data = (await response.json()) as AdminAccessState;
+
+      if (!response.ok || data.type === "error") {
+        setState({
+          type: "error",
+          message: data.message || "Impossible d'ouvrir l'admin recettes.",
+        });
+        return;
+      }
+
+      router.replace(data.redirectTo ?? `/${locale}/admin/recettes`);
+      router.refresh();
+    } catch {
+      setState({
+        type: "error",
+        message: "Impossible d'ouvrir l'admin recettes.",
+      });
+    } finally {
+      setIsPending(false);
+    }
+  }
 
   return (
     <main className="min-h-screen px-5 py-8 text-foreground sm:px-6">
@@ -45,7 +89,7 @@ export function AdminAccessForm({ locale, action }: AdminAccessFormProps) {
         </div>
 
         <form
-          action={formAction}
+          onSubmit={handleSubmit}
           className="rounded-lg border bg-card p-5 shadow-card"
         >
           <input type="hidden" name="locale" value={locale} />
