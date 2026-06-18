@@ -24,7 +24,24 @@
   },
   "recipeList": {
     "eyebrow": "Family notebook",
-    "emptyDescription": "No recipes are published yet. Run the Convex seed mutation to add the chocolate lava cakes."
+    "emptyDescription": "No recipes are published yet. Run the Convex seed mutation to add the chocolate lava cakes.",
+    "filtersLabel": "Recipe search and filters",
+    "searchLabel": "Search recipes",
+    "searchPlaceholder": "Search by title or ingredient",
+    "searchSubmit": "Search",
+    "categoriesLabel": "Recipe categories",
+    "categories": {
+      "dessert": "Dessert",
+      "plat": "Main",
+      "sucre": "Sweet",
+      "sale": "Savory"
+    },
+    "resultCount": "{count} {label} of {total}",
+    "resultsSingular": "recipe",
+    "resultsPlural": "recipes",
+    "reset": "Reset",
+    "noResultsTitle": "No recipes found",
+    "noResultsDescription": "Try another search or remove a filter to bring more recipes back."
   },
   "recipeDetail": {
     "backToList": "Back to the recipe list",

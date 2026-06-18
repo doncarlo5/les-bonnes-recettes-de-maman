@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation, query, type QueryCtx } from "./_generated/server";
+import { mutation, query, type MutationCtx, type QueryCtx } from "./_generated/server";
 import type { Doc } from "./_generated/dataModel";
 import rawRecipes from "./recettes.json";
 import { toSeedRecipe, type SourceRecipe } from "./recipeTranslations";
@@ -124,12 +124,12 @@ export const listForEditing = query({
     locale: localeValidator,
   },
   handler: async (ctx, args) => {
-    const publishedRecipes = await ctx.db
+    const editableRecipes = await ctx.db
       .query("recipes")
-      .withIndex("by_status", (q) => q.eq("status", "published"))
-      .collect();
+      .order("desc")
+      .take(200);
 
-    return publishedRecipes
+    return editableRecipes
       .map((recipe) => ({
         _id: recipe._id,
         _creationTime: recipe._creationTime,
@@ -143,6 +143,32 @@ export const listForEditing = query({
         status: recipe.status,
       }))
       .sort((a, b) => a.title.localeCompare(b.title, args.locale));
+  },
+});
+
+export const create = mutation({
+  args: {
+    recipe: editableRecipeValidator,
+  },
+  handler: async (ctx, args) => {
+    const title = args.recipe.translations.fr.title.trim();
+    const baseSlug = slugify(title || "nouvelle-recette");
+    const slug = await getAvailableSlug(ctx, baseSlug);
+
+    const recipeId = await ctx.db.insert("recipes", {
+      slug,
+      heroImageUrl: "",
+      defaultLocale: args.recipe.defaultLocale,
+      translations: args.recipe.translations,
+      tags: args.recipe.tags,
+      status: "draft",
+    });
+
+    return {
+      recipeId,
+      slug,
+      title: title || "Nouvelle recette",
+    };
   },
 });
 
@@ -359,4 +385,32 @@ async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
     status: recipe.status,
     ...translation,
   };
+}
+
+async function getAvailableSlug(ctx: MutationCtx, baseSlug: string) {
+  let candidate = baseSlug;
+  let suffix = 2;
+
+  while (
+    await ctx.db
+      .query("recipes")
+      .withIndex("by_slug", (q) => q.eq("slug", candidate))
+      .unique()
+  ) {
+    candidate = `${baseSlug}-${suffix}`;
+    suffix += 1;
+  }
+
+  return candidate;
+}
+
+function slugify(value: string) {
+  const slug = value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return slug || "nouvelle-recette";
 }

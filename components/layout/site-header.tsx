@@ -65,7 +65,7 @@ export function SiteHeader({ locale, dict }: SiteHeaderProps) {
 
         <nav className="hidden items-center gap-8 text-sm font-bold uppercase tracking-[0.18em] text-muted-foreground md:flex">
           <Link
-            href={`/${locale}`}
+            href={`/${locale}/recettes`}
             className="transition hover:text-primary"
           >
             {dict.nav.recipes}

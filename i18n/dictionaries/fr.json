@@ -24,7 +24,24 @@
   },
   "recipeList": {
     "eyebrow": "Carnet familial",
-    "emptyDescription": "Aucune recette publiée pour le moment. Lance la mutation de seed Convex pour ajouter le coulant au chocolat."
+    "emptyDescription": "Aucune recette publiée pour le moment. Lance la mutation de seed Convex pour ajouter le coulant au chocolat.",
+    "filtersLabel": "Recherche et filtres des recettes",
+    "searchLabel": "Rechercher une recette",
+    "searchPlaceholder": "Rechercher par titre ou ingrédient",
+    "searchSubmit": "Rechercher",
+    "categoriesLabel": "Catégories de recettes",
+    "categories": {
+      "dessert": "Dessert",
+      "plat": "Plat",
+      "sucre": "Sucré",
+      "sale": "Salé"
+    },
+    "resultCount": "{count} {label} sur {total}",
+    "resultsSingular": "recette",
+    "resultsPlural": "recettes",
+    "reset": "Réinitialiser",
+    "noResultsTitle": "Aucune recette trouvée",
+    "noResultsDescription": "Essaie une autre recherche ou retire un filtre pour retrouver plus de recettes."
   },
   "recipeDetail": {
     "backToList": "Retour à la liste des recettes",
