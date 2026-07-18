@@ -41,6 +41,23 @@ test("recipe home is usable and accessible at every supported width", async ({ p
   }
 });
 
+test("guided editor opens an isolated draft preview", async ({ page }) => {
+  await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
+  await page.getByRole("button", { name: "Prévisualiser le brouillon" }).click();
+  await expect(page).toHaveURL(/mode=preview/);
+  await expect(page.getByText("Aperçu du brouillon")).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Tarte de démonstration" })).toBeVisible();
+  await expect(page.getByRole("link", { name: /cuisiner/i })).toHaveCount(0);
+  await page.getByRole("button", { name: "Anglais" }).click();
+  await expect(page).toHaveURL(/lang=en/);
+  await expect(page.getByRole("heading", { level: 1, name: "Demo tart" })).toBeVisible();
+  await page.getByRole("button", { name: "Détails" }).click();
+  await expect(page).not.toHaveURL(/mode=preview/);
+  await expect(page).toHaveURL(/section=details/);
+  await expect(page).toHaveURL(/lang=en/);
+  await expect(page.getByLabel("Préparation")).toBeVisible();
+});
+
 test("semantic typography stays readable at every supported width", async ({ page }, testInfo) => {
   const rootTypography = await page.locator("html").evaluate((element) => {
     const style = getComputedStyle(element);
@@ -49,7 +66,7 @@ test("semantic typography stays readable at every supported width", async ({ pag
       fontSynthesis: style.fontSynthesis,
     };
   });
-  expect(rootTypography.fontFamily).toContain("Nunito Sans");
+  expect(rootTypography.fontFamily).toContain("Source Sans 3");
   expect(rootTypography.fontSynthesis).toBe("none");
 
   const visiblePageTitles = page.locator("main h1:visible");
@@ -62,7 +79,7 @@ test("semantic typography stays readable at every supported width", async ({ pag
       lineHeight: Number.parseFloat(style.lineHeight),
     };
   });
-  expect(pageTitleStyle.fontFamily).toContain("Playfair Display");
+  expect(pageTitleStyle.fontFamily).toContain("Newsreader");
   expect(pageTitleStyle.fontSize).toBeGreaterThanOrEqual(40);
   expect(pageTitleStyle.lineHeight).toBeGreaterThan(pageTitleStyle.fontSize);
 
@@ -81,7 +98,7 @@ test("semantic typography stays readable at every supported width", async ({ pag
         fontSize: Number.parseFloat(style.fontSize),
       };
     });
-    expect(controlStyle.fontFamily).toContain("Nunito Sans");
+    expect(controlStyle.fontFamily).toContain("Source Sans 3");
     expect(controlStyle.fontSize).toBeGreaterThanOrEqual(
       testInfo.project.name.startsWith("mobile-") ? 16 : 14,
     );
@@ -106,7 +123,7 @@ test("semantic typography stays readable at every supported width", async ({ pag
         fontSize: Number.parseFloat(style.fontSize),
       };
     });
-    expect(headingStyle.fontFamily).toContain("Nunito Sans");
+    expect(headingStyle.fontFamily).toContain("Source Sans 3");
     expect(headingStyle.fontSize).toBeLessThan(pageTitleStyle.fontSize);
   }
 

@@ -5,14 +5,14 @@ import { join } from "node:path";
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
 
-/** Warm Hearth brand tokens, as sRGB hex for use inside next/og (Satori). */
+/** Modern Heirloom brand tokens, as sRGB hex for use inside next/og (Satori). */
 export const brand = {
-  cream: "#FBF6EE",
-  ink: "#2A2118",
-  terracotta: "#C0593B",
-  honey: "#D99A3D",
-  sand: "#EFE7DA",
-  mutedInk: "#6B5E4F",
+  cream: "#F4F0E8",
+  ink: "#201D1A",
+  terracotta: "#7C2538",
+  honey: "#D9D2C7",
+  sand: "#FBF9F4",
+  mutedInk: "#665F58",
 } as const;
 
 type OgFont = {
@@ -24,13 +24,13 @@ type OgFont = {
 
 /** Load the vendored brand fonts for ImageResponse (ttf, Node runtime). */
 export async function loadOgFonts(): Promise<OgFont[]> {
-  const [playfair, nunito] = await Promise.all([
-    readFile(join(process.cwd(), "assets/fonts/PlayfairDisplay-Bold.ttf")),
-    readFile(join(process.cwd(), "assets/fonts/NunitoSans-Bold.ttf")),
+  const [newsreader, sourceSans] = await Promise.all([
+    readFile(join(process.cwd(), "assets/fonts/Newsreader72pt-Bold.ttf")),
+    readFile(join(process.cwd(), "assets/fonts/SourceSans3-Bold.otf")),
   ]);
   return [
-    { name: "Playfair Display", data: playfair, weight: 700, style: "normal" },
-    { name: "Nunito Sans", data: nunito, weight: 700, style: "normal" },
+    { name: "Newsreader", data: newsreader, weight: 700, style: "normal" },
+    { name: "Source Sans 3", data: sourceSans, weight: 700, style: "normal" },
   ];
 }
 

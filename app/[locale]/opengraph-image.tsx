@@ -13,8 +13,10 @@ export default async function OpengraphImage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const dict = await getDictionary(hasLocale(locale) ? locale : defaultLocale);
-  const fonts = await loadOgFonts();
+  const [dict, fonts] = await Promise.all([
+    getDictionary(hasLocale(locale) ? locale : defaultLocale),
+    loadOgFonts(),
+  ]);
 
   return new ImageResponse(
     (
@@ -40,7 +42,7 @@ export default async function OpengraphImage({
         />
         <div
           style={{
-            fontFamily: "Nunito Sans",
+            fontFamily: "Source Sans 3",
             fontSize: 26,
             letterSpacing: 8,
             textTransform: "uppercase",
@@ -52,7 +54,7 @@ export default async function OpengraphImage({
         </div>
         <div
           style={{
-            fontFamily: "Playfair Display",
+            fontFamily: "Newsreader",
             fontSize: 96,
             lineHeight: 1.05,
             color: brand.ink,

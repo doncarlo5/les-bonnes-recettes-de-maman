@@ -6,8 +6,8 @@ describe("loadOgFonts", () => {
     const fonts = await loadOgFonts();
 
     expect(fonts.map(({ name }) => name)).toEqual([
-      "Playfair Display",
-      "Nunito Sans",
+      "Newsreader",
+      "Source Sans 3",
     ]);
     for (const font of fonts) {
       expect(font.weight).toBe(700);

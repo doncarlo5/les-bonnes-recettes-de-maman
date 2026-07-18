@@ -5,6 +5,7 @@ import { AdminRecipeEditor } from "@/components/recipes/admin-recipe-editor";
 import { getRecipeAdminE2EFixtures } from "@/components/recipes/admin-recipe-e2e-fixtures";
 import { api } from "@/convex/_generated/api";
 import type { Locale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/get-dictionary";
 import { getRecipeAdminAccess } from "@/lib/recipe-admin-auth";
 
 type PageProps = {
@@ -34,9 +35,14 @@ export default async function Page({ params, searchParams }: PageProps) {
       ? `/${locale}/admin/recettes?slug=${encodeURIComponent(initialSlug)}`
       : `/${locale}/admin/recettes`;
   const e2eFixtures = getRecipeAdminE2EFixtures();
+  const [frDictionary, enDictionary] = await Promise.all([
+    getDictionary("fr"),
+    getDictionary("en"),
+  ]);
+  const dictionaries = { fr: frDictionary, en: enDictionary };
   if (e2eFixtures) {
     const initialRecipe = initialSlug === e2eFixtures.recipe.slug ? e2eFixtures.recipe : undefined;
-    return <Suspense fallback={null}><AdminRecipeEditor key={shouldCreateNew ? "new" : initialSlug ?? "home"} locale={locale} recipes={e2eFixtures.recipes} initialRecipe={initialRecipe} initialSlug={initialSlug} startInCreateMode={shouldCreateNew} /></Suspense>;
+    return <Suspense fallback={null}><AdminRecipeEditor key={shouldCreateNew ? "new" : initialSlug ?? "home"} locale={locale} dictionaries={dictionaries} recipes={e2eFixtures.recipes} initialRecipe={initialRecipe} initialSlug={initialSlug} startInCreateMode={shouldCreateNew} /></Suspense>;
   }
   const adminAccess = await getRecipeAdminAccess();
 
@@ -63,6 +69,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     <AdminRecipeEditor
       key={shouldCreateNew ? "new" : initialSlug ?? "home"}
       locale={locale}
+      dictionaries={dictionaries}
       recipes={recipes}
       initialRecipe={initialRecipe ?? undefined}
       initialSlug={initialSlug}

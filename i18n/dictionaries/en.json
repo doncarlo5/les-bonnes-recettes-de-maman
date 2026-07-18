@@ -24,6 +24,7 @@
     "eyebrow": "Family notebook",
     "emptyDescription": "No recipes are published yet. Run the Convex seed mutation to add the chocolate lava cakes.",
     "filtersLabel": "Recipe search and filters",
+    "disclosureLabel": "Filters and display",
     "searchLabel": "Search recipes",
     "searchPlaceholder": "Search by title or ingredient",
     "searchSubmit": "Search",
@@ -62,7 +63,27 @@
     "totalTime": "Total",
     "temperature": "Oven",
     "notes": "Notes",
-    "subRecipes": "Sub-recipes"
+    "subRecipes": "Sub-recipes",
+    "startCooking": "Start cooking",
+    "resumeCooking": "Resume recipe",
+    "startOver": "Start over"
+  },
+  "cookMode": {
+    "eyebrow": "Cook mode",
+    "ingredients": "Ingredients",
+    "previous": "Previous",
+    "next": "Next step",
+    "finish": "Finish",
+    "completedTitle": "It’s ready",
+    "completedDescription": "You finished the recipe. All that’s left is to share and enjoy it.",
+    "backToRecipe": "Back to recipe",
+    "stepCounter": "Step {current} of {total}",
+    "ingredientCounter": "{checked} of {total} ingredients checked",
+    "keepAwake": "Keep screen awake",
+    "awakeActive": "The screen will stay awake while you cook.",
+    "awakeInactive": "Turn this on to prevent the screen from sleeping.",
+    "awakeUnavailable": "This feature is not available on this device.",
+    "closeIngredients": "Close ingredients"
   },
   "loading": {
     "recipes": "Loading recipes"

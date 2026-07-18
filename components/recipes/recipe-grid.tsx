@@ -24,42 +24,38 @@ export function RecipeGrid({
   if (recipes.length === 0) return null;
 
   return (
-    <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
-      {recipes.map((recipe) => {
+    <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+      {recipes.map((recipe, index) => {
         return (
           <li key={recipe._id}>
             <Link
               href={`/${locale}/recettes/${recipe.slug}`}
-              className="group relative block h-72 w-full overflow-hidden rounded-2xl bg-stone-900 text-left ring-1 ring-black/5 shadow-card transition duration-300 hover:-translate-y-0.5 hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:h-80"
+              className="surface-elevated group block overflow-hidden rounded-3xl bg-card text-start transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
-              <span className="absolute inset-0 overflow-hidden">
+              <span className="relative block aspect-[4/3] overflow-hidden rounded-t-3xl bg-muted">
                 <Image
                   src={recipe.heroImageUrl || defaultRecipeImageUrl}
                   alt=""
                   fill
+                  priority={index === 0}
                   sizes="(max-width: 768px) 100vw, 540px"
-                  className="object-cover transition duration-500 group-hover:scale-[1.04]"
+                  className="image-outline object-cover transition-transform duration-500 group-hover:scale-[1.025]"
                 />
               </span>
-              <span className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/15 to-black/65" />
-              <span className="absolute inset-x-0 bottom-0 block px-7 pb-7 text-white sm:px-9 sm:pb-9">
-                <span className="type-label mb-3 inline-flex items-center gap-2 text-soft-peach-200/90 tabular-nums">
+              <span className="block p-6 sm:p-7">
+                <span className="type-label mb-4 inline-flex items-center gap-2 text-primary tabular-nums">
                   <Clock3 className="size-4 stroke-[1.8]" />
                   {recipe.timeLabel}
                 </span>
                 <span
-                  className="type-card-title block max-w-[18ch] text-white drop-shadow-sm"
+                  className="type-card-title block max-w-[18ch] text-foreground"
                 >
                   {recipe.title}
                 </span>
-                <span className="type-byline mt-3 block text-white/80">
+                <span className="type-byline mt-3 block text-muted-foreground">
                   {dict.recipeDetail.recipeBy} {recipe.author}
                 </span>
               </span>
-              <span
-                aria-hidden
-                className="absolute inset-x-9 bottom-0 h-px origin-center scale-x-0 bg-soft-peach-300 transition duration-500 group-hover:scale-x-100"
-              />
             </Link>
           </li>
         );
@@ -68,11 +64,11 @@ export function RecipeGrid({
         <li>
           <Link
             href={`/${locale}/admin/recettes?new=1`}
-            className="group flex h-72 w-full flex-col items-center justify-center gap-5 overflow-hidden rounded-2xl border border-dashed border-primary/40 bg-card text-center shadow-card transition duration-300 hover:-translate-y-0.5 hover:border-primary hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:h-80"
+            className="surface-elevated group flex min-h-80 w-full flex-col items-center justify-center gap-5 overflow-hidden rounded-3xl text-center transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             <span
               aria-hidden
-              className="flex size-20 items-center justify-center rounded-full bg-primary/10 text-primary transition duration-300 group-hover:scale-105 group-hover:bg-primary group-hover:text-primary-foreground"
+              className="flex size-20 items-center justify-center rounded-full bg-primary/10 text-primary transition-[scale,background-color,color] duration-300 group-hover:scale-105 group-hover:bg-primary group-hover:text-primary-foreground"
             >
               <Plus className="size-10 stroke-[1.8]" />
             </span>

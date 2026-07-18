@@ -17,6 +17,14 @@ _Avoid_: Tag technique, source, collection
 Action de retrouver des Recettes a partir de mots presents dans leur titre ou leurs ingredients.
 _Avoid_: Recherche plein texte, recherche globale
 
+**Mode cuisine**:
+Expérience publique et focalisée qui accompagne la préparation d’une Recette, une étape à la fois, sans modifier son contenu éditorial.
+_Avoid_: Tutoriel, assistant de recette, lecteur pas-à-pas
+
+**Progression de cuisine**:
+Position et ingrédients cochés conservés localement sur l’appareil pendant l’utilisation du Mode cuisine.
+_Avoid_: Avancement de recette, statut de préparation, historique de cuisson
+
 **Image principale de recette**:
 Image unique associee a une Recette, utilisee comme couverture dans la liste, le detail et les apercus de partage.
 _Avoid_: Galerie, illustration, image admin

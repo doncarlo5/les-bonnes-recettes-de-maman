@@ -12,6 +12,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { EditRecipeAccess } from "./edit-recipe-access";
+import { CookModeEntry } from "./cook-mode-entry";
 import type { Ingredient, Recipe } from "./types";
 
 const defaultRecipeImageUrl =
@@ -21,78 +22,76 @@ type RecipeDetailPageProps = {
   locale: Locale;
   dict: Dictionary;
   recipe: Recipe;
+  mode?: "public" | "preview";
 };
 
 export function RecipeDetailPage({
   locale,
   dict,
   recipe,
+  mode = "public",
 }: RecipeDetailPageProps) {
+  return <RecipePresentation locale={locale} dict={dict} recipe={recipe} mode={mode} />;
+}
+
+export function RecipePresentation({
+  locale,
+  dict,
+  recipe,
+  mode,
+}: Required<RecipeDetailPageProps>) {
   return (
     <main className="text-foreground">
-      {/* Full-bleed hero */}
-      <header className="relative h-[58vh] min-h-[22rem] w-full overflow-hidden bg-stone-900 lg:h-[80vh] lg:min-h-[42rem]">
-        <Image
-          src={recipe.heroImageUrl || defaultRecipeImageUrl}
-          alt={recipe.imageCredit?.alt ?? ""}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/15 to-black/70" />
+      <header className="px-5 py-8 sm:py-12 lg:px-10 lg:py-20">
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(22rem,0.92fr)] lg:items-center lg:gap-14">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-muted shadow-card lg:aspect-[5/4]">
+            <Image
+              src={recipe.heroImageUrl || defaultRecipeImageUrl}
+              alt={recipe.imageCredit?.alt ?? ""}
+              fill
+              priority={mode === "public"}
+              sizes="(max-width: 1024px) 100vw, 58vw"
+              className="image-outline object-cover"
+            />
+            {recipe.imageCredit ? <HeroImageCredit imageCredit={recipe.imageCredit} /> : null}
+          </div>
 
-        <Link
-          href={`/${locale}`}
-          aria-label={dict.recipeDetail.backToList}
-          className="absolute left-4 top-4 z-10 flex size-10 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm transition hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white lg:left-10 lg:top-8 lg:size-11"
-        >
-          <ChevronLeft className="size-6 stroke-[1.8]" />
-        </Link>
-
-        <EditRecipeAccess
-          locale={locale}
-          slug={recipe.slug}
-        />
-
-        {recipe.imageCredit ? (
-          <HeroImageCredit imageCredit={recipe.imageCredit} />
-        ) : null}
-
-        <div className="absolute inset-x-0 bottom-0 z-10">
-          <div className="mx-auto w-full max-w-6xl px-4 pb-6 text-white sm:pb-10 lg:px-10 lg:pb-20">
-            <div className="type-label mb-3 inline-flex items-center gap-2 text-white/85 tabular-nums lg:mb-5">
+          <div className="flex flex-col items-start">
+            {mode === "public" ? (
+              <Link
+                href={`/${locale}#recettes`}
+                className="mb-8 inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm font-semibold text-muted-foreground transition-[scale,background-color,color] duration-150 hover:bg-muted hover:text-foreground active:scale-[0.96] md:min-h-10"
+              >
+                <ChevronLeft className="size-5" />
+                {dict.recipeDetail.backToList}
+              </Link>
+            ) : null}
+            <div className="type-label mb-5 inline-flex items-center gap-2 text-primary tabular-nums">
               <Clock3 className="size-4 stroke-[1.8]" />
               <span>{recipe.timeLabel}</span>
             </div>
-            <h1 className="type-display max-w-[14ch] drop-shadow-sm">
-              {recipe.title}
-            </h1>
-            <p className="type-byline mt-3 text-white/80 lg:mt-5">
+            <h1 className="type-display max-w-[14ch]">{recipe.title}</h1>
+            <p className="type-byline mt-4 text-muted-foreground">
               {dict.recipeDetail.recipeBy} {recipe.author}
             </p>
+            {recipe.description ? (
+              <p className="type-editorial-lead mt-7 max-w-[52ch] text-foreground/75">
+                {recipe.description}
+              </p>
+            ) : null}
+            {mode === "public" ? (
+              <div className="mt-8 grid gap-4">
+                <CookModeEntry locale={locale} dict={dict} recipe={recipe} />
+                <EditRecipeAccess locale={locale} slug={recipe.slug} />
+              </div>
+            ) : null}
           </div>
         </div>
       </header>
 
-      {/* Lead description */}
-      {recipe.description ? (
-        <section className="bg-muted px-4 py-10 lg:px-10 lg:py-24">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="type-editorial-lead mx-auto text-foreground/80">
-              {recipe.description}
-            </p>
-            <div
-              aria-hidden
-              className="mx-auto mt-6 h-px w-16 bg-border lg:mt-10"
-            />
-          </div>
-        </section>
-      ) : null}
-
       {/* Body: instructions + sticky ingredients sidebar */}
-      <section className="px-4 pb-16 lg:px-10 lg:pb-32">
-        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,65ch)_22rem] lg:justify-center lg:gap-16">
+      <section className="border-t border-border px-5 pb-16 lg:px-10 lg:pb-32">
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[minmax(0,65ch)_22rem] lg:justify-between lg:gap-16">
           <div className="min-w-0">
             <RecipeMeta dict={dict} recipe={recipe} />
 
@@ -365,7 +364,7 @@ function HeroImageCredit({
 }) {
   if (imageCredit.provider === "unsplash") {
     return (
-      <p className="type-meta absolute right-4 top-5 z-10 text-right text-white/80 lg:right-10 lg:top-8">
+      <p className="type-meta absolute bottom-3 right-3 z-10 rounded-full bg-black/55 px-3 py-1.5 text-right text-white/85 backdrop-blur-sm">
         Photo{" "}
         <a
           href={imageCredit.photographerUrl}
@@ -389,7 +388,7 @@ function HeroImageCredit({
   }
 
   return (
-    <p className="type-meta absolute right-4 top-5 z-10 max-w-[18rem] text-right text-white/80 lg:right-10 lg:top-8">
+    <p className="type-meta absolute bottom-3 right-3 z-10 max-w-[18rem] rounded-xl bg-black/55 px-3 py-1.5 text-right text-white/85 backdrop-blur-sm">
       Photo{" "}
       <a
         href={imageCredit.creatorUrl}

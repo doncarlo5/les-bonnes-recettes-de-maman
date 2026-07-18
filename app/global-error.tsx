@@ -28,7 +28,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
             <button
               type="button"
               onClick={reset}
-              className="type-label mt-4 inline-flex items-center rounded-full bg-primary px-6 py-2.5 text-primary-foreground transition hover:bg-primary/90"
+              className="type-label mt-4 inline-flex min-h-11 items-center rounded-full bg-primary px-6 py-2.5 text-primary-foreground transition-[background-color,scale] duration-150 hover:bg-primary/90 active:scale-[0.96] md:min-h-10"
             >
               {dict.error.retry}
             </button>

@@ -6,6 +6,7 @@ import { RecipeDetailPage } from "@/components/recipes/recipe-detail-page";
 import { api } from "@/convex/_generated/api";
 import { getDictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
+import { getPublicRecipeE2EFixture } from "@/components/recipes/admin-recipe-e2e-fixtures";
 
 type PageProps = {
   params: Promise<{
@@ -15,9 +16,10 @@ type PageProps = {
 };
 
 // Deduped across generateMetadata + the page render within one request.
-const getRecipe = cache((locale: Locale, slug: string) =>
-  fetchQuery(api.recipes.getBySlug, { locale, slug }),
-);
+const getRecipe = cache((locale: Locale, slug: string) => {
+  const fixture = getPublicRecipeE2EFixture(locale, slug);
+  return fixture ? Promise.resolve(fixture) : fetchQuery(api.recipes.getBySlug, { locale, slug });
+});
 
 export async function generateMetadata({
   params,
@@ -58,8 +60,10 @@ export async function generateMetadata({
 
 export default async function Page({ params }: PageProps) {
   const { locale, slug } = await params;
-  const dict = await getDictionary(locale);
-  const recipe = await getRecipe(locale, slug);
+  const [dict, recipe] = await Promise.all([
+    getDictionary(locale),
+    getRecipe(locale, slug),
+  ]);
 
   if (!recipe) {
     notFound();

@@ -1,16 +1,17 @@
-import { Geist_Mono, Nunito_Sans, Playfair_Display } from "next/font/google";
+import { Geist_Mono, Newsreader, Source_Sans_3 } from "next/font/google";
 
-export const nunitoSans = Nunito_Sans({
-  variable: "--font-nunito-sans",
+export const sourceSans = Source_Sans_3({
+  variable: "--font-source-sans",
   subsets: ["latin"],
   display: "swap",
 });
 
-export const playfairDisplay = Playfair_Display({
-  variable: "--font-playfair-display",
+export const newsreader = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
   display: "swap",
   style: ["normal", "italic"],
+  axes: ["opsz"],
 });
 
 export const geistMono = Geist_Mono({
@@ -19,4 +20,5 @@ export const geistMono = Geist_Mono({
   display: "swap",
 });
 
-export const fontVariables = `${nunitoSans.variable} ${playfairDisplay.variable} ${geistMono.variable}`;
+export const fontVariables = `${sourceSans.variable} ${newsreader.variable} ${geistMono.variable}`;
+export const bodyFontClassName = sourceSans.className;

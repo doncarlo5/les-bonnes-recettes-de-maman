@@ -1,7 +1,4 @@
-import { fetchQuery } from "convex/nextjs";
-import { RecipeListPage } from "@/components/recipes/recipe-list-page";
-import { api } from "@/convex/_generated/api";
-import { getDictionary } from "@/i18n/get-dictionary";
+import { permanentRedirect } from "next/navigation";
 import type { Locale } from "@/i18n/config";
 
 type PageProps = {
@@ -9,26 +6,19 @@ type PageProps = {
     locale: Locale;
   }>;
   searchParams: Promise<{
-    cat?: string | string[];
-    q?: string | string[];
+    [key: string]: string | string[] | undefined;
   }>;
 };
 
 export default async function Page({ params, searchParams }: PageProps) {
-  const { locale } = await params;
-  const { cat, q } = await searchParams;
-  const dict = await getDictionary(locale);
-  const recipes = await fetchQuery(api.recipes.list, { locale });
-  const hasInitialFilters =
-    Boolean(Array.isArray(q) ? q[0]?.trim() : q?.trim()) ||
-    (Array.isArray(cat) ? cat.length > 0 : Boolean(cat));
+  const [{ locale }, values] = await Promise.all([params, searchParams]);
+  const query = new URLSearchParams();
 
-  return (
-    <RecipeListPage
-      locale={locale}
-      dict={dict}
-      recipes={recipes}
-      hasInitialFilters={hasInitialFilters}
-    />
-  );
+  for (const key of ["q", "cat", "view", "sort"] as const) {
+    const value = values[key];
+    if (Array.isArray(value)) value.forEach((item) => query.append(key, item));
+    else if (value) query.set(key, value);
+  }
+
+  permanentRedirect(`/${locale}${query.size > 0 ? `?${query}` : ""}#recettes`);
 }

@@ -22,7 +22,7 @@ test("public typography holds across locales, themes, and widths", async ({ page
         fontSize: Number.parseFloat(style.fontSize),
       };
     });
-    expect(titleStyle.fontFamily).toContain("Playfair Display");
+    expect(titleStyle.fontFamily).toContain("Newsreader");
     expect(titleStyle.fontSize).toBeGreaterThanOrEqual(40);
     await expectDescendingOutline(page);
 

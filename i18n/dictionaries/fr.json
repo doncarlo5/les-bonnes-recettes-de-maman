@@ -24,6 +24,7 @@
     "eyebrow": "Carnet familial",
     "emptyDescription": "Aucune recette publiée pour le moment. Lance la mutation de seed Convex pour ajouter le coulant au chocolat.",
     "filtersLabel": "Recherche et filtres des recettes",
+    "disclosureLabel": "Filtres et affichage",
     "searchLabel": "Rechercher une recette",
     "searchPlaceholder": "Rechercher par titre ou ingrédient",
     "searchSubmit": "Rechercher",
@@ -62,7 +63,27 @@
     "totalTime": "Temps total",
     "temperature": "Four",
     "notes": "Notes",
-    "subRecipes": "Sous-recettes"
+    "subRecipes": "Sous-recettes",
+    "startCooking": "Commencer à cuisiner",
+    "resumeCooking": "Reprendre la recette",
+    "startOver": "Recommencer"
+  },
+  "cookMode": {
+    "eyebrow": "Mode cuisine",
+    "ingredients": "Ingrédients",
+    "previous": "Précédent",
+    "next": "Étape suivante",
+    "finish": "Terminer",
+    "completedTitle": "C’est prêt",
+    "completedDescription": "La recette est terminée. Il ne reste qu’à partager et savourer.",
+    "backToRecipe": "Retour à la recette",
+    "stepCounter": "Étape {current} sur {total}",
+    "ingredientCounter": "{checked} sur {total} ingrédients cochés",
+    "keepAwake": "Garder l’écran allumé",
+    "awakeActive": "L’écran restera allumé pendant la recette.",
+    "awakeInactive": "Active cette option pour éviter la mise en veille.",
+    "awakeUnavailable": "Cette fonction n’est pas disponible sur cet appareil.",
+    "closeIngredients": "Fermer les ingrédients"
   },
   "loading": {
     "recipes": "Chargement des recettes"

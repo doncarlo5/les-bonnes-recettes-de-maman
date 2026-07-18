@@ -30,6 +30,7 @@ import {
   Clock3,
   Cloud,
   CloudOff,
+  Eye,
   Languages,
   ListChecks,
   ListPlus,
@@ -42,6 +43,7 @@ import {
   TriangleAlert,
 } from "lucide-react";
 import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/get-dictionary";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -65,7 +67,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
-import { useIsMobile } from "@/hooks/use-mobile";
 import {
   Table,
   TableBody,
@@ -91,10 +92,12 @@ import {
   type SaveRecipeState,
   type SyncState,
 } from "./use-recipe-draft-lifecycle";
-import type { EditableRecipe, EditableRecipeSummary } from "./types";
+import type { EditableRecipe, EditableRecipeSummary, Recipe } from "./types";
+import { RecipePresentation } from "./recipe-detail-page";
 
 type AdminRecipeEditorProps = {
   locale: Locale;
+  dictionaries: Record<LocaleKey, Dictionary>;
   recipes: EditableRecipeSummary[];
   initialRecipe?: EditableRecipe;
   initialSlug?: string;
@@ -156,6 +159,7 @@ const blankRecipe: RecipeFormPayload = {
 
 export function AdminRecipeEditor({
   locale,
+  dictionaries,
   recipes,
   initialRecipe: initialRecipeProp,
   initialSlug,
@@ -163,7 +167,6 @@ export function AdminRecipeEditor({
 }: AdminRecipeEditorProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const isMobile = useIsMobile();
   const initialRecipe = startInCreateMode ? null : initialRecipeProp ?? null;
   const [selectedSlug, setSelectedSlug] = useState(initialRecipe?.slug ?? "");
   const [mode, setMode] = useState<RecipeFormMode>(
@@ -187,6 +190,7 @@ export function AdminRecipeEditor({
   const watchedValues = useWatch({ control: form.control });
   const mobileSection = normalizeMobileSection(searchParams.get("section"));
   const focusField = searchParams.get("field");
+  const isPreview = searchParams.get("mode") === "preview";
 
   useEffect(() => {
     if (searchParams.get("new") === "1") return;
@@ -289,20 +293,71 @@ export function AdminRecipeEditor({
 
   function openMobileSection(section: MobileSection) {
     if (!selectedSlug) return;
-    const params = new URLSearchParams({ slug: selectedSlug });
-    if (section !== "overview") params.set("section", section);
-    params.set(
-      "lang",
-      section === "translation"
-        ? defaultLocale === "fr" ? "en" : "fr"
-        : defaultLocale,
-    );
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("new");
+    params.delete("mode");
+    params.set("slug", selectedSlug);
+    if (section === "overview") params.delete("section");
+    else params.set("section", section);
+    params.set("lang", requestedLanguage);
     router.push(`/${locale}/admin/recettes?${params.toString()}`);
     window.scrollTo({ top: 0, behavior: "auto" });
   }
 
-  if (isMobile) {
+  function openPreview() {
+    if (!selectedSlug) return;
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("mode", "preview");
+    params.set("lang", requestedLanguage);
+    router.push(`/${locale}/admin/recettes?${params.toString()}`);
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
+
+  function closePreview() {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("mode");
+    router.push(`/${locale}/admin/recettes?${params.toString()}`);
+  }
+
+  function selectPreviewLanguage(language: LocaleKey) {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("mode", "preview");
+    params.set("lang", language);
+    router.push(`/${locale}/admin/recettes?${params.toString()}`);
+  }
+
+  function selectEditorLanguage(language: LocaleKey) {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("mode");
+    params.set("lang", language);
+    router.push(`/${locale}/admin/recettes?${params.toString()}`);
+  }
+
+  function returnFromPreview(section: Exclude<MobileSection, "overview" | "publish">) {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("mode");
+    params.set("section", section);
+    params.set("lang", requestedLanguage);
+    router.push(`/${locale}/admin/recettes?${params.toString()}`);
+  }
+
+  if (isPreview && selectedRecipe) {
     return (
+      <FormProvider {...form}>
+        <AdminDraftPreview
+          dictionaries={dictionaries}
+          recipe={selectedRecipe}
+          values={getValues()}
+          previewLocale={requestedLanguage}
+          onClose={closePreview}
+          onPreviewLanguage={selectPreviewLanguage}
+          onReturnToSection={returnFromPreview}
+        />
+      </FormProvider>
+    );
+  }
+
+  return (
       <FormProvider {...form}>
       <MobileRecipeAdmin
         locale={locale}
@@ -319,6 +374,7 @@ export function AdminRecipeEditor({
         tagsValue={tagsValue ?? []}
         defaultLocale={defaultLocale}
         requestedLanguage={requestedLanguage}
+        onLanguage={selectEditorLanguage}
         onCreate={createRecipe}
         onHome={showMobileHome}
         onSelect={selectRecipe}
@@ -332,60 +388,10 @@ export function AdminRecipeEditor({
         onReplaceConflict={replaceConflict}
         onReloadConflict={reloadLatest}
         publication={publication}
+        onPreview={openPreview}
       />
       </FormProvider>
     );
-  }
-
-  return (
-    <FormProvider {...form}>
-      <DesktopRecipeAdmin
-        locale={locale} recipes={recipes} selectedSlug={selectedSlug} selectedRecipe={selectedRecipe}
-        mode={mode} form={form} status={status} defaultLocale={defaultLocale} tagsValue={tagsValue ?? []}
-        state={state} revision={revision} syncState={syncState} isPending={isPending}
-        onCreate={createRecipe} onSelect={selectRecipe} onSave={savePayload}
-        onPublish={publishRecipe} onDiscard={discardChanges} onUnpublish={unpublishRecipe}
-        onImageRevision={handleImageRevision} onImageConflict={handleImageConflict} onReplaceConflict={replaceConflict} onReloadConflict={reloadLatest} publication={publication}
-      />
-    </FormProvider>
-  );
-}
-
-function DesktopRecipeAdmin({ locale, recipes, selectedSlug, selectedRecipe, mode, form, status, defaultLocale, tagsValue, state, revision, syncState, isPending, onCreate, onSelect, onSave, onPublish, onDiscard, onUnpublish, onImageRevision, onImageConflict, onReplaceConflict, onReloadConflict, publication }: {
-  locale: Locale; recipes: EditableRecipeSummary[]; selectedSlug: string; selectedRecipe: EditableRecipe | null; mode: RecipeFormMode;
-  form: UseFormReturn<any>; status: RecipeFormPayload["status"]; defaultLocale: LocaleKey; tagsValue: string[]; state: SaveRecipeState;
-  revision: number; syncState: SyncState; isPending: boolean; onCreate: () => void; onSelect: (slug: string) => void;
-  onSave: (payload: RecipeFormPayload, force?: boolean) => Promise<boolean>; onPublish: () => void; onDiscard: () => void; onUnpublish: () => void; onImageRevision: (revision: number) => void; onImageConflict: (revision?: number, retry?: (revision: number) => Promise<void>) => void; onReplaceConflict: () => void; onReloadConflict: () => void; publication: ReturnType<typeof getPublicationState>;
-}) {
-  const { formState: { errors }, getValues, register, setValue } = form;
-  const hasSelection = Boolean(selectedSlug) || mode === "create";
-  const [desktopLocale, setDesktopLocale] = useState<LocaleKey>("fr");
-  const router = useRouter();
-  const readiness = getRecipeReadiness(getValues(), Boolean(selectedRecipe?.heroImageUrl));
-  function openReadinessItem(item: RecipeReadiness["blockers"][number]) {
-    setDesktopLocale(item.locale);
-    const params = new URLSearchParams({ slug: selectedSlug, section: item.section, lang: item.locale, field: item.field });
-    router.push(`?${params.toString()}`);
-    window.requestAnimationFrame(() => form.setFocus(item.field));
-  }
-  return <main className="min-h-screen px-5 py-8 text-foreground sm:px-6"><section className="mx-auto flex w-full max-w-7xl flex-col gap-8">
-    <div className="flex items-end justify-between gap-4"><div className="grid gap-3"><p className="type-label text-primary">Admin recettes</p><h1 className="type-page-title">Recettes</h1></div><Button type="button" onClick={onCreate} className="min-h-10"><CirclePlus data-icon="inline-start" />Nouvelle recette</Button></div>
-    <div className="grid gap-6 lg:grid-cols-[24rem_1fr]"><RecipeTable recipes={recipes} selectedSlug={selectedSlug} onSelectRecipe={onSelect} />
-      {!hasSelection ? <div className="grid min-h-80 place-items-center rounded-2xl bg-card p-8 text-center shadow-[var(--shadow-card)]"><div className="max-w-sm"><BookOpen className="mx-auto size-8 text-primary" /><h2 className="type-panel-title mt-4">Choisis une recette</h2><p className="type-body-sm mt-2 font-semibold text-muted-foreground [text-wrap:pretty]">Sélectionne une recette dans la liste pour ouvrir son Brouillon de travail.</p></div></div> :
-      <form onSubmit={(event) => { event.preventDefault(); void onSave(getValues(), syncState === "conflict"); }} className="flex flex-col gap-6 rounded-lg border bg-card p-5 shadow-card">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"><div className="flex flex-col gap-2"><div className="flex flex-wrap items-center gap-2"><h2 className="type-panel-title text-foreground">{mode === "create" ? "Nouveau brouillon" : selectedRecipe?.title}</h2><Badge variant={status === "published" ? "default" : "secondary"}>{status === "published" ? "Publiée" : "Brouillon"}</Badge></div><p className="type-body-sm font-semibold text-muted-foreground">Slug: {mode === "create" ? "généré au premier enregistrement" : selectedSlug}</p></div><div className="flex gap-2"><Button type="submit" variant="outline" disabled={isPending}>{isPending ? <Spinner data-icon="inline-start" /> : <Save data-icon="inline-start" />}{isPending ? "Enregistrement..." : "Sauvegarder le brouillon"}</Button><Button type="button" disabled={isPending || getRecipeReadiness(getValues(), Boolean(selectedRecipe?.heroImageUrl)).blockers.length > 0} onClick={onPublish}><Send data-icon="inline-start" /> Publier</Button></div></div>
-        {syncState === "conflict" ? <ConflictCard onReload={onReloadConflict} onReplace={onReplaceConflict} /> : null}
-        <SaveStateAlert state={state} />
-        <div className="grid gap-3 rounded-xl bg-muted/55 p-3"><div className="flex flex-wrap gap-2"><Badge variant={publication.isPublic ? "default" : "secondary"}>{publication.isPublic ? "Visible publiquement" : publication.hasPublishedVersion ? "Version approuvée masquée" : "Jamais publiée"}</Badge>{publication.hasUnpublishedChanges ? <Badge variant="outline">Modifications non publiées</Badge> : null}{publication.canDiscard ? <Button type="button" variant="outline" onClick={onDiscard}>Abandonner les modifications</Button> : null}{publication.isPublic ? <Button type="button" variant="destructive" onClick={onUnpublish}>Retirer du site public</Button> : null}</div>{[...readiness.blockers, ...readiness.warnings].length ? <div className="grid gap-2" aria-label="État de préparation">{[...readiness.blockers, ...readiness.warnings].map((item) => <button key={item.code} type="button" onClick={() => openReadinessItem(item)} className="flex min-h-10 items-center gap-2 rounded-lg bg-card px-3 text-left text-sm font-semibold"><span className="flex-1">{item.label}</span><ChevronRight className="size-4" /></button>)}</div> : null}</div>
-        <AdminRecipeImagePanel key={selectedRecipe?.slug ?? "new-recipe-image"} locale={locale} recipe={selectedRecipe} revision={revision} onRevisionChange={onImageRevision} onConflict={onImageConflict} />
-        <FieldGroup><div className="grid gap-4 md:grid-cols-3"><Field><FieldLabel>Version publique</FieldLabel><div className="flex h-8 items-center"><Badge variant={status === "published" ? "default" : "secondary"}>{status === "published" ? "Publiée" : "Non publiée"}</Badge></div><FieldDescription>La publication est une action explicite.</FieldDescription></Field>
-          <SelectField label="Locale par défaut" value={defaultLocale} onValueChange={(value) => setValue("defaultLocale", value as LocaleKey, { shouldDirty: true, shouldValidate: true })} options={[{ label: "Français", value: "fr" }, { label: "Anglais", value: "en" }]} />
-          <Field><FieldLabel htmlFor="recipe-tags">Tags</FieldLabel><Input id="recipe-tags" value={tagsValue.join(", ")} onChange={(event) => setValue("tags", parseTags(event.target.value), { shouldDirty: true, shouldValidate: true })} placeholder="dessert, famille" /><FieldDescription>Sépare les tags par des virgules.</FieldDescription></Field></div>
-          <Tabs value={desktopLocale} onValueChange={(value) => setDesktopLocale(value as LocaleKey)}><TabsList><TabsTrigger value="fr">Français</TabsTrigger><TabsTrigger value="en">Anglais</TabsTrigger></TabsList><TabsContent value="fr"><LocalizedRecipeFields localeKey="fr" register={register} control={form.control} errors={errors} serverErrors={state.fieldErrors} /></TabsContent><TabsContent value="en"><LocalizedRecipeFields localeKey="en" register={register} control={form.control} errors={errors} serverErrors={state.fieldErrors} /></TabsContent></Tabs>
-        </FieldGroup>
-      </form>}
-    </div>
-  </section></main>;
 }
 
 function MobileRecipeAdmin({
@@ -403,6 +409,7 @@ function MobileRecipeAdmin({
   tagsValue,
   defaultLocale,
   requestedLanguage,
+  onLanguage,
   onCreate,
   onHome,
   onSelect,
@@ -416,6 +423,7 @@ function MobileRecipeAdmin({
   onReplaceConflict,
   onReloadConflict,
   publication,
+  onPreview,
 }: {
   locale: Locale;
   recipes: EditableRecipeSummary[];
@@ -431,6 +439,7 @@ function MobileRecipeAdmin({
   tagsValue: string[];
   defaultLocale: LocaleKey;
   requestedLanguage: LocaleKey;
+  onLanguage: (locale: LocaleKey) => void;
   onCreate: () => void;
   onHome: () => void;
   onSelect: (slug: string) => void;
@@ -444,6 +453,7 @@ function MobileRecipeAdmin({
   onReplaceConflict: () => void;
   onReloadConflict: () => void;
   publication: ReturnType<typeof getPublicationState>;
+  onPreview: () => void;
 }) {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<"all" | "draft" | "published">("all");
@@ -464,7 +474,7 @@ function MobileRecipeAdmin({
 
     return (
       <main className="min-h-screen px-4 pb-28 pt-6 text-foreground">
-        <header className="mx-auto grid w-full max-w-lg gap-5">
+        <header className="mx-auto grid w-full max-w-5xl gap-5">
           <div className="flex items-end justify-between gap-4">
             <div className="grid gap-2">
               <p className="type-label text-primary">Admin recettes</p>
@@ -491,7 +501,7 @@ function MobileRecipeAdmin({
           </div>
         </header>
 
-        <section className="mx-auto mt-5 grid w-full max-w-lg gap-3" aria-label="Recettes">
+        <section className="mx-auto mt-5 grid w-full max-w-5xl gap-3 lg:grid-cols-2" aria-label="Recettes">
           {visibleRecipes.map((recipe) => (
             <button key={recipe._id} type="button" onClick={() => onSelect(recipe.slug)} className="group grid min-h-24 grid-cols-[5rem_1fr_auto] items-center gap-3 rounded-2xl bg-card p-2 text-left shadow-[var(--shadow-card)] transition-[box-shadow,scale] duration-150 active:scale-[0.96]">
               <div className="relative size-20 overflow-hidden rounded-xl bg-muted">
@@ -518,7 +528,7 @@ function MobileRecipeAdmin({
   if (mode === "create" && !selectedSlug) {
     return (
       <main className="min-h-screen px-4 py-6 text-foreground">
-        <div className="mx-auto grid w-full max-w-lg gap-6">
+        <div className="mx-auto grid w-full max-w-2xl gap-6">
           <button type="button" onClick={onHome} className="flex min-h-11 items-center gap-2 justify-self-start font-bold"><ArrowLeft /> Le carnet</button>
           <div className="grid gap-2"><p className="type-label text-primary">Nouveau brouillon</p><h1 className="type-page-title">Comment s’appelle cette recette&nbsp;?</h1><p className="type-body font-semibold text-muted-foreground [text-wrap:pretty]">Le titre crée immédiatement un brouillon privé. Tu pourras tout compléter ensuite.</p></div>
           <div className="rounded-2xl bg-card p-4 shadow-[var(--shadow-card)]">
@@ -536,12 +546,19 @@ function MobileRecipeAdmin({
 
   return (
     <main className="min-h-screen px-4 pb-28 pt-4 text-foreground">
-      <div className="mx-auto w-full max-w-lg">
+      <div className="mx-auto w-full max-w-5xl">
         <header className="sticky top-0 z-20 -mx-4 mb-4 flex min-h-14 items-center gap-2 border-b bg-background/95 px-4 backdrop-blur">
           <Button type="button" variant="ghost" size="icon" onClick={() => section === "overview" ? onHome() : onOpenSection("overview")} className="size-11 rounded-full" aria-label={section === "overview" ? "Retour au carnet" : "Retour à la recette"}><ArrowLeft /></Button>
           <div className="min-w-0 flex-1"><p className="type-label truncate text-muted-foreground" title={sectionTitle}>{sectionTitle}</p><h1 className="type-panel-title truncate" title={values.translations[defaultLocale]?.title || "Recette sans titre"}>{values.translations[defaultLocale]?.title || "Recette sans titre"}</h1></div>
+          <Button type="button" variant="ghost" size="icon" onClick={onPreview} aria-label="Prévisualiser le brouillon" title="Prévisualiser le brouillon"><Eye /></Button>
           <SyncPill state={syncState} revision={revision} />
         </header>
+
+        <div className="mb-4 flex items-center justify-end gap-2" aria-label="Langue du contenu">
+          <span className="type-label mr-auto text-muted-foreground">Contenu édité</span>
+          <Button type="button" variant={requestedLanguage === "fr" ? "default" : "outline"} onClick={() => onLanguage("fr")}>Français</Button>
+          <Button type="button" variant={requestedLanguage === "en" ? "default" : "outline"} onClick={() => onLanguage("en")}>Anglais</Button>
+        </div>
 
         {syncState === "conflict" ? <ConflictCard onReload={onReloadConflict} onReplace={onReplaceConflict} /> : null}
         {state.type === "error" ? <SaveStateAlert state={state} /> : null}
@@ -556,7 +573,7 @@ function MobileRecipeAdmin({
       </div>
 
       <nav className="fixed inset-x-0 bottom-0 z-30 border-t bg-background/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur" aria-label="Actions de la recette">
-        <div className="mx-auto grid max-w-lg grid-cols-3 gap-2">
+        <div className="mx-auto grid max-w-5xl grid-cols-3 gap-2">
           <Button type="button" variant="ghost" onClick={() => onOpenSection("overview")} className="min-h-11 flex-col gap-0 rounded-xl text-xs"><BookOpen /> Recette</Button>
           <Button type="button" variant="ghost" onClick={() => onOpenSection("photo")} className="min-h-11 flex-col gap-0 rounded-xl text-xs"><Camera /> Photo</Button>
           <Button type="button" onClick={() => onOpenSection("publish")} className="min-h-11 flex-col gap-0 rounded-xl text-xs active:scale-[0.96] transition-transform"><Send /> Publier <span className="type-meta opacity-75">{completedSections}/7 sections</span></Button>
@@ -567,14 +584,28 @@ function MobileRecipeAdmin({
 }
 
 function MobileOverview({ recipe, values, readiness, publication, onOpen }: { recipe: EditableRecipe | null; values: RecipeFormPayload; readiness: RecipeReadiness; publication: ReturnType<typeof getPublicationState>; onOpen: (section: MobileSection) => void }) {
-  const sections: { id: MobileSection; title: string; detail: string; icon: typeof Camera; complete: boolean }[] = [
-    { id: "essentials", title: "L’essentiel", detail: "Titre, auteur et description", icon: NotebookPen, complete: readiness.sections.essentials },
-    { id: "photo", title: "Photo", detail: "Couverture de la recette", icon: Camera, complete: readiness.sections.photo },
-    { id: "details", title: "Détails", detail: "Portions, temps et température", icon: Clock3, complete: readiness.sections.details },
-    { id: "ingredients", title: "Ingrédients", detail: `${values.translations[values.defaultLocale].ingredients.filter((item) => item.name.trim()).length} éléments`, icon: ListChecks, complete: readiness.sections.ingredients },
-    { id: "preparation", title: "Préparation", detail: "Sections, étapes et sous-recettes", icon: BookOpen, complete: readiness.sections.preparation },
-    { id: "notes", title: "Notes", detail: "Astuces et variantes", icon: NotebookPen, complete: true },
-    { id: "translation", title: "Traduction", detail: "Version anglaise", icon: Languages, complete: readiness.sections.translation },
+  function status(section: Exclude<MobileSection, "overview" | "publish">) {
+    return {
+      blockers: readiness.blockers.filter((item) => item.section === section).length,
+      warnings: readiness.warnings.filter((item) => item.section === section).length,
+    };
+  }
+  const sections: Array<{
+    id: Exclude<MobileSection, "overview" | "publish">;
+    title: string;
+    detail: string;
+    icon: typeof Camera;
+    complete: boolean;
+    blockers: number;
+    warnings: number;
+  }> = [
+    { id: "essentials", title: "L’essentiel", detail: "Titre, auteur et description", icon: NotebookPen, complete: readiness.sections.essentials, ...status("essentials") },
+    { id: "photo", title: "Photo", detail: "Couverture de la recette", icon: Camera, complete: readiness.sections.photo, ...status("photo") },
+    { id: "details", title: "Détails", detail: "Portions, temps et température", icon: Clock3, complete: readiness.sections.details, ...status("details") },
+    { id: "ingredients", title: "Ingrédients", detail: `${values.translations[values.defaultLocale].ingredients.filter((item) => item.name.trim()).length} éléments`, icon: ListChecks, complete: readiness.sections.ingredients, ...status("ingredients") },
+    { id: "preparation", title: "Préparation", detail: "Sections, étapes et sous-recettes", icon: BookOpen, complete: readiness.sections.preparation, ...status("preparation") },
+    { id: "notes", title: "Notes", detail: "Astuces et variantes", icon: NotebookPen, complete: true, ...status("notes") },
+    { id: "translation", title: "Traduction", detail: "Version anglaise", icon: Languages, complete: readiness.sections.translation, ...status("translation") },
   ];
 
   return <div className="grid gap-4">
@@ -582,8 +613,75 @@ function MobileOverview({ recipe, values, readiness, publication, onOpen }: { re
       <div className="relative aspect-[16/9] bg-muted">{recipe?.heroImageUrl ? <Image src={recipe.heroImageUrl} alt="" fill sizes="(max-width: 768px) 100vw, 32rem" className="object-cover outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10" /> : <div className="grid size-full place-items-center gap-2 text-muted-foreground"><Camera /><span className="text-sm font-bold">Ajouter une photo</span></div>}</div>
       <div className="flex items-center justify-between gap-3 p-4"><div><Badge variant={publication.isPublic ? "default" : "secondary"}>{publication.isPublic ? "Visible publiquement" : publication.hasPublishedVersion ? "Version approuvée masquée" : "Jamais publiée"}</Badge><p className="mt-2 text-sm font-semibold text-muted-foreground">{publication.hasUnpublishedChanges ? "Modifications non publiées" : readiness.blockers.length === 0 ? "Prête à publier" : `${readiness.blockers.length} point${readiness.blockers.length > 1 ? "s" : ""} à compléter`}</p></div><Button type="button" variant="outline" onClick={() => onOpen("publish")} className="min-h-11 rounded-xl">Vérifier <ChevronRight /></Button></div>
     </div>
-    <div className="grid gap-2">{sections.map(({ id, title, detail, icon: Icon, complete }) => <button key={id} type="button" onClick={() => onOpen(id)} className="grid min-h-17 grid-cols-[2.75rem_1fr_auto] items-center gap-3 rounded-2xl bg-card p-3 text-left shadow-[var(--shadow-card)] transition-[scale,box-shadow] active:scale-[0.96]"><span className="grid size-11 place-items-center rounded-xl bg-muted"><Icon className="size-5" /></span><span><span className="block font-black">{title}</span><span className="block text-xs font-semibold text-muted-foreground">{detail}</span></span>{complete ? <Check className="size-5 text-green-600" /> : <ChevronRight className="size-5 text-muted-foreground" />}</button>)}</div>
+    <div className="grid gap-2 lg:grid-cols-2">{sections.map(({ id, title, detail, icon: Icon, complete, blockers, warnings }) => <button key={id} type="button" onClick={() => onOpen(id)} className="grid min-h-17 grid-cols-[2.75rem_1fr_auto] items-center gap-3 rounded-2xl bg-card p-3 text-left shadow-[var(--shadow-card)] transition-[scale,box-shadow] active:scale-[0.96]"><span className="grid size-11 place-items-center rounded-xl bg-muted"><Icon className="size-5" /></span><span><span className="block font-black">{title}</span><span className="block text-xs font-semibold text-muted-foreground">{blockers > 0 ? `${blockers} blocage${blockers > 1 ? "s" : ""}` : warnings > 0 ? `${warnings} conseil${warnings > 1 ? "s" : ""}` : detail}</span></span>{blockers > 0 ? <TriangleAlert className="size-5 text-destructive" /> : warnings > 0 ? <TriangleAlert className="size-5 text-amber-600" /> : complete ? <Check className="size-5 text-green-600" /> : <ChevronRight className="size-5 text-muted-foreground" />}</button>)}</div>
   </div>;
+}
+
+function AdminDraftPreview({
+  dictionaries,
+  recipe,
+  values,
+  previewLocale,
+  onClose,
+  onPreviewLanguage,
+  onReturnToSection,
+}: {
+  dictionaries: Record<LocaleKey, Dictionary>;
+  recipe: EditableRecipe;
+  values: RecipeFormPayload;
+  previewLocale: LocaleKey;
+  onClose: () => void;
+  onPreviewLanguage: (locale: LocaleKey) => void;
+  onReturnToSection: (section: Exclude<MobileSection, "overview" | "publish">) => void;
+}) {
+  const localized = values.translations[previewLocale];
+  const previewRecipe: Recipe = {
+    _id: recipe._id,
+    _creationTime: recipe._creationTime,
+    slug: recipe.slug,
+    heroImageUrl: recipe.heroImageUrl,
+    imageCredit: recipe.imageCredit,
+    defaultLocale: values.defaultLocale,
+    tags: values.tags,
+    status: recipe.status,
+    ...localized,
+  };
+
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <header className="sticky top-0 z-40 flex min-h-16 flex-wrap items-center justify-between gap-2 border-b border-border bg-background/95 px-4 py-2 backdrop-blur sm:px-6">
+        <Button type="button" variant="ghost" aria-label="Retour à l’édition" onClick={onClose}>
+          <ArrowLeft data-icon="inline-start" />
+          <span className="hidden sm:inline">Retour à l’édition</span>
+        </Button>
+        <div className="flex items-center gap-2">
+          <p className="type-label text-primary">Aperçu du brouillon</p>
+          <Button type="button" variant={previewLocale === "fr" ? "default" : "outline"} onClick={() => onPreviewLanguage("fr")}>
+            Français
+          </Button>
+          <Button type="button" variant={previewLocale === "en" ? "default" : "outline"} onClick={() => onPreviewLanguage("en")}>
+            Anglais
+          </Button>
+        </div>
+        <nav aria-label="Modifier une section" className="flex w-full gap-2 overflow-x-auto pb-1">
+          {([
+            ["essentials", "Essentiel"],
+            ["photo", "Photo"],
+            ["details", "Détails"],
+            ["ingredients", "Ingrédients"],
+            ["preparation", "Préparation"],
+            ["notes", "Notes"],
+            ["translation", "Traduction"],
+          ] as const).map(([section, label]) => (
+            <Button key={section} type="button" variant="ghost" className="shrink-0" onClick={() => onReturnToSection(section)}>
+              {label}
+            </Button>
+          ))}
+        </nav>
+      </header>
+      <RecipePresentation locale={previewLocale} dict={dictionaries[previewLocale]} recipe={previewRecipe} mode="preview" />
+    </div>
+  );
 }
 
 function MobileSectionFields({ section, locale, recipe, revision, onImageRevision, onImageConflict, form, tagsValue, defaultLocale, requestedLanguage, readiness, publication, isPending, onPublish, onDiscard, onUnpublish }: { section: MobileSection; locale: Locale; recipe: EditableRecipe | null; revision: number; onImageRevision: (revision: number) => void; onImageConflict: (revision?: number, retry?: (revision: number) => Promise<void>) => void; form: UseFormReturn<any>; tagsValue: string[]; defaultLocale: LocaleKey; requestedLanguage: LocaleKey; readiness: RecipeReadiness; publication: ReturnType<typeof getPublicationState>; isPending: boolean; onPublish: () => void; onDiscard: () => void; onUnpublish: () => void }) {
@@ -862,7 +960,7 @@ function TextField({
       <FieldLabel htmlFor={name}>{label}</FieldLabel>
       <Input
         id={name}
-        className="h-11 md:h-8"
+        className="h-11 md:h-10"
         type={type}
         placeholder={placeholder}
       aria-invalid={Boolean(error)}
@@ -913,13 +1011,13 @@ function SelectField({
     <Field>
       <FieldLabel>{label}</FieldLabel>
       <Select value={value} onValueChange={onValueChange}>
-        <SelectTrigger className="h-11 w-full md:h-8">
+        <SelectTrigger className="h-11 w-full md:h-10">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             {options.map((option) => (
-              <SelectItem key={option.value} value={option.value} className="min-h-11 md:min-h-8">
+              <SelectItem key={option.value} value={option.value} className="min-h-11 md:min-h-10">
                 {option.label}
               </SelectItem>
             ))}
@@ -1148,7 +1246,7 @@ function ArrayHeader({
   return (
     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
       <FieldTitle>{title}</FieldTitle>
-      <Button type="button" variant="outline" size="sm" onClick={onAdd} className="min-h-11 md:min-h-7">
+      <Button type="button" variant="outline" size="sm" onClick={onAdd} className="min-h-11 md:min-h-10">
         <ListPlus data-icon="inline-start" />
         {addLabel}
       </Button>
@@ -1176,7 +1274,7 @@ function ArrayControls({
         aria-label="Monter"
         disabled={index === 0}
         onClick={() => onMove(index, index - 1)}
-        className="size-11 md:size-7"
+        className="size-11 md:size-10"
       >
         <ArrowUp />
       </Button>
@@ -1187,7 +1285,7 @@ function ArrayControls({
         aria-label="Descendre"
         disabled={index === length - 1}
         onClick={() => onMove(index, index + 1)}
-        className="size-11 md:size-7"
+        className="size-11 md:size-10"
       >
         <ArrowDown />
       </Button>
@@ -1197,7 +1295,7 @@ function ArrayControls({
         size="icon-sm"
         aria-label="Supprimer"
         onClick={() => onRemove(index)}
-        className="size-11 md:size-7"
+        className="size-11 md:size-10"
       >
         <Trash2 />
       </Button>

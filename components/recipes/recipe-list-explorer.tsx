@@ -1,7 +1,7 @@
 "use client";
 
 import { type FormEvent, useMemo, useState } from "react";
-import { ArrowDownAZ, CalendarDays, LayoutGrid, List, Search, X } from "lucide-react";
+import { ArrowDownAZ, CalendarDays, ChevronDown, LayoutGrid, List, Search, X } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
@@ -37,6 +37,7 @@ export function RecipeListExplorer({
   const activeView = getActiveView(searchParams);
   const activeSort = getActiveSort(searchParams);
   const [draftState, setDraftState] = useState({ query, value: query });
+  const [mobileControlsOpen, setMobileControlsOpen] = useState(false);
   const draftQuery = draftState.query === query ? draftState.value : query;
 
   const filteredRecipes = useMemo(
@@ -102,10 +103,10 @@ export function RecipeListExplorer({
   }
 
   return (
-    <div className="grid gap-8">
+    <div className="grid gap-10">
       <section
         aria-label={dict.recipeList.filtersLabel}
-        className="grid gap-4 rounded-lg border border-border bg-card p-4 shadow-card sm:p-5"
+        className="surface-elevated grid gap-5 rounded-3xl bg-card p-4 sm:p-6"
       >
         <form
           onSubmit={submitSearch}
@@ -141,7 +142,18 @@ export function RecipeListExplorer({
           </Button>
         </form>
 
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <button
+            type="button"
+            aria-expanded={mobileControlsOpen}
+            onClick={() => setMobileControlsOpen((open) => !open)}
+            className="flex min-h-11 w-full items-center justify-between rounded-full bg-background px-4 text-sm font-bold shadow-[0_0_0_1px_var(--border)] transition-[scale,background-color] duration-150 active:scale-[0.96] md:hidden"
+          >
+            {dict.recipeList.disclosureLabel}
+            <ChevronDown aria-hidden className={cn("size-4 transition-transform duration-150", mobileControlsOpen && "rotate-180")} />
+          </button>
+          <div className={cn("mt-4 hidden gap-4 md:mt-0 md:grid", mobileControlsOpen && "grid")}>
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div
             className="flex flex-wrap gap-2"
             aria-label={dict.recipeList.categoriesLabel}
@@ -155,10 +167,10 @@ export function RecipeListExplorer({
                   aria-pressed={isActive}
                   onClick={() => toggleCategory(category)}
                   className={cn(
-                    "inline-flex h-9 items-center rounded-full border px-4 text-sm font-black transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                    "inline-flex min-h-11 items-center rounded-full px-4 text-sm font-bold shadow-[0_0_0_1px_var(--border)] transition-[scale,background-color,color,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.96] md:min-h-10",
                     isActive
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-border bg-background text-foreground hover:border-primary/60 hover:text-primary",
+                      ? "bg-primary text-primary-foreground shadow-[0_0_0_1px_var(--primary)]"
+                      : "bg-background text-foreground hover:text-primary hover:shadow-[0_0_0_1px_var(--primary)]",
                   )}
                 >
                   {dict.recipeList.categories[category]}
@@ -200,10 +212,10 @@ export function RecipeListExplorer({
                   aria-pressed={isActive}
                   onClick={() => setView(view)}
                   className={cn(
-                    "inline-flex h-9 items-center gap-2 rounded-full border px-4 text-sm font-black transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                    "inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-sm font-bold shadow-[0_0_0_1px_var(--border)] transition-[scale,background-color,color,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.96] md:min-h-10",
                     isActive
-                      ? "border-foreground bg-foreground text-background"
-                      : "border-border bg-background text-foreground hover:border-foreground/60",
+                      ? "bg-foreground text-background shadow-[0_0_0_1px_var(--foreground)]"
+                      : "bg-background text-foreground hover:shadow-[0_0_0_1px_var(--foreground)]",
                   )}
                 >
                   <Icon className="size-4 stroke-[1.8]" />
@@ -227,10 +239,10 @@ export function RecipeListExplorer({
                   aria-pressed={isActive}
                   onClick={() => setSort(sort)}
                   className={cn(
-                    "inline-flex h-9 items-center gap-2 rounded-full border px-4 text-sm font-black transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                    "inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-sm font-bold shadow-[0_0_0_1px_var(--border)] transition-[scale,background-color,color,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.96] md:min-h-10",
                     isActive
-                      ? "border-foreground bg-foreground text-background"
-                      : "border-border bg-background text-foreground hover:border-foreground/60",
+                      ? "bg-foreground text-background shadow-[0_0_0_1px_var(--foreground)]"
+                      : "bg-background text-foreground hover:shadow-[0_0_0_1px_var(--foreground)]",
                   )}
                 >
                   <Icon className="size-4 stroke-[1.8]" />
@@ -238,6 +250,8 @@ export function RecipeListExplorer({
                 </button>
               );
             })}
+          </div>
+        </div>
           </div>
         </div>
       </section>
@@ -248,14 +262,12 @@ export function RecipeListExplorer({
             locale={locale}
             dict={dict}
             recipes={filteredRecipes}
-            showAddRecipeRow={!hasActiveFilters}
           />
         ) : (
           <RecipeGrid
             locale={locale}
             dict={dict}
             recipes={filteredRecipes}
-            showAddRecipeCard={!hasActiveFilters}
           />
         )
       ) : (
@@ -264,7 +276,9 @@ export function RecipeListExplorer({
             {dict.recipeList.noResultsTitle}
           </h2>
           <p className="type-body mx-auto mt-3 max-w-xl font-semibold text-muted-foreground [text-wrap:pretty]">
-            {dict.recipeList.noResultsDescription}
+            {recipes.length === 0
+              ? dict.recipeList.emptyDescription
+              : dict.recipeList.noResultsDescription}
           </p>
         </div>
       )}
@@ -278,6 +292,7 @@ function filterRecipes(
   categories: RecipeCategory[],
 ) {
   const normalizedQuery = normalizeSearchText(query);
+  const selectedCategories = new Set<string>(categories);
 
   return recipes.filter((recipe) => {
     const matchesQuery =
@@ -285,7 +300,7 @@ function filterRecipes(
       getRecipeSearchText(recipe).includes(normalizedQuery);
     const matchesCategory =
       categories.length === 0 ||
-      categories.some((category) => recipe.tags.includes(category));
+      recipe.tags.some((category) => selectedCategories.has(category));
 
     return matchesQuery && matchesCategory;
   });

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { locales, type Locale } from "@/i18n/config";
 
+const localeSet = new Set<string>(locales);
+
 type LocaleSwitcherProps = {
   current: Locale;
 };
@@ -16,7 +18,7 @@ export function LocaleSwitcher({ current }: LocaleSwitcherProps) {
       {locales.map((locale, index) => {
         const isActive = locale === current;
         const segments = pathname.split("/");
-        if (segments[1] && (locales as readonly string[]).includes(segments[1])) {
+        if (segments[1] && localeSet.has(segments[1])) {
           segments[1] = locale;
         } else {
           segments.splice(1, 0, locale);
@@ -35,8 +37,8 @@ export function LocaleSwitcher({ current }: LocaleSwitcherProps) {
               aria-current={isActive ? "true" : undefined}
               className={
                 isActive
-                  ? "text-primary"
-                  : "text-muted-foreground transition hover:text-primary"
+                  ? "inline-flex min-h-11 items-center px-1 text-primary md:min-h-10"
+                  : "inline-flex min-h-11 items-center px-1 text-muted-foreground transition-colors duration-150 hover:text-primary md:min-h-10"
               }
             >
               {locale}

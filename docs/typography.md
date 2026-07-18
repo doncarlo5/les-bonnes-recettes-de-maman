@@ -1,29 +1,29 @@
 # Typography
 
-The product uses Playfair Display for editorial identity and Nunito Sans for readable content and task-oriented interface text. Browser fonts are loaded through `next/font/google`; the TTF files in `assets/fonts` are reserved for server-rendered Open Graph images.
+The product uses Newsreader for its modern-heirloom editorial identity and Source Sans 3 for readable content and task-oriented interface text. Browser fonts are loaded through `next/font/google`; the matching variable TTF files in `assets/fonts` are reserved for server-rendered Open Graph images.
 
 ## Semantic roles
 
 | Utility | Typeface and metrics | Use |
 | --- | --- | --- |
-| `type-display` | Playfair, fluid 44–96px, 800, `1`, `-0.02em` | Public hero and recipe titles |
-| `type-page-title` | Playfair, fluid 40–72px, 800, `1.05`, `-0.02em` | Public and admin page-level titles |
-| `type-section-title` | Playfair, fluid 30–48px, 800, `1.1` | Major public editorial sections |
-| `type-content-title` | Playfair, fluid 24–36px, 800, `1.15` | Recipe content sections and sidebars |
-| `type-card-title` | Playfair, fluid 28–48px, 800, `1` | Public recipe cards and rows |
-| `type-subsection-title` | Playfair, fluid 20–24px, 800, `1.2` | Nested public recipe headings and values |
-| `type-editorial-lead` | Playfair italic, fluid 18–30px, `1.5`, `65ch` max | Short public descriptions and editorial leads |
-| `type-byline` | Playfair italic, fluid 18–24px, `1.4` | Authors, taglines, and compact editorial accents |
-| `type-wordmark` | Playfair, fluid 20–24px, 800, `1` | Site wordmark only |
-| `type-body` | Nunito Sans, 16px, `1.6` | General readable copy |
-| `type-body-spacious` | Nunito Sans, fluid 16–18px, `1.7` | Recipe instructions and notes |
-| `type-body-sm` | Nunito Sans, 14px, `1.5` | Supporting interface copy |
-| `type-panel-title` | Nunito Sans, fluid 18–24px, 800, `1.25` | Admin panels, drawers, lists, and dialogs |
-| `type-label` | Nunito Sans, 12px, 700, uppercase, `0.16em` tracking | Eyebrows, compact labels, and badges |
-| `type-meta` | Nunito Sans, 12px, 700, `1.4`, tabular figures | Credits, counts, revisions, and numeric metadata |
-| `type-control` | Nunito Sans, 16px mobile / 14px desktop, `1.4` | Editable inputs and textareas |
+| `type-display` | Newsreader, fluid 44–96px, 600, `0.98`, `-0.035em` | Public hero and recipe titles |
+| `type-page-title` | Newsreader, fluid 40–72px, 600, `1.05`, `-0.02em` | Public and admin page-level titles |
+| `type-section-title` | Newsreader, fluid 30–48px, 600, `1.1` | Major public editorial sections |
+| `type-content-title` | Newsreader, fluid 24–36px, 600, `1.15` | Recipe content sections and sidebars |
+| `type-card-title` | Newsreader, fluid 28–48px, 600, `1` | Public recipe cards and rows |
+| `type-subsection-title` | Newsreader, fluid 20–24px, 600, `1.2` | Nested public recipe headings and values |
+| `type-editorial-lead` | Newsreader italic, fluid 18–30px, `1.5`, `65ch` max | Short public descriptions and editorial leads |
+| `type-byline` | Newsreader italic, fluid 18–24px, `1.4` | Authors, taglines, and compact editorial accents |
+| `type-wordmark` | Newsreader, fluid 20–24px, 600, `1` | Site wordmark only |
+| `type-body` | Source Sans 3, 16px, `1.6` | General readable copy |
+| `type-body-spacious` | Source Sans 3, fluid 16–18px, `1.7` | Recipe instructions and notes |
+| `type-body-sm` | Source Sans 3, 14px, `1.5` | Supporting interface copy |
+| `type-panel-title` | Source Sans 3, fluid 18–24px, 800, `1.25` | Admin panels, drawers, lists, and dialogs |
+| `type-label` | Source Sans 3, 12px, 700, uppercase, `0.16em` tracking | Eyebrows, compact labels, and badges |
+| `type-meta` | Source Sans 3, 12px, 700, `1.4`, tabular figures | Credits, counts, revisions, and numeric metadata |
+| `type-control` | Source Sans 3, 16px mobile / 14px desktop, `1.4` | Editable inputs and textareas |
 
-Playfair is limited to the public editorial experience and admin page titles. Admin panels, controls, drawers, dialogs, tables, and list items use Nunito Sans.
+Newsreader is limited to the public editorial experience and admin page titles. Admin panels, controls, drawers, dialogs, tables, and list items use Source Sans 3.
 
 ## Usage rules
 

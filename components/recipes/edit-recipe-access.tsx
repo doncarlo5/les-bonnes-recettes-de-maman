@@ -16,7 +16,7 @@ export function EditRecipeAccess({
   return (
     <Link
       href={adminHref}
-      className="absolute left-16 top-4 z-10 inline-flex h-10 items-center justify-center gap-2 rounded-full bg-white/15 px-4 text-sm font-black text-white backdrop-blur-sm transition hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white lg:left-24 lg:top-8 lg:h-11"
+      className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold text-muted-foreground transition-[scale,background-color,color] duration-150 hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.96] md:min-h-10"
     >
       <Pencil className="size-4 stroke-[1.8]" />
       Éditer

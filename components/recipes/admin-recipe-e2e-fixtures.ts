@@ -1,6 +1,6 @@
 import type { Id } from "@/convex/_generated/dataModel";
 import { getPublicationState, getRecipeReadiness } from "@/lib/recipe-admin-domain";
-import type { EditableRecipe, EditableRecipeSummary } from "./types";
+import type { EditableRecipe, EditableRecipeSummary, Recipe } from "./types";
 
 const localized = {
   title: "Tarte de démonstration",
@@ -66,4 +66,21 @@ export function getRecipeAdminE2EFixtures() {
     canDiscard: recipe.canDiscard,
   };
   return { recipes: [summary], recipe };
+}
+
+export function getPublicRecipeE2EFixture(locale: "fr" | "en", slug?: string) {
+  const fixtures = getRecipeAdminE2EFixtures();
+  if (!fixtures || (slug && slug !== fixtures.recipe.slug)) return null;
+  const recipe = fixtures.recipe;
+  return {
+    _id: recipe._id,
+    _creationTime: recipe._creationTime,
+    slug: recipe.slug,
+    heroImageUrl: recipe.heroImageUrl,
+    imageCredit: recipe.imageCredit,
+    defaultLocale: recipe.defaultLocale,
+    tags: recipe.tags,
+    status: recipe.status,
+    ...recipe.translations[locale],
+  } satisfies Recipe;
 }

@@ -50,7 +50,7 @@ export default async function RecipeOpengraphImage({
           />
           <div
             style={{
-              fontFamily: "Playfair Display",
+              fontFamily: "Newsreader",
               fontSize: 84,
               lineHeight: 1.05,
               color: brand.ink,
@@ -62,7 +62,7 @@ export default async function RecipeOpengraphImage({
           {recipe ? (
             <div
               style={{
-                fontFamily: "Nunito Sans",
+                fontFamily: "Source Sans 3",
                 fontSize: 30,
                 color: brand.mutedInk,
                 marginTop: 28,
@@ -119,7 +119,7 @@ export default async function RecipeOpengraphImage({
           {recipe.timeLabel ? (
             <div
               style={{
-                fontFamily: "Nunito Sans",
+                fontFamily: "Source Sans 3",
                 fontSize: 26,
                 letterSpacing: 6,
                 textTransform: "uppercase",
@@ -132,7 +132,7 @@ export default async function RecipeOpengraphImage({
           ) : null}
           <div
             style={{
-              fontFamily: "Playfair Display",
+              fontFamily: "Newsreader",
               fontSize: 84,
               lineHeight: 1.0,
               color: "#FFFFFF",
@@ -157,7 +157,7 @@ export default async function RecipeOpengraphImage({
             />
             <div
               style={{
-                fontFamily: "Nunito Sans",
+                fontFamily: "Source Sans 3",
                 fontSize: 28,
                 color: "rgba(255,255,255,0.92)",
               }}

@@ -48,14 +48,14 @@ export function SiteHeader({ locale, dict }: SiteHeaderProps) {
   return (
     <header
       className={cn(
-        "sticky z-40 border-b border-border/60 backdrop-blur transition-all duration-200",
+        "sticky z-40 border-b border-border/60 backdrop-blur transition-[top,background-color] duration-200",
         isHeaderHidden ? "-top-24" : "top-0",
         isHeaderScrolled
           ? "bg-background/85 supports-[backdrop-filter]:bg-background/70"
           : "bg-background"
       )}
     >
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-6 px-6 py-5 lg:px-10">
+      <div className="mx-auto flex min-h-20 w-full max-w-7xl items-center justify-between gap-4 px-5 lg:px-10">
         <Link
           href={`/${locale}`}
           className="type-wordmark text-foreground"
@@ -65,8 +65,8 @@ export function SiteHeader({ locale, dict }: SiteHeaderProps) {
 
         <nav className="type-label hidden items-center gap-8 text-muted-foreground md:flex">
           <Link
-            href={`/${locale}/recettes`}
-            className="transition hover:text-primary"
+            href={`/${locale}#recettes`}
+            className="transition-colors duration-150 hover:text-primary"
           >
             {dict.nav.recipes}
           </Link>

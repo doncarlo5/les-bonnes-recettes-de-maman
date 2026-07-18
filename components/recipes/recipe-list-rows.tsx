@@ -29,7 +29,7 @@ export function RecipeListRows({
         <li key={recipe._id}>
           <Link
             href={`/${locale}/recettes/${recipe.slug}`}
-            className="group grid gap-4 rounded-2xl border border-border bg-card p-3 shadow-card transition duration-300 hover:-translate-y-0.5 hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:grid-cols-[11rem_1fr] sm:items-center"
+            className="surface-elevated group grid gap-4 rounded-3xl bg-card p-3 transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:grid-cols-[11rem_1fr] sm:items-center"
           >
             <span className="relative aspect-[4/3] overflow-hidden rounded-xl bg-muted sm:aspect-[5/4]">
               <Image
@@ -37,7 +37,7 @@ export function RecipeListRows({
                 alt=""
                 fill
                 sizes="(max-width: 640px) 100vw, 180px"
-                className="object-cover transition duration-500 group-hover:scale-[1.04]"
+                className="image-outline object-cover transition-transform duration-500 group-hover:scale-[1.025]"
               />
             </span>
             <span className="grid gap-3 px-1 py-1 sm:py-3">
@@ -66,11 +66,11 @@ export function RecipeListRows({
         <li>
           <Link
             href={`/${locale}/admin/recettes?new=1`}
-            className="group grid gap-4 rounded-2xl border border-dashed border-primary/40 bg-card p-4 shadow-card transition duration-300 hover:-translate-y-0.5 hover:border-primary hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:grid-cols-[11rem_1fr] sm:items-center"
+            className="surface-elevated group grid gap-4 rounded-3xl bg-card p-4 transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:grid-cols-[11rem_1fr] sm:items-center"
           >
             <span
               aria-hidden
-              className="flex aspect-[4/3] items-center justify-center rounded-xl bg-primary/10 text-primary transition duration-300 group-hover:bg-primary group-hover:text-primary-foreground sm:aspect-[5/4]"
+              className="flex aspect-[4/3] items-center justify-center rounded-xl bg-primary/10 text-primary transition-[background-color,color] duration-300 group-hover:bg-primary group-hover:text-primary-foreground sm:aspect-[5/4]"
             >
               <Plus className="size-12 stroke-[1.8]" />
             </span>
