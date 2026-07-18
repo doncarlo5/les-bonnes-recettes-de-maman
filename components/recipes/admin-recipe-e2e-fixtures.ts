@@ -1,0 +1,69 @@
+import type { Id } from "@/convex/_generated/dataModel";
+import { getPublicationState, getRecipeReadiness } from "@/lib/recipe-admin-domain";
+import type { EditableRecipe, EditableRecipeSummary } from "./types";
+
+const localized = {
+  title: "Tarte de démonstration",
+  author: "Maman",
+  description: "Une recette utilisée uniquement par les tests du studio mobile.",
+  servings: { quantity: 6, unit: "personnes" },
+  prepTime: "20 min",
+  cookTime: "30 min",
+  totalTime: "50 min",
+  timeLabel: "50 min",
+  temperature: "180 °C",
+  ingredients: [
+    { name: "Farine", quantity: "200", unit: "g", notes: "tamisée" },
+    { name: "Œufs", quantity: "3", unit: "", notes: "" },
+  ],
+  sections: [{ title: "Préparation", steps: ["Mélanger les ingrédients.", "Cuire au four."] }],
+  subRecipes: [],
+  notes: ["Servir tiède."],
+};
+
+const content = {
+  defaultLocale: "fr" as const,
+  translations: {
+    fr: localized,
+    en: { ...localized, title: "Demo tart", description: "A recipe used by mobile studio tests." },
+  },
+  tags: ["dessert"],
+  status: "published" as const,
+};
+
+export function getRecipeAdminE2EFixtures() {
+  if (process.env.NODE_ENV === "production" || process.env.RECIPE_ADMIN_E2E !== "1") return null;
+  const publication = getPublicationState("published", 3, 3);
+  const readiness = getRecipeReadiness(content, false);
+  const recipe: EditableRecipe = {
+    _id: "e2e-recipe" as Id<"recipes">,
+    _creationTime: 1,
+    slug: "tarte-de-demonstration",
+    title: localized.title,
+    heroImageUrl: "",
+    revision: 3,
+    publishedRevision: 3,
+    updatedAt: 1,
+    readiness,
+    ...publication,
+    ...content,
+  };
+  const summary: EditableRecipeSummary = {
+    _id: recipe._id,
+    _creationTime: recipe._creationTime,
+    slug: recipe.slug,
+    title: recipe.title,
+    heroImageUrl: recipe.heroImageUrl,
+    tags: recipe.tags,
+    status: recipe.status,
+    revision: recipe.revision,
+    publishedRevision: recipe.publishedRevision,
+    updatedAt: recipe.updatedAt,
+    readiness: recipe.readiness,
+    isPublic: recipe.isPublic,
+    hasPublishedVersion: recipe.hasPublishedVersion,
+    hasUnpublishedChanges: recipe.hasUnpublishedChanges,
+    canDiscard: recipe.canDiscard,
+  };
+  return { recipes: [summary], recipe };
+}

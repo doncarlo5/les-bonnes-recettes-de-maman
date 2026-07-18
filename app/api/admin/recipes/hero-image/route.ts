@@ -6,6 +6,7 @@ import {
   adminUnauthorizedResponse,
   getRecipeAdminAccess,
 } from "@/lib/recipe-admin-auth";
+import { recipeMutationErrorResponse } from "@/lib/recipe-admin-route-errors";
 
 export const dynamic = "force-dynamic";
 
@@ -26,19 +27,22 @@ export async function POST(request: NextRequest) {
   const slug = body.slug?.trim();
   const storageId = body.storageId?.trim() as Id<"_storage"> | undefined;
 
-  if (!slug || !storageId) {
+  if (!slug || !storageId || !Number.isFinite(body.expectedRevision)) {
     return Response.json(
       { error: "Missing slug or storageId" },
       { status: 400 },
     );
   }
 
-  const result = await fetchMutation(api.recipes.setHeroImage, {
-    slug,
-    storageId,
-    expectedRevision: body.expectedRevision,
-    adminPassword: adminAccess.adminPassword,
-  });
-
-  return Response.json({ ok: true, slug: result.slug, storageId, revision: result.revision });
+  try {
+    const result = await fetchMutation(api.recipes.setHeroImage, {
+      slug,
+      storageId,
+      expectedRevision: body.expectedRevision!,
+      adminPassword: adminAccess.adminPassword,
+    });
+    return Response.json({ ok: true, slug: result.slug, storageId, revision: result.revision, savedAt: result.savedAt });
+  } catch (error) {
+    return recipeMutationErrorResponse(error, "Impossible d'associer cette image.");
+  }
 }

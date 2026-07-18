@@ -5,6 +5,7 @@ import {
   adminUnauthorizedResponse,
   getRecipeAdminAccess,
 } from "@/lib/recipe-admin-auth";
+import { recipeMutationErrorResponse } from "@/lib/recipe-admin-route-errors";
 
 export const dynamic = "force-dynamic";
 
@@ -32,28 +33,27 @@ export async function POST(request: NextRequest) {
   const photographerUrl = body.photographerUrl?.trim();
   const photoUrl = body.photoUrl?.trim();
 
-  if (!slug || !imageUrl || !photographerName || !photographerUrl || !photoUrl) {
+  if (!slug || !imageUrl || !photographerName || !photographerUrl || !photoUrl || !Number.isFinite(body.expectedRevision)) {
     return Response.json(
       { error: "Missing Unsplash image payload" },
       { status: 400 },
     );
   }
 
-  const result = await fetchMutation(api.recipes.setUnsplashHeroImage, {
-    slug,
-    imageUrl,
-    alt: body.alt ?? "",
-    photographerName,
-    photographerUrl,
-    photoUrl,
-    expectedRevision: body.expectedRevision,
-    adminPassword: adminAccess.adminPassword,
-  });
+  try {
+    const result = await fetchMutation(api.recipes.setUnsplashHeroImage, {
+      slug,
+      imageUrl,
+      alt: body.alt ?? "",
+      photographerName,
+      photographerUrl,
+      photoUrl,
+      expectedRevision: body.expectedRevision!,
+      adminPassword: adminAccess.adminPassword,
+    });
 
-  return Response.json({
-    ok: true,
-    slug: result.slug,
-    heroImageUrl: result.heroImageUrl,
-    revision: result.revision,
-  });
+    return Response.json({ ok: true, slug: result.slug, heroImageUrl: result.heroImageUrl, revision: result.revision, savedAt: result.savedAt });
+  } catch (error) {
+    return recipeMutationErrorResponse(error, "Impossible d'associer cette image Unsplash.");
+  }
 }

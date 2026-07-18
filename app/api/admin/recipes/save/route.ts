@@ -1,12 +1,13 @@
 import { fetchMutation } from "convex/nextjs";
-import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 import { editableRecipeDraftSchema } from "@/components/recipes/recipe-form-schema";
 import { api } from "@/convex/_generated/api";
-import { hasLocale, locales } from "@/i18n/config";
+import { hasLocale } from "@/i18n/config";
 import {
   getRecipeAdminAccess,
 } from "@/lib/recipe-admin-auth";
+import { revalidateRecipePaths } from "@/lib/recipe-admin-revalidate";
+import { recipeMutationErrorResponse } from "@/lib/recipe-admin-route-errors";
 
 export const dynamic = "force-dynamic";
 
@@ -122,51 +123,10 @@ export async function POST(request: NextRequest) {
       message: `Recette enregistree: ${result.title}`,
       slug: result.slug,
       revision: result.revision,
-      updatedAt: result.updatedAt,
+      savedAt: result.savedAt,
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "";
-
-    if (message.includes("RECIPE_NOT_FOUND")) {
-      return Response.json(
-        {
-          type: "error",
-          message: "Recette introuvable.",
-        },
-        { status: 404 },
-      );
-    }
-
-    if (message.includes("RECIPE_DRAFT_CONFLICT")) {
-      const latestRevision = Number(message.split(":").at(-1));
-      return Response.json(
-        {
-          type: "conflict",
-          message: "Ce brouillon a ete modifie ailleurs.",
-          latestRevision: Number.isFinite(latestRevision)
-            ? latestRevision
-            : undefined,
-        },
-        { status: 409 },
-      );
-    }
-
-    return Response.json(
-      {
-        type: "error",
-        message: initialErrorMessage,
-      },
-      { status: 500 },
-    );
-  }
-}
-
-function revalidateRecipePaths(slug: string) {
-  for (const locale of locales) {
-    revalidatePath(`/${locale}`);
-    revalidatePath(`/${locale}/recettes`);
-    revalidatePath(`/${locale}/recettes/${slug}`);
-    revalidatePath(`/${locale}/admin/recettes`);
+    return recipeMutationErrorResponse(error, initialErrorMessage);
   }
 }
 

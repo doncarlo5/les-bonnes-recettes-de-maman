@@ -3,6 +3,13 @@ import { mutation, query, type MutationCtx, type QueryCtx } from "./_generated/s
 import type { Doc, Id } from "./_generated/dataModel";
 import rawRecipes from "./recettes.json";
 import { toSeedRecipe, type SourceRecipe } from "./recipeTranslations";
+import {
+  assertRecipeDraftBytes,
+  assertRecipeDraftLimits,
+  getPublicationState,
+  getRecipeReadiness,
+  RECIPE_FIELD_LIMITS,
+} from "../lib/recipe-admin-domain";
 
 declare const process: {
   env: {
@@ -151,6 +158,8 @@ export const listForEditing = query({
         const revision = draft?.revision ?? 0;
         const publishedRevision =
           draft?.publishedRevision ?? (recipe.status === "published" ? 0 : -1);
+        const publication = getPublicationState(recipe.status, revision, publishedRevision);
+        const hasImage = Boolean(storedHeroImageUrl ?? source.heroImageUrl);
 
         return {
           _id: recipe._id,
@@ -164,7 +173,8 @@ export const listForEditing = query({
           revision,
           publishedRevision,
           updatedAt: draft?.updatedAt ?? recipe._creationTime,
-          hasUnpublishedChanges: revision !== publishedRevision,
+          ...publication,
+          readiness: getRecipeReadiness(source, hasImage),
         };
       }),
     );
@@ -195,6 +205,7 @@ export const getForEditing = query({
     const revision = draft?.revision ?? 0;
     const publishedRevision =
       draft?.publishedRevision ?? (recipe.status === "published" ? 0 : -1);
+    const publication = getPublicationState(recipe.status, revision, publishedRevision);
 
     return {
       _id: recipe._id,
@@ -210,7 +221,8 @@ export const getForEditing = query({
       revision,
       publishedRevision,
       updatedAt: draft?.updatedAt ?? recipe._creationTime,
-      hasUnpublishedChanges: revision !== publishedRevision,
+      ...publication,
+      readiness: getRecipeReadiness(source, Boolean(storedHeroImageUrl ?? source.heroImageUrl)),
     };
   },
 });
@@ -238,7 +250,7 @@ export const create = mutation({
     });
 
     const now = Date.now();
-    await ctx.db.insert("recipeDrafts", {
+    const initialDraft = {
       recipeId,
       heroImageUrl: "",
       defaultLocale: args.recipe.defaultLocale,
@@ -247,7 +259,9 @@ export const create = mutation({
       revision: 0,
       publishedRevision: -1,
       updatedAt: now,
-    });
+    };
+    assertProspectiveDraft(initialDraft);
+    await ctx.db.insert("recipeDrafts", initialDraft);
 
     return {
       recipeId,
@@ -255,7 +269,7 @@ export const create = mutation({
       title: title || "Nouvelle recette",
       revision: 0,
       publishedRevision: -1,
-      updatedAt: now,
+      savedAt: now,
     };
   },
 });
@@ -300,18 +314,20 @@ export const saveDraft = mutation({
     }
 
     const revision = currentRevision + 1;
-    const updatedAt = Date.now();
+    const savedAt = Date.now();
 
-    if (currentDraft) {
-      await ctx.db.patch(currentDraft._id, {
+    const contentPatch = {
         defaultLocale: args.recipe.defaultLocale,
         translations: args.recipe.translations,
         tags: args.recipe.tags,
         revision,
-        updatedAt,
-      });
+        updatedAt: savedAt,
+    };
+    if (currentDraft) {
+      assertProspectiveDraft({ ...currentDraft, ...contentPatch });
+      await ctx.db.patch(currentDraft._id, contentPatch);
     } else {
-      await ctx.db.insert("recipeDrafts", {
+      const initialDraft = {
         recipeId: existing._id,
         heroImageStorageId: existing.heroImageStorageId,
         heroImageUrl: existing.heroImageUrl,
@@ -321,8 +337,10 @@ export const saveDraft = mutation({
         tags: args.recipe.tags,
         revision,
         publishedRevision: existing.status === "published" ? 0 : -1,
-        updatedAt,
-      });
+        updatedAt: savedAt,
+      };
+      assertProspectiveDraft(initialDraft);
+      await ctx.db.insert("recipeDrafts", initialDraft);
     }
 
     return {
@@ -330,7 +348,7 @@ export const saveDraft = mutation({
       slug: existing.slug,
       title: args.recipe.translations[args.recipe.defaultLocale].title,
       revision,
-      updatedAt,
+      savedAt,
     };
   },
 });
@@ -350,6 +368,7 @@ export const publishDraft = mutation({
     if (draft.revision !== args.expectedRevision) {
       throw new Error(`RECIPE_DRAFT_CONFLICT:${draft.revision}`);
     }
+    assertRecipeBounds(draft);
     assertDraftReadyForPublication(draft);
 
     await ctx.db.patch(recipe._id, {
@@ -361,12 +380,14 @@ export const publishDraft = mutation({
       tags: draft.tags,
       status: "published",
     });
+    const savedAt = Date.now();
+    assertProspectiveDraft({ ...draft, publishedRevision: draft.revision, updatedAt: savedAt });
     await ctx.db.patch(draft._id, {
       publishedRevision: draft.revision,
-      updatedAt: Date.now(),
+      updatedAt: savedAt,
     });
 
-    return { slug: recipe.slug, revision: draft.revision };
+    return { slug: recipe.slug, revision: draft.revision, publishedRevision: draft.revision, savedAt };
   },
 });
 
@@ -385,9 +406,10 @@ export const discardDraft = mutation({
     if (draft.revision !== args.expectedRevision) {
       throw new Error(`RECIPE_DRAFT_CONFLICT:${draft.revision}`);
     }
-
+    if (draft.publishedRevision < 0) throw new Error("RECIPE_HAS_NO_PUBLISHED_VERSION");
     const revision = draft.revision + 1;
-    await ctx.db.patch(draft._id, {
+    const savedAt = Date.now();
+    const restoredPatch = {
       heroImageStorageId: recipe.heroImageStorageId,
       heroImageUrl: recipe.heroImageUrl,
       imageCredit: recipe.imageCredit,
@@ -396,10 +418,23 @@ export const discardDraft = mutation({
       tags: recipe.tags,
       revision,
       publishedRevision: revision,
-      updatedAt: Date.now(),
-    });
+      updatedAt: savedAt,
+    };
+    assertProspectiveDraft({ ...draft, ...restoredPatch });
+    await ctx.db.patch(draft._id, restoredPatch);
 
-    return { slug: recipe.slug, revision };
+    return {
+      slug: recipe.slug,
+      revision,
+      publishedRevision: revision,
+      savedAt,
+      draft: {
+        defaultLocale: recipe.defaultLocale,
+        translations: recipe.translations,
+        tags: recipe.tags,
+        status: recipe.status,
+      },
+    };
   },
 });
 
@@ -408,6 +443,7 @@ export const unpublish = mutation({
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
     const recipe = await getRecipeBySlug(ctx, args.slug);
+    await ensureRecipeDraft(ctx, recipe);
     await ctx.db.patch(recipe._id, { status: "draft" });
     return { slug: recipe.slug };
   },
@@ -417,44 +453,32 @@ export const setHeroImage = mutation({
   args: {
     slug: v.string(),
     storageId: v.id("_storage"),
-    expectedRevision: v.optional(v.number()),
+    expectedRevision: v.number(),
     adminPassword: v.string(),
   },
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
 
-    const recipe = await ctx.db
-      .query("recipes")
-      .withIndex("by_slug", (q) => q.eq("slug", args.slug))
-      .unique();
-
-    if (!recipe) {
-      throw new Error(`Recipe ${args.slug} was not found`);
-    }
-
-    const storedImage = await ctx.db.system.get(args.storageId);
+    const [recipe, storedImage] = await Promise.all([
+      getRecipeBySlug(ctx, args.slug),
+      ctx.db.system.get(args.storageId),
+    ]);
 
     if (!storedImage) {
       throw new Error("Image was not found in Convex Storage");
     }
 
-    const draft = await ensureRecipeDraft(ctx, recipe);
-    assertExpectedRevision(draft, args.expectedRevision);
-    const revision = draft.revision + 1;
-
-    await ctx.db.patch(draft._id, {
+    const saved = await updateDraftImage(ctx, recipe, args.expectedRevision, {
       heroImageStorageId: args.storageId,
       heroImageUrl: "",
       imageCredit: undefined,
-      revision,
-      updatedAt: Date.now(),
     });
 
     return {
       recipeId: recipe._id,
       slug: recipe.slug,
       storageId: args.storageId,
-      revision,
+      ...saved,
     };
   },
 });
@@ -467,26 +491,14 @@ export const setUnsplashHeroImage = mutation({
     photographerName: v.string(),
     photographerUrl: v.string(),
     photoUrl: v.string(),
-    expectedRevision: v.optional(v.number()),
+    expectedRevision: v.number(),
     adminPassword: v.string(),
   },
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
 
-    const recipe = await ctx.db
-      .query("recipes")
-      .withIndex("by_slug", (q) => q.eq("slug", args.slug))
-      .unique();
-
-    if (!recipe) {
-      throw new Error(`Recipe ${args.slug} was not found`);
-    }
-
-    const draft = await ensureRecipeDraft(ctx, recipe);
-    assertExpectedRevision(draft, args.expectedRevision);
-    const revision = draft.revision + 1;
-
-    await ctx.db.patch(draft._id, {
+    const recipe = await getRecipeBySlug(ctx, args.slug);
+    const saved = await updateDraftImage(ctx, recipe, args.expectedRevision, {
       heroImageStorageId: undefined,
       heroImageUrl: args.imageUrl,
       imageCredit: {
@@ -496,15 +508,13 @@ export const setUnsplashHeroImage = mutation({
         photoUrl: args.photoUrl,
         alt: args.alt,
       },
-      revision,
-      updatedAt: Date.now(),
     });
 
     return {
       recipeId: recipe._id,
       slug: recipe.slug,
       heroImageUrl: args.imageUrl,
-      revision,
+      ...saved,
     };
   },
 });
@@ -514,47 +524,35 @@ export const setOpenverseHeroImage = mutation({
     slug: v.string(),
     storageId: v.id("_storage"),
     imageCredit: openverseImageCreditValidator,
-    expectedRevision: v.optional(v.number()),
+    expectedRevision: v.number(),
     adminPassword: v.string(),
   },
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
 
-    const recipe = await ctx.db
-      .query("recipes")
-      .withIndex("by_slug", (q) => q.eq("slug", args.slug))
-      .unique();
-
-    if (!recipe) {
-      throw new Error(`Recipe ${args.slug} was not found`);
-    }
-
-    const storedImage = await ctx.db.system.get(args.storageId);
+    const [recipe, storedImage] = await Promise.all([
+      getRecipeBySlug(ctx, args.slug),
+      ctx.db.system.get(args.storageId),
+    ]);
 
     if (!storedImage) {
       throw new Error("Image was not found in Convex Storage");
     }
 
-    const draft = await ensureRecipeDraft(ctx, recipe);
-    assertExpectedRevision(draft, args.expectedRevision);
-    const revision = draft.revision + 1;
-
-    await ctx.db.patch(draft._id, {
+    const saved = await updateDraftImage(ctx, recipe, args.expectedRevision, {
       heroImageStorageId: args.storageId,
       heroImageUrl: "",
       imageCredit: {
         provider: "openverse",
         ...args.imageCredit,
       },
-      revision,
-      updatedAt: Date.now(),
     });
 
     return {
       recipeId: recipe._id,
       slug: recipe.slug,
       storageId: args.storageId,
-      revision,
+      ...saved,
     };
   },
 });
@@ -566,10 +564,7 @@ export const seed = mutation({
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
 
-    let inserted = 0;
-    let updated = 0;
-
-    for (const recipe of recipes) {
+    const changes = await Promise.all(recipes.map(async (recipe) => {
       const existing = await ctx.db
         .query("recipes")
         .withIndex("by_slug", (q) => q.eq("slug", recipe.slug))
@@ -589,16 +584,16 @@ export const seed = mutation({
             };
 
         await ctx.db.replace(existing._id, nextRecipe);
-        updated += 1;
+        return "updated" as const;
       } else {
         await ctx.db.insert("recipes", recipe);
-        inserted += 1;
+        return "inserted" as const;
       }
-    }
+    }));
 
     return {
-      inserted,
-      updated,
+      inserted: changes.filter((change) => change === "inserted").length,
+      updated: changes.filter((change) => change === "updated").length,
       total: recipes.length,
     };
   },
@@ -671,7 +666,7 @@ async function ensureRecipeDraft(ctx: MutationCtx, recipe: RecipeDoc) {
   const existing = await getRecipeDraft(ctx, recipe._id);
   if (existing) return existing;
 
-  const draftId = await ctx.db.insert("recipeDrafts", {
+  const initialDraft = {
     recipeId: recipe._id,
     heroImageStorageId: recipe.heroImageStorageId,
     heroImageUrl: recipe.heroImageUrl,
@@ -682,55 +677,88 @@ async function ensureRecipeDraft(ctx: MutationCtx, recipe: RecipeDoc) {
     revision: 0,
     publishedRevision: recipe.status === "published" ? 0 : -1,
     updatedAt: Date.now(),
-  });
+  };
+  assertProspectiveDraft(initialDraft);
+  const draftId = await ctx.db.insert("recipeDrafts", initialDraft);
 
   const created = await ctx.db.get(draftId);
   if (!created) throw new Error("RECIPE_DRAFT_NOT_FOUND");
   return created;
 }
 
+type DraftImagePatch = Pick<
+  RecipeDraftDoc,
+  "heroImageStorageId" | "heroImageUrl" | "imageCredit"
+>;
+
+async function updateDraftImage(
+  ctx: MutationCtx,
+  recipe: RecipeDoc,
+  expectedRevision: number,
+  patch: DraftImagePatch,
+) {
+  const draft = await ensureRecipeDraft(ctx, recipe);
+  assertExpectedRevision(draft, expectedRevision);
+  assertImagePatchLimits(patch);
+  const revision = draft.revision + 1;
+  const savedAt = Date.now();
+  assertRecipeDraftBytes({ ...draft, ...patch, revision, updatedAt: savedAt });
+  await ctx.db.patch(draft._id, { ...patch, revision, updatedAt: savedAt });
+  return { revision, savedAt };
+}
+
+function assertImagePatchLimits(patch: DraftImagePatch) {
+  if (patch.heroImageUrl.length > RECIPE_FIELD_LIMITS.url) {
+    throw new Error("RECIPE_LIMIT_EXCEEDED");
+  }
+  if (!patch.imageCredit) return;
+  for (const [key, value] of Object.entries(patch.imageCredit)) {
+    if (key === "provider") continue;
+    const maximum = key.toLowerCase().includes("url")
+      ? RECIPE_FIELD_LIMITS.url
+      : RECIPE_FIELD_LIMITS.creditText;
+    if (value.length > maximum) throw new Error("RECIPE_LIMIT_EXCEEDED");
+  }
+}
+
+function assertProspectiveDraft(draft: {
+  defaultLocale: Locale;
+  tags: string[];
+  translations: RecipeDoc["translations"];
+  heroImageUrl?: string;
+  imageCredit?: RecipeDraftDoc["imageCredit"];
+  [key: string]: unknown;
+}) {
+  assertRecipeBounds(draft);
+  assertImagePatchLimits({
+    heroImageStorageId: undefined,
+    heroImageUrl: draft.heroImageUrl ?? "",
+    imageCredit: draft.imageCredit,
+  });
+  assertRecipeDraftBytes(draft);
+}
+
 function assertExpectedRevision(
   draft: RecipeDraftDoc,
-  expectedRevision: number | undefined,
+  expectedRevision: number,
 ) {
-  if (
-    expectedRevision !== undefined &&
-    expectedRevision !== draft.revision
-  ) {
+  if (expectedRevision !== draft.revision) {
     throw new Error(`RECIPE_DRAFT_CONFLICT:${draft.revision}`);
   }
 }
 
 function assertDraftReadyForPublication(draft: RecipeDraftDoc) {
-  const fr = draft.translations.fr;
-  const hasTime = [fr.prepTime, fr.cookTime, fr.totalTime, fr.timeLabel].some(
-    (value) => value.trim().length > 0,
-  );
-  const hasIngredient = fr.ingredients.some((ingredient) =>
-    ingredient.name.trim(),
-  );
-  const hasSectionStep = fr.sections.some(
-    (section) =>
-      section.title.trim() &&
-      section.steps.some((step) => step.trim().length > 0),
-  );
-
-  if (
-    !fr.title.trim() ||
-    !fr.author.trim() ||
-    !fr.description.trim() ||
-    !hasTime ||
-    !hasIngredient ||
-    !hasSectionStep
-  ) {
+  if (getRecipeReadiness(draft, Boolean(draft.heroImageStorageId || draft.heroImageUrl)).blockers.length) {
     throw new Error("RECIPE_NOT_READY");
   }
 }
 
 function assertRecipeBounds(recipe: {
+  defaultLocale: Locale;
   tags: string[];
   translations: RecipeDoc["translations"];
 }) {
+  assertRecipeDraftLimits(recipe);
   if (recipe.tags.length > 50) throw new Error("RECIPE_LIMIT_EXCEEDED");
   for (const localized of Object.values(recipe.translations)) {
     if (
@@ -744,6 +772,7 @@ function assertRecipeBounds(recipe: {
       throw new Error("RECIPE_LIMIT_EXCEEDED");
     }
   }
+  assertRecipeDraftBytes(recipe);
 }
 
 function assertRecipeAdminPassword(adminPassword: string) {

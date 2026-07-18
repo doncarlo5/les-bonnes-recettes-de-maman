@@ -31,6 +31,7 @@ type AdminRecipeImagePanelProps = {
   > | null;
   revision?: number;
   onRevisionChange?: (revision: number) => void;
+  onConflict?: (latestRevision?: number, retry?: (revision: number) => Promise<void>) => void;
 };
 
 type UploadStatus =
@@ -68,6 +69,10 @@ type OpenversePhoto = {
 
 type ApiErrorResponse = {
   error?: string;
+  type?: "success" | "error" | "conflict";
+  message?: string;
+  revision?: number;
+  latestRevision?: number;
 };
 
 const defaultRecipeImageUrl =
@@ -83,11 +88,32 @@ const unavailableStatus: UploadStatus = {
   message: "Sauvegarde ce brouillon avant d'ajouter une image principale.",
 };
 
+async function searchUnsplash(query: string) {
+  const response = await fetch(`/api/admin/unsplash/search?query=${encodeURIComponent(query)}`);
+  const data = await readJsonResponse<{ results?: UnsplashPhoto[] } & ApiErrorResponse>(response);
+  if (!response.ok) throw new Error(data.error ?? "La recherche Unsplash a échoué.");
+  return data.results ?? [];
+}
+
+async function searchOpenverse(query: string) {
+  const response = await fetch(`/api/admin/openverse/search?query=${encodeURIComponent(query)}`);
+  const data = await readJsonResponse<{ results?: OpenversePhoto[] } & ApiErrorResponse>(response);
+  if (!response.ok) throw new Error(data.error ?? "La recherche Openverse a échoué.");
+  return data.results ?? [];
+}
+
+function handleSearchKeyDown(event: KeyboardEvent<HTMLInputElement>, onSearch: () => void) {
+  if (event.key !== "Enter") return;
+  event.preventDefault();
+  onSearch();
+}
+
 export function AdminRecipeImagePanel({
   locale,
   recipe,
   revision,
   onRevisionChange,
+  onConflict,
 }: AdminRecipeImagePanelProps) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -109,6 +135,13 @@ export function AdminRecipeImagePanel({
   const [previewObjectUrl, setPreviewObjectUrl] = useState<string | null>(null);
   const isDisabled = !recipe || status.type === "loading";
 
+  function imageMutationError(response: Response, data: ApiErrorResponse, fallback: string, retry?: (revision: number) => Promise<void>) {
+    if (response.status === 409 || data.type === "conflict") {
+      onConflict?.(data.latestRevision, retry);
+    }
+    return new Error(data.message ?? data.error ?? fallback);
+  }
+
   useEffect(() => {
     return () => {
       if (previewObjectUrl) {
@@ -116,6 +149,19 @@ export function AdminRecipeImagePanel({
       }
     };
   }, [previewObjectUrl]);
+
+  async function associateStoredImage(storageId: Id<"_storage">, expectedRevision = revision) {
+    const response = await fetch("/api/admin/recipes/hero-image", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slug: recipe?.slug, storageId, expectedRevision }),
+    });
+    const data = await readJsonResponse<ApiErrorResponse>(response);
+    if (!response.ok) {
+      throw imageMutationError(response, data, "Impossible d'associer cette image.", (nextRevision) => associateStoredImage(storageId, nextRevision));
+    }
+    if (typeof data.revision === "number") onRevisionChange?.(data.revision);
+  }
 
   async function handleUploadImage(file: File | null) {
     if (!recipe || !file) {
@@ -156,22 +202,7 @@ export function AdminRecipeImagePanel({
         storageId: Id<"_storage">;
       }>(response);
 
-      const heroImageResponse = await fetch("/api/admin/recipes/hero-image", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug: recipe.slug, storageId, expectedRevision: revision }),
-      });
-      const heroImageData =
-        await readJsonResponse<ApiErrorResponse>(heroImageResponse);
-
-      if (!heroImageResponse.ok) {
-        throw new Error(
-          heroImageData.error ?? "Impossible d'associer cette image.",
-        );
-      }
-      if (typeof (heroImageData as ApiErrorResponse & { revision?: number }).revision === "number") {
-        onRevisionChange?.((heroImageData as ApiErrorResponse & { revision: number }).revision);
-      }
+      await associateStoredImage(storageId);
 
       const objectUrl = URL.createObjectURL(file);
       setPreviewObjectUrl(objectUrl);
@@ -197,36 +228,6 @@ export function AdminRecipeImagePanel({
     const selectedFile = event.target.files?.[0] ?? null;
     event.target.value = "";
     await handleUploadImage(selectedFile);
-  }
-
-  async function searchUnsplash(query: string) {
-    const response = await fetch(
-      `/api/admin/unsplash/search?query=${encodeURIComponent(query)}`,
-    );
-    const data = await readJsonResponse<
-      { results?: UnsplashPhoto[] } & ApiErrorResponse
-    >(response);
-
-    if (!response.ok) {
-      throw new Error(data.error ?? "La recherche Unsplash a échoué.");
-    }
-
-    return data.results ?? [];
-  }
-
-  async function searchOpenverse(query: string) {
-    const response = await fetch(
-      `/api/admin/openverse/search?query=${encodeURIComponent(query)}`,
-    );
-    const data = await readJsonResponse<
-      { results?: OpenversePhoto[] } & ApiErrorResponse
-    >(response);
-
-    if (!response.ok) {
-      throw new Error(data.error ?? "La recherche Openverse a échoué.");
-    }
-
-    return data.results ?? [];
   }
 
   async function handleInternetSearch() {
@@ -292,7 +293,7 @@ export function AdminRecipeImagePanel({
     });
   }
 
-  async function handleUseUnsplashImage(photo: UnsplashPhoto) {
+  async function handleUseUnsplashImage(photo: UnsplashPhoto, expectedRevision = revision) {
     if (!recipe) return;
 
     try {
@@ -327,7 +328,7 @@ export function AdminRecipeImagePanel({
             photographerName: photo.photographerName,
             photographerUrl: photo.photographerUrl,
             photoUrl: photo.photoUrl,
-            expectedRevision: revision,
+            expectedRevision,
           }),
         },
       );
@@ -335,9 +336,7 @@ export function AdminRecipeImagePanel({
         await readJsonResponse<ApiErrorResponse>(imageResponse);
 
       if (!imageResponse.ok) {
-        throw new Error(
-          imageData.error ?? "Impossible d'associer cette image Unsplash.",
-        );
+        throw imageMutationError(imageResponse, imageData, "Impossible d'associer cette image Unsplash.", (nextRevision) => handleUseUnsplashImage(photo, nextRevision));
       }
       if (typeof (imageData as ApiErrorResponse & { revision?: number }).revision === "number") {
         onRevisionChange?.((imageData as ApiErrorResponse & { revision: number }).revision);
@@ -368,7 +367,7 @@ export function AdminRecipeImagePanel({
     }
   }
 
-  async function handleUseOpenverseImage(photo: OpenversePhoto) {
+  async function handleUseOpenverseImage(photo: OpenversePhoto, expectedRevision = revision) {
     if (!recipe) return;
 
     try {
@@ -393,13 +392,13 @@ export function AdminRecipeImagePanel({
           source: photo.source,
           attribution: photo.attribution,
           alt: photo.alt,
-          expectedRevision: revision,
+          expectedRevision,
         }),
       });
       const data = await readJsonResponse<ApiErrorResponse>(response);
 
       if (!response.ok) {
-        throw new Error(data.error ?? "L'import Openverse a échoué.");
+        throw imageMutationError(response, data, "L'import Openverse a échoué.", (nextRevision) => handleUseOpenverseImage(photo, nextRevision));
       }
       if (typeof (data as ApiErrorResponse & { revision?: number }).revision === "number") {
         onRevisionChange?.((data as ApiErrorResponse & { revision: number }).revision);
@@ -435,15 +434,6 @@ export function AdminRecipeImagePanel({
             : "Impossible d'associer cette image Openverse.",
       });
     }
-  }
-
-  function handleSearchKeyDown(
-    event: KeyboardEvent<HTMLInputElement>,
-    onSearch: () => void,
-  ) {
-    if (event.key !== "Enter") return;
-    event.preventDefault();
-    onSearch();
   }
 
   return (

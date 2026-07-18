@@ -5,6 +5,7 @@ import {
   adminUnauthorizedResponse,
   getRecipeAdminAccess,
 } from "@/lib/recipe-admin-auth";
+import { recipeMutationErrorResponse } from "@/lib/recipe-admin-route-errors";
 
 export const dynamic = "force-dynamic";
 
@@ -25,10 +26,6 @@ export async function POST(request: NextRequest) {
     });
     return Response.json({ type: "success", ...result });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "";
-    return Response.json(
-      { type: message.includes("CONFLICT") ? "conflict" : "error", message: "Impossible d'abandonner ces modifications." },
-      { status: message.includes("CONFLICT") ? 409 : 500 },
-    );
+    return recipeMutationErrorResponse(error, "Impossible d'abandonner ces modifications.");
   }
 }

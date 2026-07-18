@@ -2,6 +2,7 @@ import { fetchQuery } from "convex/nextjs";
 import { Suspense } from "react";
 import { AdminAccessForm } from "@/components/recipes/admin-access-form";
 import { AdminRecipeEditor } from "@/components/recipes/admin-recipe-editor";
+import { getRecipeAdminE2EFixtures } from "@/components/recipes/admin-recipe-e2e-fixtures";
 import { api } from "@/convex/_generated/api";
 import type { Locale } from "@/i18n/config";
 import { getRecipeAdminAccess } from "@/lib/recipe-admin-auth";
@@ -32,6 +33,11 @@ export default async function Page({ params, searchParams }: PageProps) {
     : initialSlug
       ? `/${locale}/admin/recettes?slug=${encodeURIComponent(initialSlug)}`
       : `/${locale}/admin/recettes`;
+  const e2eFixtures = getRecipeAdminE2EFixtures();
+  if (e2eFixtures) {
+    const initialRecipe = initialSlug === e2eFixtures.recipe.slug ? e2eFixtures.recipe : undefined;
+    return <Suspense fallback={null}><AdminRecipeEditor key={shouldCreateNew ? "new" : initialSlug ?? "home"} locale={locale} recipes={e2eFixtures.recipes} initialRecipe={initialRecipe} initialSlug={initialSlug} startInCreateMode={shouldCreateNew} /></Suspense>;
+  }
   const adminAccess = await getRecipeAdminAccess();
 
   if (!adminAccess.ok) {

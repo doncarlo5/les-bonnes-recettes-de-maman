@@ -6,6 +6,7 @@ import {
   adminUnauthorizedResponse,
   getRecipeAdminAccess,
 } from "@/lib/recipe-admin-auth";
+import { recipeMutationErrorResponse } from "@/lib/recipe-admin-route-errors";
 
 export const dynamic = "force-dynamic";
 
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
     const slug = body.slug?.trim();
     const imageUrl = body.imageUrl?.trim();
 
-    if (!slug || !imageUrl) {
+    if (!slug || !imageUrl || !Number.isFinite(body.expectedRevision)) {
       return Response.json(
         { error: "Missing slug or imageUrl" },
         { status: 400 },
@@ -114,7 +115,7 @@ export async function POST(request: NextRequest) {
         attribution: body.attribution ?? "",
         alt: body.alt ?? body.title ?? "",
       },
-      expectedRevision: body.expectedRevision,
+      expectedRevision: body.expectedRevision!,
     });
 
     return Response.json({
@@ -122,17 +123,10 @@ export async function POST(request: NextRequest) {
       slug: result.slug,
       storageId,
       revision: result.revision,
+      savedAt: result.savedAt,
     });
   } catch (error) {
     console.error("Openverse import failed", error);
-    return Response.json(
-      {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Openverse import failed",
-      },
-      { status: 500 },
-    );
+    return recipeMutationErrorResponse(error, "Openverse import failed");
   }
 }

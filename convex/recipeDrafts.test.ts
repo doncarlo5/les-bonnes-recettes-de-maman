@@ -33,7 +33,33 @@ function recipe(title = "Tarte mobile") {
   };
 }
 
+function draft(value = recipe()) {
+  const { status: _status, ...content } = value;
+  return content;
+}
+
 describe("recipe working drafts", () => {
+  test("falls back to the public snapshot for legacy recipes without a draft", async () => {
+    const t = convexTest(schema, modules);
+    const content = recipe("Recette historique");
+    await t.run(async (ctx) => {
+      await ctx.db.insert("recipes", {
+        slug: "recette-historique",
+        heroImageUrl: "",
+        defaultLocale: content.defaultLocale,
+        translations: content.translations,
+        tags: content.tags,
+        status: "published",
+      });
+    });
+    const editing = await t.query(api.recipes.getForEditing, {
+      slug: "recette-historique",
+      locale: "fr",
+      adminPassword: password,
+    });
+    expect(editing).toMatchObject({ title: "Recette historique", revision: 0, publishedRevision: 0, hasUnpublishedChanges: false });
+  });
+
   test("creates a private draft with an initial revision", async () => {
     const t = convexTest(schema, modules);
     const created = await t.mutation(api.recipes.create, {
@@ -87,6 +113,29 @@ describe("recipe working drafts", () => {
         adminPassword: password,
       }),
     ).rejects.toThrow(/RECIPE_DRAFT_CONFLICT/);
+  });
+
+  test("allows an explicit device replacement to advance the latest revision", async () => {
+    const t = convexTest(schema, modules);
+    const created = await t.mutation(api.recipes.create, { recipe: recipe(), adminPassword: password });
+    const first = recipe("Premier appareil");
+    await t.mutation(api.recipes.saveDraft, {
+      slug: created.slug,
+      recipe: { defaultLocale: first.defaultLocale, translations: first.translations, tags: first.tags },
+      expectedRevision: 0,
+      adminPassword: password,
+    });
+    const replacement = recipe("Téléphone prioritaire");
+    const saved = await t.mutation(api.recipes.saveDraft, {
+      slug: created.slug,
+      recipe: { defaultLocale: replacement.defaultLocale, translations: replacement.translations, tags: replacement.tags },
+      expectedRevision: 0,
+      force: true,
+      adminPassword: password,
+    });
+    expect(saved.revision).toBe(2);
+    const editing = await t.query(api.recipes.getForEditing, { locale: "fr", slug: created.slug, adminPassword: password });
+    expect(editing?.title).toBe("Téléphone prioritaire");
   });
 
   test("keeps published content stable until the new draft is published", async () => {
@@ -150,12 +199,49 @@ describe("recipe working drafts", () => {
 
   test("protects admin reads with the configured password", async () => {
     const t = convexTest(schema, modules);
-    await expect(
-      t.query(api.recipes.listForEditing, {
-        locale: "fr",
-        adminPassword: "wrong-password",
-      }),
-    ).rejects.toThrow(/RECIPE_ADMIN_REQUIRED/);
+    const reads = [
+      t.query(api.recipes.listForEditing, { locale: "fr", adminPassword: "wrong-password" }),
+      t.query(api.recipes.getForEditing, { slug: "missing", locale: "fr", adminPassword: "wrong-password" }),
+    ];
+    const results = await Promise.allSettled(reads);
+    expect(results.every((result) => result.status === "rejected" && String(result.reason).includes("RECIPE_ADMIN_REQUIRED"))).toBe(true);
+  });
+
+  test("protects every draft mutation with the configured password", async () => {
+    const t = convexTest(schema, modules);
+    const attempts = [
+      () => t.mutation(api.recipes.create, { recipe: recipe(), adminPassword: "wrong-password" }),
+      () => t.mutation(api.recipes.saveDraft, { slug: "missing", recipe: draft(), expectedRevision: 0, adminPassword: "wrong-password" }),
+      () => t.mutation(api.recipes.publishDraft, { slug: "missing", expectedRevision: 0, adminPassword: "wrong-password" }),
+      () => t.mutation(api.recipes.discardDraft, { slug: "missing", expectedRevision: 0, adminPassword: "wrong-password" }),
+      () => t.mutation(api.recipes.unpublish, { slug: "missing", adminPassword: "wrong-password" }),
+      () => t.mutation(api.recipes.generateUploadUrl, { adminPassword: "wrong-password" }),
+      () => t.mutation(api.recipes.seed, { adminPassword: "wrong-password" }),
+      () => t.mutation(api.recipes.setUnsplashHeroImage, { slug: "missing", imageUrl: "https://example.com/image.jpg", alt: "", photographerName: "Maman", photographerUrl: "https://example.com", photoUrl: "https://example.com/photo", expectedRevision: 0, adminPassword: "wrong-password" }),
+    ];
+    const results = await Promise.allSettled(attempts.map((attempt) => attempt()));
+    expect(results.every((result) => result.status === "rejected" && String(result.reason).includes("RECIPE_ADMIN_REQUIRED"))).toBe(true);
+  });
+
+  test("keeps internet image changes private until publication", async () => {
+    const t = convexTest(schema, modules);
+    const created = await t.mutation(api.recipes.create, { recipe: recipe("Image privée"), adminPassword: password });
+    await t.mutation(api.recipes.publishDraft, { slug: created.slug, expectedRevision: 0, adminPassword: password });
+    const image = await t.mutation(api.recipes.setUnsplashHeroImage, {
+      slug: created.slug,
+      imageUrl: "https://images.example/private.jpg",
+      alt: "Tarte",
+      photographerName: "Maman",
+      photographerUrl: "https://example.com/maman",
+      photoUrl: "https://example.com/photo",
+      expectedRevision: 0,
+      adminPassword: password,
+    });
+    const publicBefore = await t.query(api.recipes.getBySlug, { locale: "fr", slug: created.slug });
+    expect(publicBefore?.heroImageUrl).toBe("");
+    await t.mutation(api.recipes.publishDraft, { slug: created.slug, expectedRevision: image.revision, adminPassword: password });
+    const publicAfter = await t.query(api.recipes.getBySlug, { locale: "fr", slug: created.slug });
+    expect(publicAfter?.heroImageUrl).toBe("https://images.example/private.jpg");
   });
 
   test("discards unpublished edits back to the public snapshot", async () => {
@@ -181,10 +267,14 @@ describe("recipe working drafts", () => {
       adminPassword: password,
     });
 
-    await t.mutation(api.recipes.discardDraft, {
+    const discarded = await t.mutation(api.recipes.discardDraft, {
       slug: created.slug,
       expectedRevision: saved.revision,
       adminPassword: password,
+    });
+    expect(discarded).toMatchObject({
+      publishedRevision: discarded.revision,
+      draft: { translations: { fr: { title: "Version stable" } } },
     });
     const editing = await t.query(api.recipes.getForEditing, {
       locale: "fr",
@@ -195,6 +285,55 @@ describe("recipe working drafts", () => {
       title: "Version stable",
       hasUnpublishedChanges: false,
     });
+  });
+
+  test("returns compact publication and readiness state in admin summaries", async () => {
+    const t = convexTest(schema, modules);
+    const created = await t.mutation(api.recipes.create, {
+      recipe: recipe(),
+      adminPassword: password,
+    });
+
+    const summaries = await t.query(api.recipes.listForEditing, {
+      locale: "fr",
+      adminPassword: password,
+    });
+
+    expect(summaries[0]).toMatchObject({
+      slug: created.slug,
+      hasPublishedVersion: false,
+      hasUnpublishedChanges: true,
+      canDiscard: false,
+      readiness: {
+        sections: { essentials: true, details: true, ingredients: true, preparation: true },
+        translation: { fr: true, en: true },
+      },
+    });
+  });
+
+  test("rejects editorial fields and drafts beyond the bounded contract", async () => {
+    const t = convexTest(schema, modules);
+    const oversizedTitle = recipe("x".repeat(201));
+
+    await expect(
+      t.mutation(api.recipes.create, {
+        recipe: oversizedTitle,
+        adminPassword: password,
+      }),
+    ).rejects.toThrow(/RECIPE_LIMIT_EXCEEDED/);
+
+    const huge = recipe("Within the field limit");
+    huge.translations.fr.sections = Array.from({ length: 50 }, (_, sectionIndex) => ({
+      title: `Section ${sectionIndex}`,
+      steps: Array.from({ length: 6 }, () => "é".repeat(2_000)),
+    }));
+
+    await expect(
+      t.mutation(api.recipes.create, {
+        recipe: huge,
+        adminPassword: password,
+      }),
+    ).rejects.toThrow(/RECIPE_DRAFT_TOO_LARGE/);
   });
 
   test("unpublishes without losing the synchronized working draft", async () => {
@@ -220,5 +359,29 @@ describe("recipe working drafts", () => {
       adminPassword: password,
     });
     expect(editing?.title).toBe("À retirer");
+  });
+
+  test("retains an approved baseline when unpublishing a legacy recipe", async () => {
+    const t = convexTest(schema, modules);
+    const content = recipe("Archive approuvée");
+    await t.run(async (ctx) => {
+      await ctx.db.insert("recipes", {
+        slug: "archive-approuvee",
+        heroImageUrl: "",
+        defaultLocale: content.defaultLocale,
+        translations: content.translations,
+        tags: content.tags,
+        status: "published",
+      });
+    });
+    await t.mutation(api.recipes.unpublish, { slug: "archive-approuvee", adminPassword: password });
+    const editing = await t.query(api.recipes.getForEditing, { slug: "archive-approuvee", locale: "fr", adminPassword: password });
+    expect(editing).toMatchObject({ hasPublishedVersion: true, publishedRevision: 0, hasUnpublishedChanges: false, isPublic: false });
+  });
+
+  test("refuses to discard a recipe that has never been published", async () => {
+    const t = convexTest(schema, modules);
+    const created = await t.mutation(api.recipes.create, { recipe: recipe("Nouveau"), adminPassword: password });
+    await expect(t.mutation(api.recipes.discardDraft, { slug: created.slug, expectedRevision: 0, adminPassword: password })).rejects.toThrow(/RECIPE_HAS_NO_PUBLISHED_VERSION/);
   });
 });

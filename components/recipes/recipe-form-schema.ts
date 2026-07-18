@@ -1,53 +1,73 @@
 import { z } from "zod";
+import {
+  assertRecipeDraftBytes,
+  RECIPE_FIELD_LIMITS,
+} from "@/lib/recipe-admin-domain";
+
+const limits = RECIPE_FIELD_LIMITS;
 
 const ingredientSchema = z.object({
-  name: z.string(),
-  quantity: z.string(),
-  unit: z.string(),
-  notes: z.string(),
+  name: z.string().max(limits.ingredientName),
+  quantity: z.string().max(limits.shortValue),
+  unit: z.string().max(limits.shortValue),
+  notes: z.string().max(limits.longText),
 });
 
 const sectionSchema = z.object({
-  title: z.string(),
-  steps: z.array(z.string()).max(100),
+  title: z.string().max(limits.title),
+  steps: z.array(z.string().max(limits.longText)).max(100),
 });
 
 const subRecipeSchema = z.object({
-  title: z.string(),
+  title: z.string().max(limits.title),
   ingredients: z.array(ingredientSchema).max(100),
 });
 
 const localizedRecipeSchema = z.object({
-  title: z.string(),
-  author: z.string(),
-  description: z.string(),
+  title: z.string().max(limits.title),
+  author: z.string().max(limits.author),
+  description: z.string().max(limits.description),
   servings: z
     .object({
       quantity: z.number().nonnegative(),
-      unit: z.string(),
+      unit: z.string().max(limits.shortValue),
     })
     .nullable(),
-  prepTime: z.string(),
-  cookTime: z.string(),
-  totalTime: z.string(),
-  timeLabel: z.string(),
-  temperature: z.string(),
+  prepTime: z.string().max(limits.shortValue),
+  cookTime: z.string().max(limits.shortValue),
+  totalTime: z.string().max(limits.shortValue),
+  timeLabel: z.string().max(limits.shortValue),
+  temperature: z.string().max(limits.shortValue),
   ingredients: z.array(ingredientSchema).max(200),
   sections: z.array(sectionSchema).max(50),
   subRecipes: z.array(subRecipeSchema).max(25),
-  notes: z.array(z.string()).max(100),
+  notes: z.array(z.string().max(limits.longText)).max(100),
 });
 
-export const editableRecipeDraftSchema = z.object({
+const editableRecipeDraftObject = z.object({
     defaultLocale: z.union([z.literal("fr"), z.literal("en")]),
     translations: z.object({
       fr: localizedRecipeSchema,
       en: localizedRecipeSchema,
     }),
-    tags: z.array(z.string()).max(50),
+    tags: z.array(z.string().max(limits.shortValue)).max(50),
   });
 
-export const editableRecipeContentSchema = editableRecipeDraftSchema
+export const editableRecipeDraftSchema = editableRecipeDraftObject.superRefine(
+  (recipe, ctx) => {
+    try {
+      assertRecipeDraftBytes(recipe);
+    } catch {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Le brouillon dépasse la taille maximale autorisée.",
+        path: [],
+      });
+    }
+  },
+);
+
+export const editableRecipeContentSchema = editableRecipeDraftObject
   .extend({
     status: z.union([z.literal("draft"), z.literal("published")]),
   })

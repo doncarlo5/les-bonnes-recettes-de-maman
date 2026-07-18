@@ -1,4 +1,5 @@
 import type { Id } from "@/convex/_generated/dataModel";
+import type { RecipeReadiness } from "@/lib/recipe-admin-domain";
 
 export type Ingredient = {
   name: string;
@@ -104,7 +105,11 @@ export type EditableRecipeSummary = {
   revision: number;
   publishedRevision: number;
   updatedAt: number;
+  isPublic: boolean;
+  hasPublishedVersion: boolean;
   hasUnpublishedChanges: boolean;
+  canDiscard: boolean;
+  readiness: RecipeReadiness;
 };
 
 export type EditableRecipe = EditableRecipeSummary & EditableRecipeContent;
