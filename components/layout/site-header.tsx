@@ -70,13 +70,12 @@ export function SiteHeader({ locale, dict }: SiteHeaderProps) {
           >
             {dict.nav.recipes}
           </Link>
-          <span
-            aria-disabled
-            className="cursor-default text-muted-foreground/50"
-            title="—"
+          <Link
+            href={`/${locale}/admin/recettes?new=1`}
+            className="transition-colors duration-150 hover:text-primary"
           >
-            {dict.nav.about}
-          </span>
+            {dict.nav.newRecipe}
+          </Link>
         </nav>
 
         <div className="flex items-center gap-3">
