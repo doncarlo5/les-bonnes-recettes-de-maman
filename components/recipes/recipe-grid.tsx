@@ -13,6 +13,7 @@ type RecipeGridProps = {
   dict: Dictionary;
   recipes: Recipe[];
   showAddRecipeCard?: boolean;
+  priorityFirstImage?: boolean;
 };
 
 export function RecipeGrid({
@@ -20,39 +21,40 @@ export function RecipeGrid({
   dict,
   recipes,
   showAddRecipeCard = false,
+  priorityFirstImage = true,
 }: RecipeGridProps) {
   if (recipes.length === 0) return null;
 
   return (
-    <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+    <ul className="grid grid-cols-2 gap-3 md:gap-6 xl:grid-cols-3">
       {recipes.map((recipe, index) => {
         return (
           <li key={recipe._id}>
             <Link
               href={`/${locale}/recettes/${recipe.slug}`}
-              className="surface-elevated group block overflow-hidden rounded-3xl bg-card text-start transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="surface-elevated group block overflow-hidden rounded-2xl bg-card text-start transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background md:rounded-3xl"
             >
-              <span className="relative block aspect-[4/3] overflow-hidden rounded-t-3xl bg-muted">
+              <span className="relative block aspect-square overflow-hidden rounded-t-2xl bg-muted md:aspect-[4/3] md:rounded-t-3xl">
                 <Image
                   src={recipe.heroImageUrl || defaultRecipeImageUrl}
                   alt=""
                   fill
-                  priority={index === 0}
-                  sizes="(max-width: 768px) 100vw, 540px"
+                  priority={priorityFirstImage && index === 0}
+                  sizes="(max-width: 767px) 50vw, (max-width: 1279px) 50vw, 33vw"
                   className="image-outline object-cover transition-transform duration-500 group-hover:scale-[1.025]"
                 />
               </span>
-              <span className="block p-6 sm:p-7">
-                <span className="type-label mb-4 inline-flex items-center gap-2 text-primary tabular-nums">
+              <span className="block p-3 md:p-7">
+                <span className="type-label mb-4 hidden items-center gap-2 text-primary tabular-nums md:inline-flex">
                   <Clock3 className="size-4 stroke-[1.8]" />
                   {recipe.timeLabel}
                 </span>
                 <span
-                  className="type-card-title block max-w-[18ch] text-foreground"
+                  className="type-card-title block max-w-[18ch] text-[1.15rem] leading-[1.05] text-foreground md:text-[clamp(1.75rem,1.25rem+2vw,3rem)]"
                 >
                   {recipe.title}
                 </span>
-                <span className="type-byline mt-3 block text-muted-foreground">
+                <span className="type-byline mt-3 hidden text-muted-foreground md:block">
                   {dict.recipeDetail.recipeBy} {recipe.author}
                 </span>
               </span>
@@ -64,19 +66,19 @@ export function RecipeGrid({
         <li>
           <Link
             href={`/${locale}/admin/recettes?new=1`}
-            className="surface-elevated group flex min-h-80 w-full flex-col items-center justify-center gap-5 overflow-hidden rounded-3xl text-center transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="surface-elevated group flex min-h-48 w-full flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl text-center transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background md:min-h-80 md:gap-5 md:rounded-3xl"
           >
             <span
               aria-hidden
-              className="flex size-20 items-center justify-center rounded-full bg-primary/10 text-primary transition-[scale,background-color,color] duration-300 group-hover:scale-105 group-hover:bg-primary group-hover:text-primary-foreground"
+              className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary transition-[scale,background-color,color] duration-300 group-hover:scale-105 group-hover:bg-primary group-hover:text-primary-foreground md:size-20"
             >
-              <Plus className="size-10 stroke-[1.8]" />
+              <Plus className="size-6 stroke-[1.8] md:size-10" />
             </span>
-            <span className="grid gap-2 px-8">
-              <span className="type-card-title text-foreground">
+            <span className="grid gap-2 px-3 md:px-8">
+              <span className="type-card-title text-[1.15rem] leading-[1.05] text-foreground md:text-[clamp(1.75rem,1.25rem+2vw,3rem)]">
                 {dict.recipeList.addRecipeTitle}
               </span>
-              <span className="type-body-sm font-bold text-muted-foreground">
+              <span className="type-body-sm hidden font-bold text-muted-foreground md:block">
                 {dict.recipeList.addRecipeDescription}
               </span>
             </span>

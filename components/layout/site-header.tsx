@@ -48,7 +48,7 @@ export function SiteHeader({ locale, dict }: SiteHeaderProps) {
   return (
     <header
       className={cn(
-        "sticky z-40 border-b border-border/60 backdrop-blur transition-[top,background-color] duration-200",
+        "sticky z-40 hidden border-b border-border/60 backdrop-blur transition-[top,background-color] duration-200 md:block",
         isHeaderHidden ? "-top-24" : "top-0",
         isHeaderScrolled
           ? "bg-background/85 supports-[backdrop-filter]:bg-background/70"

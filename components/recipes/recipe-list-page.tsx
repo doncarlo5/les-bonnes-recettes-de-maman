@@ -30,9 +30,10 @@ export function RecipeListPage({
   }
 
   return (
-    <main className="px-6 py-16 lg:px-10 lg:py-20">
+    <main className="px-3 py-3 md:px-6 md:py-16 lg:px-10 lg:py-20">
       <section className="mx-auto w-full max-w-6xl">
-        <div className="mb-12 max-w-2xl">
+        <h1 className="sr-only md:hidden">{dict.site.title}</h1>
+        <div className="mb-12 hidden max-w-2xl md:block">
           <p className="type-label mb-3 text-primary">{dict.recipeList.eyebrow}</p>
           <h1 className="type-page-title text-foreground">
             {dict.site.title}

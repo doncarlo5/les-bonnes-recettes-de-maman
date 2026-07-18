@@ -14,7 +14,8 @@ type HomePageProps = {
 export function HomePage({ locale, dict, recipes }: HomePageProps) {
   return (
     <main>
-      <section className="relative overflow-hidden px-5 py-16 sm:py-20 lg:px-10 lg:py-28">
+      <h1 className="sr-only md:hidden">{dict.site.title}</h1>
+      <section className="relative hidden overflow-hidden px-5 py-16 md:block sm:py-20 lg:px-10 lg:py-28">
         <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-border" />
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.42fr)] lg:items-end">
           <div>
@@ -29,9 +30,10 @@ export function HomePage({ locale, dict, recipes }: HomePageProps) {
         </div>
       </section>
 
-      <section id="recettes" className="scroll-mt-24 bg-muted/55 px-5 py-16 lg:px-10 lg:py-24">
+      <section id="recettes" className="scroll-mt-24 bg-muted/55 px-3 py-3 md:px-5 md:py-16 lg:px-10 lg:py-24">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-10 flex items-end justify-between gap-4 border-b border-border pb-5">
+          <h2 className="sr-only md:hidden">{dict.home.allRecipesTitle}</h2>
+          <div className="mb-10 hidden items-end justify-between gap-4 border-b border-border pb-5 md:flex">
             <div>
               <p className="type-label mb-2 text-primary">{dict.home.allRecipesEyebrow}</p>
               <h2 className="type-section-title text-foreground">
