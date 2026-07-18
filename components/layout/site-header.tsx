@@ -58,12 +58,12 @@ export function SiteHeader({ locale, dict }: SiteHeaderProps) {
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-6 px-6 py-5 lg:px-10">
         <Link
           href={`/${locale}`}
-          className="font-heading text-xl font-black leading-none tracking-tight text-foreground sm:text-2xl"
+          className="type-wordmark text-foreground"
         >
           {dict.site.wordmark}
         </Link>
 
-        <nav className="hidden items-center gap-8 text-sm font-bold uppercase tracking-[0.18em] text-muted-foreground md:flex">
+        <nav className="type-label hidden items-center gap-8 text-muted-foreground md:flex">
           <Link
             href={`/${locale}/recettes`}
             className="transition hover:text-primary"

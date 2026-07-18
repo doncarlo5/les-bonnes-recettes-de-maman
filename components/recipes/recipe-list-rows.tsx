@@ -41,20 +41,20 @@ export function RecipeListRows({
               />
             </span>
             <span className="grid gap-3 px-1 py-1 sm:py-3">
-              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-primary">
+              <span className="type-label inline-flex items-center gap-2 text-primary tabular-nums">
                 <Clock3 className="size-4 stroke-[1.8]" />
                 {recipe.timeLabel}
               </span>
               <span className="grid gap-2">
-                <span className="font-heading text-3xl font-black leading-none text-foreground sm:text-4xl">
+                <span className="type-card-title text-foreground">
                   {recipe.title}
                 </span>
-                <span className="font-heading text-lg italic text-muted-foreground">
+                <span className="type-byline text-muted-foreground">
                   {dict.recipeDetail.recipeBy} {recipe.author}
                 </span>
               </span>
               {recipe.description ? (
-                <span className="line-clamp-2 text-sm font-semibold leading-6 text-foreground/75">
+                <span className="type-body-sm line-clamp-2 font-semibold text-foreground/75">
                   {recipe.description}
                 </span>
               ) : null}
@@ -75,10 +75,10 @@ export function RecipeListRows({
               <Plus className="size-12 stroke-[1.8]" />
             </span>
             <span className="grid gap-2 px-1 py-1 sm:py-3">
-              <span className="font-heading text-3xl font-black leading-none text-foreground">
+              <span className="type-card-title text-foreground">
                 {dict.recipeList.addRecipeTitle}
               </span>
-              <span className="text-sm font-bold text-muted-foreground">
+              <span className="type-body-sm font-bold text-muted-foreground">
                 {dict.recipeList.addRecipeDescription}
               </span>
             </span>

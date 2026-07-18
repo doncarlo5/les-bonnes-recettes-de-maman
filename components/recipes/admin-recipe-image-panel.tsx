@@ -439,7 +439,7 @@ export function AdminRecipeImagePanel({
   return (
     <section className="grid gap-5 rounded-2xl bg-muted/40 p-4 shadow-[var(--shadow-card)] md:rounded-lg md:border md:border-border md:shadow-none">
       <div className="flex flex-col gap-1">
-        <h3 className="font-heading text-2xl font-black text-foreground">
+        <h3 className="type-panel-title text-foreground">
           Image principale
         </h3>
         <p className="text-sm font-semibold text-muted-foreground">
@@ -463,7 +463,7 @@ export function AdminRecipeImagePanel({
           {recipe ? (
             <a
               href={`/${locale}/recettes/${recipe.slug}`}
-              className="text-sm font-black text-primary underline-offset-4 hover:underline"
+              className="content-link text-sm font-black text-primary"
             >
               Voir la recette publique
             </a>
@@ -661,7 +661,7 @@ function ImageResultsColumn({
 
   return (
     <section className="grid content-start gap-3">
-      <h4 className="font-heading text-lg font-black text-foreground">
+      <h4 className="type-panel-title text-foreground">
         {title}
       </h4>
       {hasResults ? (
@@ -708,8 +708,8 @@ function ImageChoiceCard({
         />
       </div>
       <div className="grid gap-0.5 p-2">
-        <p className="truncate text-xs font-black text-foreground">{title}</p>
-        <p className="truncate text-[0.7rem] font-bold text-muted-foreground">
+        <p className="type-meta truncate text-foreground" title={title}>{title}</p>
+        <p className="type-meta truncate text-muted-foreground" title={detail}>
           {detail}
         </p>
       </div>
@@ -748,7 +748,7 @@ function ImageCreditLine({
           href={imageCredit.photographerUrl}
           target="_blank"
           rel="noreferrer"
-          className="text-primary underline-offset-4 hover:underline"
+          className="content-link text-primary"
         >
           {imageCredit.photographerName}
         </a>{" "}
@@ -757,7 +757,7 @@ function ImageCreditLine({
           href={imageCredit.photoUrl}
           target="_blank"
           rel="noreferrer"
-          className="text-primary underline-offset-4 hover:underline"
+          className="content-link text-primary"
         >
           Unsplash
         </a>
@@ -772,7 +772,7 @@ function ImageCreditLine({
         href={imageCredit.creatorUrl}
         target="_blank"
         rel="noreferrer"
-        className="text-primary underline-offset-4 hover:underline"
+        className="content-link text-primary"
       >
         {imageCredit.creator}
       </a>{" "}
@@ -781,7 +781,7 @@ function ImageCreditLine({
         href={imageCredit.landingUrl}
         target="_blank"
         rel="noreferrer"
-        className="text-primary underline-offset-4 hover:underline"
+        className="content-link text-primary"
       >
         {imageCredit.source}
       </a>{" "}
@@ -790,7 +790,7 @@ function ImageCreditLine({
         href={imageCredit.licenseUrl}
         target="_blank"
         rel="noreferrer"
-        className="text-primary underline-offset-4 hover:underline"
+        className="content-link text-primary"
       >
         {formatLicense(imageCredit)}
       </a>

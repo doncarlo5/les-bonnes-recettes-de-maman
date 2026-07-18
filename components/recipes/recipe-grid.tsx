@@ -43,16 +43,16 @@ export function RecipeGrid({
               </span>
               <span className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/15 to-black/65" />
               <span className="absolute inset-x-0 bottom-0 block px-7 pb-7 text-white sm:px-9 sm:pb-9">
-                <span className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-soft-peach-200/90">
+                <span className="type-label mb-3 inline-flex items-center gap-2 text-soft-peach-200/90 tabular-nums">
                   <Clock3 className="size-4 stroke-[1.8]" />
                   {recipe.timeLabel}
                 </span>
                 <span
-                  className="block max-w-[18ch] font-heading text-4xl font-black leading-[0.95] text-white drop-shadow-sm lg:text-5xl"
+                  className="type-card-title block max-w-[18ch] text-white drop-shadow-sm"
                 >
                   {recipe.title}
                 </span>
-                <span className="mt-3 block font-heading text-lg italic text-white/80">
+                <span className="type-byline mt-3 block text-white/80">
                   {dict.recipeDetail.recipeBy} {recipe.author}
                 </span>
               </span>
@@ -77,10 +77,10 @@ export function RecipeGrid({
               <Plus className="size-10 stroke-[1.8]" />
             </span>
             <span className="grid gap-2 px-8">
-              <span className="font-heading text-3xl font-black leading-none text-foreground">
+              <span className="type-card-title text-foreground">
                 {dict.recipeList.addRecipeTitle}
               </span>
-              <span className="text-sm font-bold text-muted-foreground">
+              <span className="type-body-sm font-bold text-muted-foreground">
                 {dict.recipeList.addRecipeDescription}
               </span>
             </span>

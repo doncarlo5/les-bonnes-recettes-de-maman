@@ -48,16 +48,6 @@
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-playfair-display);
 
-  /* Fluid display sizes (clamp). Usable as text-display / text-section. */
-  --text-display: clamp(2.75rem, 1.1rem + 6.2vw, 6rem);
-  --text-display--line-height: 1;
-  --text-display--letter-spacing: -0.02em;
-  --text-display--font-weight: 800;
-  --text-section: clamp(1.875rem, 1.2rem + 2.4vw, 3rem);
-  --text-section--line-height: 1.1;
-  --text-section--letter-spacing: -0.01em;
-  --text-section--font-weight: 800;
-
   /* Warm, soft card shadow. */
   --shadow-card: 0 1px 3px oklch(0.23 0.015 60 / 0.06),
     0 6px 20px oklch(0.23 0.015 60 / 0.08);
@@ -177,37 +167,161 @@
   }
   body {
     @apply bg-background text-foreground;
-    -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     line-height: 1.6;
   }
   html {
     @apply font-sans;
-  }
-  h1,
-  h2,
-  h3,
-  h4 {
-    font-family: var(--font-heading);
-    text-wrap: balance;
-  }
-  p {
-    text-wrap: pretty;
+    font-synthesis: none;
   }
 }
 
-@layer components {
-  /* Consolidated eyebrow / overline label. */
-  .eyebrow {
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
-    font-weight: 700;
-    line-height: 1.2;
-    text-transform: uppercase;
-    letter-spacing: 0.22em;
-    color: var(--primary);
-  }
+@utility type-display {
+  font-family: var(--font-heading);
+  font-size: clamp(2.75rem, 1.1rem + 6.2vw, 6rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
 
+@utility type-page-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 1.55rem + 3.8vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+@utility type-section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.875rem, 1.2rem + 2.4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+@utility type-content-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+@utility type-card-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.75rem, 1.25rem + 2vw, 3rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+@utility type-subsection-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+
+@utility type-editorial-lead {
+  max-width: 65ch;
+  font-family: var(--font-heading);
+  font-size: clamp(1.125rem, 0.85rem + 1.2vw, 1.875rem);
+  font-style: italic;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+
+@utility type-byline {
+  font-family: var(--font-heading);
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
+  font-style: italic;
+  line-height: 1.4;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+
+@utility type-wordmark {
+  font-family: var(--font-heading);
+  font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.015em;
+}
+
+@utility type-body {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+}
+
+@utility type-body-spacious {
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 0.94rem + 0.3vw, 1.125rem);
+  line-height: 1.7;
+  overflow-wrap: break-word;
+}
+
+@utility type-body-sm {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+}
+
+@utility type-label {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+@utility type-meta {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+}
+
+@utility type-control {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.4;
+
+  @media (width >= 48rem) {
+    font-size: 0.875rem;
+  }
+}
+
+@utility type-panel-title {
+  font-family: var(--font-sans);
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.5rem);
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+
+@layer components {
   /* Animated underline for inline links. */
   .link-underline {
     position: relative;
@@ -227,6 +341,15 @@
   .link-underline:hover::after,
   .link-underline:focus-visible::after {
     transform: scaleX(1);
+  }
+
+  /* Conventional underlines for links inside readable content. */
+  .content-link {
+    text-decoration-line: underline;
+    text-decoration-thickness: from-font;
+    text-underline-offset: 0.2em;
+    text-decoration-skip-ink: auto;
+    text-underline-position: from-font;
   }
 }
 

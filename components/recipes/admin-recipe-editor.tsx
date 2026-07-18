@@ -369,11 +369,11 @@ function DesktopRecipeAdmin({ locale, recipes, selectedSlug, selectedRecipe, mod
     window.requestAnimationFrame(() => form.setFocus(item.field));
   }
   return <main className="min-h-screen px-5 py-8 text-foreground sm:px-6"><section className="mx-auto flex w-full max-w-7xl flex-col gap-8">
-    <div className="flex items-end justify-between gap-4"><div className="grid gap-3"><p className="eyebrow">Admin recettes</p><h1 className="font-heading text-5xl font-black leading-none">Recettes</h1></div><Button type="button" onClick={onCreate} className="min-h-10"><CirclePlus data-icon="inline-start" />Nouvelle recette</Button></div>
+    <div className="flex items-end justify-between gap-4"><div className="grid gap-3"><p className="type-label text-primary">Admin recettes</p><h1 className="type-page-title">Recettes</h1></div><Button type="button" onClick={onCreate} className="min-h-10"><CirclePlus data-icon="inline-start" />Nouvelle recette</Button></div>
     <div className="grid gap-6 lg:grid-cols-[24rem_1fr]"><RecipeTable recipes={recipes} selectedSlug={selectedSlug} onSelectRecipe={onSelect} />
-      {!hasSelection ? <div className="grid min-h-80 place-items-center rounded-2xl bg-card p-8 text-center shadow-[var(--shadow-card)]"><div className="max-w-sm"><BookOpen className="mx-auto size-8 text-primary" /><h2 className="mt-4 font-heading text-2xl font-black">Choisis une recette</h2><p className="mt-2 text-sm font-semibold text-muted-foreground">Sélectionne une recette dans la liste pour ouvrir son Brouillon de travail.</p></div></div> :
+      {!hasSelection ? <div className="grid min-h-80 place-items-center rounded-2xl bg-card p-8 text-center shadow-[var(--shadow-card)]"><div className="max-w-sm"><BookOpen className="mx-auto size-8 text-primary" /><h2 className="type-panel-title mt-4">Choisis une recette</h2><p className="type-body-sm mt-2 font-semibold text-muted-foreground [text-wrap:pretty]">Sélectionne une recette dans la liste pour ouvrir son Brouillon de travail.</p></div></div> :
       <form onSubmit={(event) => { event.preventDefault(); void onSave(getValues(), syncState === "conflict"); }} className="flex flex-col gap-6 rounded-lg border bg-card p-5 shadow-card">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"><div className="flex flex-col gap-2"><div className="flex flex-wrap items-center gap-2"><h2 className="font-heading text-2xl font-black text-foreground">{mode === "create" ? "Nouveau brouillon" : selectedRecipe?.title}</h2><Badge variant={status === "published" ? "default" : "secondary"}>{status === "published" ? "Publiée" : "Brouillon"}</Badge></div><p className="text-sm font-semibold text-muted-foreground">Slug: {mode === "create" ? "généré au premier enregistrement" : selectedSlug}</p></div><div className="flex gap-2"><Button type="submit" variant="outline" disabled={isPending}>{isPending ? <Spinner data-icon="inline-start" /> : <Save data-icon="inline-start" />}{isPending ? "Enregistrement..." : "Sauvegarder le brouillon"}</Button><Button type="button" disabled={isPending || getRecipeReadiness(getValues(), Boolean(selectedRecipe?.heroImageUrl)).blockers.length > 0} onClick={onPublish}><Send data-icon="inline-start" /> Publier</Button></div></div>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between"><div className="flex flex-col gap-2"><div className="flex flex-wrap items-center gap-2"><h2 className="type-panel-title text-foreground">{mode === "create" ? "Nouveau brouillon" : selectedRecipe?.title}</h2><Badge variant={status === "published" ? "default" : "secondary"}>{status === "published" ? "Publiée" : "Brouillon"}</Badge></div><p className="type-body-sm font-semibold text-muted-foreground">Slug: {mode === "create" ? "généré au premier enregistrement" : selectedSlug}</p></div><div className="flex gap-2"><Button type="submit" variant="outline" disabled={isPending}>{isPending ? <Spinner data-icon="inline-start" /> : <Save data-icon="inline-start" />}{isPending ? "Enregistrement..." : "Sauvegarder le brouillon"}</Button><Button type="button" disabled={isPending || getRecipeReadiness(getValues(), Boolean(selectedRecipe?.heroImageUrl)).blockers.length > 0} onClick={onPublish}><Send data-icon="inline-start" /> Publier</Button></div></div>
         {syncState === "conflict" ? <ConflictCard onReload={onReloadConflict} onReplace={onReplaceConflict} /> : null}
         <SaveStateAlert state={state} />
         <div className="grid gap-3 rounded-xl bg-muted/55 p-3"><div className="flex flex-wrap gap-2"><Badge variant={publication.isPublic ? "default" : "secondary"}>{publication.isPublic ? "Visible publiquement" : publication.hasPublishedVersion ? "Version approuvée masquée" : "Jamais publiée"}</Badge>{publication.hasUnpublishedChanges ? <Badge variant="outline">Modifications non publiées</Badge> : null}{publication.canDiscard ? <Button type="button" variant="outline" onClick={onDiscard}>Abandonner les modifications</Button> : null}{publication.isPublic ? <Button type="button" variant="destructive" onClick={onUnpublish}>Retirer du site public</Button> : null}</div>{[...readiness.blockers, ...readiness.warnings].length ? <div className="grid gap-2" aria-label="État de préparation">{[...readiness.blockers, ...readiness.warnings].map((item) => <button key={item.code} type="button" onClick={() => openReadinessItem(item)} className="flex min-h-10 items-center gap-2 rounded-lg bg-card px-3 text-left text-sm font-semibold"><span className="flex-1">{item.label}</span><ChevronRight className="size-4" /></button>)}</div> : null}</div>
@@ -467,9 +467,9 @@ function MobileRecipeAdmin({
         <header className="mx-auto grid w-full max-w-lg gap-5">
           <div className="flex items-end justify-between gap-4">
             <div className="grid gap-2">
-              <p className="eyebrow">Admin recettes</p>
-              <h1 className="font-heading text-4xl font-black leading-none">Le carnet</h1>
-              <p className="text-sm font-semibold text-muted-foreground">{recipes.length} recettes à portée de main.</p>
+              <p className="type-label text-primary">Admin recettes</p>
+              <h1 className="type-page-title">Le carnet</h1>
+              <p className="type-body-sm font-semibold text-muted-foreground tabular-nums">{recipes.length} recettes à portée de main.</p>
             </div>
             <Button type="button" onClick={onCreate} className="min-h-11 rounded-xl px-4 active:scale-[0.96] transition-transform">
               <CirclePlus data-icon="inline-start" /> Nouvelle
@@ -498,7 +498,7 @@ function MobileRecipeAdmin({
                 {recipe.heroImageUrl ? <Image src={recipe.heroImageUrl} alt="" fill sizes="80px" className="object-cover outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10" /> : <div className="grid size-full place-items-center"><Camera className="size-5 text-muted-foreground" /></div>}
               </div>
               <span className="min-w-0">
-                <span className="line-clamp-2 font-heading text-lg font-black leading-tight">{recipe.title || "Recette sans titre"}</span>
+                <span className="type-panel-title line-clamp-2" title={recipe.title || "Recette sans titre"}>{recipe.title || "Recette sans titre"}</span>
                 <span className="mt-1 flex flex-wrap items-center gap-1.5 text-xs font-bold text-muted-foreground">
                   {recipe.isPublic ? "Visible" : recipe.hasPublishedVersion ? "Masquée" : "Jamais publiée"}
                   {recipe.hasUnpublishedChanges ? <><span aria-hidden>·</span><span className="text-primary">Modifications non publiées</span></> : null}
@@ -520,7 +520,7 @@ function MobileRecipeAdmin({
       <main className="min-h-screen px-4 py-6 text-foreground">
         <div className="mx-auto grid w-full max-w-lg gap-6">
           <button type="button" onClick={onHome} className="flex min-h-11 items-center gap-2 justify-self-start font-bold"><ArrowLeft /> Le carnet</button>
-          <div className="grid gap-2"><p className="eyebrow">Nouveau brouillon</p><h1 className="font-heading text-4xl font-black leading-tight">Comment s’appelle cette recette&nbsp;?</h1><p className="font-semibold text-muted-foreground">Le titre crée immédiatement un brouillon privé. Tu pourras tout compléter ensuite.</p></div>
+          <div className="grid gap-2"><p className="type-label text-primary">Nouveau brouillon</p><h1 className="type-page-title">Comment s’appelle cette recette&nbsp;?</h1><p className="type-body font-semibold text-muted-foreground [text-wrap:pretty]">Le titre crée immédiatement un brouillon privé. Tu pourras tout compléter ensuite.</p></div>
           <div className="rounded-2xl bg-card p-4 shadow-[var(--shadow-card)]">
             <TextField label="Titre français" name="translations.fr.title" register={form.register} errors={form.formState.errors} autoFocus />
           </div>
@@ -539,7 +539,7 @@ function MobileRecipeAdmin({
       <div className="mx-auto w-full max-w-lg">
         <header className="sticky top-0 z-20 -mx-4 mb-4 flex min-h-14 items-center gap-2 border-b bg-background/95 px-4 backdrop-blur">
           <Button type="button" variant="ghost" size="icon" onClick={() => section === "overview" ? onHome() : onOpenSection("overview")} className="size-11 rounded-full" aria-label={section === "overview" ? "Retour au carnet" : "Retour à la recette"}><ArrowLeft /></Button>
-          <div className="min-w-0 flex-1"><p className="truncate text-xs font-black uppercase tracking-[0.16em] text-muted-foreground">{sectionTitle}</p><h1 className="truncate font-heading text-lg font-black">{values.translations[defaultLocale]?.title || "Recette sans titre"}</h1></div>
+          <div className="min-w-0 flex-1"><p className="type-label truncate text-muted-foreground" title={sectionTitle}>{sectionTitle}</p><h1 className="type-panel-title truncate" title={values.translations[defaultLocale]?.title || "Recette sans titre"}>{values.translations[defaultLocale]?.title || "Recette sans titre"}</h1></div>
           <SyncPill state={syncState} revision={revision} />
         </header>
 
@@ -559,7 +559,7 @@ function MobileRecipeAdmin({
         <div className="mx-auto grid max-w-lg grid-cols-3 gap-2">
           <Button type="button" variant="ghost" onClick={() => onOpenSection("overview")} className="min-h-11 flex-col gap-0 rounded-xl text-xs"><BookOpen /> Recette</Button>
           <Button type="button" variant="ghost" onClick={() => onOpenSection("photo")} className="min-h-11 flex-col gap-0 rounded-xl text-xs"><Camera /> Photo</Button>
-          <Button type="button" onClick={() => onOpenSection("publish")} className="min-h-11 flex-col gap-0 rounded-xl text-xs active:scale-[0.96] transition-transform"><Send /> Publier <span className="text-[0.62rem] opacity-75">{completedSections}/7 sections</span></Button>
+          <Button type="button" onClick={() => onOpenSection("publish")} className="min-h-11 flex-col gap-0 rounded-xl text-xs active:scale-[0.96] transition-transform"><Send /> Publier <span className="type-meta opacity-75">{completedSections}/7 sections</span></Button>
         </div>
       </nav>
     </main>
@@ -612,7 +612,7 @@ function PublishWorkspace({ recipe, readiness, publication, isPending, onPublish
   }
 
   return <div className="grid gap-5">
-    <div><p className="eyebrow">État de préparation</p><h2 className="mt-2 font-heading text-3xl font-black">Avant de publier</h2><p className="mt-2 text-sm font-semibold text-muted-foreground">{publication.isPublic ? "La version approuvée est visible publiquement." : publication.hasPublishedVersion ? "La version approuvée est actuellement masquée." : "Cette recette n’a jamais été publiée."}</p></div>
+    <div><p className="type-label text-primary">État de préparation</p><h2 className="type-panel-title mt-2">Avant de publier</h2><p className="type-body-sm mt-2 font-semibold text-muted-foreground [text-wrap:pretty]">{publication.isPublic ? "La version approuvée est visible publiquement." : publication.hasPublishedVersion ? "La version approuvée est actuellement masquée." : "Cette recette n’a jamais été publiée."}</p></div>
     {readiness.blockers.length ? <div className="grid gap-2"><h3 className="font-black text-destructive">À compléter</h3>{readiness.blockers.map((item) => <button type="button" key={item.code} onClick={() => openItem(item)} className="flex min-h-11 items-center gap-2 rounded-xl bg-destructive/10 p-3 text-left text-sm font-bold text-destructive transition-[scale,background-color] active:scale-[0.96]"><TriangleAlert className="size-5 shrink-0" /><span className="flex-1">{item.label}</span><ChevronRight className="size-5" /></button>)}</div> : <div className="flex gap-3 rounded-xl bg-green-600/10 p-4 font-bold text-green-700 dark:text-green-400"><Check className="size-5" />La version française est prête.</div>}
     {readiness.warnings.length ? <div className="grid gap-2"><h3 className="font-black">Conseils</h3>{readiness.warnings.map((item) => <button type="button" key={item.code} onClick={() => openItem(item)} className="flex min-h-11 items-center gap-2 rounded-xl bg-muted p-3 text-left text-sm font-semibold transition-[scale,background-color] active:scale-[0.96]"><span className="flex-1">{item.label}</span><ChevronRight className="size-5" /></button>)}</div> : null}
     {publication.isPublic && recipe ? <a href={`../recettes/${recipe.slug}`} target="_blank" rel="noreferrer" className="flex min-h-11 items-center justify-center rounded-xl bg-muted px-4 font-black">Voir la version publiée</a> : null}
@@ -625,7 +625,7 @@ function PublishWorkspace({ recipe, readiness, publication, isPending, onPublish
 function SyncPill({ state, revision }: { state: SyncState; revision: number }) {
   const Icon = state === "saving" ? RefreshCw : state === "offline" || state === "error" ? CloudOff : Cloud;
   const label = state === "saving" ? "Sauvegarde" : state === "offline" ? "Hors ligne" : state === "error" ? "Erreur" : state === "conflict" ? "Conflit" : "Enregistré";
-  return <span title={`Révision ${revision}`} className="flex min-h-9 items-center gap-1 rounded-full bg-muted px-2.5 text-[0.68rem] font-black"><Icon className={`size-3.5 ${state === "saving" ? "animate-spin" : ""}`} />{label}</span>;
+  return <span title={`Révision ${revision}`} className="type-meta flex min-h-9 items-center gap-1 rounded-full bg-muted px-2.5"><Icon className={`size-3.5 ${state === "saving" ? "animate-spin" : ""}`} />{label}</span>;
 }
 
 function ConflictCard({ onReload, onReplace }: { onReload: () => void; onReplace: () => void }) {
@@ -681,12 +681,12 @@ function RecipeTable({
             >
               <TableCell>
                 <div className="flex flex-col gap-1">
-                  <span className="truncate font-medium">{recipe.title}</span>
-                  <span className="truncate text-xs text-muted-foreground">
+                  <span className="block max-w-full truncate font-medium" title={recipe.title}>{recipe.title}</span>
+                  <span className="truncate text-xs text-muted-foreground" title={recipe.slug}>
                     {recipe.slug}
                   </span>
                   {recipe.tags.length > 0 ? (
-                    <span className="truncate text-xs text-muted-foreground">
+                    <span className="truncate text-xs text-muted-foreground" title={recipe.tags.join(", ")}>
                       {recipe.tags.join(", ")}
                     </span>
                   ) : null}

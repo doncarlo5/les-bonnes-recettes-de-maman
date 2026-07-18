@@ -131,7 +131,7 @@ export function RecipeListExplorer({
               onChange={(event) =>
                 setDraftState({ query, value: event.target.value })
               }
-              className="h-11 pl-9 text-base"
+              className="h-11 pl-9"
               placeholder={dict.recipeList.searchPlaceholder}
             />
           </div>
@@ -168,7 +168,7 @@ export function RecipeListExplorer({
           </div>
 
           <div className="flex flex-wrap items-center gap-3 text-sm font-bold text-muted-foreground">
-            <span aria-live="polite">
+            <span aria-live="polite" className="tabular-nums">
               {formatResultCount(dict, filteredRecipes.length, recipes.length)}
             </span>
             {hasActiveFilters ? (
@@ -260,10 +260,10 @@ export function RecipeListExplorer({
         )
       ) : (
         <div className="rounded-lg border border-dashed border-border px-6 py-12 text-center">
-          <p className="font-heading text-3xl font-black text-foreground">
+          <h2 className="type-content-title text-foreground">
             {dict.recipeList.noResultsTitle}
-          </p>
-          <p className="mx-auto mt-3 max-w-xl text-base font-semibold leading-7 text-muted-foreground">
+          </h2>
+          <p className="type-body mx-auto mt-3 max-w-xl font-semibold text-muted-foreground [text-wrap:pretty]">
             {dict.recipeList.noResultsDescription}
           </p>
         </div>

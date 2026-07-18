@@ -33,8 +33,8 @@ export function RecipeListPage({
     <main className="px-6 py-16 lg:px-10 lg:py-20">
       <section className="mx-auto w-full max-w-6xl">
         <div className="mb-12 max-w-2xl">
-          <p className="eyebrow mb-3">{dict.recipeList.eyebrow}</p>
-          <h1 className="font-heading text-5xl font-black leading-[0.95] tracking-tight text-foreground lg:text-7xl">
+          <p className="type-label mb-3 text-primary">{dict.recipeList.eyebrow}</p>
+          <h1 className="type-page-title text-foreground">
             {dict.site.title}
           </h1>
         </div>

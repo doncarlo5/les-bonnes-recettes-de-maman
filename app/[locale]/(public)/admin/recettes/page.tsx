@@ -59,7 +59,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   ]);
 
   return (
-    <Suspense fallback={<main className="min-h-screen px-5 py-8"><p className="eyebrow">Chargement de l&apos;admin</p></main>}>
+    <Suspense fallback={<main className="min-h-screen px-5 py-8"><p className="type-label text-primary">Chargement de l&apos;admin</p></main>}>
     <AdminRecipeEditor
       key={shouldCreateNew ? "new" : initialSlug ?? "home"}
       locale={locale}

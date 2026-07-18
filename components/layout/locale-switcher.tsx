@@ -12,7 +12,7 @@ export function LocaleSwitcher({ current }: LocaleSwitcherProps) {
   const pathname = usePathname() ?? "/";
 
   return (
-    <div className="flex items-center gap-1 text-xs font-bold uppercase tracking-[0.18em]">
+    <div className="type-label flex items-center gap-1">
       {locales.map((locale, index) => {
         const isActive = locale === current;
         const segments = pathname.split("/");

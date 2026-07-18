@@ -41,6 +41,128 @@ test("recipe home is usable and accessible at every supported width", async ({ p
   }
 });
 
+test("semantic typography stays readable at every supported width", async ({ page }, testInfo) => {
+  const rootTypography = await page.locator("html").evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      fontFamily: style.fontFamily,
+      fontSynthesis: style.fontSynthesis,
+    };
+  });
+  expect(rootTypography.fontFamily).toContain("Nunito Sans");
+  expect(rootTypography.fontSynthesis).toBe("none");
+
+  const visiblePageTitles = page.locator("main h1:visible");
+  await expect(visiblePageTitles).toHaveCount(1);
+  const pageTitleStyle = await visiblePageTitles.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      fontFamily: style.fontFamily,
+      fontSize: Number.parseFloat(style.fontSize),
+      lineHeight: Number.parseFloat(style.lineHeight),
+    };
+  });
+  expect(pageTitleStyle.fontFamily).toContain("Playfair Display");
+  expect(pageTitleStyle.fontSize).toBeGreaterThanOrEqual(40);
+  expect(pageTitleStyle.lineHeight).toBeGreaterThan(pageTitleStyle.fontSize);
+
+  const editableControl = page
+    .locator('main :is(input,textarea,[data-slot="select-trigger"]):visible')
+    .first();
+  const editableControlCount = await editableControl.count();
+  if (testInfo.project.name.startsWith("mobile-")) {
+    expect(editableControlCount).toBeGreaterThan(0);
+  }
+  if (editableControlCount > 0) {
+    const controlStyle = await editableControl.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return {
+        fontFamily: style.fontFamily,
+        fontSize: Number.parseFloat(style.fontSize),
+      };
+    });
+    expect(controlStyle.fontFamily).toContain("Nunito Sans");
+    expect(controlStyle.fontSize).toBeGreaterThanOrEqual(
+      testInfo.project.name.startsWith("mobile-") ? 16 : 14,
+    );
+  }
+
+  const visibleSemanticText = page.locator(
+    'main :is([class~="type-label"],[class~="type-meta"]):visible',
+  );
+  for (const element of await visibleSemanticText.all()) {
+    const fontSize = await element.evaluate((node) =>
+      Number.parseFloat(getComputedStyle(node).fontSize),
+    );
+    expect(fontSize).toBeGreaterThanOrEqual(12);
+  }
+
+  const taskHeadings = page.locator("main :is(h2,h3,h4):visible");
+  for (const heading of await taskHeadings.all()) {
+    const headingStyle = await heading.evaluate((element) => {
+      const style = getComputedStyle(element);
+      return {
+        fontFamily: style.fontFamily,
+        fontSize: Number.parseFloat(style.fontSize),
+      };
+    });
+    expect(headingStyle.fontFamily).toContain("Nunito Sans");
+    expect(headingStyle.fontSize).toBeLessThan(pageTitleStyle.fontSize);
+  }
+
+  const roleStyles = await page.evaluate(() => {
+    const lead = document.createElement("p");
+    lead.className = "type-editorial-lead";
+    lead.textContent = "Un texte éditorial de contrôle";
+    const meta = document.createElement("span");
+    meta.className = "type-meta";
+    meta.textContent = "123";
+    document.body.append(lead, meta);
+    const leadStyle = getComputedStyle(lead);
+    const metaStyle = getComputedStyle(meta);
+    const styles = {
+      leadMaxWidth: Number.parseFloat(leadStyle.maxWidth),
+      leadOverflowWrap: leadStyle.overflowWrap,
+      leadTextWrap: leadStyle.textWrap,
+      metaNumeric: metaStyle.fontVariantNumeric,
+    };
+    lead.remove();
+    meta.remove();
+    return styles;
+  });
+  expect(roleStyles.leadMaxWidth).toBeGreaterThan(0);
+  expect(roleStyles.leadOverflowWrap).toBe("break-word");
+  expect(roleStyles.leadTextWrap).toBe("pretty");
+  expect(roleStyles.metaNumeric).toContain("tabular-nums");
+
+  const truncatedRecipeTitle = page
+    .locator('[title="Tarte de démonstration"]:visible')
+    .first();
+  await expect(truncatedRecipeTitle).toHaveCount(1);
+  const longTitle =
+    "Tarte de démonstration extraordinairement longue avec citron, noisettes et crème anglaise ".repeat(4);
+  const titleLayout = await truncatedRecipeTitle.evaluate(
+    (element, value) => {
+      element.textContent = value;
+      element.setAttribute("title", value);
+      const style = getComputedStyle(element);
+      return {
+        clipped:
+          element.scrollWidth > element.clientWidth ||
+          element.scrollHeight > element.clientHeight,
+        overflow: style.overflow,
+        title: element.getAttribute("title"),
+      };
+    },
+    longTitle,
+  );
+  if (testInfo.project.name.startsWith("mobile-")) {
+    expect(titleLayout.clipped).toBe(true);
+  }
+  expect(titleLayout.overflow).toBe("hidden");
+  expect(titleLayout.title).toBe(longTitle);
+});
+
 test("mobile workspaces preserve URL state, focus blockers, and autosave", async ({ page }, testInfo) => {
   test.skip(!testInfo.project.name.startsWith("mobile-"));
   await page.getByPlaceholder("Rechercher une recette").fill("démonstration");
@@ -81,8 +203,14 @@ test("mobile creation and every focused workspace remain navigable", async ({ pa
   test.skip(testInfo.project.name !== "mobile-390");
   await page.getByRole("button", { name: /Nouvelle/ }).click();
   await page.getByLabel("Titre français").fill("Nouvelle tarte mobile");
-  await page.getByRole("button", { name: /Commencer la recette/ }).evaluate((button: HTMLButtonElement) => button.click());
-  await expect(page).toHaveURL(/slug=tarte-de-demonstration/);
+  const startRecipe = page.getByRole("button", { name: /Commencer la recette/ });
+  await expect(startRecipe).toBeEnabled();
+  const creationResponse = page.waitForResponse((response) =>
+    response.url().endsWith("/api/admin/recipes/save"),
+  );
+  await startRecipe.evaluate((button: HTMLButtonElement) => button.click());
+  expect((await creationResponse).ok()).toBe(true);
+  await expect(page).toHaveURL(/slug=tarte-de-demonstration/, { timeout: 10_000 });
 
   for (const section of ["essentials", "photo", "details", "ingredients", "preparation", "notes", "translation", "publish"]) {
     const labels: Record<string, RegExp> = {

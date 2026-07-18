@@ -61,14 +61,14 @@ export function RecipeDetailPage({
 
         <div className="absolute inset-x-0 bottom-0 z-10">
           <div className="mx-auto w-full max-w-6xl px-4 pb-6 text-white sm:pb-10 lg:px-10 lg:pb-20">
-            <div className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-white/85 lg:mb-5 lg:text-sm lg:tracking-[0.22em]">
+            <div className="type-label mb-3 inline-flex items-center gap-2 text-white/85 tabular-nums lg:mb-5">
               <Clock3 className="size-4 stroke-[1.8]" />
               <span>{recipe.timeLabel}</span>
             </div>
-            <h1 className="max-w-[14ch] font-heading text-4xl font-black leading-[0.95] tracking-tight drop-shadow-sm sm:text-6xl lg:text-[8rem] lg:leading-[0.9]">
+            <h1 className="type-display max-w-[14ch] drop-shadow-sm">
               {recipe.title}
             </h1>
-            <p className="mt-3 font-heading text-lg italic text-white/80 lg:mt-5 lg:text-3xl">
+            <p className="type-byline mt-3 text-white/80 lg:mt-5">
               {dict.recipeDetail.recipeBy} {recipe.author}
             </p>
           </div>
@@ -79,7 +79,7 @@ export function RecipeDetailPage({
       {recipe.description ? (
         <section className="bg-muted px-4 py-10 lg:px-10 lg:py-24">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="font-heading text-lg italic leading-relaxed text-foreground/80 sm:text-2xl lg:text-3xl">
+            <p className="type-editorial-lead mx-auto text-foreground/80">
               {recipe.description}
             </p>
             <div
@@ -92,23 +92,23 @@ export function RecipeDetailPage({
 
       {/* Body: instructions + sticky ingredients sidebar */}
       <section className="px-4 pb-16 lg:px-10 lg:pb-32">
-        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[1fr_22rem] lg:gap-16">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,65ch)_22rem] lg:justify-center lg:gap-16">
           <div className="min-w-0">
             <RecipeMeta dict={dict} recipe={recipe} />
 
             <div className="mt-8 space-y-8 lg:mt-14 lg:space-y-12">
               {recipe.sections.map((section) => (
                 <div key={section.title}>
-                  <h2 className="mb-4 font-heading text-2xl font-black tracking-tight text-foreground lg:mb-6 lg:text-3xl xl:text-4xl">
+                  <h2 className="type-content-title mb-4 text-foreground lg:mb-6">
                     {section.title}
                   </h2>
                   <ol className="space-y-4 lg:space-y-6">
                     {section.steps.map((step, index) => (
                       <li
                         key={step}
-                        className="grid grid-cols-[2rem_1fr] gap-3 text-base leading-7 text-foreground/90 lg:grid-cols-[2.5rem_1fr] lg:gap-5 lg:text-lg lg:leading-[1.8]"
+                        className="type-body-spacious grid grid-cols-[2rem_1fr] gap-3 text-foreground/90 lg:grid-cols-[2.5rem_1fr] lg:gap-5"
                       >
-                        <span className="mt-0.5 flex size-7 items-center justify-center rounded-full bg-primary/10 font-heading text-sm font-black text-primary lg:mt-1 lg:size-9 lg:text-base">
+                        <span className="type-meta mt-0.5 flex size-7 items-center justify-center rounded-full bg-primary/10 text-primary lg:mt-1 lg:size-9">
                           {index + 1}
                         </span>
                         <span>{step}</span>
@@ -123,7 +123,7 @@ export function RecipeDetailPage({
               <>
                 {/* Mobile: accordion */}
                 <div className="mt-8 lg:hidden">
-                  <h2 className="mb-3 font-heading text-2xl font-black tracking-tight text-foreground">
+                  <h2 className="type-content-title mb-3 text-foreground">
                     {dict.recipeDetail.subRecipes}
                   </h2>
                   <Accordion
@@ -135,7 +135,7 @@ export function RecipeDetailPage({
                         key={subRecipe.title}
                         value={subRecipe.title}
                       >
-                        <AccordionTrigger className="font-heading text-lg font-black text-foreground">
+                        <AccordionTrigger className="type-subsection-title text-foreground">
                           {subRecipe.title}
                         </AccordionTrigger>
                         <AccordionContent>
@@ -143,12 +143,12 @@ export function RecipeDetailPage({
                             {subRecipe.ingredients.map((ingredient, index) => (
                               <li
                                 key={`${subRecipe.title}-${ingredient.name}-${ingredient.unit}-${index}`}
-                                className="flex items-baseline justify-between gap-4 py-2.5 text-sm"
+                                className="type-body-sm flex items-baseline justify-between gap-4 py-2.5"
                               >
                                 <span className="font-semibold text-foreground">
                                   {ingredient.name}
                                 </span>
-                                <span className="shrink-0 font-bold text-muted-foreground">
+                                <span className="shrink-0 font-bold text-muted-foreground tabular-nums">
                                   {formatQuantity(ingredient)}
                                 </span>
                               </li>
@@ -162,24 +162,24 @@ export function RecipeDetailPage({
 
                 {/* Desktop: stacked */}
                 <div className="mt-14 hidden space-y-8 lg:block">
-                  <h2 className="font-heading text-3xl font-black tracking-tight text-foreground lg:text-4xl">
+                  <h2 className="type-content-title text-foreground">
                     {dict.recipeDetail.subRecipes}
                   </h2>
                   {recipe.subRecipes.map((subRecipe) => (
                     <div key={subRecipe.title}>
-                      <h3 className="mb-3 font-heading text-xl font-black text-foreground">
+                      <h3 className="type-subsection-title mb-3 text-foreground">
                         {subRecipe.title}
                       </h3>
                       <ul className="divide-y divide-border">
                         {subRecipe.ingredients.map((ingredient, index) => (
                           <li
                             key={`${subRecipe.title}-${ingredient.name}-${ingredient.unit}-${index}`}
-                            className="flex items-baseline justify-between gap-5 py-3 text-base"
+                            className="type-body flex items-baseline justify-between gap-5 py-3"
                           >
                             <span className="font-semibold text-foreground">
                               {ingredient.name}
                             </span>
-                            <span className="shrink-0 font-bold text-muted-foreground">
+                            <span className="shrink-0 font-bold text-muted-foreground tabular-nums">
                               {formatQuantity(ingredient)}
                             </span>
                           </li>
@@ -197,11 +197,11 @@ export function RecipeDetailPage({
                 <div className="mt-8 lg:hidden">
                   <Accordion>
                     <AccordionItem value="notes" className="border-t border-border">
-                      <AccordionTrigger className="font-heading text-2xl font-black tracking-tight text-foreground">
+                      <AccordionTrigger className="type-content-title text-foreground">
                         {dict.recipeDetail.notes}
                       </AccordionTrigger>
                       <AccordionContent>
-                        <ul className="space-y-2 text-base leading-7 text-muted-foreground">
+                        <ul className="type-body space-y-2 text-muted-foreground">
                           {recipe.notes.map((note) => (
                             <li
                               key={note}
@@ -218,10 +218,10 @@ export function RecipeDetailPage({
 
                 {/* Desktop */}
                 <div className="mt-14 hidden lg:block">
-                  <h2 className="mb-5 font-heading text-3xl font-black tracking-tight text-foreground lg:text-4xl">
+                  <h2 className="type-content-title mb-5 text-foreground">
                     {dict.recipeDetail.notes}
                   </h2>
-                  <ul className="space-y-3 text-lg leading-[1.8] text-muted-foreground">
+                  <ul className="type-body-spacious space-y-3 text-muted-foreground">
                     {recipe.notes.map((note) => (
                       <li
                         key={note}
@@ -245,11 +245,11 @@ export function RecipeDetailPage({
                   <AccordionItem value="ingredients">
                     <AccordionTrigger className="py-3 hover:no-underline">
                       <span className="flex flex-1 items-center justify-between gap-3 pr-2">
-                        <span className="font-heading text-2xl font-black tracking-tight text-foreground">
+                        <span className="type-content-title text-foreground">
                           {dict.recipeDetail.ingredients}
                         </span>
                         {recipe.servings ? (
-                          <span className="shrink-0 rounded-full bg-secondary px-2.5 py-0.5 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-secondary-foreground">
+                          <span className="type-label shrink-0 rounded-full bg-secondary px-2.5 py-0.5 text-secondary-foreground tabular-nums">
                             {recipe.servings.quantity} {recipe.servings.unit}
                           </span>
                         ) : null}
@@ -260,7 +260,7 @@ export function RecipeDetailPage({
                         {recipe.ingredients.map((ingredient, index) => (
                           <li
                             key={`${ingredient.name}-${ingredient.unit}-${index}`}
-                            className="flex items-baseline justify-between gap-3 py-2 text-sm"
+                            className="type-body-sm flex items-baseline justify-between gap-3 py-2"
                           >
                             <span className="font-semibold text-foreground">
                               {ingredient.name}
@@ -270,7 +270,7 @@ export function RecipeDetailPage({
                                 </span>
                               ) : null}
                             </span>
-                            <span className="shrink-0 font-bold text-muted-foreground">
+                            <span className="shrink-0 font-bold text-muted-foreground tabular-nums">
                               {formatQuantity(ingredient)}
                             </span>
                           </li>
@@ -285,11 +285,11 @@ export function RecipeDetailPage({
             {/* Desktop: original card */}
             <div className="hidden rounded-2xl bg-muted p-7 ring-1 ring-border lg:block lg:p-8">
               <div className="mb-6 flex items-baseline justify-between gap-4 border-b border-border pb-4">
-                <h2 className="font-heading text-3xl font-black tracking-tight text-foreground">
+                <h2 className="type-content-title text-foreground">
                   {dict.recipeDetail.ingredients}
                 </h2>
                 {recipe.servings ? (
-                  <span className="shrink-0 rounded-full bg-secondary px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-secondary-foreground">
+                  <span className="type-label shrink-0 rounded-full bg-secondary px-3 py-1 text-secondary-foreground tabular-nums">
                     {recipe.servings.quantity} {recipe.servings.unit}
                   </span>
                 ) : null}
@@ -308,14 +308,14 @@ export function RecipeDetailPage({
                         </span>
                       ) : null}
                     </span>
-                    <span className="shrink-0 font-bold text-muted-foreground">
+                    <span className="shrink-0 font-bold text-muted-foreground tabular-nums">
                       {formatQuantity(ingredient)}
                     </span>
                   </li>
                 ))}
               </ul>
               {recipe.totalTime ? (
-                <p className="mt-6 border-t border-border pt-4 text-xs font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                <p className="type-label mt-6 border-t border-border pt-4 text-muted-foreground tabular-nums">
                   {dict.recipeDetail.totalTime} · {recipe.totalTime}
                 </p>
               ) : null}
@@ -341,10 +341,10 @@ function RecipeMeta({ dict, recipe }: { dict: Dictionary; recipe: Recipe }) {
     <dl className="grid grid-cols-2 gap-x-4 gap-y-4 border-y border-border py-5 sm:grid-cols-4 lg:gap-x-8 lg:gap-y-6 lg:py-7">
       {meta.map(([label, value]) => (
         <div key={label}>
-          <dt className="text-[0.6rem] font-bold uppercase tracking-[0.18em] text-primary lg:text-[0.65rem] lg:tracking-[0.22em]">
+          <dt className="type-label text-primary">
             {label}
           </dt>
-          <dd className="mt-1.5 font-heading text-base font-black text-foreground lg:mt-2 lg:text-xl">
+          <dd className="type-subsection-title mt-1.5 text-foreground tabular-nums lg:mt-2">
             {value}
           </dd>
         </div>
@@ -365,13 +365,13 @@ function HeroImageCredit({
 }) {
   if (imageCredit.provider === "unsplash") {
     return (
-      <p className="absolute right-4 top-5 z-10 text-right text-[0.65rem] font-bold uppercase tracking-[0.16em] text-white/70 lg:right-10 lg:top-8 lg:text-[0.7rem] lg:tracking-[0.18em]">
+      <p className="type-meta absolute right-4 top-5 z-10 text-right text-white/80 lg:right-10 lg:top-8">
         Photo{" "}
         <a
           href={imageCredit.photographerUrl}
           target="_blank"
           rel="noreferrer"
-          className="underline-offset-4 hover:text-white hover:underline"
+          className="content-link hover:text-white"
         >
           {imageCredit.photographerName}
         </a>{" "}
@@ -380,7 +380,7 @@ function HeroImageCredit({
           href={imageCredit.photoUrl}
           target="_blank"
           rel="noreferrer"
-          className="underline-offset-4 hover:text-white hover:underline"
+          className="content-link hover:text-white"
         >
           Unsplash
         </a>
@@ -389,13 +389,13 @@ function HeroImageCredit({
   }
 
   return (
-    <p className="absolute right-4 top-5 z-10 max-w-[18rem] text-right text-[0.65rem] font-bold uppercase tracking-[0.16em] text-white/70 lg:right-10 lg:top-8 lg:text-[0.7rem] lg:tracking-[0.18em]">
+    <p className="type-meta absolute right-4 top-5 z-10 max-w-[18rem] text-right text-white/80 lg:right-10 lg:top-8">
       Photo{" "}
       <a
         href={imageCredit.creatorUrl}
         target="_blank"
         rel="noreferrer"
-        className="underline-offset-4 hover:text-white hover:underline"
+        className="content-link hover:text-white"
       >
         {imageCredit.creator}
       </a>{" "}
@@ -404,7 +404,7 @@ function HeroImageCredit({
         href={imageCredit.landingUrl}
         target="_blank"
         rel="noreferrer"
-        className="underline-offset-4 hover:text-white hover:underline"
+        className="content-link hover:text-white"
       >
         {imageCredit.source}
       </a>{" "}
@@ -413,7 +413,7 @@ function HeroImageCredit({
         href={imageCredit.licenseUrl}
         target="_blank"
         rel="noreferrer"
-        className="underline-offset-4 hover:text-white hover:underline"
+        className="content-link hover:text-white"
       >
         {formatOpenverseLicense(imageCredit)}
       </a>

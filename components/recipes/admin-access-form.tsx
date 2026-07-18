@@ -81,11 +81,11 @@ export function AdminAccessForm({ locale, redirectTo }: AdminAccessFormProps) {
     <main className="min-h-screen px-5 py-8 text-foreground sm:px-6">
       <section className="mx-auto flex w-full max-w-md flex-col gap-6">
         <div className="flex flex-col gap-3">
-          <p className="eyebrow">Admin recettes</p>
-          <h1 className="font-heading text-4xl font-black leading-[0.95] text-foreground">
+          <p className="type-label text-primary">Admin recettes</p>
+          <h1 className="type-page-title text-foreground">
             Acces admin
           </h1>
-          <p className="text-sm font-semibold leading-6 text-muted-foreground">
+          <p className="type-body-sm font-semibold text-muted-foreground [text-wrap:pretty]">
             Entre le mot de passe pour creer ou modifier les recettes.
           </p>
         </div>
