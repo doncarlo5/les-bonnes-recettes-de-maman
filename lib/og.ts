@@ -12,7 +12,7 @@ export const brand = {
   terracotta: "#7C2538",
   honey: "#D9D2C7",
   sand: "#FBF9F4",
-  mutedInk: "#665F58",
+  mutedInk: "#605953",
 } as const;
 
 type OgFont = {
