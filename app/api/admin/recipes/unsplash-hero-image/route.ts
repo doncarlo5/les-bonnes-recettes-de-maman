@@ -15,6 +15,7 @@ type UnsplashHeroImageBody = {
   photographerName?: string;
   photographerUrl?: string;
   photoUrl?: string;
+  expectedRevision?: number;
 };
 
 export async function POST(request: NextRequest) {
@@ -45,6 +46,7 @@ export async function POST(request: NextRequest) {
     photographerName,
     photographerUrl,
     photoUrl,
+    expectedRevision: body.expectedRevision,
     adminPassword: adminAccess.adminPassword,
   });
 
@@ -52,5 +54,6 @@ export async function POST(request: NextRequest) {
     ok: true,
     slug: result.slug,
     heroImageUrl: result.heroImageUrl,
+    revision: result.revision,
   });
 }

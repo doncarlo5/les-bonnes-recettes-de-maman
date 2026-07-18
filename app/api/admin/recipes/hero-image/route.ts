@@ -12,6 +12,7 @@ export const dynamic = "force-dynamic";
 type HeroImageBody = {
   slug?: string;
   storageId?: string;
+  expectedRevision?: number;
 };
 
 export async function POST(request: NextRequest) {
@@ -35,8 +36,9 @@ export async function POST(request: NextRequest) {
   const result = await fetchMutation(api.recipes.setHeroImage, {
     slug,
     storageId,
+    expectedRevision: body.expectedRevision,
     adminPassword: adminAccess.adminPassword,
   });
 
-  return Response.json({ ok: true, slug: result.slug, storageId });
+  return Response.json({ ok: true, slug: result.slug, storageId, revision: result.revision });
 }

@@ -1,7 +1,7 @@
 import { fetchMutation } from "convex/nextjs";
 import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
-import { editableRecipeContentSchema } from "@/components/recipes/recipe-form-schema";
+import { editableRecipeDraftSchema } from "@/components/recipes/recipe-form-schema";
 import { api } from "@/convex/_generated/api";
 import { hasLocale, locales } from "@/i18n/config";
 import {
@@ -15,6 +15,8 @@ type SaveRecipeBody = {
   mode?: string;
   slug?: string;
   recipePayload?: string;
+  expectedRevision?: number;
+  force?: boolean;
 };
 
 const initialErrorMessage = "Impossible d'enregistrer cette recette.";
@@ -82,7 +84,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const validation = editableRecipeContentSchema.safeParse(parsedPayload);
+  const validation = editableRecipeDraftSchema.safeParse(parsedPayload);
 
   if (!validation.success) {
     return Response.json(
@@ -105,9 +107,11 @@ export async function POST(request: NextRequest) {
             },
             adminPassword: adminAccess.adminPassword,
           })
-        : await fetchMutation(api.recipes.update, {
+        : await fetchMutation(api.recipes.saveDraft, {
             slug,
             recipe: validation.data,
+            expectedRevision: body.expectedRevision ?? 0,
+            force: body.force,
             adminPassword: adminAccess.adminPassword,
           });
 
@@ -117,6 +121,8 @@ export async function POST(request: NextRequest) {
       type: "success",
       message: `Recette enregistree: ${result.title}`,
       slug: result.slug,
+      revision: result.revision,
+      updatedAt: result.updatedAt,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
@@ -128,6 +134,20 @@ export async function POST(request: NextRequest) {
           message: "Recette introuvable.",
         },
         { status: 404 },
+      );
+    }
+
+    if (message.includes("RECIPE_DRAFT_CONFLICT")) {
+      const latestRevision = Number(message.split(":").at(-1));
+      return Response.json(
+        {
+          type: "conflict",
+          message: "Ce brouillon a ete modifie ailleurs.",
+          latestRevision: Number.isFinite(latestRevision)
+            ? latestRevision
+            : undefined,
+        },
+        { status: 409 },
       );
     }
 

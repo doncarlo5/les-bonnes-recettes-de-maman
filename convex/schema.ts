@@ -80,4 +80,19 @@ export default defineSchema({
   })
     .index("by_slug", ["slug"])
     .index("by_status", ["status"]),
+  recipeDrafts: defineTable({
+    recipeId: v.id("recipes"),
+    heroImageStorageId: v.optional(v.id("_storage")),
+    heroImageUrl: v.string(),
+    imageCredit: v.optional(imageCredit),
+    defaultLocale: v.union(v.literal("fr"), v.literal("en")),
+    translations: v.object({
+      fr: localizedRecipe,
+      en: localizedRecipe,
+    }),
+    tags: v.array(v.string()),
+    revision: v.number(),
+    publishedRevision: v.number(),
+    updatedAt: v.number(),
+  }).index("by_recipeId", ["recipeId"]),
 });

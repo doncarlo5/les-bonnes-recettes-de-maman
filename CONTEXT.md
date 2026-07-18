@@ -26,6 +26,19 @@ Date technique de creation d'une Recette dans le carnet, utilisee pour le tri pu
 Elle ne signifie pas date de publication ni derniere modification.
 _Avoid_: Date de publication, date de mise a jour
 
+**Version publiée**:
+Contenu approuvé d'une Recette actuellement visible dans le carnet public.
+Elle peut coexister avec un Brouillon de travail plus récent.
+_Avoid_: Version active, recette en ligne
+
+**Brouillon de travail**:
+Version privée et modifiable d'une Recette, enregistrée au fil de l'édition et sans effet sur la Version publiée avant approbation.
+_Avoid_: Modifications, révision, copie temporaire
+
+**État de préparation**:
+Évaluation éditoriale qui distingue ce qui bloque la publication d'une Recette des recommandations facultatives.
+_Avoid_: Validation technique, statut de formulaire
+
 ## Example Dialogue
 
 Dev: "Est-ce qu'une Recette brouillon peut avoir une traduction anglaise incomplete ?"

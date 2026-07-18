@@ -9,12 +9,12 @@ const ingredientSchema = z.object({
 
 const sectionSchema = z.object({
   title: z.string(),
-  steps: z.array(z.string()),
+  steps: z.array(z.string()).max(100),
 });
 
 const subRecipeSchema = z.object({
   title: z.string(),
-  ingredients: z.array(ingredientSchema),
+  ingredients: z.array(ingredientSchema).max(100),
 });
 
 const localizedRecipeSchema = z.object({
@@ -32,20 +32,23 @@ const localizedRecipeSchema = z.object({
   totalTime: z.string(),
   timeLabel: z.string(),
   temperature: z.string(),
-  ingredients: z.array(ingredientSchema),
-  sections: z.array(sectionSchema),
-  subRecipes: z.array(subRecipeSchema),
-  notes: z.array(z.string()),
+  ingredients: z.array(ingredientSchema).max(200),
+  sections: z.array(sectionSchema).max(50),
+  subRecipes: z.array(subRecipeSchema).max(25),
+  notes: z.array(z.string()).max(100),
 });
 
-export const editableRecipeContentSchema = z
-  .object({
+export const editableRecipeDraftSchema = z.object({
     defaultLocale: z.union([z.literal("fr"), z.literal("en")]),
     translations: z.object({
       fr: localizedRecipeSchema,
       en: localizedRecipeSchema,
     }),
-    tags: z.array(z.string()),
+    tags: z.array(z.string()).max(50),
+  });
+
+export const editableRecipeContentSchema = editableRecipeDraftSchema
+  .extend({
     status: z.union([z.literal("draft"), z.literal("published")]),
   })
   .superRefine((recipe, ctx) => {
@@ -99,6 +102,7 @@ export const editableRecipeContentSchema = z
   });
 
 export type RecipeFormPayload = z.infer<typeof editableRecipeContentSchema>;
+export type RecipeDraftPayload = z.infer<typeof editableRecipeDraftSchema>;
 
 function addPublishedIssue(
   ctx: z.RefinementCtx,

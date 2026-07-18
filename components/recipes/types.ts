@@ -92,11 +92,19 @@ export type EditableRecipeContent = {
   status: "draft" | "published";
 };
 
-export type EditableRecipe = {
+export type EditableRecipeSummary = {
   _id: Id<"recipes">;
   _creationTime: number;
   slug: string;
   title: string;
   heroImageUrl: string;
   imageCredit?: Recipe["imageCredit"];
-} & EditableRecipeContent;
+  tags: string[];
+  status: "draft" | "published";
+  revision: number;
+  publishedRevision: number;
+  updatedAt: number;
+  hasUnpublishedChanges: boolean;
+};
+
+export type EditableRecipe = EditableRecipeSummary & EditableRecipeContent;

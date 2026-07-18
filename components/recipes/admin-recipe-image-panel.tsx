@@ -29,6 +29,8 @@ type AdminRecipeImagePanelProps = {
     EditableRecipe,
     "slug" | "title" | "heroImageUrl" | "imageCredit"
   > | null;
+  revision?: number;
+  onRevisionChange?: (revision: number) => void;
 };
 
 type UploadStatus =
@@ -84,6 +86,8 @@ const unavailableStatus: UploadStatus = {
 export function AdminRecipeImagePanel({
   locale,
   recipe,
+  revision,
+  onRevisionChange,
 }: AdminRecipeImagePanelProps) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -155,7 +159,7 @@ export function AdminRecipeImagePanel({
       const heroImageResponse = await fetch("/api/admin/recipes/hero-image", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug: recipe.slug, storageId }),
+        body: JSON.stringify({ slug: recipe.slug, storageId, expectedRevision: revision }),
       });
       const heroImageData =
         await readJsonResponse<ApiErrorResponse>(heroImageResponse);
@@ -164,6 +168,9 @@ export function AdminRecipeImagePanel({
         throw new Error(
           heroImageData.error ?? "Impossible d'associer cette image.",
         );
+      }
+      if (typeof (heroImageData as ApiErrorResponse & { revision?: number }).revision === "number") {
+        onRevisionChange?.((heroImageData as ApiErrorResponse & { revision: number }).revision);
       }
 
       const objectUrl = URL.createObjectURL(file);
@@ -320,6 +327,7 @@ export function AdminRecipeImagePanel({
             photographerName: photo.photographerName,
             photographerUrl: photo.photographerUrl,
             photoUrl: photo.photoUrl,
+            expectedRevision: revision,
           }),
         },
       );
@@ -330,6 +338,9 @@ export function AdminRecipeImagePanel({
         throw new Error(
           imageData.error ?? "Impossible d'associer cette image Unsplash.",
         );
+      }
+      if (typeof (imageData as ApiErrorResponse & { revision?: number }).revision === "number") {
+        onRevisionChange?.((imageData as ApiErrorResponse & { revision: number }).revision);
       }
 
       setPreviewUrl(photo.imageUrl);
@@ -382,12 +393,16 @@ export function AdminRecipeImagePanel({
           source: photo.source,
           attribution: photo.attribution,
           alt: photo.alt,
+          expectedRevision: revision,
         }),
       });
       const data = await readJsonResponse<ApiErrorResponse>(response);
 
       if (!response.ok) {
         throw new Error(data.error ?? "L'import Openverse a échoué.");
+      }
+      if (typeof (data as ApiErrorResponse & { revision?: number }).revision === "number") {
+        onRevisionChange?.((data as ApiErrorResponse & { revision: number }).revision);
       }
 
       setPreviewUrl(photo.imageUrl);
@@ -432,7 +447,7 @@ export function AdminRecipeImagePanel({
   }
 
   return (
-    <section className="grid gap-5 rounded-lg border border-border bg-muted/40 p-4">
+    <section className="grid gap-5 rounded-2xl bg-muted/40 p-4 shadow-[var(--shadow-card)] md:rounded-lg md:border md:border-border md:shadow-none">
       <div className="flex flex-col gap-1">
         <h3 className="font-heading text-2xl font-black text-foreground">
           Image principale
@@ -444,13 +459,13 @@ export function AdminRecipeImagePanel({
 
       <div className="grid gap-5 lg:grid-cols-[minmax(16rem,0.8fr)_minmax(0,1.2fr)]">
         <div className="grid gap-3">
-          <div className="overflow-hidden rounded-lg border border-border bg-card">
+          <div className="overflow-hidden rounded-xl bg-card shadow-[var(--shadow-card)]">
             <div className="aspect-[16/9] bg-muted">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={previewUrl}
                 alt={previewCredit?.alt ?? ""}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
               />
             </div>
           </div>
@@ -489,7 +504,7 @@ export function AdminRecipeImagePanel({
                 onKeyDown={(event) =>
                   handleSearchKeyDown(event, handleInternetSearch)
                 }
-                className="h-10 flex-1 bg-card font-semibold"
+                className="h-11 flex-1 bg-card font-semibold"
                 placeholder="cake citron, tarte fraise..."
               />
               <Button
@@ -497,6 +512,7 @@ export function AdminRecipeImagePanel({
                 size="lg"
                 disabled={isDisabled}
                 onClick={handleInternetSearch}
+                className="min-h-11"
               >
                 <Search data-icon="inline-start" />
                 Chercher sur internet
@@ -508,6 +524,7 @@ export function AdminRecipeImagePanel({
             <input
               ref={fileInputRef}
               type="file"
+              aria-label="Choisir une image sur cet appareil"
               accept="image/*"
               disabled={isDisabled}
               onChange={handleFileChange}
@@ -519,7 +536,7 @@ export function AdminRecipeImagePanel({
               size="lg"
               disabled={isDisabled}
               onClick={() => fileInputRef.current?.click()}
-              className="justify-self-start"
+              className="min-h-11 justify-self-start"
             >
               <Upload data-icon="inline-start" />
               Upload a file
@@ -541,7 +558,7 @@ export function AdminRecipeImagePanel({
       </div>
 
       <Dialog open={isSearchDialogOpen} onOpenChange={setIsSearchDialogOpen}>
-        <DialogContent className="max-h-[calc(100vh-2rem)] overflow-hidden sm:max-w-5xl">
+        <DialogContent className="inset-0 h-dvh max-h-dvh w-full max-w-none translate-x-0 translate-y-0 overflow-hidden rounded-none sm:inset-1/2 sm:h-auto sm:max-h-[calc(100vh-2rem)] sm:max-w-5xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl">
           <DialogHeader className="">
             <DialogTitle className="">Recherche internet</DialogTitle>
             <DialogDescription className="">
@@ -552,13 +569,14 @@ export function AdminRecipeImagePanel({
           <div className="flex flex-col gap-3 pr-8 sm:flex-row">
             <Input
               type="search"
+              aria-label="Mots-clés de recherche d'image"
               value={searchQuery}
               disabled={isDisabled}
               onChange={(event) => setSearchQuery(event.target.value)}
               onKeyDown={(event) =>
                 handleSearchKeyDown(event, handleInternetSearch)
               }
-              className="h-10 flex-1 bg-card font-semibold"
+              className="h-11 flex-1 bg-card font-semibold"
               placeholder="cake citron, tarte fraise..."
             />
             <Button
@@ -566,6 +584,7 @@ export function AdminRecipeImagePanel({
               size="lg"
               disabled={isDisabled}
               onClick={handleInternetSearch}
+              className="min-h-11"
             >
               <Search data-icon="inline-start" />
               Chercher
@@ -584,7 +603,7 @@ export function AdminRecipeImagePanel({
             {status.message}
           </p>
 
-          <div className="max-h-[min(34rem,calc(100vh-13rem))] overflow-y-auto pr-1">
+          <div className="max-h-[calc(100dvh-13rem)] overflow-y-auto pb-[max(1rem,env(safe-area-inset-bottom))] pr-1 sm:max-h-[min(34rem,calc(100vh-13rem))]">
             <div className="grid gap-5 md:grid-cols-2">
               <ImageResultsColumn
                 title="Unsplash"
@@ -688,14 +707,14 @@ function ImageChoiceCard({
       type="button"
       disabled={disabled}
       onClick={onSelect}
-      className="group grid overflow-hidden rounded-lg border border-border bg-card text-left transition hover:border-primary/60 hover:shadow-card focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-60"
+      className="group grid min-h-11 overflow-hidden rounded-xl bg-card text-left shadow-[var(--shadow-card)] transition-[scale,box-shadow,opacity] duration-150 hover:shadow-[var(--shadow-card-hover)] focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.96] disabled:cursor-not-allowed disabled:opacity-60"
     >
       <div className="aspect-[4/3] bg-muted">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={imageUrl}
           alt=""
-          className="h-full w-full object-cover transition group-hover:scale-[1.02]"
+          className="h-full w-full object-cover outline outline-1 -outline-offset-1 outline-black/10 transition-transform duration-150 group-hover:scale-[1.02] dark:outline-white/10"
         />
       </div>
       <div className="grid gap-0.5 p-2">

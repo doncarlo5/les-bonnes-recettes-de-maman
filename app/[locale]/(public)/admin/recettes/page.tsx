@@ -1,9 +1,10 @@
 import { fetchQuery } from "convex/nextjs";
+import { Suspense } from "react";
 import { AdminAccessForm } from "@/components/recipes/admin-access-form";
 import { AdminRecipeEditor } from "@/components/recipes/admin-recipe-editor";
 import { api } from "@/convex/_generated/api";
 import type { Locale } from "@/i18n/config";
-import { hasRecipeAdminAccess } from "@/lib/recipe-admin-auth";
+import { getRecipeAdminAccess } from "@/lib/recipe-admin-auth";
 
 type PageProps = {
   params: Promise<{
@@ -31,20 +32,36 @@ export default async function Page({ params, searchParams }: PageProps) {
     : initialSlug
       ? `/${locale}/admin/recettes?slug=${encodeURIComponent(initialSlug)}`
       : `/${locale}/admin/recettes`;
-  const hasAdminAccess = await hasRecipeAdminAccess();
+  const adminAccess = await getRecipeAdminAccess();
 
-  if (!hasAdminAccess) {
+  if (!adminAccess.ok) {
     return <AdminAccessForm locale={locale} redirectTo={redirectTo} />;
   }
 
-  const recipes = await fetchQuery(api.recipes.listForEditing, { locale });
+  const [recipes, initialRecipe] = await Promise.all([
+    fetchQuery(api.recipes.listForEditing, {
+      locale,
+      adminPassword: adminAccess.adminPassword,
+    }),
+    initialSlug
+      ? fetchQuery(api.recipes.getForEditing, {
+          locale,
+          slug: initialSlug,
+          adminPassword: adminAccess.adminPassword,
+        })
+      : Promise.resolve(null),
+  ]);
 
   return (
+    <Suspense fallback={<main className="min-h-screen px-5 py-8"><p className="eyebrow">Chargement de l&apos;admin</p></main>}>
     <AdminRecipeEditor
+      key={shouldCreateNew ? "new" : initialSlug ?? "home"}
       locale={locale}
       recipes={recipes}
+      initialRecipe={initialRecipe ?? undefined}
       initialSlug={initialSlug}
       startInCreateMode={shouldCreateNew}
     />
+    </Suspense>
   );
 }

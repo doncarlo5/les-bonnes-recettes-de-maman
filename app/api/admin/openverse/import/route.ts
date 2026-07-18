@@ -22,6 +22,7 @@ type OpenverseImportBody = {
   source?: string;
   attribution?: string;
   alt?: string;
+  expectedRevision?: number;
 };
 
 export async function POST(request: NextRequest) {
@@ -113,12 +114,14 @@ export async function POST(request: NextRequest) {
         attribution: body.attribution ?? "",
         alt: body.alt ?? body.title ?? "",
       },
+      expectedRevision: body.expectedRevision,
     });
 
     return Response.json({
       ok: true,
       slug: result.slug,
       storageId,
+      revision: result.revision,
     });
   } catch (error) {
     console.error("Openverse import failed", error);
