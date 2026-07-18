@@ -41,6 +41,22 @@ test("recipe home is usable and accessible at every supported width", async ({ p
   }
 });
 
+test("editor action dock stays compact at every supported width", async ({ page }) => {
+  await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
+
+  const dock = page.getByRole("navigation", { name: "Actions de la recette" });
+  const actions = dock.getByRole("button");
+  await expect(actions).toHaveCount(3);
+
+  for (const action of await actions.all()) {
+    const box = await action.boundingBox();
+    expect(box?.height).toBeGreaterThanOrEqual(44);
+    expect(box?.height).toBeLessThanOrEqual(52);
+  }
+
+  await expect(dock.getByRole("button", { name: /Publier, \d sections sur 7 complétées/ })).toBeVisible();
+});
+
 test("guided editor opens an isolated draft preview", async ({ page }) => {
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
   await page.getByRole("button", { name: "Prévisualiser le brouillon" }).click();

@@ -545,7 +545,7 @@ function MobileRecipeAdmin({
   const sectionTitle = mobileSectionTitle(section);
 
   return (
-    <main className="min-h-screen px-4 pb-28 pt-4 text-foreground">
+    <main className="min-h-screen px-4 pb-24 pt-4 text-foreground">
       <div className="mx-auto w-full max-w-5xl">
         <header className="sticky top-0 z-20 -mx-4 mb-4 flex min-h-14 items-center gap-2 border-b bg-background/95 px-4 backdrop-blur">
           <Button type="button" variant="ghost" size="icon" onClick={() => section === "overview" ? onHome() : onOpenSection("overview")} className="size-11 rounded-full" aria-label={section === "overview" ? "Retour au carnet" : "Retour à la recette"}><ArrowLeft /></Button>
@@ -572,11 +572,11 @@ function MobileRecipeAdmin({
         )}
       </div>
 
-      <nav className="fixed inset-x-0 bottom-0 z-30 border-t bg-background/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur" aria-label="Actions de la recette">
-        <div className="mx-auto grid max-w-5xl grid-cols-3 gap-2">
-          <Button type="button" variant="ghost" onClick={() => onOpenSection("overview")} className="min-h-11 flex-col gap-0 rounded-xl text-xs"><BookOpen /> Recette</Button>
-          <Button type="button" variant="ghost" onClick={() => onOpenSection("photo")} className="min-h-11 flex-col gap-0 rounded-xl text-xs"><Camera /> Photo</Button>
-          <Button type="button" onClick={() => onOpenSection("publish")} className="min-h-11 flex-col gap-0 rounded-xl text-xs active:scale-[0.96] transition-transform"><Send /> Publier <span className="type-meta opacity-75">{completedSections}/7 sections</span></Button>
+      <nav className="pointer-events-none fixed inset-x-0 bottom-0 z-30 bg-gradient-to-t from-background via-background/95 to-transparent px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-5" aria-label="Actions de la recette">
+        <div className="pointer-events-auto mx-auto grid max-w-xl grid-cols-3 gap-1 rounded-[1.125rem] bg-card/95 p-1.5 shadow-[var(--shadow-card)] backdrop-blur-xl">
+          <Button type="button" variant={section === "overview" ? "secondary" : "ghost"} onClick={() => onOpenSection("overview")} className="h-12 min-w-0 gap-1 rounded-xl px-2 text-xs sm:text-sm" aria-pressed={section === "overview"}><BookOpen /> Recette</Button>
+          <Button type="button" variant={section === "photo" ? "secondary" : "ghost"} onClick={() => onOpenSection("photo")} className="h-12 min-w-0 gap-1 rounded-xl px-2 text-xs sm:text-sm" aria-pressed={section === "photo"}><Camera /> Photo</Button>
+          <Button type="button" variant={section === "publish" ? "secondary" : "ghost"} onClick={() => onOpenSection("publish")} className="h-12 min-w-0 gap-1 rounded-xl px-2 text-xs sm:text-sm" aria-label={`Publier, ${completedSections} sections sur 7 complétées`} aria-pressed={section === "publish"}><Send /> Publier <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-[0.6875rem] font-bold leading-none text-primary tabular-nums">{completedSections}/7</span></Button>
         </div>
       </nav>
     </main>
