@@ -57,6 +57,19 @@ test("editor action dock stays compact at every supported width", async ({ page 
   await expect(dock.getByRole("button", { name: /Publier, \d sections sur 7 complétées/ })).toBeVisible();
 });
 
+test("editor toolbar keeps context and language controls together", async ({ page }, testInfo) => {
+  await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
+
+  const toolbar = page.locator("main header:visible");
+  const language = toolbar.getByRole("group", { name: "Langue du contenu" });
+  await expect(language.getByRole("button", { name: "Français" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByText("Contenu édité", { exact: true })).toHaveCount(0);
+
+  const box = await toolbar.boundingBox();
+  const maximumHeight = testInfo.project.name.startsWith("mobile-") ? 124 : 72;
+  expect(box?.height).toBeLessThanOrEqual(maximumHeight);
+});
+
 test("guided editor opens an isolated draft preview", async ({ page }) => {
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
   await page.getByRole("button", { name: "Prévisualiser le brouillon" }).click();

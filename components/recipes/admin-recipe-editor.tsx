@@ -545,20 +545,20 @@ function MobileRecipeAdmin({
   const sectionTitle = mobileSectionTitle(section);
 
   return (
-    <main className="min-h-screen px-4 pb-24 pt-4 text-foreground">
+    <main className="min-h-screen px-4 pb-24 pt-3 text-foreground sm:pt-5">
       <div className="mx-auto w-full max-w-5xl">
-        <header className="sticky top-0 z-20 -mx-4 mb-4 flex min-h-14 items-center gap-2 border-b bg-background/95 px-4 backdrop-blur">
-          <Button type="button" variant="ghost" size="icon" onClick={() => section === "overview" ? onHome() : onOpenSection("overview")} className="size-11 rounded-full" aria-label={section === "overview" ? "Retour au carnet" : "Retour à la recette"}><ArrowLeft /></Button>
-          <div className="min-w-0 flex-1"><p className="type-label truncate text-muted-foreground" title={sectionTitle}>{sectionTitle}</p><h1 className="type-panel-title truncate" title={values.translations[defaultLocale]?.title || "Recette sans titre"}>{values.translations[defaultLocale]?.title || "Recette sans titre"}</h1></div>
-          <Button type="button" variant="ghost" size="icon" onClick={onPreview} aria-label="Prévisualiser le brouillon" title="Prévisualiser le brouillon"><Eye /></Button>
-          <SyncPill state={syncState} revision={revision} />
+        <header className="sticky top-2 z-20 mb-4 grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 rounded-[1.25rem] bg-card/95 p-2 shadow-[var(--shadow-card)] backdrop-blur-xl sm:grid-cols-[auto_minmax(0,1fr)_auto_auto]">
+          <Button type="button" variant="ghost" size="icon" onClick={() => section === "overview" ? onHome() : onOpenSection("overview")} className="size-11 rounded-xl" aria-label={section === "overview" ? "Retour au carnet" : "Retour à la recette"}><ArrowLeft /></Button>
+          <div className="min-w-0 flex-1"><p className="type-label truncate text-muted-foreground" title={sectionTitle}>{sectionTitle}</p><h1 className="type-panel-title truncate ![text-wrap:nowrap]" title={values.translations[defaultLocale]?.title || "Recette sans titre"}>{values.translations[defaultLocale]?.title || "Recette sans titre"}</h1></div>
+          <div className="col-span-3 row-start-2 flex items-center gap-1 rounded-xl bg-muted p-1 sm:col-span-1 sm:col-start-3 sm:row-start-1" role="group" aria-label="Langue du contenu">
+            <Button type="button" variant="ghost" onClick={() => onLanguage("fr")} className={`h-10 min-h-10 flex-1 rounded-lg px-3 text-sm sm:flex-none ${requestedLanguage === "fr" ? "bg-card text-foreground shadow-[var(--shadow-border)] hover:bg-card" : "text-muted-foreground"}`} aria-pressed={requestedLanguage === "fr"}>Français</Button>
+            <Button type="button" variant="ghost" onClick={() => onLanguage("en")} className={`h-10 min-h-10 flex-1 rounded-lg px-3 text-sm sm:flex-none ${requestedLanguage === "en" ? "bg-card text-foreground shadow-[var(--shadow-border)] hover:bg-card" : "text-muted-foreground"}`} aria-pressed={requestedLanguage === "en"}>Anglais</Button>
+          </div>
+          <div className="col-start-3 row-start-1 flex items-center gap-1 sm:col-start-4">
+            <Button type="button" variant="ghost" size="icon" onClick={onPreview} className="rounded-xl" aria-label="Prévisualiser le brouillon" title="Prévisualiser le brouillon"><Eye /></Button>
+            <SyncPill state={syncState} revision={revision} />
+          </div>
         </header>
-
-        <div className="mb-4 flex items-center justify-end gap-2" aria-label="Langue du contenu">
-          <span className="type-label mr-auto text-muted-foreground">Contenu édité</span>
-          <Button type="button" variant={requestedLanguage === "fr" ? "default" : "outline"} onClick={() => onLanguage("fr")}>Français</Button>
-          <Button type="button" variant={requestedLanguage === "en" ? "default" : "outline"} onClick={() => onLanguage("en")}>Anglais</Button>
-        </div>
 
         {syncState === "conflict" ? <ConflictCard onReload={onReloadConflict} onReplace={onReplaceConflict} /> : null}
         {state.type === "error" ? <SaveStateAlert state={state} /> : null}
