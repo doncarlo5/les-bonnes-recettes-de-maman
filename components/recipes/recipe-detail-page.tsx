@@ -53,7 +53,6 @@ export function RecipePresentation({
               sizes="(max-width: 1024px) 100vw, 58vw"
               className="image-outline object-cover"
             />
-            {recipe.imageCredit ? <HeroImageCredit imageCredit={recipe.imageCredit} /> : null}
           </div>
 
           <div className="flex flex-col items-start">
@@ -355,79 +354,4 @@ function RecipeMeta({ dict, recipe }: { dict: Dictionary; recipe: Recipe }) {
 function formatQuantity(ingredient: Ingredient) {
   if (!ingredient.quantity) return "";
   return `${ingredient.quantity}${ingredient.unit ? ` ${ingredient.unit}` : ""}`;
-}
-
-function HeroImageCredit({
-  imageCredit,
-}: {
-  imageCredit: NonNullable<Recipe["imageCredit"]>;
-}) {
-  if (imageCredit.provider === "unsplash") {
-    return (
-      <p className="type-meta absolute bottom-3 right-3 z-10 rounded-full bg-black/55 px-3 py-1.5 text-right text-white/85 backdrop-blur-sm">
-        Photo{" "}
-        <a
-          href={imageCredit.photographerUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="content-link hover:text-white"
-        >
-          {imageCredit.photographerName}
-        </a>{" "}
-        /{" "}
-        <a
-          href={imageCredit.photoUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="content-link hover:text-white"
-        >
-          Unsplash
-        </a>
-      </p>
-    );
-  }
-
-  return (
-    <p className="type-meta absolute bottom-3 right-3 z-10 max-w-[18rem] rounded-xl bg-black/55 px-3 py-1.5 text-right text-white/85 backdrop-blur-sm">
-      Photo{" "}
-      <a
-        href={imageCredit.creatorUrl}
-        target="_blank"
-        rel="noreferrer"
-        className="content-link hover:text-white"
-      >
-        {imageCredit.creator}
-      </a>{" "}
-      /{" "}
-      <a
-        href={imageCredit.landingUrl}
-        target="_blank"
-        rel="noreferrer"
-        className="content-link hover:text-white"
-      >
-        {imageCredit.source}
-      </a>{" "}
-      /{" "}
-      <a
-        href={imageCredit.licenseUrl}
-        target="_blank"
-        rel="noreferrer"
-        className="content-link hover:text-white"
-      >
-        {formatOpenverseLicense(imageCredit)}
-      </a>
-    </p>
-  );
-}
-
-function formatOpenverseLicense({
-  license,
-  licenseVersion,
-}: {
-  license: string;
-  licenseVersion: string;
-}) {
-  return [license ? `CC ${license.toUpperCase()}` : "", licenseVersion]
-    .filter(Boolean)
-    .join(" ");
 }

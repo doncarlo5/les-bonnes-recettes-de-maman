@@ -134,6 +134,14 @@ test("mobile recipe cards keep an equal-height structure and show prep time", as
   expect(layout.titleHeight).toBeGreaterThanOrEqual(layout.titleLineHeight * 2 - 1);
 });
 
+test("public recipe photos do not display source credits", async ({ page }) => {
+  await page.goto("/fr/recettes/tarte-de-demonstration");
+
+  await expect(page.getByRole("img", { name: "Tarte de démonstration décorée de fruits" })).toBeVisible();
+  await expect(page.getByText("Photographe de démonstration", { exact: true })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Unsplash" })).toHaveCount(0);
+});
+
 async function expectDescendingOutline(page: Page) {
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   const headings = await page.getByRole("heading").evaluateAll((elements) =>

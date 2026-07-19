@@ -41,6 +41,13 @@ export function getRecipeAdminE2EFixtures() {
     slug: "tarte-de-demonstration",
     title: localized.title,
     heroImageUrl: "",
+    imageCredit: {
+      provider: "unsplash",
+      photographerName: "Photographe de démonstration",
+      photographerUrl: "https://example.com/photographe",
+      photoUrl: "https://example.com/photo",
+      alt: "Tarte de démonstration décorée de fruits",
+    },
     revision: 3,
     publishedRevision: 3,
     updatedAt: 1,
