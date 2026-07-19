@@ -453,9 +453,7 @@
         ]
       }
     ],
-    "notes": [
-      "Le titre manuscrit paraît être « Macaron tante Maria »."
-    ]
+    "notes": []
   },
   {
     "title": "Gâteau au chocolat",
@@ -725,11 +723,11 @@
           "Faire le café.",
           "Battre les blancs et ajouter le sucre glace.",
           "Battre les jaunes avec le sucre fin.",
-          "Incorporer le mascarpone aux jaunes, délicatement.",
+          "Ajouter le mascarpone aux jaunes sucrés. Mélanger au batteur à vitesse 1 pendant 30 secondes maximum, juste pour commencer à homogénéiser. Terminer à la maryse en écrasant délicatement les éventuels morceaux de mascarpone contre les parois, sans trop travailler la préparation.",
           "Incorporer les blancs aux jaunes et au mascarpone.",
           "Mélanger le café et la c. à s. d’alcool.",
-          "Tremper les gâteaux 1 par 1 et les mettre dans le plat.",
-          "Écraser les gâteaux + compact.",
+          "Tremper rapidement chaque biscuit dans le mélange café-alcool : une face, puis l’autre, sans le laisser se détremper. Le déposer immédiatement dans le plat.",
+          "Ranger les biscuits côte à côte et les tasser légèrement pour former une couche uniforme.",
           "Ajouter le mélange.",
           "Saupoudrer de chocolat en poudre."
         ]
@@ -742,7 +740,7 @@
       }
     ],
     "notes": [
-      "Les anciennes lignes barrées n’ont pas été conservées."
+      "Attention à ne pas trop mélanger le mascarpone : il ne doit pas devenir trop liquide."
     ]
   },
   {
@@ -1181,9 +1179,7 @@
         ]
       }
     ],
-    "notes": [
-      "« 2/3 poires » a été interprété comme 2 à 3 poires."
-    ]
+    "notes": []
   },
   {
     "title": "Velouté de courgettes",
@@ -1940,9 +1936,7 @@
         ]
       }
     ],
-    "notes": [
-      "La note manuscrite « 3/4 mm » a été normalisée en « 3 à 4 mm »."
-    ]
+    "notes": []
   },
   {
     "title": "Pain de poisson",
@@ -2027,9 +2021,7 @@
         ]
       }
     ],
-    "notes": [
-      "Titre normalisé en « Pain de poisson » à la demande de l’utilisateur."
-    ]
+    "notes": []
   },
   {
     "title": "Coulants au chocolat",
@@ -2298,7 +2290,6 @@
       }
     ],
     "notes": [
-      "La note manuscrite semble indiquer 7 bananes comme variante.",
       "Un incontournable avec les salades de poulet."
     ]
   }

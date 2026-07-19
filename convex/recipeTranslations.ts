@@ -370,25 +370,19 @@ const noteTranslations: Record<string, string> = {
   "150 g noté entre parenthèses": "150 g noted in parentheses",
   "200 g indiqué sur la recette": "200 g indicated on the recipe",
   "397 g": "397 g",
+  "Attention à ne pas trop mélanger le mascarpone : il ne doit pas devenir trop liquide.":
+    "Be careful not to overmix the mascarpone, as it should not become too runny.",
   "Carré frais indiqué par correction utilisateur":
     "Carré frais noted from user correction",
   "La formulation exacte du pliage était difficile à lire.":
     "The exact folding wording was difficult to read.",
-  "La note manuscrite « 3/4 mm » a été normalisée en « 3 à 4 mm ».":
-    "The handwritten note “3/4 mm” was normalized to “3 to 4 mm.”",
   "La phrase « avec 1 c. à s. » est conservée telle quelle car son sens exact n’est pas totalement explicite.":
     "The phrase “with 1 tbsp.” is kept as written because its exact meaning is not fully clear.",
-  "Le titre manuscrit paraît être « Macaron tante Maria ».":
-    "The handwritten title appears to be “Macaron tante Maria.”",
   "Le « x2 » est noté pour la pâte.": "The “x2” note applies to the batter.",
-  "Les anciennes lignes barrées n’ont pas été conservées.":
-    "Older crossed-out lines were not kept.",
   "Matériel : plat à gratin.": "Equipment: gratin dish.",
   "Meilleur préparé la veille.": "Best prepared the day before.",
   "PDT sur la recette": "Potato on the recipe",
   "Pierre Hermé ou autre": "Pierre Hermé or another one",
-  "Titre normalisé en « Pain de poisson » à la demande de l’utilisateur.":
-    "Title normalized to “Fish Loaf” at the user's request.",
   "blancs en neige": "whipped egg whites",
   "blancs et jaunes séparés": "whites and yolks separated",
   "correction utilisateur": "user correction",
@@ -405,8 +399,6 @@ const noteTranslations: Record<string, string> = {
   "ou 2 petits": "or 2 small ones",
   "ajout manuscrit possible": "possible handwritten addition",
   "bien battus": "well beaten",
-  "La note manuscrite semble indiquer 7 bananes comme variante.":
-    "The handwritten note appears to indicate 7 bananas as a variation.",
   "pour la crème au citron": "for the lemon cream",
   "pour la cuisson": "for cooking",
   "pour le cake": "for the cake",
@@ -425,8 +417,6 @@ const noteTranslations: Record<string, string> = {
   "pâte x2": "batter x2",
   ramolli: "softened",
   rases: "level",
-  "« 2/3 poires » a été interprété comme 2 à 3 poires.":
-    "“2/3 pears” was interpreted as 2 to 3 pears.",
   "écrit « chivre » sur la recette": "written “chivre” on the recipe",
 };
 
@@ -513,15 +503,16 @@ const stepTranslations: Record<string, string> = {
   "Battre les blancs et ajouter le sucre glace.":
     "Whip the egg whites and add the icing sugar.",
   "Battre les jaunes avec le sucre fin.": "Beat the yolks with the caster sugar.",
-  "Incorporer le mascarpone aux jaunes, délicatement.":
-    "Gently fold the mascarpone into the yolks.",
+  "Ajouter le mascarpone aux jaunes sucrés. Mélanger au batteur à vitesse 1 pendant 30 secondes maximum, juste pour commencer à homogénéiser. Terminer à la maryse en écrasant délicatement les éventuels morceaux de mascarpone contre les parois, sans trop travailler la préparation.":
+    "Add the mascarpone to the sweetened yolks. Mix at speed 1 for no more than 30 seconds, just until the mixture starts to come together. Finish with a spatula, gently pressing any remaining pieces of mascarpone against the sides of the bowl without overworking the mixture.",
   "Incorporer les blancs aux jaunes et au mascarpone.":
     "Fold the whites into the yolks and mascarpone.",
   "Mélanger le café et la c. à s. d’alcool.":
     "Mix the coffee with the tablespoon of alcohol.",
-  "Tremper les gâteaux 1 par 1 et les mettre dans le plat.":
-    "Dip the biscuits one by one and place them in the dish.",
-  "Écraser les gâteaux + compact.": "Press the biscuits down to compact them.",
+  "Tremper rapidement chaque biscuit dans le mélange café-alcool : une face, puis l’autre, sans le laisser se détremper. Le déposer immédiatement dans le plat.":
+    "Quickly dip each biscuit into the coffee and alcohol mixture, one side and then the other, without letting it become soggy. Place it in the dish immediately.",
+  "Ranger les biscuits côte à côte et les tasser légèrement pour former une couche uniforme.":
+    "Arrange the biscuits side by side and press them down lightly to form an even layer.",
   "Ajouter le mélange.": "Add the mixture.",
   "Saupoudrer de chocolat en poudre.": "Dust with cocoa powder.",
   "Mettre au frigo 10 à 12 h.": "Refrigerate for 10 to 12 h.",

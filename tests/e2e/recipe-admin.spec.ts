@@ -335,6 +335,37 @@ test("mobile sorting supports keyboard handles and discard restores the approved
   await expect(page.getByText("Modifications non publiées")).toHaveCount(0);
 });
 
+test("mobile section editor remains usable above the software keyboard", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "mobile-390");
+  await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
+  await page.getByRole("button", { name: /Préparation/ }).click();
+  await page.getByRole("button", { name: /Préparation.*étapes?/ }).click();
+
+  const drawer = page.locator('[data-slot="drawer-content"]');
+  await expect(drawer).toBeVisible();
+  const titleInput = drawer.locator("input").first();
+  await expect(titleInput).not.toBeFocused();
+  await titleInput.focus();
+  await page.evaluate(() => {
+    Object.defineProperty(window.visualViewport, "height", { configurable: true, value: 430 });
+    window.visualViewport?.dispatchEvent(new Event("resize"));
+  });
+  await page.waitForTimeout(500);
+
+  const done = drawer.getByRole("button", { name: "Terminé" }).last();
+  await expect(titleInput).toBeVisible();
+  await expect(done).toBeVisible();
+
+  const [drawerBox, inputBox, doneBox] = await Promise.all([
+    drawer.boundingBox(),
+    titleInput.boundingBox(),
+    done.boundingBox(),
+  ]);
+  expect(drawerBox?.y).toBeGreaterThanOrEqual(0);
+  expect(inputBox?.y).toBeGreaterThanOrEqual(drawerBox?.y ?? 0);
+  expect((doneBox?.y ?? 0) + (doneBox?.height ?? 0)).toBeLessThanOrEqual(430);
+});
+
 test("mobile creation and every focused workspace remain navigable", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile-390");
   await page.getByRole("button", { name: /Nouvelle/ }).click();
