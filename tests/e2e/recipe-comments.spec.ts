@@ -3,6 +3,13 @@ import { expect, test } from "@playwright/test";
 test("recipe comments form is localized and keeps a browser participant key", async ({ page }) => {
   await page.goto("/fr/recettes/tarte-de-demonstration");
   await expect(page.getByRole("heading", { name: "Commentaires", exact: true })).toBeVisible();
+  const commentToggle = page.locator('[aria-controls="recipe-comment-form"]');
+  await expect(commentToggle).toHaveAccessibleName("Ajouter un commentaire");
+  await expect(commentToggle).toHaveAttribute("aria-expanded", "false");
+  await expect(page.getByLabel("Votre commentaire")).not.toBeVisible();
+  await commentToggle.click();
+  await expect(commentToggle).toHaveAttribute("aria-expanded", "true");
+  await expect(commentToggle).toHaveAccessibleName("Masquer le formulaire");
   await expect(page.getByLabel("Votre nom (facultatif)")).toHaveAttribute("maxlength", "60");
   await expect(page.getByLabel("Votre commentaire")).toHaveAttribute("maxlength", "1500");
   const photoToggle = page.getByRole("switch", { name: "Ajouter une photo (facultatif)" });
@@ -17,6 +24,7 @@ test("recipe comments form is localized and keeps a browser participant key", as
 
   await page.goto("/en/recettes/tarte-de-demonstration");
   await expect(page.getByRole("heading", { name: "Comments", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Add a comment" }).click();
   await expect(page.getByLabel("Your comment")).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem("recipe-comment-participant-v1"))).toBe(participantKey);
 
@@ -32,6 +40,7 @@ test("recipe comments remain usable when persistent browser storage is unavailab
   });
   await page.goto("/fr/recettes/tarte-de-demonstration");
   await expect(page.getByRole("heading", { name: "Commentaires", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Ajouter un commentaire" }).click();
   await expect(page.getByRole("button", { name: "Publier le commentaire" })).toBeEnabled();
 });
 
@@ -77,6 +86,7 @@ test("visitor publishes, reacts, edits, reloads and deletes comments with and wi
   test.skip(testInfo.project.name !== "desktop");
   const marker = `Commentaire E2E ${Date.now()}`;
   await page.goto("/fr/recettes/amandin");
+  await page.getByRole("button", { name: "Ajouter un commentaire" }).click();
   const commentInput = page.getByLabel("Votre commentaire");
   await expect(commentInput).toBeVisible();
   await commentInput.fill(marker);
@@ -112,6 +122,11 @@ test("visitor publishes, reacts, edits, reloads and deletes comments with and wi
   article = page.locator("article").filter({ hasText: marker });
   await expect(article.getByRole("button", { name: "Modifier" })).toBeVisible();
   await article.getByRole("button", { name: "Modifier" }).click();
+  await expect(page.getByLabel("Votre commentaire")).toBeFocused();
+  const editToggle = page.locator('[aria-controls="recipe-comment-form"]');
+  await editToggle.click();
+  await expect(editToggle).toHaveAccessibleName("Reprendre la modification");
+  await editToggle.click();
   const editedMarker = `${marker} modifié`;
   await page.getByLabel("Votre commentaire").fill(editedMarker);
   await page.getByRole("button", { name: "Retirer la photo" }).click();
@@ -147,6 +162,7 @@ test("visitor publishes, reacts, edits, reloads and deletes comments with and wi
 
   const englishMarker = `${marker} English`;
   await page.goto("/en/recettes/amandin");
+  await page.getByRole("button", { name: "Add a comment" }).click();
   await page.getByLabel("Your comment").fill(englishMarker);
   await page.getByRole("button", { name: "Publish comment" }).click();
   let englishArticle = page.locator("article").filter({ hasText: englishMarker });
@@ -187,6 +203,7 @@ test("visitor loads comments beyond the first batch of ten", async ({ page }, te
   const participantKeys = Array.from({ length: 11 }, (_, index) => `${participantKeySeed}${index.toString(16).padStart(2, "0")}`.padEnd(48, "0"));
   page.on("dialog", (dialog) => dialog.accept());
   await page.goto("/fr/recettes/amandin");
+  await page.getByRole("button", { name: "Ajouter un commentaire" }).click();
 
   for (let index = 0; index < participantKeys.length; index += 1) {
     await switchParticipant(page, participantKeys[index]);

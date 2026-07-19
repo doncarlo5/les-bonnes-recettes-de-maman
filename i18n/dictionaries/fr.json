@@ -77,6 +77,9 @@
     "comments": {
       "title": "Commentaires",
       "description": "Partagez votre résultat, une astuce ou un souvenir autour de cette recette.",
+      "addComment": "Ajouter un commentaire",
+      "hideCommentForm": "Masquer le formulaire",
+      "resumeEditing": "Reprendre la modification",
       "authorLabel": "Votre nom (facultatif)",
       "authorPlaceholder": "Anonyme",
       "textLabel": "Votre commentaire",

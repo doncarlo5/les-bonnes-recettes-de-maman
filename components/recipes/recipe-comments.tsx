@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useReducer, useRef, useState } from "react";
-import { ImagePlus, Pencil, ThumbsDown, ThumbsUp, Trash2, X } from "lucide-react";
+import { ChevronDown, ImagePlus, MessageSquarePlus, Pencil, ThumbsDown, ThumbsUp, Trash2, X } from "lucide-react";
 import { useMutation, usePaginatedQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
@@ -96,6 +96,7 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
   const [pending, setPending] = useState(false);
   const [reactionPending, setReactionPending] = useState<Id<"recipeComments"> | null>(null);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [composerOpen, setComposerOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
   const query = usePaginatedQuery(
@@ -124,8 +125,12 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
 
   function startEditing(comment: CommentItem) {
     dispatchForm({ type: "edit", comment });
+    setComposerOpen(true);
     setMessage(null);
-    window.requestAnimationFrame(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }));
+    window.requestAnimationFrame(() => {
+      formRef.current?.querySelector<HTMLTextAreaElement>("#comment-text")?.focus({ preventScroll: true });
+      formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
   }
 
   function selectPhoto(file: File | null) {
@@ -245,7 +250,12 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
           <p className="type-label text-primary">{labels.title}</p>
           <h2 id="recipe-comments-title" className="type-section-title mt-3">{labels.title}</h2>
           <p className="type-body mt-4 max-w-[42ch] text-muted-foreground">{labels.description}</p>
-          <form ref={formRef} onSubmit={submit} className="mt-8 grid gap-4 rounded-2xl bg-card p-5 shadow-[var(--shadow-card)]" aria-busy={pending}>
+          <Button type="button" variant="secondary" className="mt-8 min-h-12 w-full justify-start rounded-xl px-4" aria-expanded={composerOpen} aria-controls="recipe-comment-form" onClick={() => setComposerOpen((open) => !open)}>
+            <MessageSquarePlus />
+            {composerOpen ? labels.hideCommentForm : editingId ? labels.resumeEditing : labels.addComment}
+            <ChevronDown className={`ml-auto transition-transform duration-200 ${composerOpen ? "rotate-180" : "rotate-0"}`} />
+          </Button>
+          <form id="recipe-comment-form" ref={formRef} onSubmit={submit} hidden={!composerOpen} className="mt-4 grid gap-4 rounded-2xl bg-card p-5 shadow-[var(--shadow-card)]" aria-busy={pending}>
             <div className="grid gap-2">
               <label htmlFor="comment-author" className="type-label text-foreground">{labels.authorLabel}</label>
               <Input id="comment-author" value={authorName} maxLength={60} placeholder={labels.authorPlaceholder} onChange={(event) => dispatchForm({ type: "patch", value: { authorName: event.target.value } })} />

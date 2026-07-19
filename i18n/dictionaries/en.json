@@ -77,6 +77,9 @@
     "comments": {
       "title": "Comments",
       "description": "Share your result, a tip, or a memory inspired by this recipe.",
+      "addComment": "Add a comment",
+      "hideCommentForm": "Hide comment form",
+      "resumeEditing": "Resume editing",
       "authorLabel": "Your name (optional)",
       "authorPlaceholder": "Anonymous",
       "textLabel": "Your comment",
