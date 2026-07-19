@@ -20,6 +20,7 @@ import {
 import { EditRecipeAccess } from "./edit-recipe-access";
 import { CookModeEntry } from "./cook-mode-entry";
 import { RecipeIngredientsPanel } from "./recipe-ingredients-panel";
+import { RecipeComments } from "./recipe-comments";
 import type { Recipe } from "./types";
 
 const defaultRecipeImageUrl =
@@ -268,6 +269,7 @@ export function RecipePresentation({
           </div>
         </div>
       </section>
+      {mode === "public" ? <RecipeComments locale={locale} dict={dict} slug={recipe.slug} /> : null}
     </main>
   );
 }

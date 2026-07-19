@@ -99,4 +99,45 @@ export default defineSchema({
     publishedRevision: v.number(),
     updatedAt: v.number(),
   }).index("by_recipeId", ["recipeId"]),
+  recipeComments: defineTable({
+    recipeId: v.id("recipes"),
+    authorName: v.optional(v.string()),
+    text: v.string(),
+    photoStorageId: v.optional(v.id("_storage")),
+    ownerDigest: v.string(),
+    updatedAt: v.optional(v.number()),
+  })
+    .index("by_recipeId", ["recipeId"])
+    .index("by_photoStorageId", ["photoStorageId"]),
+  commentReactions: defineTable({
+    commentId: v.id("recipeComments"),
+    participantDigest: v.string(),
+    direction: v.union(v.literal("up"), v.literal("down")),
+    updatedAt: v.number(),
+  })
+    .index("by_commentId", ["commentId"])
+    .index("by_commentId_and_participantDigest", ["commentId", "participantDigest"]),
+  commentReactionSummaries: defineTable({
+    commentId: v.id("recipeComments"),
+    thumbsUpCount: v.number(),
+    thumbsDownCount: v.number(),
+  }).index("by_commentId", ["commentId"]),
+  commentRateLimits: defineTable({
+    participantDigest: v.string(),
+    action: v.union(v.literal("comment"), v.literal("photo"), v.literal("reaction")),
+    windowStartedAt: v.number(),
+    count: v.number(),
+  })
+    .index("by_participantDigest_and_action", ["participantDigest", "action"])
+    .index("by_windowStartedAt", ["windowStartedAt"]),
+  commentPhotoClaims: defineTable({
+    storageId: v.id("_storage"),
+    participantDigest: v.string(),
+    createdAt: v.number(),
+    verificationStartedAt: v.optional(v.number()),
+    verificationLeaseId: v.optional(v.string()),
+    verifiedAt: v.optional(v.number()),
+  })
+    .index("by_storageId", ["storageId"])
+    .index("by_createdAt", ["createdAt"]),
 });

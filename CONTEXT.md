@@ -63,6 +63,18 @@ _Avoid_: Validation technique, statut de formulaire
 Situation où le Brouillon de travail diffère de la Version publiée et nécessite une nouvelle publication pour devenir public.
 _Avoid_: État sale, modifications enregistrées, conflit
 
+**Commentaire de recette**:
+Contribution publique d’un Participant à une Recette, composée d’un texte et éventuellement d’une signature et d’une photo.
+_Avoid_: Note éditoriale, avis vérifié, message
+
+**Participant**:
+Visiteur public pseudonyme représenté par son navigateur, sans compte ni identité vérifiée.
+_Avoid_: Utilisateur authentifié, auteur de recette, administrateur
+
+**Réaction**:
+Choix exclusif pouce haut ou pouce bas d’un Participant sur un Commentaire de recette.
+_Avoid_: Note, score, vote multiple
+
 ## Example Dialogue
 
 Dev: "Est-ce qu'une Recette brouillon peut avoir une traduction anglaise incomplete ?"

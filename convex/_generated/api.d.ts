@@ -8,6 +8,9 @@
  * @module
  */
 
+import type * as comments from "../comments.js";
+import type * as crons from "../crons.js";
+import type * as http from "../http.js";
 import type * as migrations from "../migrations.js";
 import type * as recipeTranslations from "../recipeTranslations.js";
 import type * as recipes from "../recipes.js";
@@ -19,6 +22,9 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  comments: typeof comments;
+  crons: typeof crons;
+  http: typeof http;
   migrations: typeof migrations;
   recipeTranslations: typeof recipeTranslations;
   recipes: typeof recipes;

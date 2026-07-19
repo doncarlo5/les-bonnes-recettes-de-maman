@@ -40,6 +40,7 @@ import {
   Languages,
   ListChecks,
   ListPlus,
+  MessageSquare,
   NotebookPen,
   RefreshCw,
   Save,
@@ -100,6 +101,7 @@ import {
 } from "./use-recipe-draft-lifecycle";
 import type { EditableRecipe, EditableRecipeSummary, Recipe } from "./types";
 import { RecipePresentation } from "./recipe-detail-page";
+import { AdminRecipeComments } from "./admin-recipe-comments";
 
 type AdminRecipeEditorProps = {
   locale: Locale;
@@ -118,6 +120,7 @@ type MobileSection =
   | "ingredients"
   | "preparation"
   | "notes"
+  | "comments"
   | "translation"
   | "publish";
 
@@ -617,6 +620,7 @@ function MobileOverview({ recipe, values, readiness, publication, onOpen }: { re
     { id: "ingredients", title: "Ingrédients", detail: `${values.translations[values.defaultLocale].ingredients.filter((item) => item.name.trim()).length} éléments`, icon: ListChecks, complete: readiness.sections.ingredients, ...status("ingredients") },
     { id: "preparation", title: "Préparation", detail: "Sections, étapes et sous-recettes", icon: BookOpen, complete: readiness.sections.preparation, ...status("preparation") },
     { id: "notes", title: "Notes", detail: "Astuces et variantes", icon: NotebookPen, complete: true, ...status("notes") },
+    { id: "comments", title: "Commentaires", detail: "Contributions des visiteurs", icon: MessageSquare, complete: true, blockers: 0, warnings: 0 },
     { id: "translation", title: "Traduction", detail: "Version anglaise", icon: Languages, complete: readiness.sections.translation, ...status("translation") },
   ];
 
@@ -706,6 +710,7 @@ function MobileSectionFields({ section, locale, recipe, revision, onImageRevisio
   if (section === "ingredients") return <FieldGroup><TextField label="Portions de référence (personnes)" name="referenceServings" register={form.register} errors={errors} type="number" min={MIN_REFERENCE_SERVINGS} max={MAX_REFERENCE_SERVINGS} /><FieldDescription>Le nombre de personnes par défaut, utilisé comme base pour calculer les proportions de la recette publique.</FieldDescription><CompactIngredientsEditor name={`${base}.ingredients`} control={form.control} register={form.register} /></FieldGroup>;
   if (section === "preparation") return <FieldGroup><CompactSectionsEditor name={`${base}.sections`} control={form.control} register={form.register} /><SubRecipesArray name={`${base}.subRecipes`} control={form.control} register={form.register} /></FieldGroup>;
   if (section === "notes") return <NotesArray name={`${base}.notes`} control={form.control} register={form.register} />;
+  if (section === "comments" && recipe) return <AdminRecipeComments slug={recipe.slug} locale={locale} />;
   if (section === "translation") return <div className="grid gap-4"><div className="rounded-xl bg-muted p-3 text-sm font-bold">Traduction {requestedLanguage === "en" ? "anglaise" : "française"}</div><LocalizedRecipeFields localeKey={requestedLanguage} register={form.register} control={form.control} errors={errors} /></div>;
   if (section === "publish") return <PublishWorkspace recipe={recipe} readiness={readiness} publication={publication} isPending={isPending} onPublish={onPublish} onDiscard={onDiscard} onUnpublish={onUnpublish} />;
   return null;
@@ -744,11 +749,11 @@ function ConflictCard({ onReload, onReplace }: { onReload: () => void; onReplace
 }
 
 function mobileSectionTitle(section: MobileSection) {
-  return ({ overview: "Vue d’ensemble", essentials: "L’essentiel", photo: "Photo", details: "Détails", ingredients: "Ingrédients", preparation: "Préparation", notes: "Notes", translation: "Traduction", publish: "Publication" } as const)[section];
+  return ({ overview: "Vue d’ensemble", essentials: "L’essentiel", photo: "Photo", details: "Détails", ingredients: "Ingrédients", preparation: "Préparation", notes: "Notes", comments: "Commentaires", translation: "Traduction", publish: "Publication" } as const)[section];
 }
 
 function normalizeMobileSection(value: string | null): MobileSection {
-  const sections: MobileSection[] = ["overview", "essentials", "photo", "details", "ingredients", "preparation", "notes", "translation", "publish"];
+  const sections: MobileSection[] = ["overview", "essentials", "photo", "details", "ingredients", "preparation", "notes", "comments", "translation", "publish"];
   return sections.includes(value as MobileSection) ? (value as MobileSection) : "overview";
 }
 
