@@ -134,6 +134,15 @@ test("mobile recipe cards keep an equal-height structure and show prep time", as
   expect(layout.titleHeight).toBeGreaterThanOrEqual(layout.titleLineHeight * 2 - 1);
 });
 
+test("mobile recipe cards fall back to cooking time", async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith("mobile-"));
+  await page.goto("/en");
+
+  const recipeLink = page.locator('main a[href^="/en/recettes/"]').first();
+  await expect(recipeLink.getByLabel("Cook: 30 min")).toBeVisible();
+  await expect(recipeLink.getByText(/Prep ·/)).toHaveCount(0);
+});
+
 test("public recipe photos do not display source credits", async ({ page }) => {
   await page.goto("/fr/recettes/tarte-de-demonstration");
 

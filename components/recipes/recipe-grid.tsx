@@ -28,6 +28,11 @@ export function RecipeGrid({
   return (
     <ul className="grid grid-cols-2 gap-3 md:gap-6 xl:grid-cols-3">
       {recipes.map((recipe, index) => {
+        const mobileTime = recipe.prepTime || recipe.cookTime;
+        const mobileTimeLabel = recipe.prepTime
+          ? dict.recipeDetail.prepTime
+          : dict.recipeDetail.cookTime;
+
         return (
           <li key={recipe._id} className="h-full">
             <Link
@@ -55,13 +60,15 @@ export function RecipeGrid({
                 >
                   {recipe.title}
                 </span>
-                <span
-                  className="mt-auto inline-flex items-center gap-1.5 pt-3 text-xs font-bold text-muted-foreground tabular-nums md:hidden"
-                  aria-label={`${dict.recipeDetail.prepTime}: ${recipe.prepTime || "—"}`}
-                >
-                  <Clock3 aria-hidden className="size-3.5 stroke-[1.8]" />
-                  {dict.recipeDetail.prepTime} · {recipe.prepTime || "—"}
-                </span>
+                {mobileTime ? (
+                  <span
+                    className="mt-auto inline-flex items-center gap-1.5 pt-3 text-xs font-bold text-muted-foreground tabular-nums md:hidden"
+                    aria-label={`${mobileTimeLabel}: ${mobileTime}`}
+                  >
+                    <Clock3 aria-hidden className="size-3.5 stroke-[1.8]" />
+                    {mobileTimeLabel} · {mobileTime}
+                  </span>
+                ) : null}
                 <span className="type-byline mt-3 hidden text-muted-foreground md:block">
                   {dict.recipeDetail.recipeBy} {recipe.author}
                 </span>

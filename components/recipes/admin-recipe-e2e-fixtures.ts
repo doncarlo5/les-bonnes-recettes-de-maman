@@ -25,7 +25,7 @@ const content = {
   defaultLocale: "fr" as const,
   translations: {
     fr: localized,
-    en: { ...localized, title: "Demo tart", description: "A recipe used by mobile studio tests." },
+    en: { ...localized, title: "Demo tart", description: "A recipe used by mobile studio tests.", prepTime: "" },
   },
   tags: ["dessert"],
   status: "published" as const,
