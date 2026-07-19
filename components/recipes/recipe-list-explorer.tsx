@@ -1,7 +1,8 @@
 "use client";
 
 import { type FormEvent, useMemo, useState } from "react";
-import { ArrowDownAZ, CalendarDays, LayoutGrid, List, Search, X } from "lucide-react";
+import Link from "next/link";
+import { ArrowDownAZ, CalendarDays, LayoutGrid, List, Plus, Search, X } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
@@ -108,24 +109,33 @@ export function RecipeListExplorer({
         aria-label={dict.recipeList.filtersLabel}
         className="grid gap-3 md:gap-0"
       >
-        <button
-          type="button"
-          aria-expanded={mobileSearchOpen}
-          aria-controls="recipe-search-controls"
-          aria-label={
-            mobileSearchOpen
-              ? dict.recipeList.closeSearch
-              : dict.recipeList.searchLabel
-          }
-          onClick={() => setMobileSearchOpen((open) => !open)}
-          className="surface-elevated inline-flex size-11 items-center justify-center justify-self-end rounded-full bg-card text-foreground transition-[scale,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.96] md:hidden"
-        >
-          {mobileSearchOpen ? (
-            <X aria-hidden className="size-5 stroke-[1.8]" />
-          ) : (
-            <Search aria-hidden className="size-5 stroke-[1.8]" />
-          )}
-        </button>
+        <div className="flex justify-self-end gap-2 md:hidden">
+          <Link
+            href={`/${locale}/admin/recettes?new=1`}
+            aria-label={dict.recipeList.addRecipeTitle}
+            className="surface-elevated inline-flex size-11 items-center justify-center rounded-full bg-primary text-primary-foreground transition-[scale,background-color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.96]"
+          >
+            <Plus aria-hidden className="size-5 stroke-[1.8]" />
+          </Link>
+          <button
+            type="button"
+            aria-expanded={mobileSearchOpen}
+            aria-controls="recipe-search-controls"
+            aria-label={
+              mobileSearchOpen
+                ? dict.recipeList.closeSearch
+                : dict.recipeList.searchLabel
+            }
+            onClick={() => setMobileSearchOpen((open) => !open)}
+            className="surface-elevated inline-flex size-11 items-center justify-center rounded-full bg-card text-foreground transition-[scale,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.96]"
+          >
+            {mobileSearchOpen ? (
+              <X aria-hidden className="size-5 stroke-[1.8]" />
+            ) : (
+              <Search aria-hidden className="size-5 stroke-[1.8]" />
+            )}
+          </button>
+        </div>
 
         <div
           id="recipe-search-controls"

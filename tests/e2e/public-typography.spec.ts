@@ -143,6 +143,22 @@ test("mobile recipe cards fall back to cooking time", async ({ page }, testInfo)
   await expect(recipeLink.getByText(/Prep ·/)).toHaveCount(0);
 });
 
+test("mobile cookbook exposes an aligned create shortcut beside search", async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith("mobile-"));
+  await page.goto("/fr");
+
+  const createLink = page.getByRole("link", { name: "Ajouter une recette" });
+  const searchButton = page.getByRole("button", { name: "Rechercher une recette" });
+  await expect(createLink).toHaveAttribute("href", "/fr/admin/recettes?new=1");
+
+  const createBox = await createLink.boundingBox();
+  const searchBox = await searchButton.boundingBox();
+  expect(createBox?.width).toBe(44);
+  expect(createBox?.height).toBe(44);
+  expect(searchBox?.y).toBeCloseTo(createBox?.y ?? 0, 0);
+  expect((searchBox?.x ?? 0) - ((createBox?.x ?? 0) + (createBox?.width ?? 0))).toBe(8);
+});
+
 test("public recipe photos do not display source credits", async ({ page }) => {
   await page.goto("/fr/recettes/tarte-de-demonstration");
 
