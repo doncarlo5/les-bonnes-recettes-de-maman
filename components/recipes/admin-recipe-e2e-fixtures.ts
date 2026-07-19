@@ -11,7 +11,7 @@ const localized = {
   cookTime: "30 min",
   totalTime: "50 min",
   timeLabel: "50 min",
-  temperature: "180 °C",
+  temperature: "four moyen",
   ingredients: [
     { name: "Farine", quantity: "200", unit: "g", notes: "tamisée" },
     { name: "Œufs", quantity: "3", unit: "", notes: "" },

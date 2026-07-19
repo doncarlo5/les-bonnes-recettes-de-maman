@@ -90,11 +90,12 @@ export function RecipePresentation({
 
       {/* Body: instructions + sticky ingredients sidebar */}
       <section className="border-t border-border px-5 pb-16 lg:px-10 lg:pb-32">
-        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[minmax(0,65ch)_22rem] lg:justify-between lg:gap-16">
-          <div className="min-w-0">
-            <RecipeMeta dict={dict} recipe={recipe} />
+        <div className="mx-auto max-w-7xl">
+          <RecipeMeta dict={dict} recipe={recipe} />
 
-            <div className="mt-8 space-y-8 lg:mt-14 lg:space-y-12">
+          <div className="mt-8 grid gap-8 lg:mt-12 lg:grid-cols-[minmax(0,65ch)_20rem] lg:justify-between lg:gap-14">
+            <div className="min-w-0">
+              <div className="space-y-8 lg:space-y-12">
               {recipe.sections.map((section) => (
                 <div key={section.title}>
                   <h2 className="type-content-title mb-4 text-foreground lg:mb-6">
@@ -238,7 +239,7 @@ export function RecipePresentation({
           <aside className="lg:sticky lg:top-28 lg:self-start">
             {/* Mobile: collapsible card */}
             <div className="lg:hidden">
-              <div className="rounded-2xl bg-muted px-4 ring-1 ring-border">
+              <div className="rounded-2xl bg-card px-4 shadow-[var(--shadow-card)]">
                 <Accordion defaultValue="ingredients">
                   <AccordionItem value="ingredients">
                     <AccordionTrigger className="py-3 hover:no-underline">
@@ -281,8 +282,8 @@ export function RecipePresentation({
             </div>
 
             {/* Desktop: original card */}
-            <div className="hidden rounded-2xl bg-muted p-7 ring-1 ring-border lg:block lg:p-8">
-              <div className="mb-6 flex items-baseline justify-between gap-4 border-b border-border pb-4">
+            <div className="hidden rounded-2xl bg-card p-6 shadow-[var(--shadow-card)] lg:block lg:p-7">
+              <div className="mb-5 flex items-baseline justify-between gap-4 border-b border-border pb-4">
                 <h2 className="type-content-title text-foreground">
                   {dict.recipeDetail.ingredients}
                 </h2>
@@ -319,6 +320,7 @@ export function RecipePresentation({
               ) : null}
             </div>
           </aside>
+          </div>
         </div>
       </section>
     </main>
@@ -336,13 +338,13 @@ function RecipeMeta({ dict, recipe }: { dict: Dictionary; recipe: Recipe }) {
   if (meta.length === 0) return null;
 
   return (
-    <dl className="grid grid-cols-2 gap-x-4 gap-y-4 border-y border-border py-5 sm:grid-cols-4 lg:gap-x-8 lg:gap-y-6 lg:py-7">
+    <dl className="flex flex-wrap items-start gap-x-8 gap-y-4 border-y border-border py-4 lg:gap-x-12 lg:py-5">
       {meta.map(([label, value]) => (
-        <div key={label}>
+        <div key={label} className="grid min-w-fit gap-1">
           <dt className="type-label text-primary">
             {label}
           </dt>
-          <dd className="type-subsection-title mt-1.5 text-foreground tabular-nums lg:mt-2">
+          <dd className="whitespace-nowrap text-base font-bold leading-tight text-foreground tabular-nums">
             {value}
           </dd>
         </div>

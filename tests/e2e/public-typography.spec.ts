@@ -167,6 +167,31 @@ test("public recipe photos do not display source credits", async ({ page }) => {
   await expect(page.getByRole("link", { name: "Unsplash" })).toHaveCount(0);
 });
 
+test("desktop recipe body aligns preparation with a compact ingredient panel", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop");
+  await page.goto("/fr/recettes/tarte-de-demonstration");
+
+  const preparation = page.getByRole("heading", { name: "Préparation" });
+  const ingredients = page.getByRole("heading", { name: "Ingrédients" });
+  const ingredientPanel = ingredients.locator("xpath=ancestor::aside");
+  const preparationBox = await preparation.boundingBox();
+  const panelBox = await ingredientPanel.boundingBox();
+  expect(panelBox?.y).toBeCloseTo(preparationBox?.y ?? 0, 0);
+
+  const temperature = page.getByText("four moyen", { exact: true });
+  await expect(page.getByText("Température", { exact: true })).toBeVisible();
+  const temperatureLayout = await temperature.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      height: element.getBoundingClientRect().height,
+      lineHeight: Number.parseFloat(style.lineHeight),
+      whiteSpace: style.whiteSpace,
+    };
+  });
+  expect(temperatureLayout.whiteSpace).toBe("nowrap");
+  expect(temperatureLayout.height).toBeLessThanOrEqual(temperatureLayout.lineHeight + 1);
+});
+
 async function expectDescendingOutline(page: Page) {
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   const headings = await page.getByRole("heading").evaluateAll((elements) =>
