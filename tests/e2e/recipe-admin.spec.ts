@@ -17,6 +17,24 @@ async function mockRecipeApi(page: Page) {
   });
 }
 
+async function mockImageSearchApi(page: Page) {
+  await page.route("**/api/admin/unsplash/search**", (route) => route.fulfill({
+    json: {
+      results: [{
+        id: "unsplash-test",
+        imageUrl: "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea",
+        previewUrl: "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=400",
+        alt: "Dessert de démonstration",
+        photographerName: "Photographe test",
+        photographerUrl: "https://example.com/photographe",
+        photoUrl: "https://example.com/photo",
+        downloadLocation: "https://example.com/download",
+      }],
+    },
+  }));
+  await page.route("**/api/admin/openverse/search**", (route) => route.fulfill({ json: { results: [] } }));
+}
+
 const localized = {
   title: "Tarte de démonstration", author: "Maman", description: "Une recette restaurée.",
   servings: { quantity: 6, unit: "personnes" }, prepTime: "20 min", cookTime: "30 min", totalTime: "50 min", timeLabel: "50 min", temperature: "180 °C",
@@ -92,6 +110,25 @@ test("guided editor opens an isolated draft preview", async ({ page }) => {
   await expect(page).toHaveURL(/section=details/);
   await expect(page).toHaveURL(/lang=en/);
   await expect(page.getByLabel("Préparation")).toBeVisible();
+});
+
+test("desktop internet image search displays its result cards", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop");
+  await mockImageSearchApi(page);
+  await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
+  await page.getByRole("button", { name: /^Photo/ }).first().click();
+  await page.getByRole("button", { name: "Chercher sur internet" }).click();
+
+  const dialog = page.getByRole("dialog", { name: "Recherche internet" });
+  const result = dialog.getByRole("button", { name: /Photographe test/ });
+  await expect(result).toBeVisible();
+  const dialogBox = await dialog.boundingBox();
+  const resultBox = await result.boundingBox();
+  expect(dialogBox?.height).toBeGreaterThan(400);
+  expect(resultBox?.y ?? 0).toBeGreaterThanOrEqual(dialogBox?.y ?? 0);
+  expect((resultBox?.y ?? 0) + (resultBox?.height ?? 0)).toBeLessThanOrEqual(
+    (dialogBox?.y ?? 0) + (dialogBox?.height ?? 0),
+  );
 });
 
 test("semantic typography stays readable at every supported width", async ({ page }, testInfo) => {

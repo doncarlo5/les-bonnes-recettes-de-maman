@@ -548,7 +548,7 @@ export function AdminRecipeImagePanel({
       </div>
 
       <Dialog open={isSearchDialogOpen} onOpenChange={setIsSearchDialogOpen}>
-        <DialogContent className="inset-0 h-dvh max-h-dvh w-full max-w-none translate-x-0 translate-y-0 overflow-hidden rounded-none sm:inset-1/2 sm:h-auto sm:max-h-[calc(100vh-2rem)] sm:max-w-5xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl">
+        <DialogContent className="inset-0 h-dvh max-h-dvh w-full max-w-none translate-x-0 translate-y-0 overflow-hidden rounded-none sm:inset-auto sm:top-1/2 sm:left-1/2 sm:h-auto sm:max-h-[calc(100vh-2rem)] sm:max-w-5xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl">
           <DialogHeader className="">
             <DialogTitle className="">Recherche internet</DialogTitle>
             <DialogDescription className="">
