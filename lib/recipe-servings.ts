@@ -2,8 +2,8 @@ export type RecipeLocale = "fr" | "en";
 
 type LegacyServings = { quantity: number; unit: string } | null | undefined;
 
-const MIN_SERVINGS = 1;
-const MAX_SERVINGS = 50;
+export const MIN_REFERENCE_SERVINGS = 1;
+export const MAX_REFERENCE_SERVINGS = 50;
 const NUMBER_PATTERN = "(?:\\d+\\s+\\d+\\/\\d+|\\d+\\/\\d+|\\d+(?:[.,]\\d+)?)";
 const RANGE_PATTERN = new RegExp(`^(${NUMBER_PATTERN})(\\s*(?:à|to|[-–—])\\s*)(${NUMBER_PATTERN})$`, "i");
 const SINGLE_PATTERN = new RegExp(`^${NUMBER_PATTERN}$`);
@@ -41,7 +41,7 @@ export function formatScaledIngredient(
 export function parseSelectedServings(value: string | string[] | undefined) {
   if (typeof value !== "string" || !/^\d+$/.test(value)) return null;
   const servings = Number(value);
-  return Number.isInteger(servings) && servings >= MIN_SERVINGS && servings <= MAX_SERVINGS
+  return Number.isInteger(servings) && servings >= MIN_REFERENCE_SERVINGS && servings <= MAX_REFERENCE_SERVINGS
     ? servings
     : null;
 }
@@ -60,7 +60,35 @@ export function resolveReferenceServings(
 }
 
 export function isValidReferenceServings(value: number | undefined): value is number {
-  return value !== undefined && Number.isInteger(value) && value >= MIN_SERVINGS && value <= MAX_SERVINGS;
+  return value !== undefined && Number.isInteger(value) && value >= MIN_REFERENCE_SERVINGS && value <= MAX_REFERENCE_SERVINGS;
+}
+
+export function resolveSelectedServings(
+  referenceServings: number | undefined,
+  selectedServings: number | undefined,
+) {
+  if (!isValidReferenceServings(referenceServings)) return undefined;
+  return isValidReferenceServings(selectedServings) ? selectedServings : referenceServings;
+}
+
+export function getServingsFactor(
+  referenceServings: number | undefined,
+  selectedServings: number | undefined,
+) {
+  const effectiveServings = resolveSelectedServings(referenceServings, selectedServings);
+  return effectiveServings && referenceServings
+    ? effectiveServings / referenceServings
+    : 1;
+}
+
+export function buildServingsQuery(
+  referenceServings: number | undefined,
+  selectedServings: number | undefined,
+) {
+  const effectiveServings = resolveSelectedServings(referenceServings, selectedServings);
+  return effectiveServings && effectiveServings !== referenceServings
+    ? `?personnes=${effectiveServings}`
+    : "";
 }
 
 function parseNumericQuantity(quantity: string) {

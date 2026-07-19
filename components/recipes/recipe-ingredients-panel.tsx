@@ -1,10 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
-import { formatScaledIngredient, parseSelectedServings } from "@/lib/recipe-servings";
+import {
+  formatScaledIngredient,
+  getServingsFactor,
+  MAX_REFERENCE_SERVINGS,
+  MIN_REFERENCE_SERVINGS,
+  parseSelectedServings,
+} from "@/lib/recipe-servings";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import type { Recipe } from "./types";
@@ -24,10 +29,7 @@ export function RecipeIngredientsPanel({
   selectedServings,
   onSelectedServingsChange,
 }: RecipeIngredientsPanelProps) {
-  const [servingsDraft, setServingsDraft] = useState(String(selectedServings ?? ""));
-  const factor = recipe.referenceServings && selectedServings
-    ? selectedServings / recipe.referenceServings
-    : 1;
+  const factor = getServingsFactor(recipe.referenceServings, selectedServings);
   const ingredients = (
     <ul className="divide-y divide-border">
       {recipe.ingredients.map((ingredient, index) => (
@@ -69,8 +71,6 @@ export function RecipeIngredientsPanel({
                     dict={dict}
                     referenceServings={recipe.referenceServings}
                     value={selectedServings}
-                    draft={servingsDraft}
-                    onDraftChange={setServingsDraft}
                     onChange={onSelectedServingsChange}
                     className="border-t border-border py-3"
                   />
@@ -94,8 +94,6 @@ export function RecipeIngredientsPanel({
             dict={dict}
             referenceServings={recipe.referenceServings}
             value={selectedServings}
-            draft={servingsDraft}
-            onDraftChange={setServingsDraft}
             onChange={onSelectedServingsChange}
             className="border-b border-border py-4"
           />
@@ -115,16 +113,12 @@ function ServingsSelector({
   dict,
   referenceServings,
   value,
-  draft,
-  onDraftChange,
   onChange,
   className,
 }: {
   dict: Dictionary;
   referenceServings: number;
   value: number;
-  draft: string;
-  onDraftChange: (value: string) => void;
   onChange: (value: number) => void;
   className?: string;
 }) {
@@ -133,14 +127,21 @@ function ServingsSelector({
     ? dict.recipeDetail.servingSingular
     : dict.recipeDetail.servingPlural;
 
-  function applyDraft(next: string) {
-    onDraftChange(next);
+  function applyDraft(input: HTMLInputElement) {
+    const next = input.value;
     const parsed = parseSelectedServings(next);
-    if (parsed !== null) onChange(parsed);
+    if (parsed !== null) {
+      commit(parsed);
+      return;
+    }
+    if (/^\d+$/.test(next)) {
+      commit(Math.min(MAX_REFERENCE_SERVINGS, Math.max(MIN_REFERENCE_SERVINGS, Number(next))));
+      return;
+    }
+    input.value = String(value);
   }
 
   function commit(next: number) {
-    onDraftChange(String(next));
     onChange(next);
   }
 
@@ -154,7 +155,7 @@ function ServingsSelector({
             size="icon-sm"
             className="rounded-full"
             aria-label={dict.recipeDetail.decreaseServings}
-            disabled={value <= 1}
+            disabled={value <= MIN_REFERENCE_SERVINGS}
             onClick={() => commit(value - 1)}
           >
             <Minus />
@@ -165,11 +166,10 @@ function ServingsSelector({
               aria-label={dict.recipeDetail.servingsLabel}
               type="number"
               inputMode="numeric"
-              min={1}
-              max={50}
-              value={draft}
-              onChange={(event) => applyDraft(event.target.value)}
-              onBlur={() => onDraftChange(String(value))}
+              min={MIN_REFERENCE_SERVINGS}
+              max={MAX_REFERENCE_SERVINGS}
+              value={value}
+              onChange={(event) => applyDraft(event.currentTarget)}
               className="w-8 bg-transparent text-center outline-none"
             />
             <span className="text-sm text-muted-foreground">{unit}</span>
@@ -180,7 +180,7 @@ function ServingsSelector({
             size="icon-sm"
             className="rounded-full"
             aria-label={dict.recipeDetail.increaseServings}
-            disabled={value >= 50}
+            disabled={value >= MAX_REFERENCE_SERVINGS}
             onClick={() => commit(value + 1)}
           >
             <Plus />

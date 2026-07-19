@@ -107,14 +107,32 @@ test("the portions control remains accessible at every recipe breakpoint", async
   await expect(panel).toContainText("233,33 g");
 });
 
-test("English portions remain accessible on mobile and desktop", async ({ page }, testInfo) => {
+test("English portions scale and follow the cook on mobile and desktop", async ({ page }, testInfo) => {
   test.skip(!["mobile-390", "desktop"].includes(testInfo.project.name));
   await page.goto("/en/recettes/tarte-de-demonstration");
   const layout = testInfo.project.name === "desktop" ? "desktop" : "mobile";
   const panel = page.locator(`[data-ingredients-layout="${layout}"]`);
   if (layout === "mobile") await panel.getByRole("button", { name: /Ingredients/ }).click();
-  await expect(panel.getByRole("spinbutton", { name: "Number of servings" })).toHaveValue("6");
+  const counter = panel.getByRole("spinbutton", { name: "Number of servings" });
+  await expect(counter).toHaveValue("6");
   await expect(panel.getByText("Default", { exact: true })).toBeVisible();
+  await counter.fill("");
+  await expect(counter).toHaveValue("6");
+  await counter.fill("51");
+  await expect(counter).toHaveValue("50");
+  await counter.fill("0");
+  await expect(counter).toHaveValue("1");
+  await counter.fill("2.5");
+  await expect(counter).toHaveValue("1");
+  await counter.fill("9");
+  await expect(panel).toContainText("300 g");
+  await expect(panel).toContainText("4.5");
+
+  await page.getByRole("link", { name: "Start cooking" }).click();
+  await expect(page).toHaveURL(/\/cuisiner\?personnes=9$/);
+  await page.getByRole("button", { name: /Ingredients/ }).click();
+  await expect(page.getByText("300 g", { exact: true })).toBeVisible();
+  await expect(page.getByText("4.5", { exact: true })).toBeVisible();
 });
 
 test("the direct servings input stays synchronized across responsive layouts", async ({ page }, testInfo) => {

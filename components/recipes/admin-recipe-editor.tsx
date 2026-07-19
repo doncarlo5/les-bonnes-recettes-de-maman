@@ -20,6 +20,10 @@ import {
   type RecipeReadiness,
 } from "@/lib/recipe-admin-domain";
 import {
+  MAX_REFERENCE_SERVINGS,
+  MIN_REFERENCE_SERVINGS,
+} from "@/lib/recipe-servings";
+import {
   ArrowLeft,
   ArrowDown,
   ArrowUp,
@@ -699,7 +703,7 @@ function MobileSectionFields({ section, locale, recipe, revision, onImageRevisio
   if (section === "photo") return <div data-field-target="heroImageUrl" tabIndex={-1}><AdminRecipeImagePanel locale={locale} recipe={recipe} revision={revision} onRevisionChange={onImageRevision} onConflict={onImageConflict} /></div>;
   if (section === "essentials") return <FieldGroup><TextField label="Titre" name={`${base}.title`} register={form.register} errors={errors} /><TextField label="Auteur" name={`${base}.author`} register={form.register} errors={errors} /><TextareaField label="Description" name={`${base}.description`} register={form.register} errors={errors} /><SelectField label="Langue principale" value={defaultLocale} onValueChange={(value) => form.setValue("defaultLocale", value, { shouldDirty: true })} options={[{ label: "Français", value: "fr" }, { label: "Anglais", value: "en" }]} /><Field><FieldLabel htmlFor="mobile-tags">Catégories</FieldLabel><Input id="mobile-tags" className="h-11" value={tagsValue.join(", ")} onChange={(event) => form.setValue("tags", parseTags(event.target.value), { shouldDirty: true })} /><FieldDescription>Sépare les catégories par des virgules.</FieldDescription></Field></FieldGroup>;
   if (section === "details") return <FieldGroup><TextField label="Quantité obtenue" name={`${base}.yieldLabel`} register={form.register} errors={errors} placeholder="Environ 20 gougères" /><TextField label="Préparation" name={`${base}.prepTime`} register={form.register} errors={errors} placeholder="20 min" /><TextField label="Cuisson" name={`${base}.cookTime`} register={form.register} errors={errors} placeholder="25 min" /><TextField label="Total" name={`${base}.totalTime`} register={form.register} errors={errors} placeholder="45 min" /><TextField label="Libellé temps" name={`${base}.timeLabel`} register={form.register} errors={errors} placeholder="45 min" /><TextField label="Température" name={`${base}.temperature`} register={form.register} errors={errors} placeholder="180 °C" /></FieldGroup>;
-  if (section === "ingredients") return <FieldGroup><TextField label="Portions de référence (personnes)" name="referenceServings" register={form.register} errors={errors} type="number" min={1} max={50} /><FieldDescription>Le nombre de personnes par défaut, utilisé comme base pour calculer les proportions de la recette publique.</FieldDescription><CompactIngredientsEditor name={`${base}.ingredients`} control={form.control} register={form.register} /></FieldGroup>;
+  if (section === "ingredients") return <FieldGroup><TextField label="Portions de référence (personnes)" name="referenceServings" register={form.register} errors={errors} type="number" min={MIN_REFERENCE_SERVINGS} max={MAX_REFERENCE_SERVINGS} /><FieldDescription>Le nombre de personnes par défaut, utilisé comme base pour calculer les proportions de la recette publique.</FieldDescription><CompactIngredientsEditor name={`${base}.ingredients`} control={form.control} register={form.register} /></FieldGroup>;
   if (section === "preparation") return <FieldGroup><CompactSectionsEditor name={`${base}.sections`} control={form.control} register={form.register} /><SubRecipesArray name={`${base}.subRecipes`} control={form.control} register={form.register} /></FieldGroup>;
   if (section === "notes") return <NotesArray name={`${base}.notes`} control={form.control} register={form.register} />;
   if (section === "translation") return <div className="grid gap-4"><div className="rounded-xl bg-muted p-3 text-sm font-bold">Traduction {requestedLanguage === "en" ? "anglaise" : "française"}</div><LocalizedRecipeFields localeKey={requestedLanguage} register={form.register} control={form.control} errors={errors} /></div>;

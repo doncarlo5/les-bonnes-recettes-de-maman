@@ -615,15 +615,20 @@ export const seed = mutation({
         .unique();
 
       if (existing) {
+        const referenceServings = existing.referenceServings ?? recipe.referenceServings;
+        const seededRecipe = {
+          ...recipe,
+          ...(referenceServings !== undefined ? { referenceServings } : {}),
+        };
         const nextRecipe = existing.imageCredit
           ? {
-              ...recipe,
+              ...seededRecipe,
               heroImageStorageId: existing.heroImageStorageId,
               heroImageUrl: existing.heroImageUrl,
               imageCredit: existing.imageCredit,
             }
           : {
-              ...recipe,
+              ...seededRecipe,
               heroImageStorageId: existing.heroImageStorageId,
             };
 

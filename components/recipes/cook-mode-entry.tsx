@@ -6,6 +6,7 @@ import { RotateCcw, UtensilsCrossed } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import { getCookProgressKey, parseCookProgress } from "@/lib/cook-progress";
+import { buildServingsQuery } from "@/lib/recipe-servings";
 import type { Recipe } from "./types";
 
 export function CookModeEntry({
@@ -21,9 +22,7 @@ export function CookModeEntry({
 }) {
   const [hasProgress, setHasProgress] = useState(false);
   const key = getCookProgressKey(locale, recipe.slug);
-  const servingsQuery = recipe.referenceServings && selectedServings && selectedServings !== recipe.referenceServings
-    ? `?personnes=${selectedServings}`
-    : "";
+  const servingsQuery = buildServingsQuery(recipe.referenceServings, selectedServings);
   const href = `/${locale}/recettes/${recipe.slug}/cuisiner${servingsQuery}`;
 
   useEffect(() => {

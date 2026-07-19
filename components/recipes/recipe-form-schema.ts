@@ -3,6 +3,10 @@ import {
   assertRecipeDraftBytes,
   RECIPE_FIELD_LIMITS,
 } from "@/lib/recipe-admin-domain";
+import {
+  MAX_REFERENCE_SERVINGS,
+  MIN_REFERENCE_SERVINGS,
+} from "@/lib/recipe-servings";
 
 const limits = RECIPE_FIELD_LIMITS;
 
@@ -41,7 +45,7 @@ const localizedRecipeSchema = z.object({
 
 const editableRecipeDraftObject = z.object({
     defaultLocale: z.union([z.literal("fr"), z.literal("en")]),
-    referenceServings: z.number().int().min(1).max(50).optional(),
+    referenceServings: z.number().int().min(MIN_REFERENCE_SERVINGS).max(MAX_REFERENCE_SERVINGS).optional(),
     translations: z.object({
       fr: localizedRecipeSchema,
       en: localizedRecipeSchema,

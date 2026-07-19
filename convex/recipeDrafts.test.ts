@@ -40,6 +40,31 @@ function draft(value = recipe()) {
 }
 
 describe("recipe working drafts", () => {
+  test("re-seeding preserves editorial reference portions", async () => {
+    const t = convexTest(schema, modules);
+    await t.mutation(api.recipes.seed, { adminPassword: password });
+    await t.run(async (ctx) => {
+      const ambiguous = await ctx.db
+        .query("recipes")
+        .withIndex("by_slug", (q) => q.eq("slug", "amandin"))
+        .unique();
+      const inferred = await ctx.db
+        .query("recipes")
+        .withIndex("by_slug", (q) => q.eq("slug", "gateau-aux-pommes"))
+        .unique();
+      if (!ambiguous || !inferred) throw new Error("seed fixture missing");
+      await ctx.db.patch(ambiguous._id, { referenceServings: 8 });
+      await ctx.db.patch(inferred._id, { referenceServings: 7 });
+    });
+
+    await t.mutation(api.recipes.seed, { adminPassword: password });
+
+    await expect(t.query(api.recipes.getBySlug, { locale: "fr", slug: "amandin" }))
+      .resolves.toMatchObject({ referenceServings: 8 });
+    await expect(t.query(api.recipes.getBySlug, { locale: "fr", slug: "gateau-aux-pommes" }))
+      .resolves.toMatchObject({ referenceServings: 7 });
+  });
+
   test("falls back to the public snapshot for legacy recipes without a draft", async () => {
     const t = convexTest(schema, modules);
     const content = recipe("Recette historique");

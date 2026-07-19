@@ -1,8 +1,13 @@
 import { describe, expect, test } from "vitest";
 import {
+  buildServingsQuery,
   formatScaledIngredientQuantity,
+  getServingsFactor,
+  MAX_REFERENCE_SERVINGS,
+  MIN_REFERENCE_SERVINGS,
   parseSelectedServings,
   resolveReferenceServings,
+  resolveSelectedServings,
 } from "./recipe-servings";
 
 describe("recipe servings", () => {
@@ -35,6 +40,23 @@ describe("recipe servings", () => {
     expect(parseSelectedServings("12.5")).toBeNull();
     expect(parseSelectedServings(["12", "13"])).toBeNull();
     expect(parseSelectedServings(undefined)).toBeNull();
+  });
+
+  test("centralizes the reference bounds and effective scaling value", () => {
+    expect(MIN_REFERENCE_SERVINGS).toBe(1);
+    expect(MAX_REFERENCE_SERVINGS).toBe(50);
+    expect(resolveSelectedServings(6, undefined)).toBe(6);
+    expect(resolveSelectedServings(6, 9)).toBe(9);
+    expect(resolveSelectedServings(undefined, 9)).toBeUndefined();
+    expect(getServingsFactor(6, 9)).toBe(1.5);
+    expect(getServingsFactor(6, undefined)).toBe(1);
+  });
+
+  test("adds the portions query only for a valid non-default selection", () => {
+    expect(buildServingsQuery(6, 9)).toBe("?personnes=9");
+    expect(buildServingsQuery(6, 6)).toBe("");
+    expect(buildServingsQuery(6, undefined)).toBe("");
+    expect(buildServingsQuery(undefined, 9)).toBe("");
   });
 
   test("uses only an unambiguous legacy person count as a reference", () => {

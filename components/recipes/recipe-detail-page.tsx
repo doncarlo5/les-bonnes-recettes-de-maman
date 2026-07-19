@@ -6,7 +6,11 @@ import { useState } from "react";
 import { ChevronLeft, Clock3 } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
-import { formatScaledIngredient } from "@/lib/recipe-servings";
+import {
+  formatScaledIngredient,
+  getServingsFactor,
+  resolveSelectedServings,
+} from "@/lib/recipe-servings";
 import {
   Accordion,
   AccordionContent,
@@ -47,11 +51,9 @@ export function RecipePresentation({
   initialServings,
 }: RecipeDetailPageProps & { mode: "public" | "preview" }) {
   const [selectedServings, setSelectedServings] = useState(
-    recipe.referenceServings ? initialServings ?? recipe.referenceServings : undefined,
+    resolveSelectedServings(recipe.referenceServings, initialServings),
   );
-  const servingsFactor = recipe.referenceServings && selectedServings
-    ? selectedServings / recipe.referenceServings
-    : 1;
+  const servingsFactor = getServingsFactor(recipe.referenceServings, selectedServings);
   return (
     <main className="text-foreground">
       <header className="px-5 py-8 sm:py-12 lg:px-10 lg:py-20">

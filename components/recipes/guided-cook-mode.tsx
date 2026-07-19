@@ -5,7 +5,12 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, Check, ListChecks, MoonStar } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
-import { formatScaledIngredient } from "@/lib/recipe-servings";
+import {
+  buildServingsQuery,
+  formatScaledIngredient,
+  getServingsFactor,
+  resolveSelectedServings,
+} from "@/lib/recipe-servings";
 import {
   createCookContentSignature,
   getCookProgressKey,
@@ -43,15 +48,9 @@ export function GuidedCookMode({
   recipe: Recipe;
   selectedServings?: number;
 }) {
-  const effectiveServings = recipe.referenceServings
-    ? selectedServings ?? recipe.referenceServings
-    : undefined;
-  const servingsFactor = recipe.referenceServings && effectiveServings
-    ? effectiveServings / recipe.referenceServings
-    : 1;
-  const recipeHref = effectiveServings && effectiveServings !== recipe.referenceServings
-    ? `/${locale}/recettes/${recipe.slug}?personnes=${effectiveServings}`
-    : `/${locale}/recettes/${recipe.slug}`;
+  const effectiveServings = resolveSelectedServings(recipe.referenceServings, selectedServings);
+  const servingsFactor = getServingsFactor(recipe.referenceServings, effectiveServings);
+  const recipeHref = `/${locale}/recettes/${recipe.slug}${buildServingsQuery(recipe.referenceServings, effectiveServings)}`;
   const contentSignature = useMemo(() => createCookContentSignature(recipe), [recipe]);
   const storageKey = getCookProgressKey(locale, recipe.slug);
   const [progress, setProgress] = useState<CookProgressV1>(() =>
