@@ -5,7 +5,13 @@ test("recipe comments form is localized and keeps a browser participant key", as
   await expect(page.getByRole("heading", { name: "Commentaires", exact: true })).toBeVisible();
   await expect(page.getByLabel("Votre nom (facultatif)")).toHaveAttribute("maxlength", "60");
   await expect(page.getByLabel("Votre commentaire")).toHaveAttribute("maxlength", "1500");
-  await expect(page.getByLabel("Ajouter une photo (facultatif)")).toHaveAttribute("accept", "image/jpeg,image/png,image/webp");
+  const photoToggle = page.getByRole("switch", { name: "Ajouter une photo (facultatif)" });
+  await expect(photoToggle).not.toBeChecked();
+  await photoToggle.click();
+  await expect(page.getByLabel("Choisir une photo")).toHaveAttribute("accept", "image/jpeg,image/png,image/webp");
+  await page.getByLabel("Votre commentaire").fill("Validation du toggle photo");
+  await page.getByRole("button", { name: "Publier le commentaire" }).click();
+  await expect(page.getByText("Choisissez une photo ou désactivez l’ajout de photo.")).toBeVisible();
   const participantKey = await page.evaluate(() => localStorage.getItem("recipe-comment-participant-v1"));
   expect(participantKey).toMatch(/^[a-f0-9]{48}$/);
 
@@ -74,14 +80,15 @@ test("visitor publishes, reacts, edits, reloads and deletes comments with and wi
   const commentInput = page.getByLabel("Votre commentaire");
   await expect(commentInput).toBeVisible();
   await commentInput.fill(marker);
-  await page.getByLabel("Ajouter une photo (facultatif)").setInputFiles({
+  await page.getByRole("switch", { name: "Ajouter une photo (facultatif)" }).click();
+  await page.getByLabel("Choisir une photo").setInputFiles({
     name: "resultat.png",
     mimeType: "image/png",
     buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=", "base64"),
   });
   await page.getByRole("button", { name: "Publier le commentaire" }).click();
   await expect(page.getByText("Votre commentaire est publié.")).toBeVisible();
-  await expect(page.getByLabel("Ajouter une photo (facultatif)")).toHaveValue("");
+  await expect(page.getByRole("switch", { name: "Ajouter une photo (facultatif)" })).not.toBeChecked();
 
   let article = page.locator("article").filter({ hasText: marker });
   await expect(article.getByRole("heading", { name: "Anonyme" })).toBeVisible();
@@ -115,7 +122,8 @@ test("visitor publishes, reacts, edits, reloads and deletes comments with and wi
   await expect(article.getByRole("button", { name: "Ouvrir la photo de Anonyme" })).toHaveCount(0);
 
   await article.getByRole("button", { name: "Modifier" }).click();
-  await page.getByLabel("Ajouter une photo (facultatif)").setInputFiles({
+  await page.getByRole("switch", { name: "Ajouter une photo (facultatif)" }).click();
+  await page.getByLabel("Choisir une photo").setInputFiles({
     name: "resultat-remplace.png",
     mimeType: "image/png",
     buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=", "base64"),
