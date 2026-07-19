@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   FormProvider,
@@ -31,6 +32,7 @@ import {
   Cloud,
   CloudOff,
   Eye,
+  House,
   Languages,
   ListChecks,
   ListPlus,
@@ -475,15 +477,20 @@ function MobileRecipeAdmin({
     return (
       <main className="min-h-screen px-4 pb-28 pt-6 text-foreground">
         <header className="mx-auto grid w-full max-w-5xl gap-5">
-          <div className="flex items-end justify-between gap-4">
+          <div className="grid gap-4 sm:flex sm:items-end sm:justify-between">
             <div className="grid gap-2">
               <p className="type-label text-primary">Admin recettes</p>
               <h1 className="type-page-title">Le carnet</h1>
               <p className="type-body-sm font-semibold text-muted-foreground tabular-nums">{recipes.length} recettes à portée de main.</p>
             </div>
-            <Button type="button" onClick={onCreate} className="min-h-11 rounded-xl px-4 active:scale-[0.96] transition-transform">
-              <CirclePlus data-icon="inline-start" /> Nouvelle
-            </Button>
+            <div className="grid grid-cols-2 gap-2 sm:flex">
+              <Link href={`/${locale}`} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-border bg-background px-3 text-sm font-semibold whitespace-nowrap transition-[scale,background-color,color,border-color,box-shadow] duration-150 outline-none select-none hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.96] md:min-h-10">
+                <House data-icon="inline-start" /> Site public
+              </Link>
+              <Button type="button" onClick={onCreate} className="min-h-11 rounded-xl px-4">
+                <CirclePlus data-icon="inline-start" /> Nouvelle
+              </Button>
+            </div>
           </div>
 
           <div className="rounded-2xl bg-card p-2 shadow-[var(--shadow-card)]">

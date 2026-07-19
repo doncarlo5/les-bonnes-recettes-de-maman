@@ -41,6 +41,13 @@ test("recipe home is usable and accessible at every supported width", async ({ p
   }
 });
 
+test("admin home links back to the public cookbook", async ({ page }) => {
+  const publicLink = page.getByRole("link", { name: "Site public" });
+  await expect(publicLink).toHaveAttribute("href", "/fr");
+  await publicLink.click();
+  await expect(page).toHaveURL(/\/fr$/);
+});
+
 test("editor action dock stays compact at every supported width", async ({ page }) => {
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
 
