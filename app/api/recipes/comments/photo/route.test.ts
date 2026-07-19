@@ -52,6 +52,16 @@ describe("public comment photo verification route", () => {
       adminPassword: "test-password",
     }));
   });
+
+  test("rejects malformed JSON fields before calling Convex", async () => {
+    const response = await POST(new Request("http://localhost/api/recipes/comments/photo", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ storageId: 42, participantKey: { value: "invalid" } }),
+    }));
+    expect(response.status).toBe(400);
+    expect(fetchMutation).not.toHaveBeenCalled();
+  });
 });
 
 function verificationRequest() {

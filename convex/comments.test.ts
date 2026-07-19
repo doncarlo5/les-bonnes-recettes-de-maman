@@ -9,6 +9,7 @@ import schema from "./schema";
 const modules = import.meta.glob("./**/*.ts");
 const commentsApi = api.comments;
 const internalCommentsApi = internal.comments;
+const commentMaintenanceApi = internal.commentMaintenance;
 const password = "test-password";
 const ownerKey = "owner-browser-key-that-is-long-enough";
 const otherKey = "another-browser-key-that-is-long-enough";
@@ -186,18 +187,29 @@ describe("recipe comments", () => {
       honeypot: "",
     });
 
-    const adminPage = await t.query(commentsApi.listForModeration, {
-      slug: "tarte-aux-pommes",
-      adminPassword: password,
-      paginationOpts: { numItems: 10, cursor: null },
+    const unauthorized = await t.fetch("/internal/admin/recipe-comments?slug=tarte-aux-pommes");
+    expect(unauthorized.status).toBe(401);
+
+    const adminResponse = await t.fetch("/internal/admin/recipe-comments?slug=tarte-aux-pommes", {
+      headers: { Authorization: `Bearer ${password}` },
     });
+    expect(adminResponse.status).toBe(200);
+    const adminPage = await adminResponse.json();
     expect(adminPage.page[0]._id).toBe(created.commentId);
-    await t.mutation(commentsApi.removeAsAdmin, { commentId: created.commentId, adminPassword: password });
-    const after = await t.query(commentsApi.listForModeration, {
-      slug: "tarte-aux-pommes",
-      adminPassword: password,
-      paginationOpts: { numItems: 10, cursor: null },
+
+    const deleteResponse = await t.fetch("/internal/admin/recipe-comments", {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${password}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ commentId: created.commentId }),
     });
+    expect(deleteResponse.status).toBe(200);
+    const afterResponse = await t.fetch("/internal/admin/recipe-comments?slug=tarte-aux-pommes", {
+      headers: { Authorization: `Bearer ${password}` },
+    });
+    const after = await afterResponse.json();
     expect(after.page).toHaveLength(0);
   });
 
@@ -493,7 +505,7 @@ describe("recipe comments", () => {
           count: 1,
         });
       });
-      await t.mutation(internalCommentsApi.cleanupExpiredRateLimits, {});
+      await t.mutation(commentMaintenanceApi.cleanupExpiredRateLimits, {});
       await t.finishAllScheduledFunctions(vi.runAllTimers);
       const remaining = await t.run(async (ctx) => ctx.db.query("commentRateLimits").collect());
       expect(remaining).toHaveLength(1);

@@ -6,14 +6,14 @@ const crons = cronJobs();
 crons.cron(
   "remove unreferenced comment uploads",
   "20 3 * * *",
-  internal.comments.cleanupUnreferencedStorage,
+  internal.commentMaintenance.cleanupUnreferencedStorage,
   {},
 );
 
 crons.cron(
   "remove expired comment rate limits",
   "35 3 * * *",
-  internal.comments.cleanupExpiredRateLimits,
+  internal.commentMaintenance.cleanupExpiredRateLimits,
   {},
 );
 

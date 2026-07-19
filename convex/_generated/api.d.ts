@@ -8,6 +8,9 @@
  * @module
  */
 
+import type * as commentAdmin from "../commentAdmin.js";
+import type * as commentMaintenance from "../commentMaintenance.js";
+import type * as commentModel from "../commentModel.js";
 import type * as comments from "../comments.js";
 import type * as crons from "../crons.js";
 import type * as http from "../http.js";
@@ -22,6 +25,9 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  commentAdmin: typeof commentAdmin;
+  commentMaintenance: typeof commentMaintenance;
+  commentModel: typeof commentModel;
   comments: typeof comments;
   crons: typeof crons;
   http: typeof http;

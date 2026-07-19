@@ -7,8 +7,8 @@ import {
   type MutationCtx,
   type QueryCtx,
 } from "./_generated/server";
-import { internal } from "./_generated/api";
-import type { Doc, Id } from "./_generated/dataModel";
+import type { Id } from "./_generated/dataModel";
+import { presentComment, removeComment } from "./commentModel";
 
 declare const process: { env: { RECIPE_ADMIN_PASSWORD?: string } };
 
@@ -28,8 +28,10 @@ export const list = query({
     paginationOpts: paginationOptsValidator,
   },
   handler: async (ctx, args) => {
-    const participantDigest = await digestParticipantKey(args.participantKey);
-    const recipe = await getRecipeBySlug(ctx, args.slug);
+    const [participantDigest, recipe] = await Promise.all([
+      digestParticipantKey(args.participantKey),
+      getRecipeBySlug(ctx, args.slug),
+    ]);
     if (!recipe || recipe.status !== "published") {
       return { page: [], isDone: true, continueCursor: "" };
     }
@@ -58,8 +60,10 @@ export const create = mutation({
   },
   handler: async (ctx, args) => {
     assertHoneypot(args.honeypot);
-    const participantDigest = await digestParticipantKey(args.participantKey);
-    const recipe = await requirePublishedRecipe(ctx, args.slug);
+    const [participantDigest, recipe] = await Promise.all([
+      digestParticipantKey(args.participantKey),
+      requirePublishedRecipe(ctx, args.slug),
+    ]);
     const content = normalizeContent(args.authorName, args.text);
     await consumeRateLimit(ctx, participantDigest, "comment");
     const photoClaim = args.photoStorageId
@@ -185,8 +189,10 @@ export const authorizePhotoUpload = internalMutation({
 export const recordPhotoClaim = internalMutation({
   args: { storageId: v.id("_storage"), participantDigest: v.string() },
   handler: async (ctx, args) => {
-    const existing = await ctx.db.query("commentPhotoClaims").withIndex("by_storageId", (q) => q.eq("storageId", args.storageId)).unique();
-    const used = await ctx.db.query("recipeComments").withIndex("by_photoStorageId", (q) => q.eq("photoStorageId", args.storageId)).first();
+    const [existing, used] = await Promise.all([
+      ctx.db.query("commentPhotoClaims").withIndex("by_storageId", (q) => q.eq("storageId", args.storageId)).unique(),
+      ctx.db.query("recipeComments").withIndex("by_photoStorageId", (q) => q.eq("photoStorageId", args.storageId)).first(),
+    ]);
     if (existing || used) throw new Error("COMMENT_PHOTO_ALREADY_CLAIMED");
     await ctx.db.insert("commentPhotoClaims", { storageId: args.storageId, participantDigest: args.participantDigest, createdAt: Date.now() });
     return null;
@@ -197,8 +203,10 @@ export const beginPhotoVerification = mutation({
   args: { storageId: v.id("_storage"), participantKey: v.string(), leaseId: v.string() },
   handler: async (ctx, args) => {
     assertLeaseId(args.leaseId);
-    const participantDigest = await digestParticipantKey(args.participantKey);
-    const claim = await ctx.db.query("commentPhotoClaims").withIndex("by_storageId", (q) => q.eq("storageId", args.storageId)).unique();
+    const [participantDigest, claim] = await Promise.all([
+      digestParticipantKey(args.participantKey),
+      ctx.db.query("commentPhotoClaims").withIndex("by_storageId", (q) => q.eq("storageId", args.storageId)).unique(),
+    ]);
     if (!claim || claim.participantDigest !== participantDigest) throw new Error("COMMENT_PHOTO_OWNER_REQUIRED");
     if (claim.verifiedAt) throw new Error("COMMENT_PHOTO_ALREADY_VERIFIED");
     if (claim.verificationStartedAt && claim.verificationStartedAt > Date.now() - 5 * 60 * 1000) {
@@ -216,10 +224,13 @@ export const markPhotoVerified = mutation({
   handler: async (ctx, args) => {
     assertAdminPassword(args.adminPassword);
     assertLeaseId(args.leaseId);
-    const participantDigest = await digestParticipantKey(args.participantKey);
-    const claim = await ctx.db.query("commentPhotoClaims").withIndex("by_storageId", (q) => q.eq("storageId", args.storageId)).unique();
+    const [participantDigest, claim, storedPhoto] = await Promise.all([
+      digestParticipantKey(args.participantKey),
+      ctx.db.query("commentPhotoClaims").withIndex("by_storageId", (q) => q.eq("storageId", args.storageId)).unique(),
+      ctx.db.system.get("_storage", args.storageId),
+    ]);
     if (!claim || claim.participantDigest !== participantDigest) throw new Error("COMMENT_PHOTO_OWNER_REQUIRED");
-    if (!await ctx.db.system.get("_storage", args.storageId)) throw new Error("COMMENT_PHOTO_NOT_FOUND");
+    if (!storedPhoto) throw new Error("COMMENT_PHOTO_NOT_FOUND");
     if (!claim.verificationStartedAt || claim.verificationLeaseId !== args.leaseId) throw new Error("COMMENT_PHOTO_VERIFICATION_REQUIRED");
     await ctx.db.patch(claim._id, { verificationStartedAt: undefined, verificationLeaseId: undefined, verifiedAt: Date.now() });
     return null;
@@ -231,8 +242,10 @@ export const discardPhotoVerification = mutation({
   handler: async (ctx, args) => {
     assertAdminPassword(args.adminPassword);
     assertLeaseId(args.leaseId);
-    const participantDigest = await digestParticipantKey(args.participantKey);
-    const claim = await ctx.db.query("commentPhotoClaims").withIndex("by_storageId", (q) => q.eq("storageId", args.storageId)).unique();
+    const [participantDigest, claim] = await Promise.all([
+      digestParticipantKey(args.participantKey),
+      ctx.db.query("commentPhotoClaims").withIndex("by_storageId", (q) => q.eq("storageId", args.storageId)).unique(),
+    ]);
     if (!claim || claim.participantDigest !== participantDigest || claim.verificationLeaseId !== args.leaseId || claim.verifiedAt) {
       throw new Error("COMMENT_PHOTO_VERIFICATION_REQUIRED");
     }
@@ -245,8 +258,10 @@ export const discardPhotoVerification = mutation({
 export const discardPhoto = mutation({
   args: { storageId: v.id("_storage"), participantKey: v.string() },
   handler: async (ctx, args) => {
-    const participantDigest = await digestParticipantKey(args.participantKey);
-    const claim = await ctx.db.query("commentPhotoClaims").withIndex("by_storageId", (q) => q.eq("storageId", args.storageId)).unique();
+    const [participantDigest, claim] = await Promise.all([
+      digestParticipantKey(args.participantKey),
+      ctx.db.query("commentPhotoClaims").withIndex("by_storageId", (q) => q.eq("storageId", args.storageId)).unique(),
+    ]);
     if (!claim || claim.participantDigest !== participantDigest) throw new Error("COMMENT_PHOTO_OWNER_REQUIRED");
     if (await ctx.db.system.get("_storage", args.storageId)) await ctx.storage.delete(args.storageId);
     await ctx.db.delete(claim._id);
@@ -254,129 +269,12 @@ export const discardPhoto = mutation({
   },
 });
 
-export const listForModeration = query({
-  args: { slug: v.string(), adminPassword: v.string(), paginationOpts: paginationOptsValidator },
-  handler: async (ctx, args) => {
-    assertAdminPassword(args.adminPassword);
-    const recipe = await getRecipeBySlug(ctx, args.slug);
-    if (!recipe) return { page: [], isDone: true, continueCursor: "" };
-    const result = await ctx.db
-      .query("recipeComments")
-      .withIndex("by_recipeId", (q) => q.eq("recipeId", recipe._id))
-      .order("desc")
-      .paginate(args.paginationOpts);
-    return {
-      ...result,
-      page: await Promise.all(result.page.map((comment) => presentComment(ctx, comment, null))),
-    };
-  },
-});
-
-export const removeAsAdmin = mutation({
-  args: { commentId: v.id("recipeComments"), adminPassword: v.string() },
-  handler: async (ctx, args) => {
-    assertAdminPassword(args.adminPassword);
-    const comment = await ctx.db.get(args.commentId);
-    if (!comment) return null;
-    await removeComment(ctx, comment);
-    return null;
-  },
-});
-
-export const cleanupReactions = internalMutation({
-  args: { commentId: v.id("recipeComments") },
-  handler: async (ctx, args) => {
-    const reactions = await ctx.db
-      .query("commentReactions")
-      .withIndex("by_commentId", (q) => q.eq("commentId", args.commentId))
-      .take(100);
-    for (const reaction of reactions) await ctx.db.delete(reaction._id);
-    if (reactions.length === 100) {
-      await ctx.scheduler.runAfter(0, internal.comments.cleanupReactions, { commentId: args.commentId });
-    }
-    return null;
-  },
-});
-
-export const cleanupUnreferencedStorage = internalMutation({
-  args: {},
-  handler: async (ctx) => {
-    const claims = await ctx.db
-      .query("commentPhotoClaims")
-      .withIndex("by_createdAt")
-      .order("asc")
-      .take(50);
-    const cutoff = Date.now() - 24 * hourMs;
-    let removed = 0;
-    for (const claim of claims) {
-      if (claim.createdAt >= cutoff) break;
-      if (await ctx.db.system.get("_storage", claim.storageId)) await ctx.storage.delete(claim.storageId);
-      await ctx.db.delete(claim._id);
-      removed += 1;
-    }
-    if (removed === 50) {
-      await ctx.scheduler.runAfter(0, internal.comments.cleanupUnreferencedStorage, {});
-    }
-    return null;
-  },
-});
-
-export const cleanupExpiredRateLimits = internalMutation({
-  args: {},
-  handler: async (ctx) => {
-    const expired = await ctx.db
-      .query("commentRateLimits")
-      .withIndex("by_windowStartedAt", (q) => q.lt("windowStartedAt", Date.now() - hourMs))
-      .take(100);
-    for (const window of expired) await ctx.db.delete(window._id);
-    if (expired.length === 100) {
-      await ctx.scheduler.runAfter(0, internal.comments.cleanupExpiredRateLimits, {});
-    }
-    return null;
-  },
-});
-
-async function presentComment(
-  ctx: QueryCtx,
-  comment: Doc<"recipeComments">,
-  participantDigest: string | null,
-) {
-  const [summary, reaction, photoUrl] = await Promise.all([
-    ctx.db.query("commentReactionSummaries").withIndex("by_commentId", (q) => q.eq("commentId", comment._id)).unique(),
-    participantDigest
-      ? ctx.db.query("commentReactions").withIndex("by_commentId_and_participantDigest", (q) => q.eq("commentId", comment._id).eq("participantDigest", participantDigest)).unique()
-      : Promise.resolve(null),
-    comment.photoStorageId ? ctx.storage.getUrl(comment.photoStorageId) : Promise.resolve(null),
-  ]);
-  return {
-    _id: comment._id,
-    _creationTime: comment._creationTime,
-    authorName: comment.authorName ?? null,
-    text: comment.text,
-    photoUrl,
-    updatedAt: comment.updatedAt ?? null,
-    edited: comment.updatedAt !== undefined,
-    thumbsUpCount: summary?.thumbsUpCount ?? 0,
-    thumbsDownCount: summary?.thumbsDownCount ?? 0,
-    viewerReaction: reaction?.direction ?? null,
-    canEdit: participantDigest !== null && comment.ownerDigest === participantDigest,
-  };
-}
-
 async function requireOwnedComment(ctx: MutationCtx, commentId: Id<"recipeComments">, participantKey: string) {
   const comment = await ctx.db.get(commentId);
   if (!comment) throw new Error("COMMENT_NOT_FOUND");
   const digest = await digestParticipantKey(participantKey);
   if (comment.ownerDigest !== digest) throw new Error("COMMENT_OWNER_REQUIRED");
   return comment;
-}
-
-async function removeComment(ctx: MutationCtx, comment: Doc<"recipeComments">) {
-  if (comment.photoStorageId) await ctx.storage.delete(comment.photoStorageId);
-  const summary = await ctx.db.query("commentReactionSummaries").withIndex("by_commentId", (q) => q.eq("commentId", comment._id)).unique();
-  if (summary) await ctx.db.delete(summary._id);
-  await ctx.db.delete(comment._id);
-  await ctx.scheduler.runAfter(0, internal.comments.cleanupReactions, { commentId: comment._id });
 }
 
 async function getOrCreateSummary(ctx: MutationCtx, commentId: Id<"recipeComments">) {

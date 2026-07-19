@@ -1,12 +1,18 @@
 import { httpRouter } from "convex/server";
 import { httpAction } from "./_generated/server";
 import { internal } from "./_generated/api";
+import type { Id } from "./_generated/dataModel";
+import {
+  RECIPE_COMMENT_MAX_PHOTO_BYTES,
+  RECIPE_COMMENT_MAX_PHOTO_DIMENSION,
+  RECIPE_COMMENT_MAX_PHOTO_PIXELS,
+  RECIPE_COMMENT_PHOTO_MIME_TYPES,
+} from "../lib/recipe-comment-policy";
+
+declare const process: { env: { RECIPE_ADMIN_PASSWORD?: string } };
 
 const http = httpRouter();
-const allowedPhotoTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
-const maxPhotoBytes = 8 * 1024 * 1024;
-const maxPhotoDimension = 8192;
-const maxPhotoPixels = 40_000_000;
+const allowedPhotoTypes = new Set<string>(RECIPE_COMMENT_PHOTO_MIME_TYPES);
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
@@ -17,6 +23,38 @@ http.route({
   path: "/comment-photo-upload",
   method: "OPTIONS",
   handler: httpAction(async () => new Response(null, { status: 204, headers: corsHeaders })),
+});
+
+http.route({
+  path: "/internal/admin/recipe-comments",
+  method: "GET",
+  handler: httpAction(async (ctx, request) => {
+    if (!hasAdminAuthorization(request)) return adminJson({ error: "RECIPE_ADMIN_REQUIRED" }, 401);
+    const url = new URL(request.url);
+    const slug = url.searchParams.get("slug")?.trim();
+    const cursor = url.searchParams.get("cursor") || null;
+    if (!slug) return adminJson({ error: "RECIPE_NOT_FOUND" }, 400);
+    const result = await ctx.runQuery(internal.commentAdmin.list, {
+      slug,
+      paginationOpts: { numItems: 10, cursor },
+    });
+    return adminJson(result, 200);
+  }),
+});
+
+http.route({
+  path: "/internal/admin/recipe-comments",
+  method: "DELETE",
+  handler: httpAction(async (ctx, request) => {
+    if (!hasAdminAuthorization(request)) return adminJson({ error: "RECIPE_ADMIN_REQUIRED" }, 401);
+    const body: unknown = await request.json().catch(() => null);
+    if (!isRecord(body) || typeof body.commentId !== "string" || !body.commentId.trim()) {
+      return adminJson({ error: "COMMENT_NOT_FOUND" }, 400);
+    }
+    const commentId = body.commentId.trim() as Id<"recipeComments">;
+    await ctx.runMutation(internal.commentAdmin.remove, { commentId });
+    return adminJson({ type: "success", commentId }, 200);
+  }),
 });
 
 http.route({
@@ -33,7 +71,7 @@ http.route({
       if (typeof slug !== "string" || typeof participantKey !== "string" || typeof honeypot !== "string" || !(photo instanceof File)) {
         return json({ error: "COMMENT_PHOTO_INVALID" }, 400);
       }
-      if (!allowedPhotoTypes.has(photo.type) || photo.size > maxPhotoBytes) {
+      if (!allowedPhotoTypes.has(photo.type) || photo.size > RECIPE_COMMENT_MAX_PHOTO_BYTES) {
         return json({ error: "COMMENT_PHOTO_INVALID" }, 400);
       }
       const bytes = new Uint8Array(await photo.arrayBuffer());
@@ -60,6 +98,19 @@ function json(value: unknown, status: number) {
   return Response.json(value, { status, headers: corsHeaders });
 }
 
+function adminJson(value: unknown, status: number) {
+  return Response.json(value, { status });
+}
+
+function hasAdminAuthorization(request: Request) {
+  const password = process.env.RECIPE_ADMIN_PASSWORD;
+  return Boolean(password && request.headers.get("Authorization") === `Bearer ${password}`);
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
 function hasSupportedImageStructure(bytes: Uint8Array, mimeType: string) {
   if (mimeType === "image/png") return isValidPng(bytes);
   if (mimeType === "image/jpeg") return isValidJpeg(bytes);
@@ -69,7 +120,10 @@ function hasSupportedImageStructure(bytes: Uint8Array, mimeType: string) {
 
 function isValidPng(bytes: Uint8Array) {
   const signature = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
-  if (bytes.length < 45 || !signature.every((byte, index) => bytes[index] === byte)) return false;
+  if (bytes.length < 45) return false;
+  for (let index = 0; index < signature.length; index += 1) {
+    if (bytes[index] !== signature[index]) return false;
+  }
   if (readAscii(bytes, 12, 16) !== "IHDR" || readUint32(bytes, 8) !== 13) return false;
   const width = readUint32(bytes, 16);
   const height = readUint32(bytes, 20);
@@ -129,7 +183,7 @@ function readAscii(bytes: Uint8Array, start: number, end: number) {
 }
 
 function hasSafeDimensions(width: number, height: number) {
-  return width > 0 && height > 0 && width <= maxPhotoDimension && height <= maxPhotoDimension && width * height <= maxPhotoPixels;
+  return width > 0 && height > 0 && width <= RECIPE_COMMENT_MAX_PHOTO_DIMENSION && height <= RECIPE_COMMENT_MAX_PHOTO_DIMENSION && width * height <= RECIPE_COMMENT_MAX_PHOTO_PIXELS;
 }
 
 function readUint32(bytes: Uint8Array, offset: number) {
