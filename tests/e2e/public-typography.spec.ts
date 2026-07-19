@@ -112,6 +112,28 @@ test("public typography holds across locales, themes, and widths", async ({ page
   }
 });
 
+test("mobile recipe cards keep an equal-height structure and show prep time", async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith("mobile-"));
+  await page.goto("/fr");
+
+  const recipeLink = page.locator('main a[href^="/fr/recettes/"]').first();
+  await expect(recipeLink.getByLabel("Préparation: 20 min")).toBeVisible();
+
+  const layout = await recipeLink.evaluate((link) => {
+    const card = link.closest("li");
+    const title = link.querySelector(".type-card-title");
+    return {
+      cardHeight: card?.getBoundingClientRect().height ?? 0,
+      linkHeight: link.getBoundingClientRect().height,
+      titleHeight: title?.getBoundingClientRect().height ?? 0,
+      titleLineHeight: title ? Number.parseFloat(getComputedStyle(title).lineHeight) : 0,
+    };
+  });
+
+  expect(layout.linkHeight).toBeCloseTo(layout.cardHeight, 0);
+  expect(layout.titleHeight).toBeGreaterThanOrEqual(layout.titleLineHeight * 2 - 1);
+});
+
 async function expectDescendingOutline(page: Page) {
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   const headings = await page.getByRole("heading").evaluateAll((elements) =>

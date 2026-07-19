@@ -29,12 +29,12 @@ export function RecipeGrid({
     <ul className="grid grid-cols-2 gap-3 md:gap-6 xl:grid-cols-3">
       {recipes.map((recipe, index) => {
         return (
-          <li key={recipe._id}>
+          <li key={recipe._id} className="h-full">
             <Link
               href={`/${locale}/recettes/${recipe.slug}`}
-              className="surface-elevated group block overflow-hidden rounded-2xl bg-card text-start transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background md:rounded-3xl"
+              className="surface-elevated group flex h-full flex-col overflow-hidden rounded-2xl bg-card text-start transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background md:rounded-3xl"
             >
-              <span className="relative block aspect-square overflow-hidden rounded-t-2xl bg-muted md:aspect-[4/3] md:rounded-t-3xl">
+              <span className="relative block aspect-square shrink-0 overflow-hidden rounded-t-2xl bg-muted md:aspect-[4/3] md:rounded-t-3xl">
                 <Image
                   src={recipe.heroImageUrl || defaultRecipeImageUrl}
                   alt=""
@@ -44,15 +44,23 @@ export function RecipeGrid({
                   className="image-outline object-cover transition-transform duration-500 group-hover:scale-[1.025]"
                 />
               </span>
-              <span className="block p-3 md:p-7">
+              <span className="flex min-h-24 flex-1 flex-col p-3 md:block md:min-h-0 md:p-7">
                 <span className="type-label mb-4 hidden items-center gap-2 text-primary tabular-nums md:inline-flex">
                   <Clock3 className="size-4 stroke-[1.8]" />
                   {recipe.timeLabel}
                 </span>
                 <span
-                  className="type-card-title block max-w-[18ch] text-[1.15rem] leading-[1.05] text-foreground md:text-[clamp(1.75rem,1.25rem+2vw,3rem)]"
+                  className="type-card-title line-clamp-2 block min-h-[2.1em] max-w-[18ch] text-[1.15rem] leading-[1.05] text-foreground md:min-h-0 md:text-[clamp(1.75rem,1.25rem+2vw,3rem)]"
+                  title={recipe.title}
                 >
                   {recipe.title}
+                </span>
+                <span
+                  className="mt-auto inline-flex items-center gap-1.5 pt-3 text-xs font-bold text-muted-foreground tabular-nums md:hidden"
+                  aria-label={`${dict.recipeDetail.prepTime}: ${recipe.prepTime || "—"}`}
+                >
+                  <Clock3 aria-hidden className="size-3.5 stroke-[1.8]" />
+                  {dict.recipeDetail.prepTime} · {recipe.prepTime || "—"}
                 </span>
                 <span className="type-byline mt-3 hidden text-muted-foreground md:block">
                   {dict.recipeDetail.recipeBy} {recipe.author}
