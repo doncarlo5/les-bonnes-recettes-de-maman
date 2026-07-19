@@ -12,6 +12,7 @@ import {
   type RecipeDraftContentLike,
 } from "../lib/recipe-admin-domain";
 import { resolveYieldLabel } from "../lib/recipe-yield";
+import { resolveReferenceServings } from "../lib/recipe-servings";
 
 declare const process: {
   env: {
@@ -83,6 +84,7 @@ const editableLocalizedRecipeValidator = v.object({
 
 const editableRecipeValidator = v.object({
   defaultLocale: localeValidator,
+  referenceServings: v.optional(v.number()),
   translations: v.object({
     fr: editableLocalizedRecipeValidator,
     en: editableLocalizedRecipeValidator,
@@ -93,6 +95,7 @@ const editableRecipeValidator = v.object({
 
 const draftContentValidator = v.object({
   defaultLocale: localeValidator,
+  referenceServings: v.optional(v.number()),
   translations: v.object({
     fr: editableLocalizedRecipeValidator,
     en: editableLocalizedRecipeValidator,
@@ -237,6 +240,7 @@ export const getForEditing = query({
       heroImageUrl: storedHeroImageUrl ?? source.heroImageUrl,
       imageCredit: source.imageCredit,
       defaultLocale: source.defaultLocale,
+      referenceServings: getReferenceServings(source),
       translations: toEditableTranslations(source.translations, recipe.slug),
       tags: source.tags,
       status: recipe.status,
@@ -270,6 +274,7 @@ export const create = mutation({
       slug,
       heroImageUrl: "",
       defaultLocale: args.recipe.defaultLocale,
+      referenceServings: args.recipe.referenceServings,
       translations: storedTranslations,
       tags: args.recipe.tags,
       status: "draft",
@@ -280,6 +285,7 @@ export const create = mutation({
       recipeId,
       heroImageUrl: "",
       defaultLocale: args.recipe.defaultLocale,
+      referenceServings: args.recipe.referenceServings,
       translations: storedTranslations,
       tags: args.recipe.tags,
       revision: 0,
@@ -348,6 +354,7 @@ export const saveDraft = mutation({
     );
     const contentPatch = {
         defaultLocale: args.recipe.defaultLocale,
+        referenceServings: args.recipe.referenceServings,
         translations: storedTranslations,
         tags: args.recipe.tags,
         revision,
@@ -363,6 +370,7 @@ export const saveDraft = mutation({
         heroImageUrl: existing.heroImageUrl,
         imageCredit: existing.imageCredit,
         defaultLocale: args.recipe.defaultLocale,
+        referenceServings: args.recipe.referenceServings,
         translations: storedTranslations,
         tags: args.recipe.tags,
         revision,
@@ -406,6 +414,7 @@ export const publishDraft = mutation({
       heroImageUrl: draft.heroImageUrl,
       imageCredit: draft.imageCredit,
       defaultLocale: draft.defaultLocale,
+      referenceServings: draft.referenceServings,
       translations: draft.translations,
       tags: draft.tags,
       status: "published",
@@ -447,6 +456,7 @@ export const discardDraft = mutation({
       heroImageUrl: recipe.heroImageUrl,
       imageCredit: recipe.imageCredit,
       defaultLocale: recipe.defaultLocale,
+      referenceServings: recipe.referenceServings,
       translations: recipe.translations,
       tags: recipe.tags,
       revision,
@@ -463,6 +473,7 @@ export const discardDraft = mutation({
       savedAt,
       draft: {
         defaultLocale: recipe.defaultLocale,
+        referenceServings: getReferenceServings(recipe),
         translations: toEditableTranslations(recipe.translations, recipe.slug),
         tags: recipe.tags,
         status: recipe.status,
@@ -653,6 +664,7 @@ async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
       ? { imageCredit: recipe.imageCredit }
       : {}),
     defaultLocale: recipe.defaultLocale,
+    referenceServings: getReferenceServings(recipe),
     tags: recipe.tags,
     status: recipe.status,
     ...content,
@@ -663,6 +675,15 @@ async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
       servings,
     }),
   };
+}
+
+function getReferenceServings(
+  source: Pick<RecipeDoc | RecipeDraftDoc, "referenceServings" | "translations">,
+) {
+  return resolveReferenceServings(
+    source.referenceServings,
+    source.translations.fr.servings,
+  );
 }
 
 type StoredLocalizedRecipe = RecipeDoc["translations"][Locale];
@@ -683,11 +704,12 @@ function toEditableTranslations(
 }
 
 function toEditableRecipeContent(
-  source: Pick<RecipeDoc | RecipeDraftDoc, "defaultLocale" | "translations" | "tags">,
+  source: Pick<RecipeDoc | RecipeDraftDoc, "defaultLocale" | "referenceServings" | "translations" | "tags">,
   slug: string,
 ): RecipeDraftContentLike {
   return {
     defaultLocale: source.defaultLocale,
+    referenceServings: getReferenceServings(source),
     translations: toEditableTranslations(source.translations, slug),
     tags: source.tags,
   };
@@ -768,6 +790,7 @@ async function ensureRecipeDraft(ctx: MutationCtx, recipe: RecipeDoc) {
     heroImageUrl: recipe.heroImageUrl,
     imageCredit: recipe.imageCredit,
     defaultLocale: recipe.defaultLocale,
+    referenceServings: recipe.referenceServings,
     translations: recipe.translations,
     tags: recipe.tags,
     revision: 0,

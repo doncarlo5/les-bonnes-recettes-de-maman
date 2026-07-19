@@ -12,14 +12,19 @@ export function CookModeEntry({
   locale,
   dict,
   recipe,
+  selectedServings,
 }: {
   locale: Locale;
   dict: Dictionary;
   recipe: Recipe;
+  selectedServings?: number;
 }) {
   const [hasProgress, setHasProgress] = useState(false);
   const key = getCookProgressKey(locale, recipe.slug);
-  const href = `/${locale}/recettes/${recipe.slug}/cuisiner`;
+  const servingsQuery = recipe.referenceServings && selectedServings && selectedServings !== recipe.referenceServings
+    ? `?personnes=${selectedServings}`
+    : "";
+  const href = `/${locale}/recettes/${recipe.slug}/cuisiner${servingsQuery}`;
 
   useEffect(() => {
     queueMicrotask(() => {

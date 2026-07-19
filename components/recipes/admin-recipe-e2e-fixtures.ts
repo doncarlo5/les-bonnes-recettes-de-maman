@@ -17,12 +17,19 @@ const localized = {
     { name: "Œufs", quantity: "3", unit: "", notes: "" },
   ],
   sections: [{ title: "Préparation", steps: ["Mélanger les ingrédients.", "Cuire au four."] }],
-  subRecipes: [],
+  subRecipes: [{
+    title: "Crème",
+    ingredients: [
+      { name: "Lait", quantity: "100", unit: "ml", notes: "" },
+      { name: "Vanille", quantity: "un peu", unit: "", notes: "" },
+    ],
+  }],
   notes: ["Servir tiède."],
 };
 
 const content = {
   defaultLocale: "fr" as const,
+  referenceServings: 6,
   translations: {
     fr: localized,
     en: { ...localized, title: "Demo tart", description: "A recipe used by mobile studio tests.", yieldLabel: "6 servings", prepTime: "" },
@@ -77,17 +84,39 @@ export function getRecipeAdminE2EFixtures() {
 
 export function getPublicRecipeE2EFixture(locale: "fr" | "en", slug?: string) {
   const fixtures = getRecipeAdminE2EFixtures();
-  if (!fixtures || (slug && slug !== fixtures.recipe.slug)) return null;
+  if (!fixtures) return null;
   const recipe = fixtures.recipe;
-  return {
+  const publicRecipe = {
     _id: recipe._id,
     _creationTime: recipe._creationTime,
     slug: recipe.slug,
     heroImageUrl: recipe.heroImageUrl,
     imageCredit: recipe.imageCredit,
     defaultLocale: recipe.defaultLocale,
+    referenceServings: recipe.referenceServings,
     tags: recipe.tags,
     status: recipe.status,
     ...recipe.translations[locale],
   } satisfies Recipe;
+
+  if (!slug || slug === recipe.slug) return publicRecipe;
+  if (slug === "autre-recette-de-demonstration") {
+    return {
+      ...publicRecipe,
+      slug,
+      title: locale === "fr" ? "Autre recette de démonstration" : "Another demo recipe",
+      referenceServings: 4,
+      yieldLabel: locale === "fr" ? "4 personnes" : "4 servings",
+    } satisfies Recipe;
+  }
+  if (slug === "ancienne-recette-sans-portions") {
+    return {
+      ...publicRecipe,
+      slug,
+      title: locale === "fr" ? "Ancienne recette sans portions" : "Legacy recipe without servings",
+      referenceServings: undefined,
+      yieldLabel: "2 cakes",
+    } satisfies Recipe;
+  }
+  return null;
 }

@@ -73,6 +73,7 @@ export default defineSchema({
     heroImageUrl: v.string(),
     imageCredit: v.optional(imageCredit),
     defaultLocale: v.union(v.literal("fr"), v.literal("en")),
+    referenceServings: v.optional(v.number()),
     translations: v.object({
       fr: localizedRecipe,
       en: localizedRecipe,
@@ -88,6 +89,7 @@ export default defineSchema({
     heroImageUrl: v.string(),
     imageCredit: v.optional(imageCredit),
     defaultLocale: v.union(v.literal("fr"), v.literal("en")),
+    referenceServings: v.optional(v.number()),
     translations: v.object({
       fr: localizedRecipe,
       en: localizedRecipe,

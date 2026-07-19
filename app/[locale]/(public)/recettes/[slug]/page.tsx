@@ -7,12 +7,14 @@ import { api } from "@/convex/_generated/api";
 import { getDictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import { getPublicRecipeE2EFixture } from "@/components/recipes/admin-recipe-e2e-fixtures";
+import { parseSelectedServings } from "@/lib/recipe-servings";
 
 type PageProps = {
   params: Promise<{
     locale: Locale;
     slug: string;
   }>;
+  searchParams: Promise<{ personnes?: string | string[] }>;
 };
 
 // Deduped across generateMetadata + the page render within one request.
@@ -58,8 +60,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params, searchParams }: PageProps) {
   const { locale, slug } = await params;
+  const selectedServings = parseSelectedServings((await searchParams).personnes);
   const [dict, recipe] = await Promise.all([
     getDictionary(locale),
     getRecipe(locale, slug),
@@ -74,6 +77,7 @@ export default async function Page({ params }: PageProps) {
       locale={locale}
       dict={dict}
       recipe={recipe}
+      initialServings={selectedServings ?? undefined}
     />
   );
 }

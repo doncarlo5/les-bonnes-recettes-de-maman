@@ -6,6 +6,7 @@ import { api } from "@/convex/_generated/api";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { hasLocale } from "@/i18n/config";
 import { getPublicRecipeE2EFixture } from "@/components/recipes/admin-recipe-e2e-fixtures";
+import { parseSelectedServings } from "@/lib/recipe-servings";
 
 const getRecipe = cache((locale: "fr" | "en", slug: string) => {
   const fixture = getPublicRecipeE2EFixture(locale, slug);
@@ -14,10 +15,13 @@ const getRecipe = cache((locale: "fr" | "en", slug: string) => {
 
 export default async function CookPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string; slug: string }>;
+  searchParams: Promise<{ personnes?: string | string[] }>;
 }) {
   const { locale, slug } = await params;
+  const selectedServings = parseSelectedServings((await searchParams).personnes);
   if (!hasLocale(locale)) notFound();
 
   const [dict, recipe] = await Promise.all([
@@ -26,5 +30,5 @@ export default async function CookPage({
   ]);
   if (!recipe) notFound();
 
-  return <GuidedCookMode locale={locale} dict={dict} recipe={recipe} />;
+  return <GuidedCookMode locale={locale} dict={dict} recipe={recipe} selectedServings={selectedServings ?? undefined} />;
 }

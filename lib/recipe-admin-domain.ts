@@ -1,3 +1,5 @@
+import { isValidReferenceServings } from "./recipe-servings";
+
 export const RECIPE_FIELD_LIMITS = {
   title: 200,
   author: 160,
@@ -53,6 +55,7 @@ type LocalizedRecipeContent = {
 
 export type RecipeDraftContentLike = {
   defaultLocale: "fr" | "en";
+  referenceServings?: number;
   translations: { fr: LocalizedRecipeContent; en: LocalizedRecipeContent };
   tags: string[];
 };
@@ -87,6 +90,7 @@ export function getRecipeReadiness(
   const en = recipe.translations.en;
   const hasTime = [fr.prepTime, fr.cookTime, fr.totalTime, fr.timeLabel].some(hasText);
   const hasIngredient = fr.ingredients.some((item) => hasText(item.name));
+  const hasReferenceServings = isValidReferenceServings(recipe.referenceServings);
   const hasPreparation = fr.sections.some(
     (section) => hasText(section.title) && section.steps.some(hasText),
   );
@@ -102,6 +106,7 @@ export function getRecipeReadiness(
     readinessItem(!hasText(fr.description), "fr-description", "Ajoute une description française.", "essentials", "fr", "translations.fr.description"),
     readinessItem(!hasTime, "fr-time", "Indique au moins un temps.", "details", "fr", "translations.fr.timeLabel"),
     readinessItem(!hasIngredient, "fr-ingredient", "Ajoute au moins un ingrédient.", "ingredients", "fr", "translations.fr.ingredients.0.name"),
+    readinessItem(!hasReferenceServings, "reference-servings", "Indique les portions de référence.", "ingredients", "fr", "referenceServings"),
     readinessItem(!hasPreparation, "fr-preparation", "Ajoute une section avec une étape.", "preparation", "fr", "translations.fr.sections.0.title"),
   ].filter((item): item is ReadinessItem => item !== null);
 
@@ -115,7 +120,7 @@ export function getRecipeReadiness(
       essentials,
       photo: hasImage,
       details: hasTime,
-      ingredients: hasIngredient,
+      ingredients: hasIngredient && hasReferenceServings,
       preparation: hasPreparation,
       notes: true,
       translation: translationEn,
@@ -130,6 +135,9 @@ export function getRecipeReadiness(
 }
 
 export function assertRecipeDraftLimits(value: RecipeDraftContentLike) {
+  if (value.referenceServings !== undefined && !isValidReferenceServings(value.referenceServings)) {
+    throw new Error("RECIPE_LIMIT_EXCEEDED");
+  }
   const { title, author, description, ingredientName, shortValue, longText } = RECIPE_FIELD_LIMITS;
   for (const localized of Object.values(value.translations)) {
     assertLength(localized.title, title);

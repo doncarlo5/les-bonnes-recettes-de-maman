@@ -48,6 +48,116 @@ test("a cook can advance, check ingredients, and resume locally", async ({ page 
   ).toEqual([]);
 });
 
+test("recipe portions scale ingredients and follow the cook into guided mode", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop");
+  await page.goto("/fr/recettes/tarte-de-demonstration");
+
+  const panel = page.locator('[data-ingredients-layout="desktop"]');
+  const counter = panel.getByRole("spinbutton", { name: "Nombre de personnes" });
+  await expect(counter).toHaveValue("6");
+  await expect(panel.getByText("Par défaut", { exact: true })).toBeVisible();
+  await expect(panel).toContainText("200 g");
+
+  await counter.fill("1");
+  await expect(panel.getByRole("button", { name: "Diminuer le nombre de personnes" })).toBeDisabled();
+  await counter.fill("50");
+  await expect(panel.getByRole("button", { name: "Augmenter le nombre de personnes" })).toBeDisabled();
+  await counter.fill("6");
+  await expect(panel.getByText("Par défaut", { exact: true })).toBeVisible();
+
+  await panel.getByRole("button", { name: "Augmenter le nombre de personnes" }).click();
+  await expect(counter).toHaveValue("7");
+  await expect(panel).toContainText("233,33 g");
+  await expect(panel.getByText("Par défaut", { exact: true })).toHaveCount(0);
+
+  await counter.fill("9");
+  await expect(panel).toContainText("300 g");
+  await expect(panel).toContainText("4,5");
+  await page.getByRole("link", { name: "Commencer à cuisiner" }).click();
+  await expect(page).toHaveURL(/\/cuisiner\?personnes=9$/);
+  await page.getByRole("button", { name: /Ingrédients/ }).click();
+  await expect(page.getByText("300 g", { exact: true })).toBeVisible();
+  await expect(page.getByText("4,5", { exact: true })).toBeVisible();
+  await expect(page.getByText("150 ml", { exact: true })).toBeVisible();
+  await expect(page.getByText("un peu", { exact: true })).toBeVisible();
+
+  await page.keyboard.press("Escape");
+  await page.getByRole("link", { name: "Retour à la recette" }).click();
+  await expect(page).toHaveURL(/\?personnes=9$/);
+  await expect(page.locator('[data-ingredients-layout="desktop"]').getByRole("spinbutton", { name: "Nombre de personnes" })).toHaveValue("9");
+
+  await page.goto("/en/recettes/tarte-de-demonstration");
+  await expect(page.locator('[data-ingredients-layout="desktop"]').getByRole("spinbutton", { name: "Number of servings" })).toHaveValue("6");
+  await expect(page.locator('[data-ingredients-layout="desktop"]').getByText("Default", { exact: true })).toBeVisible();
+});
+
+test("the portions control remains accessible at every recipe breakpoint", async ({ page }, testInfo) => {
+  await page.goto("/fr/recettes/tarte-de-demonstration");
+  const layout = testInfo.project.name === "desktop" ? "desktop" : "mobile";
+  const panel = page.locator(`[data-ingredients-layout="${layout}"]`);
+  if (layout === "mobile") {
+    await panel.getByRole("button", { name: /Ingrédients/ }).click();
+  }
+  const counter = panel.getByRole("spinbutton", { name: "Nombre de personnes" });
+  await expect(counter).toBeVisible();
+  await expect(panel.getByRole("button", { name: "Diminuer le nombre de personnes" })).toBeVisible();
+  await expect(panel.getByRole("button", { name: "Augmenter le nombre de personnes" })).toBeVisible();
+  await panel.getByRole("button", { name: "Augmenter le nombre de personnes" }).click();
+  await expect(counter).toHaveValue("7");
+  await expect(panel).toContainText("233,33 g");
+});
+
+test("English portions remain accessible on mobile and desktop", async ({ page }, testInfo) => {
+  test.skip(!["mobile-390", "desktop"].includes(testInfo.project.name));
+  await page.goto("/en/recettes/tarte-de-demonstration");
+  const layout = testInfo.project.name === "desktop" ? "desktop" : "mobile";
+  const panel = page.locator(`[data-ingredients-layout="${layout}"]`);
+  if (layout === "mobile") await panel.getByRole("button", { name: /Ingredients/ }).click();
+  await expect(panel.getByRole("spinbutton", { name: "Number of servings" })).toHaveValue("6");
+  await expect(panel.getByText("Default", { exact: true })).toBeVisible();
+});
+
+test("the direct servings input stays synchronized across responsive layouts", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop");
+  await page.goto("/fr/recettes/tarte-de-demonstration");
+  const desktop = page.locator('[data-ingredients-layout="desktop"]');
+  await desktop.getByRole("spinbutton", { name: "Nombre de personnes" }).fill("9");
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  const mobile = page.locator('[data-ingredients-layout="mobile"]');
+  await mobile.getByRole("button", { name: /Ingrédients/ }).click();
+  await expect(mobile.getByRole("spinbutton", { name: "Nombre de personnes" })).toHaveValue("9");
+  await expect(mobile).toContainText("300 g");
+});
+
+test("each recipe starts from its own reference portions and legacy recipes stay unchanged", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop");
+  await page.goto("/fr/recettes/tarte-de-demonstration?personnes=9");
+  await expect(page.locator('[data-ingredients-layout="desktop"]').getByRole("spinbutton", { name: "Nombre de personnes" })).toHaveValue("9");
+
+  await page.goto("/fr/recettes/autre-recette-de-demonstration");
+  await expect(page.locator('[data-ingredients-layout="desktop"]').getByRole("spinbutton", { name: "Nombre de personnes" })).toHaveValue("4");
+  await expect(page.locator('[data-ingredients-layout="desktop"]').getByText("Par défaut", { exact: true })).toBeVisible();
+
+  await page.goto("/fr/recettes/ancienne-recette-sans-portions");
+  const legacyPanel = page.locator('[data-ingredients-layout="desktop"]');
+  await expect(legacyPanel.getByRole("spinbutton", { name: "Nombre de personnes" })).toHaveCount(0);
+  await expect(legacyPanel.getByText("2 cakes", { exact: true })).toBeVisible();
+  await expect(legacyPanel).toContainText("200 g");
+});
+
+test("cook progress is retained when selected portions change", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop");
+  await page.goto("/fr/recettes/tarte-de-demonstration/cuisiner?personnes=9");
+  await page.getByRole("button", { name: "Étape suivante" }).click();
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Cuire");
+
+  await page.goto("/fr/recettes/tarte-de-demonstration/cuisiner?personnes=12");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Cuire");
+  await page.getByRole("button", { name: /Ingrédients/ }).click();
+  await expect(page.getByText("400 g", { exact: true })).toBeVisible();
+});
+
 test("completion, restart, locale isolation, and wake-lock lifecycle stay local", async ({ page }) => {
   await installWakeLockMock(page);
   await page.goto("/fr/recettes/tarte-de-demonstration/cuisiner");

@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { ChevronLeft, Clock3 } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
+import { formatScaledIngredient } from "@/lib/recipe-servings";
 import {
   Accordion,
   AccordionContent,
@@ -13,7 +15,8 @@ import {
 } from "@/components/ui/accordion";
 import { EditRecipeAccess } from "./edit-recipe-access";
 import { CookModeEntry } from "./cook-mode-entry";
-import type { Ingredient, Recipe } from "./types";
+import { RecipeIngredientsPanel } from "./recipe-ingredients-panel";
+import type { Recipe } from "./types";
 
 const defaultRecipeImageUrl =
   "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=1400&q=85";
@@ -23,6 +26,7 @@ type RecipeDetailPageProps = {
   dict: Dictionary;
   recipe: Recipe;
   mode?: "public" | "preview";
+  initialServings?: number;
 };
 
 export function RecipeDetailPage({
@@ -30,8 +34,9 @@ export function RecipeDetailPage({
   dict,
   recipe,
   mode = "public",
+  initialServings,
 }: RecipeDetailPageProps) {
-  return <RecipePresentation locale={locale} dict={dict} recipe={recipe} mode={mode} />;
+  return <RecipePresentation key={`${recipe.slug}:${recipe.referenceServings ?? "none"}:${initialServings ?? "default"}`} locale={locale} dict={dict} recipe={recipe} mode={mode} initialServings={initialServings} />;
 }
 
 export function RecipePresentation({
@@ -39,7 +44,14 @@ export function RecipePresentation({
   dict,
   recipe,
   mode,
-}: Required<RecipeDetailPageProps>) {
+  initialServings,
+}: RecipeDetailPageProps & { mode: "public" | "preview" }) {
+  const [selectedServings, setSelectedServings] = useState(
+    recipe.referenceServings ? initialServings ?? recipe.referenceServings : undefined,
+  );
+  const servingsFactor = recipe.referenceServings && selectedServings
+    ? selectedServings / recipe.referenceServings
+    : 1;
   return (
     <main className="text-foreground">
       <header className="px-5 py-8 sm:py-12 lg:px-10 lg:py-20">
@@ -89,7 +101,7 @@ export function RecipePresentation({
             ) : null}
             {mode === "public" ? (
               <div className="mt-8 grid gap-4">
-                <CookModeEntry locale={locale} dict={dict} recipe={recipe} />
+                <CookModeEntry locale={locale} dict={dict} recipe={recipe} selectedServings={selectedServings} />
                 <EditRecipeAccess locale={locale} slug={recipe.slug} />
               </div>
             ) : null}
@@ -157,7 +169,7 @@ export function RecipePresentation({
                                   {ingredient.name}
                                 </span>
                                 <span className="shrink-0 font-bold text-muted-foreground tabular-nums">
-                                  {formatQuantity(ingredient)}
+                                  {formatScaledIngredient(ingredient, servingsFactor, locale)}
                                 </span>
                               </li>
                             ))}
@@ -188,7 +200,7 @@ export function RecipePresentation({
                               {ingredient.name}
                             </span>
                             <span className="shrink-0 font-bold text-muted-foreground tabular-nums">
-                              {formatQuantity(ingredient)}
+                              {formatScaledIngredient(ingredient, servingsFactor, locale)}
                             </span>
                           </li>
                         ))}
@@ -244,91 +256,13 @@ export function RecipePresentation({
             ) : null}
           </div>
 
-          {/* Sidebar — ingredients */}
-          <aside className="lg:sticky lg:top-28 lg:self-start">
-            {/* Mobile: collapsible card */}
-            <div className="lg:hidden">
-              <div className="rounded-2xl bg-card px-4 shadow-[var(--shadow-card)]">
-                <Accordion defaultValue="ingredients">
-                  <AccordionItem value="ingredients">
-                    <AccordionTrigger className="py-3 hover:no-underline">
-                      <span className="flex flex-1 items-center justify-between gap-3 pr-2">
-                        <span className="type-content-title text-foreground">
-                          {dict.recipeDetail.ingredients}
-                        </span>
-                        {recipe.yieldLabel ? (
-                          <span className="shrink-0 rounded-full bg-secondary px-2.5 py-0.5 text-sm font-semibold text-secondary-foreground tabular-nums">
-                            {recipe.yieldLabel}
-                          </span>
-                        ) : null}
-                      </span>
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <ul className="divide-y divide-border border-t border-border">
-                        {recipe.ingredients.map((ingredient, index) => (
-                          <li
-                            key={`${ingredient.name}-${ingredient.unit}-${index}`}
-                            className="type-body-sm flex items-baseline justify-between gap-3 py-2"
-                          >
-                            <span data-ingredient-name className="font-semibold text-foreground first-letter:uppercase">
-                              {ingredient.name}
-                              {ingredient.notes ? (
-                                <span className="mt-0.5 block text-xs font-medium italic text-muted-foreground">
-                                  {ingredient.notes}
-                                </span>
-                              ) : null}
-                            </span>
-                            <span className="shrink-0 font-bold text-muted-foreground tabular-nums">
-                              {formatQuantity(ingredient)}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </div>
-            </div>
-
-            {/* Desktop: original card */}
-            <div className="hidden rounded-2xl bg-card p-6 shadow-[var(--shadow-card)] lg:block lg:p-7">
-              <div className="mb-5 flex items-baseline justify-between gap-4 border-b border-border pb-4">
-                <h2 className="type-content-title text-foreground">
-                  {dict.recipeDetail.ingredients}
-                </h2>
-                {recipe.yieldLabel ? (
-                  <span className="shrink-0 rounded-full bg-secondary px-3 py-1 text-sm font-semibold text-secondary-foreground tabular-nums">
-                    {recipe.yieldLabel}
-                  </span>
-                ) : null}
-              </div>
-              <ul className="divide-y divide-border">
-                {recipe.ingredients.map((ingredient, index) => (
-                  <li
-                    key={`${ingredient.name}-${ingredient.unit}-${index}`}
-                    className="flex items-baseline justify-between gap-4 py-3"
-                  >
-                    <span data-ingredient-name className="font-semibold text-foreground first-letter:uppercase">
-                      {ingredient.name}
-                      {ingredient.notes ? (
-                        <span className="mt-0.5 block text-sm font-medium italic text-muted-foreground">
-                          {ingredient.notes}
-                        </span>
-                      ) : null}
-                    </span>
-                    <span className="shrink-0 font-bold text-muted-foreground tabular-nums">
-                      {formatQuantity(ingredient)}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              {recipe.totalTime ? (
-                <p className="type-label mt-6 border-t border-border pt-4 text-muted-foreground tabular-nums">
-                  {dict.recipeDetail.totalTime} · {recipe.totalTime}
-                </p>
-              ) : null}
-            </div>
-          </aside>
+          <RecipeIngredientsPanel
+            locale={locale}
+            dict={dict}
+            recipe={recipe}
+            selectedServings={selectedServings}
+            onSelectedServingsChange={setSelectedServings}
+          />
           </div>
         </div>
       </section>
@@ -360,9 +294,4 @@ function RecipeMeta({ dict, recipe }: { dict: Dictionary; recipe: Recipe }) {
       ))}
     </dl>
   );
-}
-
-function formatQuantity(ingredient: Ingredient) {
-  if (!ingredient.quantity) return "";
-  return `${ingredient.quantity}${ingredient.unit ? ` ${ingredient.unit}` : ""}`;
 }

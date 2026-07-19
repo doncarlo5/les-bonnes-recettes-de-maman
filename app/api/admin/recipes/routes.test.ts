@@ -36,7 +36,7 @@ const localized = {
   subRecipes: [],
   notes: [],
 };
-const payload = { defaultLocale: "fr", translations: { fr: localized, en: localized }, tags: [] };
+const payload = { defaultLocale: "fr", referenceServings: 6, translations: { fr: localized, en: localized }, tags: [] };
 
 function request(body: unknown) {
   return new Request("http://localhost/api/admin/recipes/test", {
@@ -57,6 +57,18 @@ describe("recipe admin route contracts", () => {
     const response = await saveRecipe(request({ locale: "fr", mode: "update", slug: "tarte-mobile", expectedRevision: 3, recipePayload: JSON.stringify(payload) }) as never);
     expect(response.status).toBe(200);
     expect(await response.json()).toMatchObject({ slug: "tarte-mobile", revision: 4, savedAt: 1234 });
+  });
+
+  test("save rejects reference servings outside the public selector bounds", async () => {
+    const response = await saveRecipe(request({
+      locale: "fr",
+      mode: "update",
+      slug: "tarte-mobile",
+      expectedRevision: 3,
+      recipePayload: JSON.stringify({ ...payload, referenceServings: 51 }),
+    }) as never);
+    expect(response.status).toBe(400);
+    expect(fetchMutation).not.toHaveBeenCalled();
   });
 
   test("save and image routes expose typed revision conflicts", async () => {

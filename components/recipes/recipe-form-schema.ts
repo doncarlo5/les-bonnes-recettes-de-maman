@@ -41,6 +41,7 @@ const localizedRecipeSchema = z.object({
 
 const editableRecipeDraftObject = z.object({
     defaultLocale: z.union([z.literal("fr"), z.literal("en")]),
+    referenceServings: z.number().int().min(1).max(50).optional(),
     translations: z.object({
       fr: localizedRecipeSchema,
       en: localizedRecipeSchema,

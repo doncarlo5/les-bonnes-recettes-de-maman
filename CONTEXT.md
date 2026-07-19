@@ -21,6 +21,10 @@ _Avoid_: Recherche plein texte, recherche globale
 Libellé éditorial localisé qui décrit ce que produit une Recette en convives, pièces, contenants ou quantité approximative.
 _Avoid_: Portions, nombre de personnes, servings
 
+**Portions de référence**:
+Nombre entier de personnes pour lequel les quantités d’ingrédients d’une Recette ont été écrites et à partir duquel elles peuvent être redimensionnées.
+_Avoid_: Rendement de recette, quantité obtenue
+
 **Mode cuisine**:
 Expérience publique et focalisée qui accompagne la préparation d’une Recette, une étape à la fois, sans modifier son contenu éditorial.
 _Avoid_: Tutoriel, assistant de recette, lecteur pas-à-pas

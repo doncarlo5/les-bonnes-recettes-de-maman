@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, Check, ListChecks, MoonStar } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
+import { formatScaledIngredient } from "@/lib/recipe-servings";
 import {
   createCookContentSignature,
   getCookProgressKey,
@@ -35,11 +36,22 @@ export function GuidedCookMode({
   locale,
   dict,
   recipe,
+  selectedServings,
 }: {
   locale: Locale;
   dict: Dictionary;
   recipe: Recipe;
+  selectedServings?: number;
 }) {
+  const effectiveServings = recipe.referenceServings
+    ? selectedServings ?? recipe.referenceServings
+    : undefined;
+  const servingsFactor = recipe.referenceServings && effectiveServings
+    ? effectiveServings / recipe.referenceServings
+    : 1;
+  const recipeHref = effectiveServings && effectiveServings !== recipe.referenceServings
+    ? `/${locale}/recettes/${recipe.slug}?personnes=${effectiveServings}`
+    : `/${locale}/recettes/${recipe.slug}`;
   const contentSignature = useMemo(() => createCookContentSignature(recipe), [recipe]);
   const storageKey = getCookProgressKey(locale, recipe.slug);
   const [progress, setProgress] = useState<CookProgressV1>(() =>
@@ -153,7 +165,7 @@ export function GuidedCookMode({
     <main className="flex h-svh min-h-0 flex-col overflow-hidden">
       <header className="flex min-h-20 shrink-0 items-center justify-between gap-3 border-b border-border px-4 sm:px-6 lg:px-10">
         <Link
-          href={`/${locale}/recettes/${recipe.slug}`}
+          href={recipeHref}
           aria-label={dict.cookMode.backToRecipe}
           className="inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm font-semibold text-muted-foreground transition-[scale,background-color,color] duration-150 hover:bg-muted hover:text-foreground active:scale-[0.96] md:min-h-10"
         >
@@ -189,7 +201,7 @@ export function GuidedCookMode({
                 {dict.cookMode.previous}
               </Button>
               <Link
-                href={`/${locale}/recettes/${recipe.slug}`}
+                href={recipeHref}
                 className="inline-flex min-h-11 items-center rounded-lg bg-background px-4 text-sm font-semibold shadow-[0_0_0_1px_var(--border)] transition-[scale,background-color,color] duration-150 hover:bg-muted active:scale-[0.96] md:min-h-10"
               >
                 {dict.cookMode.backToRecipe}
@@ -275,6 +287,8 @@ export function GuidedCookMode({
               prefix="main"
               checked={progress.checkedIngredientIds}
               onToggle={toggleIngredient}
+              factor={servingsFactor}
+              locale={locale}
             />
             {recipe.subRecipes.map((subRecipe, index) => (
               <section key={subRecipe.title} className="mt-7">
@@ -284,6 +298,8 @@ export function GuidedCookMode({
                   prefix={`sub:${index}`}
                   checked={progress.checkedIngredientIds}
                   onToggle={toggleIngredient}
+                  factor={servingsFactor}
+                  locale={locale}
                 />
               </section>
             ))}
@@ -299,11 +315,15 @@ function IngredientGroup({
   prefix,
   checked,
   onToggle,
+  factor,
+  locale,
 }: {
   ingredients: Ingredient[];
   prefix: string;
   checked: string[];
   onToggle: (id: string) => void;
+  factor: number;
+  locale: Locale;
 }) {
   return (
     <ul className="divide-y divide-border">
@@ -316,7 +336,7 @@ function IngredientGroup({
               <span className="type-body flex min-w-0 flex-1 items-baseline justify-between gap-3">
                 <span data-ingredient-name className="first-letter:uppercase">{ingredient.name}</span>
                 <span className="shrink-0 font-semibold text-muted-foreground tabular-nums">
-                  {formatQuantity(ingredient)}
+                  {formatScaledIngredient(ingredient, factor, locale)}
                 </span>
               </span>
             </label>
@@ -349,8 +369,4 @@ function format(template: string, values: Record<string, string | number>) {
     (result, [key, value]) => result.replace(`{${key}}`, String(value)),
     template,
   );
-}
-
-function formatQuantity(ingredient: Ingredient) {
-  return [ingredient.quantity, ingredient.unit].filter(Boolean).join(" ");
 }

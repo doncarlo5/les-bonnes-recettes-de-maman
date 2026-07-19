@@ -46,6 +46,7 @@ export type Recipe = {
         alt: string;
       };
   defaultLocale: "fr" | "en";
+  referenceServings?: number;
   tags: string[];
   status: "draft" | "published";
   title: string;
@@ -65,6 +66,7 @@ export type Recipe = {
 
 export type EditableRecipeContent = {
   defaultLocale: "fr" | "en";
+  referenceServings?: number;
   translations: {
     fr: Omit<
       Recipe,
@@ -74,6 +76,7 @@ export type EditableRecipeContent = {
       | "heroImageUrl"
       | "imageCredit"
       | "defaultLocale"
+      | "referenceServings"
       | "tags"
       | "status"
     >;
@@ -85,6 +88,7 @@ export type EditableRecipeContent = {
       | "heroImageUrl"
       | "imageCredit"
       | "defaultLocale"
+      | "referenceServings"
       | "tags"
       | "status"
     >;

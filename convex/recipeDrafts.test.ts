@@ -27,6 +27,7 @@ function recipe(title = "Tarte mobile") {
 
   return {
     defaultLocale: "fr" as const,
+    referenceServings: 6,
     translations: { fr: localized, en: { ...localized, title: "Mobile tart" } },
     tags: ["dessert"],
     status: "draft" as const,
@@ -94,6 +95,29 @@ describe("recipe working drafts", () => {
     });
   });
 
+  test("allows an incomplete draft but requires reference servings to publish", async () => {
+    const t = convexTest(schema, modules);
+    const incomplete = { ...recipe(), referenceServings: undefined };
+    const created = await t.mutation(api.recipes.create, {
+      recipe: incomplete,
+      adminPassword: password,
+    });
+
+    await expect(t.mutation(api.recipes.publishDraft, {
+      slug: created.slug,
+      expectedRevision: 0,
+      adminPassword: password,
+    })).rejects.toThrow("RECIPE_NOT_READY");
+  });
+
+  test("rejects reference servings outside the public selector bounds", async () => {
+    const t = convexTest(schema, modules);
+    await expect(t.mutation(api.recipes.create, {
+      recipe: { ...recipe(), referenceServings: 51 },
+      adminPassword: password,
+    })).rejects.toThrow("RECIPE_LIMIT_EXCEEDED");
+  });
+
   test("detects stale autosaves", async () => {
     const t = convexTest(schema, modules);
     const created = await t.mutation(api.recipes.create, {
@@ -106,6 +130,7 @@ describe("recipe working drafts", () => {
       slug: created.slug,
       recipe: {
         defaultLocale: next.defaultLocale,
+        referenceServings: next.referenceServings,
         translations: next.translations,
         tags: next.tags,
       },
@@ -118,6 +143,7 @@ describe("recipe working drafts", () => {
         slug: created.slug,
         recipe: {
           defaultLocale: next.defaultLocale,
+          referenceServings: next.referenceServings,
           translations: next.translations,
           tags: next.tags,
         },
@@ -133,14 +159,14 @@ describe("recipe working drafts", () => {
     const first = recipe("Premier appareil");
     await t.mutation(api.recipes.saveDraft, {
       slug: created.slug,
-      recipe: { defaultLocale: first.defaultLocale, translations: first.translations, tags: first.tags },
+      recipe: { defaultLocale: first.defaultLocale, referenceServings: first.referenceServings, translations: first.translations, tags: first.tags },
       expectedRevision: 0,
       adminPassword: password,
     });
     const replacement = recipe("Téléphone prioritaire");
     const saved = await t.mutation(api.recipes.saveDraft, {
       slug: created.slug,
-      recipe: { defaultLocale: replacement.defaultLocale, translations: replacement.translations, tags: replacement.tags },
+      recipe: { defaultLocale: replacement.defaultLocale, referenceServings: replacement.referenceServings, translations: replacement.translations, tags: replacement.tags },
       expectedRevision: 0,
       force: true,
       adminPassword: password,
@@ -167,6 +193,7 @@ describe("recipe working drafts", () => {
       slug: created.slug,
       recipe: {
         defaultLocale: changed.defaultLocale,
+        referenceServings: changed.referenceServings,
         translations: changed.translations,
         tags: changed.tags,
       },
@@ -272,6 +299,7 @@ describe("recipe working drafts", () => {
       slug: created.slug,
       recipe: {
         defaultLocale: changed.defaultLocale,
+        referenceServings: changed.referenceServings,
         translations: changed.translations,
         tags: changed.tags,
       },
@@ -383,6 +411,7 @@ describe("recipe working drafts", () => {
         slug: "archive-approuvee",
         heroImageUrl: "",
         defaultLocale: content.defaultLocale,
+        referenceServings: content.referenceServings,
         translations: {
           fr: { ...legacyFrench, servings: { quantity: 6, unit: "personnes" } },
           en: { ...legacyEnglish, servings: { quantity: 6, unit: "people" } },

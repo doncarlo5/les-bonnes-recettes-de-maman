@@ -392,6 +392,7 @@ function persistRecovery(slug: string, payload: RecipeFormPayload, revision: num
 export function toFormValues(recipe: EditableRecipe): RecipeFormPayload {
   return cloneRecipe({
     defaultLocale: recipe.defaultLocale,
+    referenceServings: recipe.referenceServings,
     translations: recipe.translations,
     tags: recipe.tags,
     status: recipe.status,
@@ -413,6 +414,7 @@ function draftFingerprint(value: RecipeFormPayload) {
   const normalized = normalizePayload(value);
   return JSON.stringify({
     defaultLocale: normalized.defaultLocale,
+    referenceServings: normalized.referenceServings,
     translations: normalized.translations,
     tags: normalized.tags,
   });

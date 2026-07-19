@@ -1,4 +1,5 @@
 import { resolveYieldLabel } from "../lib/recipe-yield";
+import { resolveReferenceServings } from "../lib/recipe-servings";
 
 type Locale = "fr" | "en";
 
@@ -58,6 +59,7 @@ export type SeedRecipe = {
   slug: string;
   heroImageUrl: string;
   defaultLocale: Locale;
+  referenceServings?: number;
   translations: Record<Locale, LocalizedRecipe>;
   tags: string[];
   status: "published";
@@ -852,6 +854,7 @@ export function localizeRecipe(recipe: SourceRecipe, locale: Locale): LocalizedR
 }
 
 export function toSeedRecipe(recipe: SourceRecipe): SeedRecipe {
+  const referenceServings = resolveReferenceServings(undefined, recipe.servings);
   return {
     slug: recipe.slug,
     heroImageUrl:
@@ -859,6 +862,7 @@ export function toSeedRecipe(recipe: SourceRecipe): SeedRecipe {
       fallbackHeroImageUrls[recipe.slug] ||
       defaultHeroImageUrl,
     defaultLocale: "fr",
+    ...(referenceServings ? { referenceServings } : {}),
     translations: {
       fr: localizeRecipe(recipe, "fr"),
       en: localizeRecipe(recipe, "en"),
