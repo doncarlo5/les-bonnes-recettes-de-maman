@@ -39,7 +39,7 @@ type LocalizedRecipeContent = {
   title: string;
   author: string;
   description: string;
-  servings: { quantity: number; unit: string } | null;
+  yieldLabel: string;
   prepTime: string;
   cookTime: string;
   totalTime: string;
@@ -135,7 +135,7 @@ export function assertRecipeDraftLimits(value: RecipeDraftContentLike) {
     assertLength(localized.title, title);
     assertLength(localized.author, author);
     assertLength(localized.description, description);
-    assertLength(localized.servings?.unit ?? "", shortValue);
+    assertLength(localized.yieldLabel, shortValue);
     for (const field of [localized.prepTime, localized.cookTime, localized.totalTime, localized.timeLabel, localized.temperature]) {
       assertLength(field, shortValue);
     }

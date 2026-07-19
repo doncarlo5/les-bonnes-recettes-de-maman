@@ -150,8 +150,8 @@ export function GuidedCookMode({
   }
 
   return (
-    <main className="flex min-h-screen flex-col">
-      <header className="flex min-h-20 items-center justify-between gap-3 border-b border-border px-4 sm:px-6 lg:px-10">
+    <main className="flex h-svh min-h-0 flex-col overflow-hidden">
+      <header className="flex min-h-20 shrink-0 items-center justify-between gap-3 border-b border-border px-4 sm:px-6 lg:px-10">
         <Link
           href={`/${locale}/recettes/${recipe.slug}`}
           aria-label={dict.cookMode.backToRecipe}
@@ -172,7 +172,7 @@ export function GuidedCookMode({
         </Button>
       </header>
 
-      <div className="mx-auto grid w-full max-w-6xl flex-1 content-center gap-10 px-5 py-10 sm:px-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-16 lg:px-10 lg:py-16">
+      <div className="mx-auto grid min-h-0 w-full max-w-6xl flex-1 content-center gap-10 overflow-y-auto overscroll-contain px-5 py-10 sm:px-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-16 lg:px-10 lg:py-16">
         {isComplete ? (
           <section className="max-w-2xl">
             <span className="mb-6 flex size-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-card">
@@ -251,7 +251,7 @@ export function GuidedCookMode({
         </aside>
       </div>
 
-      <div className="h-1 bg-muted" aria-hidden>
+      <div className="h-1 shrink-0 bg-muted" aria-hidden>
         <div
           className="h-full bg-primary transition-[width] duration-300"
           style={{ width: `${((currentFlatIndex + 1) / flattened.length) * 100}%` }}
@@ -314,7 +314,7 @@ function IngredientGroup({
             <label className="flex min-h-14 cursor-pointer items-center gap-4 py-2">
               <Checkbox className="" checked={checked.includes(id)} onCheckedChange={() => onToggle(id)} />
               <span className="type-body flex min-w-0 flex-1 items-baseline justify-between gap-3">
-                <span>{ingredient.name}</span>
+                <span data-ingredient-name className="first-letter:uppercase">{ingredient.name}</span>
                 <span className="shrink-0 font-semibold text-muted-foreground tabular-nums">
                   {formatQuantity(ingredient)}
                 </span>

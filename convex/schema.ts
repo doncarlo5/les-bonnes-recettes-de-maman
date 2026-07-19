@@ -22,6 +22,7 @@ const localizedRecipe = v.object({
   title: v.string(),
   author: v.string(),
   description: v.string(),
+  // Transitional legacy field. Keep required until the yield-label backfill has run.
   servings: v.union(
     v.object({
       quantity: v.number(),
@@ -29,6 +30,7 @@ const localizedRecipe = v.object({
     }),
     v.null(),
   ),
+  yieldLabel: v.optional(v.string()),
   prepTime: v.string(),
   cookTime: v.string(),
   totalTime: v.string(),

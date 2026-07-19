@@ -22,8 +22,12 @@ test("public typography holds across locales, themes, and widths", async ({ page
         fontSize: Number.parseFloat(style.fontSize),
       };
     });
-    expect(titleStyle.fontFamily).toContain("Newsreader");
-    expect(titleStyle.fontSize).toBeGreaterThanOrEqual(40);
+    if (testInfo.project.name.startsWith("mobile-")) {
+      await expect(pageTitle).toHaveClass(/sr-only/);
+    } else {
+      expect(titleStyle.fontFamily).toContain("Newsreader");
+      expect(titleStyle.fontSize).toBeGreaterThanOrEqual(40);
+    }
     await expectDescendingOutline(page);
 
     const titleLayout = await pageTitle.evaluate((element, value) => {
@@ -35,7 +39,9 @@ test("public typography holds across locales, themes, and widths", async ({ page
         viewportWidth: document.documentElement.clientWidth,
       };
     }, longTitles[locale]);
-    expect(titleLayout.scrollWidth).toBeLessThanOrEqual(titleLayout.clientWidth + 1);
+    if (!testInfo.project.name.startsWith("mobile-")) {
+      expect(titleLayout.scrollWidth).toBeLessThanOrEqual(titleLayout.clientWidth + 1);
+    }
     expect(titleLayout.documentWidth).toBeLessThanOrEqual(titleLayout.viewportWidth + 1);
 
     const editorialLead = page.locator("main .type-editorial-lead:visible").first();
@@ -84,7 +90,8 @@ test("public typography holds across locales, themes, and widths", async ({ page
   const recipeLink = page.locator('main a[href^="/fr/recettes/"]').first();
   if ((await recipeLink.count()) > 0) {
     await recipeLink.click();
-    const recipeTitle = page.locator("main h1");
+    await expect(page).toHaveURL(/\/fr\/recettes\/[^/?#]+$/);
+    const recipeTitle = page.locator("main h1.type-display:visible").first();
     await expect(recipeTitle).toHaveClass(/type-display/);
     await expectDescendingOutline(page);
     const instructionColumn = page.locator("main ol").first();
@@ -165,6 +172,29 @@ test("public recipe photos do not display source credits", async ({ page }) => {
   await expect(page.getByRole("img", { name: "Tarte de démonstration décorée de fruits" })).toBeVisible();
   await expect(page.getByText("Photographe de démonstration", { exact: true })).toHaveCount(0);
   await expect(page.getByRole("link", { name: "Unsplash" })).toHaveCount(0);
+});
+
+test("ingredient names start with a capital letter without changing their content", async ({ page }) => {
+  await page.goto("/fr/recettes/tarte-de-demonstration");
+
+  const ingredientName = page.locator("[data-ingredient-name]").first();
+  await expect(ingredientName).toHaveCount(1);
+  expect(await ingredientName.evaluate((element) =>
+    getComputedStyle(element, "::first-letter").textTransform,
+  )).toBe("uppercase");
+});
+
+test("mobile recipe back link sits above the hero image", async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith("mobile-"));
+  await page.goto("/fr/recettes/tarte-de-demonstration");
+
+  const backLink = page.getByRole("link", { name: "Retour à la liste des recettes" });
+  const heroImage = page.locator("main header img");
+  const backBox = await backLink.boundingBox();
+  const imageBox = await heroImage.boundingBox();
+
+  expect(backBox?.height).toBeGreaterThanOrEqual(44);
+  expect((backBox?.y ?? 0) + (backBox?.height ?? 0)).toBeLessThanOrEqual(imageBox?.y ?? 0);
 });
 
 test("desktop recipe body aligns preparation with a compact ingredient panel", async ({ page }, testInfo) => {

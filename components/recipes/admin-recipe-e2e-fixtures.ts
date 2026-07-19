@@ -6,7 +6,7 @@ const localized = {
   title: "Tarte de démonstration",
   author: "Maman",
   description: "Une recette utilisée uniquement par les tests du studio mobile.",
-  servings: { quantity: 6, unit: "personnes" },
+  yieldLabel: "6 personnes",
   prepTime: "20 min",
   cookTime: "30 min",
   totalTime: "50 min",
@@ -25,7 +25,7 @@ const content = {
   defaultLocale: "fr" as const,
   translations: {
     fr: localized,
-    en: { ...localized, title: "Demo tart", description: "A recipe used by mobile studio tests.", prepTime: "" },
+    en: { ...localized, title: "Demo tart", description: "A recipe used by mobile studio tests.", yieldLabel: "6 servings", prepTime: "" },
   },
   tags: ["dessert"],
   status: "published" as const,

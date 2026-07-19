@@ -51,7 +51,7 @@ export type Recipe = {
   title: string;
   author: string;
   description: string;
-  servings: { quantity: number; unit: string } | null;
+  yieldLabel: string;
   prepTime: string;
   cookTime: string;
   totalTime: string;

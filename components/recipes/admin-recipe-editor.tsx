@@ -132,7 +132,7 @@ const blankLocalizedRecipe = {
   title: "",
   author: "",
   description: "",
-  servings: null,
+  yieldLabel: "",
   prepTime: "",
   cookTime: "",
   totalTime: "",
@@ -583,7 +583,7 @@ function MobileRecipeAdmin({
         <div className="pointer-events-auto mx-auto grid max-w-xl grid-cols-3 gap-1 rounded-[1.125rem] bg-card/95 p-1.5 shadow-[var(--shadow-card)] backdrop-blur-xl">
           <Button type="button" variant={section === "overview" ? "secondary" : "ghost"} onClick={() => onOpenSection("overview")} className="h-12 min-w-0 gap-1 rounded-xl px-2 text-xs sm:text-sm" aria-pressed={section === "overview"}><BookOpen /> Recette</Button>
           <Button type="button" variant={section === "photo" ? "secondary" : "ghost"} onClick={() => onOpenSection("photo")} className="h-12 min-w-0 gap-1 rounded-xl px-2 text-xs sm:text-sm" aria-pressed={section === "photo"}><Camera /> Photo</Button>
-          <Button type="button" variant={section === "publish" ? "secondary" : "ghost"} onClick={() => onOpenSection("publish")} className="h-12 min-w-0 gap-1 rounded-xl px-2 text-xs sm:text-sm" aria-label={`Publier, ${completedSections} sections sur 7 complétées`} aria-pressed={section === "publish"}><Send /> Publier <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-[0.6875rem] font-bold leading-none text-primary tabular-nums">{completedSections}/7</span></Button>
+          <Button type="button" variant={publication.hasUnpublishedChanges ? "default" : section === "publish" ? "secondary" : "ghost"} data-publication-needed={publication.hasUnpublishedChanges || undefined} onClick={() => onOpenSection("publish")} className="h-12 min-w-0 gap-1 rounded-xl px-2 text-xs sm:text-sm" aria-label={`Publier, ${completedSections} sections sur 7 complétées`} aria-pressed={section === "publish"}><Send /> Publier <span className={`rounded-full px-1.5 py-0.5 text-[0.6875rem] font-bold leading-none tabular-nums ${publication.hasUnpublishedChanges ? "bg-primary-foreground/15 text-primary-foreground" : "bg-primary/10 text-primary"}`}>{completedSections}/7</span></Button>
         </div>
       </nav>
     </main>
@@ -608,7 +608,7 @@ function MobileOverview({ recipe, values, readiness, publication, onOpen }: { re
   }> = [
     { id: "essentials", title: "L’essentiel", detail: "Titre, auteur et description", icon: NotebookPen, complete: readiness.sections.essentials, ...status("essentials") },
     { id: "photo", title: "Photo", detail: "Couverture de la recette", icon: Camera, complete: readiness.sections.photo, ...status("photo") },
-    { id: "details", title: "Détails", detail: "Portions, temps et température", icon: Clock3, complete: readiness.sections.details, ...status("details") },
+    { id: "details", title: "Détails", detail: "Quantité obtenue, temps et température", icon: Clock3, complete: readiness.sections.details, ...status("details") },
     { id: "ingredients", title: "Ingrédients", detail: `${values.translations[values.defaultLocale].ingredients.filter((item) => item.name.trim()).length} éléments`, icon: ListChecks, complete: readiness.sections.ingredients, ...status("ingredients") },
     { id: "preparation", title: "Préparation", detail: "Sections, étapes et sous-recettes", icon: BookOpen, complete: readiness.sections.preparation, ...status("preparation") },
     { id: "notes", title: "Notes", detail: "Astuces et variantes", icon: NotebookPen, complete: true, ...status("notes") },
@@ -696,7 +696,7 @@ function MobileSectionFields({ section, locale, recipe, revision, onImageRevisio
   const errors = form.formState.errors;
   if (section === "photo") return <div data-field-target="heroImageUrl" tabIndex={-1}><AdminRecipeImagePanel locale={locale} recipe={recipe} revision={revision} onRevisionChange={onImageRevision} onConflict={onImageConflict} /></div>;
   if (section === "essentials") return <FieldGroup><TextField label="Titre" name={`${base}.title`} register={form.register} errors={errors} /><TextField label="Auteur" name={`${base}.author`} register={form.register} errors={errors} /><TextareaField label="Description" name={`${base}.description`} register={form.register} errors={errors} /><SelectField label="Langue principale" value={defaultLocale} onValueChange={(value) => form.setValue("defaultLocale", value, { shouldDirty: true })} options={[{ label: "Français", value: "fr" }, { label: "Anglais", value: "en" }]} /><Field><FieldLabel htmlFor="mobile-tags">Catégories</FieldLabel><Input id="mobile-tags" className="h-11" value={tagsValue.join(", ")} onChange={(event) => form.setValue("tags", parseTags(event.target.value), { shouldDirty: true })} /><FieldDescription>Sépare les catégories par des virgules.</FieldDescription></Field></FieldGroup>;
-  if (section === "details") return <FieldGroup><TextField label="Portions" name={`${base}.servings.quantity`} type="number" register={form.register} errors={errors} /><TextField label="Unité" name={`${base}.servings.unit`} register={form.register} errors={errors} placeholder="personnes" /><TextField label="Préparation" name={`${base}.prepTime`} register={form.register} errors={errors} placeholder="20 min" /><TextField label="Cuisson" name={`${base}.cookTime`} register={form.register} errors={errors} placeholder="25 min" /><TextField label="Total" name={`${base}.totalTime`} register={form.register} errors={errors} placeholder="45 min" /><TextField label="Libellé temps" name={`${base}.timeLabel`} register={form.register} errors={errors} placeholder="45 min" /><TextField label="Température" name={`${base}.temperature`} register={form.register} errors={errors} placeholder="180 °C" /></FieldGroup>;
+  if (section === "details") return <FieldGroup><TextField label="Quantité obtenue" name={`${base}.yieldLabel`} register={form.register} errors={errors} placeholder="Environ 20 gougères" /><TextField label="Préparation" name={`${base}.prepTime`} register={form.register} errors={errors} placeholder="20 min" /><TextField label="Cuisson" name={`${base}.cookTime`} register={form.register} errors={errors} placeholder="25 min" /><TextField label="Total" name={`${base}.totalTime`} register={form.register} errors={errors} placeholder="45 min" /><TextField label="Libellé temps" name={`${base}.timeLabel`} register={form.register} errors={errors} placeholder="45 min" /><TextField label="Température" name={`${base}.temperature`} register={form.register} errors={errors} placeholder="180 °C" /></FieldGroup>;
   if (section === "ingredients") return <CompactIngredientsEditor name={`${base}.ingredients`} control={form.control} register={form.register} />;
   if (section === "preparation") return <FieldGroup><CompactSectionsEditor name={`${base}.sections`} control={form.control} register={form.register} /><SubRecipesArray name={`${base}.subRecipes`} control={form.control} register={form.register} /></FieldGroup>;
   if (section === "notes") return <NotesArray name={`${base}.notes`} control={form.control} register={form.register} />;
@@ -856,20 +856,12 @@ function LocalizedRecipeFields({
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <TextField
-          label="Portions"
-          name={`${baseName}.servings.quantity`}
-          type="number"
+          label="Quantité obtenue"
+          name={`${baseName}.yieldLabel`}
           register={register}
           errors={errors}
           serverErrors={serverErrors}
-        />
-        <TextField
-          label="Unite portions"
-          name={`${baseName}.servings.unit`}
-          register={register}
-          errors={errors}
-          serverErrors={serverErrors}
-          placeholder="personnes"
+          placeholder="Environ 20 gougères"
         />
         <TextField
           label="Temperature"

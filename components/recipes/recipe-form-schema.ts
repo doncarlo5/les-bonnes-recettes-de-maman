@@ -27,12 +27,7 @@ const localizedRecipeSchema = z.object({
   title: z.string().max(limits.title),
   author: z.string().max(limits.author),
   description: z.string().max(limits.description),
-  servings: z
-    .object({
-      quantity: z.number().nonnegative(),
-      unit: z.string().max(limits.shortValue),
-    })
-    .nullable(),
+  yieldLabel: z.string().max(limits.shortValue),
   prepTime: z.string().max(limits.shortValue),
   cookTime: z.string().max(limits.shortValue),
   totalTime: z.string().max(limits.shortValue),

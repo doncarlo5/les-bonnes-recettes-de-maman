@@ -1,3 +1,5 @@
+import { resolveYieldLabel } from "../lib/recipe-yield";
+
 type Locale = "fr" | "en";
 
 type SourceIngredient = {
@@ -23,6 +25,7 @@ export type SourceRecipe = {
   author: string;
   description: string;
   heroImageUrl: string;
+  yieldLabel?: string;
   servings: { quantity: number; unit: string } | null;
   prepTime: string;
   cookTime: string;
@@ -38,6 +41,7 @@ export type LocalizedRecipe = {
   title: string;
   author: string;
   description: string;
+  yieldLabel: string;
   servings: { quantity: number; unit: string } | null;
   prepTime: string;
   cookTime: string;
@@ -787,12 +791,22 @@ const unitTranslations: Record<string, string> = {
   verre: "glass",
 };
 
+const yieldLabelTranslations: Record<string, string> = {
+  "Environ 20 gougères": "About 20 gougères",
+};
+
 export function localizeRecipe(recipe: SourceRecipe, locale: Locale): LocalizedRecipe {
   if (locale === "fr") {
     return {
       title: recipe.title,
       author: recipe.author,
       description: recipe.description,
+      yieldLabel: resolveYieldLabel({
+        locale: "fr",
+        slug: recipe.slug,
+        yieldLabel: recipe.yieldLabel,
+        servings: recipe.servings,
+      }),
       servings: recipe.servings,
       prepTime: recipe.prepTime,
       cookTime: recipe.cookTime,
@@ -810,6 +824,14 @@ export function localizeRecipe(recipe: SourceRecipe, locale: Locale): LocalizedR
     title: translate(titleTranslations, recipe.title),
     author: recipe.author,
     description: translate(descriptionTranslations, recipe.description),
+    yieldLabel: resolveYieldLabel({
+      locale: "en",
+      slug: recipe.slug,
+      yieldLabel: recipe.yieldLabel
+        ? translate(yieldLabelTranslations, recipe.yieldLabel)
+        : undefined,
+      servings: translateServings(recipe.servings),
+    }),
     servings: translateServings(recipe.servings),
     prepTime: recipe.prepTime,
     cookTime: recipe.cookTime,

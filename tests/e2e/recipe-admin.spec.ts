@@ -37,10 +37,10 @@ async function mockImageSearchApi(page: Page) {
 
 const localized = {
   title: "Tarte de démonstration", author: "Maman", description: "Une recette restaurée.",
-  servings: { quantity: 6, unit: "personnes" }, prepTime: "20 min", cookTime: "30 min", totalTime: "50 min", timeLabel: "50 min", temperature: "180 °C",
+  yieldLabel: "6 personnes", prepTime: "20 min", cookTime: "30 min", totalTime: "50 min", timeLabel: "50 min", temperature: "180 °C",
   ingredients: [{ name: "Farine", quantity: "200", unit: "g", notes: "" }], sections: [{ title: "Préparation", steps: ["Mélanger."] }], subRecipes: [], notes: [],
 };
-const restoredDraft = { defaultLocale: "fr", translations: { fr: localized, en: { ...localized, title: "Demo tart" } }, tags: ["dessert"], status: "published" };
+const restoredDraft = { defaultLocale: "fr", translations: { fr: localized, en: { ...localized, title: "Demo tart", yieldLabel: "6 servings" } }, tags: ["dessert"], status: "published" };
 
 test.beforeEach(async ({ page }) => {
   await mockRecipeApi(page);
@@ -82,6 +82,29 @@ test("editor action dock stays compact at every supported width", async ({ page 
   await expect(dock.getByRole("button", { name: /Publier, \d sections sur 7 complétées/ })).toBeVisible();
 });
 
+test("mobile publish action becomes primary when saved changes need publishing", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "mobile-390");
+  await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
+
+  const publishAction = page
+    .getByRole("navigation", { name: "Actions de la recette" })
+    .getByRole("button", { name: /Publier,/ });
+  await expect(publishAction).not.toHaveAttribute("data-publication-needed");
+  await expect(publishAction).not.toHaveClass(/\bbg-primary\b/);
+
+  await page.getByRole("button", { name: /L’essentiel/ }).click();
+  const saveRequest = page.waitForRequest((request) =>
+    request.url().endsWith("/api/admin/recipes/save"),
+  );
+  await page.getByLabel("Description").fill("Une modification prête à être publiée.");
+  await saveRequest;
+  await expect(page.getByText("Enregistré")).toBeVisible();
+
+  await expect(publishAction).toHaveAttribute("data-publication-needed", "true");
+  await expect(publishAction).toHaveClass(/\bbg-primary\b/);
+  await expect(publishAction).toHaveClass(/\btext-primary-foreground\b/);
+});
+
 test("editor toolbar keeps context and language controls together", async ({ page }, testInfo) => {
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
 
@@ -101,15 +124,38 @@ test("guided editor opens an isolated draft preview", async ({ page }) => {
   await expect(page).toHaveURL(/mode=preview/);
   await expect(page.getByText("Aperçu du brouillon")).toBeVisible();
   await expect(page.getByRole("heading", { level: 1, name: "Tarte de démonstration" })).toBeVisible();
+  const frenchYield = page.locator("span:visible").filter({ hasText: /^6 personnes$/ }).first();
+  await expect(frenchYield).toBeVisible();
+  await expect(frenchYield).toHaveCSS("text-transform", "none");
   await expect(page.getByRole("link", { name: /cuisiner/i })).toHaveCount(0);
   await page.getByRole("button", { name: "Anglais" }).click();
   await expect(page).toHaveURL(/lang=en/);
   await expect(page.getByRole("heading", { level: 1, name: "Demo tart" })).toBeVisible();
+  await expect(page.locator("span:visible").filter({ hasText: /^6 servings$/ }).first()).toBeVisible();
   await page.getByRole("button", { name: "Détails" }).click();
   await expect(page).not.toHaveURL(/mode=preview/);
   await expect(page).toHaveURL(/section=details/);
   await expect(page).toHaveURL(/lang=en/);
   await expect(page.getByLabel("Préparation")).toBeVisible();
+});
+
+test("yield is edited as one independent localized field", async ({ page }) => {
+  await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
+  await page.getByRole("button", { name: "Détails" }).click();
+
+  const frenchYield = page.getByLabel("Quantité obtenue");
+  await expect(frenchYield).toHaveValue("6 personnes");
+  await expect(page.getByLabel("Portions", { exact: true })).toHaveCount(0);
+  await expect(page.getByLabel("Unité", { exact: true })).toHaveCount(0);
+
+  const saveRequest = page.waitForRequest((request) =>
+    request.url().endsWith("/api/admin/recipes/save"),
+  );
+  await frenchYield.fill("Environ 20 gougères");
+  await saveRequest;
+
+  await page.getByRole("button", { name: "Anglais" }).click();
+  await expect(page.getByLabel("Quantité obtenue")).toHaveValue("6 servings");
 });
 
 test("desktop internet image search displays its result cards", async ({ page }, testInfo) => {

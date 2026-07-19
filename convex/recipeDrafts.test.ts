@@ -13,7 +13,7 @@ function recipe(title = "Tarte mobile") {
     title,
     author: "Maman",
     description: "Une recette prête à publier.",
-    servings: { quantity: 6, unit: "personnes" },
+    yieldLabel: "6 personnes",
     prepTime: "20 min",
     cookTime: "30 min",
     totalTime: "50 min",
@@ -42,22 +42,34 @@ describe("recipe working drafts", () => {
   test("falls back to the public snapshot for legacy recipes without a draft", async () => {
     const t = convexTest(schema, modules);
     const content = recipe("Recette historique");
+    const { yieldLabel: _frYieldLabel, ...legacyFrench } = content.translations.fr;
+    const { yieldLabel: _enYieldLabel, ...legacyEnglish } = content.translations.en;
+    const legacyTranslations = {
+      fr: { ...legacyFrench, servings: { quantity: 20, unit: "environ" } },
+      en: { ...legacyEnglish, servings: { quantity: 20, unit: "about" } },
+    };
     await t.run(async (ctx) => {
       await ctx.db.insert("recipes", {
-        slug: "recette-historique",
+        slug: "gougeres",
         heroImageUrl: "",
         defaultLocale: content.defaultLocale,
-        translations: content.translations,
+        translations: legacyTranslations,
         tags: content.tags,
         status: "published",
       });
     });
     const editing = await t.query(api.recipes.getForEditing, {
-      slug: "recette-historique",
+      slug: "gougeres",
       locale: "fr",
       adminPassword: password,
     });
     expect(editing).toMatchObject({ title: "Recette historique", revision: 0, publishedRevision: 0, hasUnpublishedChanges: false });
+    expect(editing?.translations.fr.yieldLabel).toBe("Environ 20 gougères");
+    const publicRecipe = await t.query(api.recipes.getBySlug, {
+      locale: "en",
+      slug: "gougeres",
+    });
+    expect(publicRecipe?.yieldLabel).toBe("About 20 gougères");
   });
 
   test("creates a private draft with an initial revision", async () => {
@@ -364,12 +376,17 @@ describe("recipe working drafts", () => {
   test("retains an approved baseline when unpublishing a legacy recipe", async () => {
     const t = convexTest(schema, modules);
     const content = recipe("Archive approuvée");
+    const { yieldLabel: _frYieldLabel, ...legacyFrench } = content.translations.fr;
+    const { yieldLabel: _enYieldLabel, ...legacyEnglish } = content.translations.en;
     await t.run(async (ctx) => {
       await ctx.db.insert("recipes", {
         slug: "archive-approuvee",
         heroImageUrl: "",
         defaultLocale: content.defaultLocale,
-        translations: content.translations,
+        translations: {
+          fr: { ...legacyFrench, servings: { quantity: 6, unit: "personnes" } },
+          en: { ...legacyEnglish, servings: { quantity: 6, unit: "people" } },
+        },
         tags: content.tags,
         status: "published",
       });

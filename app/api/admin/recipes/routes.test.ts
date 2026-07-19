@@ -25,7 +25,7 @@ const localized = {
   title: "Tarte mobile",
   author: "Maman",
   description: "Une recette",
-  servings: null,
+  yieldLabel: "",
   prepTime: "10 min",
   cookTime: "",
   totalTime: "",

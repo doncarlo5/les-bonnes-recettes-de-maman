@@ -9,7 +9,9 @@ import {
   getPublicationState,
   getRecipeReadiness,
   RECIPE_FIELD_LIMITS,
+  type RecipeDraftContentLike,
 } from "../lib/recipe-admin-domain";
+import { resolveYieldLabel } from "../lib/recipe-yield";
 
 declare const process: {
   env: {
@@ -51,6 +53,23 @@ const localizedRecipeValidator = v.object({
     }),
     v.null(),
   ),
+  yieldLabel: v.optional(v.string()),
+  prepTime: v.string(),
+  cookTime: v.string(),
+  totalTime: v.string(),
+  timeLabel: v.string(),
+  temperature: v.string(),
+  ingredients: v.array(ingredientValidator),
+  sections: v.array(sectionValidator),
+  subRecipes: v.array(subRecipeValidator),
+  notes: v.array(v.string()),
+});
+
+const editableLocalizedRecipeValidator = v.object({
+  title: v.string(),
+  author: v.string(),
+  description: v.string(),
+  yieldLabel: v.string(),
   prepTime: v.string(),
   cookTime: v.string(),
   totalTime: v.string(),
@@ -65,8 +84,8 @@ const localizedRecipeValidator = v.object({
 const editableRecipeValidator = v.object({
   defaultLocale: localeValidator,
   translations: v.object({
-    fr: localizedRecipeValidator,
-    en: localizedRecipeValidator,
+    fr: editableLocalizedRecipeValidator,
+    en: editableLocalizedRecipeValidator,
   }),
   tags: v.array(v.string()),
   status: v.union(v.literal("draft"), v.literal("published")),
@@ -75,8 +94,8 @@ const editableRecipeValidator = v.object({
 const draftContentValidator = v.object({
   defaultLocale: localeValidator,
   translations: v.object({
-    fr: localizedRecipeValidator,
-    en: localizedRecipeValidator,
+    fr: editableLocalizedRecipeValidator,
+    en: editableLocalizedRecipeValidator,
   }),
   tags: v.array(v.string()),
 });
@@ -174,7 +193,10 @@ export const listForEditing = query({
           publishedRevision,
           updatedAt: draft?.updatedAt ?? recipe._creationTime,
           ...publication,
-          readiness: getRecipeReadiness(source, hasImage),
+          readiness: getRecipeReadiness(
+            toEditableRecipeContent(source, recipe.slug),
+            hasImage,
+          ),
         };
       }),
     );
@@ -215,14 +237,17 @@ export const getForEditing = query({
       heroImageUrl: storedHeroImageUrl ?? source.heroImageUrl,
       imageCredit: source.imageCredit,
       defaultLocale: source.defaultLocale,
-      translations: source.translations,
+      translations: toEditableTranslations(source.translations, recipe.slug),
       tags: source.tags,
       status: recipe.status,
       revision,
       publishedRevision,
       updatedAt: draft?.updatedAt ?? recipe._creationTime,
       ...publication,
-      readiness: getRecipeReadiness(source, Boolean(storedHeroImageUrl ?? source.heroImageUrl)),
+      readiness: getRecipeReadiness(
+        toEditableRecipeContent(source, recipe.slug),
+        Boolean(storedHeroImageUrl ?? source.heroImageUrl),
+      ),
     };
   },
 });
@@ -240,11 +265,12 @@ export const create = mutation({
     const baseSlug = slugify(title || "nouvelle-recette");
     const slug = await getAvailableSlug(ctx, baseSlug);
 
+    const storedTranslations = toStoredTranslations(args.recipe.translations);
     const recipeId = await ctx.db.insert("recipes", {
       slug,
       heroImageUrl: "",
       defaultLocale: args.recipe.defaultLocale,
-      translations: args.recipe.translations,
+      translations: storedTranslations,
       tags: args.recipe.tags,
       status: "draft",
     });
@@ -254,13 +280,13 @@ export const create = mutation({
       recipeId,
       heroImageUrl: "",
       defaultLocale: args.recipe.defaultLocale,
-      translations: args.recipe.translations,
+      translations: storedTranslations,
       tags: args.recipe.tags,
       revision: 0,
       publishedRevision: -1,
       updatedAt: now,
     };
-    assertProspectiveDraft(initialDraft);
+    assertProspectiveDraft(initialDraft, slug);
     await ctx.db.insert("recipeDrafts", initialDraft);
 
     return {
@@ -316,15 +342,19 @@ export const saveDraft = mutation({
     const revision = currentRevision + 1;
     const savedAt = Date.now();
 
+    const storedTranslations = toStoredTranslations(
+      args.recipe.translations,
+      currentDraft?.translations ?? existing.translations,
+    );
     const contentPatch = {
         defaultLocale: args.recipe.defaultLocale,
-        translations: args.recipe.translations,
+        translations: storedTranslations,
         tags: args.recipe.tags,
         revision,
         updatedAt: savedAt,
     };
     if (currentDraft) {
-      assertProspectiveDraft({ ...currentDraft, ...contentPatch });
+      assertProspectiveDraft({ ...currentDraft, ...contentPatch }, existing.slug);
       await ctx.db.patch(currentDraft._id, contentPatch);
     } else {
       const initialDraft = {
@@ -333,13 +363,13 @@ export const saveDraft = mutation({
         heroImageUrl: existing.heroImageUrl,
         imageCredit: existing.imageCredit,
         defaultLocale: args.recipe.defaultLocale,
-        translations: args.recipe.translations,
+        translations: storedTranslations,
         tags: args.recipe.tags,
         revision,
         publishedRevision: existing.status === "published" ? 0 : -1,
         updatedAt: savedAt,
       };
-      assertProspectiveDraft(initialDraft);
+      assertProspectiveDraft(initialDraft, existing.slug);
       await ctx.db.insert("recipeDrafts", initialDraft);
     }
 
@@ -368,8 +398,8 @@ export const publishDraft = mutation({
     if (draft.revision !== args.expectedRevision) {
       throw new Error(`RECIPE_DRAFT_CONFLICT:${draft.revision}`);
     }
-    assertRecipeBounds(draft);
-    assertDraftReadyForPublication(draft);
+    assertRecipeBounds(toEditableRecipeContent(draft, recipe.slug));
+    assertDraftReadyForPublication(draft, recipe.slug);
 
     await ctx.db.patch(recipe._id, {
       heroImageStorageId: draft.heroImageStorageId,
@@ -381,7 +411,10 @@ export const publishDraft = mutation({
       status: "published",
     });
     const savedAt = Date.now();
-    assertProspectiveDraft({ ...draft, publishedRevision: draft.revision, updatedAt: savedAt });
+    assertProspectiveDraft(
+      { ...draft, publishedRevision: draft.revision, updatedAt: savedAt },
+      recipe.slug,
+    );
     await ctx.db.patch(draft._id, {
       publishedRevision: draft.revision,
       updatedAt: savedAt,
@@ -420,7 +453,7 @@ export const discardDraft = mutation({
       publishedRevision: revision,
       updatedAt: savedAt,
     };
-    assertProspectiveDraft({ ...draft, ...restoredPatch });
+    assertProspectiveDraft({ ...draft, ...restoredPatch }, recipe.slug);
     await ctx.db.patch(draft._id, restoredPatch);
 
     return {
@@ -430,7 +463,7 @@ export const discardDraft = mutation({
       savedAt,
       draft: {
         defaultLocale: recipe.defaultLocale,
-        translations: recipe.translations,
+        translations: toEditableTranslations(recipe.translations, recipe.slug),
         tags: recipe.tags,
         status: recipe.status,
       },
@@ -605,6 +638,7 @@ async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
   }
 
   const translation = recipe.translations[locale];
+  const { servings, yieldLabel, ...content } = translation;
   const storedHeroImageUrl = recipe.heroImageStorageId
     ? await ctx.storage.getUrl(recipe.heroImageStorageId)
     : null;
@@ -621,7 +655,69 @@ async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
     defaultLocale: recipe.defaultLocale,
     tags: recipe.tags,
     status: recipe.status,
-    ...translation,
+    ...content,
+    yieldLabel: resolveYieldLabel({
+      locale,
+      slug: recipe.slug,
+      yieldLabel,
+      servings,
+    }),
+  };
+}
+
+type StoredLocalizedRecipe = RecipeDoc["translations"][Locale];
+type EditableLocalizedRecipe = Omit<
+  StoredLocalizedRecipe,
+  "servings" | "yieldLabel"
+> & { yieldLabel: string };
+type EditableTranslations = Record<Locale, EditableLocalizedRecipe>;
+
+function toEditableTranslations(
+  translations: RecipeDoc["translations"],
+  slug: string,
+): EditableTranslations {
+  return {
+    fr: toEditableLocalizedRecipe(translations.fr, "fr", slug),
+    en: toEditableLocalizedRecipe(translations.en, "en", slug),
+  };
+}
+
+function toEditableRecipeContent(
+  source: Pick<RecipeDoc | RecipeDraftDoc, "defaultLocale" | "translations" | "tags">,
+  slug: string,
+): RecipeDraftContentLike {
+  return {
+    defaultLocale: source.defaultLocale,
+    translations: toEditableTranslations(source.translations, slug),
+    tags: source.tags,
+  };
+}
+
+function toEditableLocalizedRecipe(
+  localized: StoredLocalizedRecipe,
+  locale: Locale,
+  slug: string,
+): EditableLocalizedRecipe {
+  const { servings, yieldLabel, ...content } = localized;
+  return {
+    ...content,
+    yieldLabel: resolveYieldLabel({ locale, slug, yieldLabel, servings }),
+  };
+}
+
+function toStoredTranslations(
+  translations: EditableTranslations,
+  legacyTranslations?: RecipeDoc["translations"],
+): RecipeDoc["translations"] {
+  return {
+    fr: {
+      ...translations.fr,
+      servings: legacyTranslations?.fr.servings ?? null,
+    },
+    en: {
+      ...translations.en,
+      servings: legacyTranslations?.en.servings ?? null,
+    },
   };
 }
 
@@ -678,7 +774,7 @@ async function ensureRecipeDraft(ctx: MutationCtx, recipe: RecipeDoc) {
     publishedRevision: recipe.status === "published" ? 0 : -1,
     updatedAt: Date.now(),
   };
-  assertProspectiveDraft(initialDraft);
+  assertProspectiveDraft(initialDraft, recipe.slug);
   const draftId = await ctx.db.insert("recipeDrafts", initialDraft);
 
   const created = await ctx.db.get(draftId);
@@ -728,8 +824,11 @@ function assertProspectiveDraft(draft: {
   heroImageUrl?: string;
   imageCredit?: RecipeDraftDoc["imageCredit"];
   [key: string]: unknown;
-}) {
-  assertRecipeBounds(draft);
+}, slug: string) {
+  assertRecipeBounds({
+    ...draft,
+    translations: toEditableTranslations(draft.translations, slug),
+  });
   assertImagePatchLimits({
     heroImageStorageId: undefined,
     heroImageUrl: draft.heroImageUrl ?? "",
@@ -747,17 +846,16 @@ function assertExpectedRevision(
   }
 }
 
-function assertDraftReadyForPublication(draft: RecipeDraftDoc) {
-  if (getRecipeReadiness(draft, Boolean(draft.heroImageStorageId || draft.heroImageUrl)).blockers.length) {
+function assertDraftReadyForPublication(draft: RecipeDraftDoc, slug: string) {
+  if (getRecipeReadiness(
+    toEditableRecipeContent(draft, slug),
+    Boolean(draft.heroImageStorageId || draft.heroImageUrl),
+  ).blockers.length) {
     throw new Error("RECIPE_NOT_READY");
   }
 }
 
-function assertRecipeBounds(recipe: {
-  defaultLocale: Locale;
-  tags: string[];
-  translations: RecipeDoc["translations"];
-}) {
+function assertRecipeBounds(recipe: RecipeDraftContentLike) {
   assertRecipeDraftLimits(recipe);
   if (recipe.tags.length > 50) throw new Error("RECIPE_LIMIT_EXCEEDED");
   for (const localized of Object.values(recipe.translations)) {

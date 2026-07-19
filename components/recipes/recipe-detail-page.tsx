@@ -43,6 +43,15 @@ export function RecipePresentation({
   return (
     <main className="text-foreground">
       <header className="px-5 py-8 sm:py-12 lg:px-10 lg:py-20">
+        {mode === "public" ? (
+          <Link
+            href={`/${locale}#recettes`}
+            className="mx-auto mb-4 flex min-h-11 max-w-7xl items-center gap-2 rounded-full px-3 text-sm font-semibold text-muted-foreground transition-[scale,background-color,color] duration-150 hover:bg-muted hover:text-foreground active:scale-[0.96] lg:hidden"
+          >
+            <ChevronLeft className="size-5" />
+            {dict.recipeDetail.backToList}
+          </Link>
+        ) : null}
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(22rem,0.92fr)] lg:items-center lg:gap-14">
           <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-muted shadow-card lg:aspect-[5/4]">
             <Image
@@ -59,7 +68,7 @@ export function RecipePresentation({
             {mode === "public" ? (
               <Link
                 href={`/${locale}#recettes`}
-                className="mb-8 inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm font-semibold text-muted-foreground transition-[scale,background-color,color] duration-150 hover:bg-muted hover:text-foreground active:scale-[0.96] md:min-h-10"
+                className="mb-8 hidden min-h-11 items-center gap-2 rounded-full px-3 text-sm font-semibold text-muted-foreground transition-[scale,background-color,color] duration-150 hover:bg-muted hover:text-foreground active:scale-[0.96] lg:inline-flex lg:min-h-10"
               >
                 <ChevronLeft className="size-5" />
                 {dict.recipeDetail.backToList}
@@ -144,7 +153,7 @@ export function RecipePresentation({
                                 key={`${subRecipe.title}-${ingredient.name}-${ingredient.unit}-${index}`}
                                 className="type-body-sm flex items-baseline justify-between gap-4 py-2.5"
                               >
-                                <span className="font-semibold text-foreground">
+                                <span data-ingredient-name className="font-semibold text-foreground first-letter:uppercase">
                                   {ingredient.name}
                                 </span>
                                 <span className="shrink-0 font-bold text-muted-foreground tabular-nums">
@@ -175,7 +184,7 @@ export function RecipePresentation({
                             key={`${subRecipe.title}-${ingredient.name}-${ingredient.unit}-${index}`}
                             className="type-body flex items-baseline justify-between gap-5 py-3"
                           >
-                            <span className="font-semibold text-foreground">
+                            <span data-ingredient-name className="font-semibold text-foreground first-letter:uppercase">
                               {ingredient.name}
                             </span>
                             <span className="shrink-0 font-bold text-muted-foreground tabular-nums">
@@ -247,9 +256,9 @@ export function RecipePresentation({
                         <span className="type-content-title text-foreground">
                           {dict.recipeDetail.ingredients}
                         </span>
-                        {recipe.servings ? (
-                          <span className="type-label shrink-0 rounded-full bg-secondary px-2.5 py-0.5 text-secondary-foreground tabular-nums">
-                            {recipe.servings.quantity} {recipe.servings.unit}
+                        {recipe.yieldLabel ? (
+                          <span className="shrink-0 rounded-full bg-secondary px-2.5 py-0.5 text-sm font-semibold text-secondary-foreground tabular-nums">
+                            {recipe.yieldLabel}
                           </span>
                         ) : null}
                       </span>
@@ -261,7 +270,7 @@ export function RecipePresentation({
                             key={`${ingredient.name}-${ingredient.unit}-${index}`}
                             className="type-body-sm flex items-baseline justify-between gap-3 py-2"
                           >
-                            <span className="font-semibold text-foreground">
+                            <span data-ingredient-name className="font-semibold text-foreground first-letter:uppercase">
                               {ingredient.name}
                               {ingredient.notes ? (
                                 <span className="mt-0.5 block text-xs font-medium italic text-muted-foreground">
@@ -287,9 +296,9 @@ export function RecipePresentation({
                 <h2 className="type-content-title text-foreground">
                   {dict.recipeDetail.ingredients}
                 </h2>
-                {recipe.servings ? (
-                  <span className="type-label shrink-0 rounded-full bg-secondary px-3 py-1 text-secondary-foreground tabular-nums">
-                    {recipe.servings.quantity} {recipe.servings.unit}
+                {recipe.yieldLabel ? (
+                  <span className="shrink-0 rounded-full bg-secondary px-3 py-1 text-sm font-semibold text-secondary-foreground tabular-nums">
+                    {recipe.yieldLabel}
                   </span>
                 ) : null}
               </div>
@@ -299,7 +308,7 @@ export function RecipePresentation({
                     key={`${ingredient.name}-${ingredient.unit}-${index}`}
                     className="flex items-baseline justify-between gap-4 py-3"
                   >
-                    <span className="font-semibold text-foreground">
+                    <span data-ingredient-name className="font-semibold text-foreground first-letter:uppercase">
                       {ingredient.name}
                       {ingredient.notes ? (
                         <span className="mt-0.5 block text-sm font-medium italic text-muted-foreground">

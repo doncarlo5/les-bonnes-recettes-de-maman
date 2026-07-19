@@ -17,6 +17,10 @@ _Avoid_: Tag technique, source, collection
 Action de retrouver des Recettes a partir de mots presents dans leur titre ou leurs ingredients.
 _Avoid_: Recherche plein texte, recherche globale
 
+**Rendement de recette**:
+Libellé éditorial localisé qui décrit ce que produit une Recette en convives, pièces, contenants ou quantité approximative.
+_Avoid_: Portions, nombre de personnes, servings
+
 **Mode cuisine**:
 Expérience publique et focalisée qui accompagne la préparation d’une Recette, une étape à la fois, sans modifier son contenu éditorial.
 _Avoid_: Tutoriel, assistant de recette, lecteur pas-à-pas

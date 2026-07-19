@@ -419,13 +419,9 @@ function draftFingerprint(value: RecipeFormPayload) {
 }
 
 function normalizeLocalizedRecipe(recipe: RecipeFormPayload["translations"][LocaleKey]) {
-  const servingsQuantity = Number(recipe.servings?.quantity);
-  const servingsUnit = recipe.servings?.unit?.trim() ?? "";
   return {
     ...recipe,
-    servings: Number.isFinite(servingsQuantity) && servingsQuantity > 0 && servingsUnit
-      ? { quantity: servingsQuantity, unit: servingsUnit }
-      : null,
+    yieldLabel: recipe.yieldLabel.trim(),
     ingredients: recipe.ingredients.map((ingredient) => ({
       name: ingredient.name.trim(),
       quantity: ingredient.quantity.trim(),

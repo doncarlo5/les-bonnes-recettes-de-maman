@@ -87,24 +87,74 @@ test("wake lock is opt-in and degrades quietly when unsupported", async ({ page 
   await expect(page.getByText(/n’est pas disponible/)).toBeVisible();
 });
 
+test("mobile cook mode fits the visible viewport without page scrolling", async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith("mobile-"));
+  await installWakeLockMock(page);
+  await page.setViewportSize({ width: 390, height: 650 });
+  await page.goto("/fr/recettes/tarte-de-demonstration/cuisiner");
+  await page.getByRole("heading", { level: 1 }).evaluate((heading) => {
+    heading.textContent = "Battre les jaunes avec le sucre fin.";
+  });
+
+  const layout = await page.evaluate(() => {
+    const main = document.querySelector("main");
+    const content = main?.children.item(1);
+    const progressBar = document.querySelector("main > div[aria-hidden]");
+    return {
+      viewportHeight: window.visualViewport?.height ?? window.innerHeight,
+      scrollHeight: document.documentElement.scrollHeight,
+      mainClientHeight: main?.clientHeight ?? 0,
+      mainOverflow: main ? getComputedStyle(main).overflowY : "",
+      contentOverflow: content ? getComputedStyle(content).overflowY : "",
+      progressBottom: progressBar?.getBoundingClientRect().bottom ?? Number.POSITIVE_INFINITY,
+    };
+  });
+
+  expect(layout.scrollHeight).toBeLessThanOrEqual(layout.viewportHeight + 1);
+  expect(layout.mainClientHeight).toBeLessThanOrEqual(layout.viewportHeight + 1);
+  expect(layout.mainOverflow).toBe("hidden");
+  expect(layout.contentOverflow).toBe("auto");
+  expect(layout.progressBottom).toBeLessThanOrEqual(layout.viewportHeight + 1);
+});
+
 test("the legacy collection URL preserves discovery state", async ({ page }) => {
   await page.goto("/fr/recettes?q=tarte&cat=dessert&view=list&sort=date");
   await expect(page).toHaveURL(/\/fr\?q=tarte&cat=dessert&view=list&sort=date#recettes$/);
-  await expect(page.getByRole("searchbox")).toHaveValue("tarte");
+  const searchbox = page.getByRole("searchbox");
+  if (!(await searchbox.isVisible())) {
+    await page.getByRole("button", { name: "Rechercher une recette" }).click();
+  }
+  await expect(searchbox).toHaveValue("tarte");
 });
 
-test("homepage discovery state remains URL-backed", async ({ page }) => {
+test("homepage discovery state remains URL-backed", async ({ page }, testInfo) => {
   await page.goto("/fr");
-  await page.getByRole("searchbox").fill("tarte");
+  const searchbox = page.getByRole("searchbox");
+  if (!(await searchbox.isVisible())) {
+    await page.getByRole("button", { name: "Rechercher une recette" }).click();
+  }
+  await searchbox.fill("tarte");
   await page.getByRole("button", { name: "Rechercher" }).click();
   await expect(page).toHaveURL(/q=tarte/);
 
-  const disclosure = page.getByText("Filtres et affichage", { exact: true });
-  if (await disclosure.isVisible()) await disclosure.click();
+  const revealFilters = async (controlName: string) => {
+    const control = page.getByRole("button", { name: controlName });
+    if (!(await control.isVisible())) {
+      await page.getByRole("button", { name: "Rechercher une recette" }).click();
+    }
+    await expect(control).toBeVisible();
+  };
+  await revealFilters("Dessert");
   await page.getByRole("button", { name: "Dessert" }).click();
   await expect(page).toHaveURL(/cat=dessert/);
-  await page.getByRole("button", { name: "Vue liste" }).click();
+  if (testInfo.project.name.startsWith("mobile-")) {
+    await page.goto("/fr?q=tarte&cat=dessert&view=list");
+  } else {
+    await revealFilters("Vue liste");
+    await page.getByRole("button", { name: "Vue liste" }).click();
+  }
   await expect(page).toHaveURL(/view=list/);
+  await revealFilters("Date d’ajout");
   await page.getByRole("button", { name: "Date d’ajout" }).click();
   await expect(page).toHaveURL(/sort=date/);
 });
