@@ -2434,5 +2434,69 @@
       }
     ],
     "notes": []
+  },
+  {
+    "title": "Mayonnaise",
+    "slug": "mayonnaise",
+    "author": "Louis",
+    "description": "Mayonnaise maison à la moutarde de Dijon, montée au mixeur avec de l’huile de tournesol et assaisonnée de vinaigre balsamique.",
+    "heroImageUrl": "/images/recipes/mayonnaise.png",
+    "yieldLabel": "Un petit bol",
+    "servings": null,
+    "prepTime": "5 min",
+    "cookTime": "",
+    "totalTime": "5 min",
+    "temperature": "",
+    "ingredients": [
+      {
+        "name": "moutarde de Dijon",
+        "quantity": "2",
+        "unit": "c. à café",
+        "notes": ""
+      },
+      {
+        "name": "jaune d’œuf",
+        "quantity": "1",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "huile de tournesol",
+        "quantity": "10",
+        "unit": "cl",
+        "notes": ""
+      },
+      {
+        "name": "vinaigre balsamique",
+        "quantity": "quelques gouttes",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "sel",
+        "quantity": "",
+        "unit": "",
+        "notes": "à convenance"
+      },
+      {
+        "name": "poivre",
+        "quantity": "",
+        "unit": "",
+        "notes": "à convenance"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Mettre la moutarde de Dijon et le jaune d’œuf dans le bol du mixeur, puis mixer.",
+          "Continuer à mixer en versant progressivement l’huile de tournesol en un petit filet, jusqu’à obtenir une mayonnaise bien émulsionnée.",
+          "Ajouter quelques gouttes de vinaigre balsamique, puis saler et poivrer à convenance. Mixer une dernière fois pour homogénéiser."
+        ]
+      }
+    ],
+    "notes": [
+      "Pour une mayonnaise bien fraîche, la laisser reposer 30 min au réfrigérateur avant de servir."
+    ]
   }
 ]

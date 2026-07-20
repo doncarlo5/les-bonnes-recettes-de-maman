@@ -46,6 +46,80 @@ async function uploadRecipeImage(t: ReturnType<typeof convexTest>) {
 }
 
 describe("recipe working drafts", () => {
+  test("targeted seeding inserts only the requested recipe", async () => {
+    const t = convexTest(schema, modules);
+
+    await expect(
+      t.mutation(api.recipes.seed, {
+        adminPassword: password,
+        slug: "mayonnaise",
+      }),
+    ).resolves.toEqual({ inserted: 1, updated: 0, total: 1 });
+    await expect(
+      t.query(api.recipes.getBySlug, { locale: "fr", slug: "mayonnaise" }),
+    ).resolves.toMatchObject({ title: "Mayonnaise", author: "Louis" });
+    await expect(
+      t.query(api.recipes.getBySlug, { locale: "fr", slug: "amandin" }),
+    ).resolves.toBeNull();
+  });
+
+  test("targeted seeding leaves other recipes unchanged", async () => {
+    const t = convexTest(schema, modules);
+    await t.mutation(api.recipes.seed, {
+      adminPassword: password,
+      slug: "amandin",
+    });
+    await t.run(async (ctx) => {
+      const amandin = await ctx.db
+        .query("recipes")
+        .withIndex("by_slug", (q) => q.eq("slug", "amandin"))
+        .unique();
+      if (!amandin) throw new Error("seed fixture missing");
+      await ctx.db.patch(amandin._id, {
+        translations: {
+          ...amandin.translations,
+          fr: { ...amandin.translations.fr, title: "Titre éditorial préservé" },
+        },
+      });
+    });
+
+    await t.mutation(api.recipes.seed, {
+      adminPassword: password,
+      slug: "mayonnaise",
+    });
+
+    await expect(
+      t.query(api.recipes.getBySlug, { locale: "fr", slug: "amandin" }),
+    ).resolves.toMatchObject({ title: "Titre éditorial préservé" });
+  });
+
+  test("seeding without a slug keeps the global behavior", async () => {
+    const t = convexTest(schema, modules);
+    const result = await t.mutation(api.recipes.seed, {
+      adminPassword: password,
+    });
+
+    expect(result).toMatchObject({ inserted: result.total, updated: 0 });
+    expect(result.total).toBeGreaterThan(1);
+    await expect(
+      t.query(api.recipes.getBySlug, { locale: "fr", slug: "amandin" }),
+    ).resolves.not.toBeNull();
+    await expect(
+      t.query(api.recipes.getBySlug, { locale: "fr", slug: "mayonnaise" }),
+    ).resolves.not.toBeNull();
+  });
+
+  test("targeted seeding rejects an unknown slug", async () => {
+    const t = convexTest(schema, modules);
+
+    await expect(
+      t.mutation(api.recipes.seed, {
+        adminPassword: password,
+        slug: "recette-inconnue",
+      }),
+    ).rejects.toThrow("RECIPE_NOT_FOUND");
+  });
+
   test("re-seeding preserves editorial reference portions", async () => {
     const t = convexTest(schema, modules);
     await t.mutation(api.recipes.seed, { adminPassword: password });

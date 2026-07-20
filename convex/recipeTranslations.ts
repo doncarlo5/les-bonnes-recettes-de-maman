@@ -92,6 +92,7 @@ const recipeCategoryTags: Record<string, string[]> = {
   "pain-de-poisson": ["plat", "sale"],
   "pate-feuilletee-maman": ["sucre", "sale"],
   "pate-sucree-de-pierre-herme": ["dessert", "sucre"],
+  mayonnaise: ["sale"],
   "soupe-de-champagne": ["sucre"],
   "cookies-aux-pepites-de-chocolat-et-fleur-de-sel": ["dessert", "sucre"],
   "tarte-aux-amandes-et-confiture-de-framboises": ["dessert", "sucre"],
@@ -190,6 +191,7 @@ const titleTranslations: Record<string, string> = {
   "Soupe de champagne": "Champagne Punch",
   "Cookies aux pépites de chocolat et fleur de sel":
     "Chocolate Chip Cookies with Fleur de Sel",
+  Mayonnaise: "Mayonnaise",
 };
 
 const descriptionTranslations: Record<string, string> = {
@@ -249,6 +251,8 @@ const descriptionTranslations: Record<string, string> = {
     "Sparkling cocktail with Loire Valley Crémant, Cointreau, Pulco Citron and cane sugar syrup, served very cold.",
   "Gros cookies aux pépites de chocolat, croustillants sur les bords, moelleux au centre et relevés d’une touche de fleur de sel.":
     "Large chocolate chip cookies with crisp edges, soft centers and a touch of fleur de sel.",
+  "Mayonnaise maison à la moutarde de Dijon, montée au mixeur avec de l’huile de tournesol et assaisonnée de vinaigre balsamique.":
+    "Homemade Dijon mustard mayonnaise blended with sunflower oil and seasoned with balsamic vinegar.",
 };
 
 const sectionTranslations: Record<string, string> = {
@@ -339,6 +343,7 @@ const ingredientTranslations: Record<string, string> = {
   "huile de tournesol": "sunflower oil",
   "huile d’olive": "olive oil",
   "jarret de veau": "veal shank",
+  "jaune d’œuf": "egg yolk",
   "jaunes d’œufs": "egg yolks",
   "jus de citron": "lemon juice",
   "jus d’orange": "orange juice",
@@ -350,6 +355,7 @@ const ingredientTranslations: Record<string, string> = {
   "marsala, xérès ou malaga": "marsala, sherry or malaga",
   mascarpone: "mascarpone",
   meringues: "meringues",
+  "moutarde de Dijon": "Dijon mustard",
   muscade: "nutmeg",
   "noisettes concassées": "chopped hazelnuts",
   noix: "walnuts",
@@ -382,6 +388,7 @@ const ingredientTranslations: Record<string, string> = {
   thym: "thyme",
   "tomates concassées": "crushed tomatoes",
   vanille: "vanilla",
+  "vinaigre balsamique": "balsamic vinegar",
   "vin blanc": "white wine",
   "zeste de citron": "lemon zest",
   œuf: "egg",
@@ -441,6 +448,9 @@ const noteTranslations: Record<string, string> = {
   "ou farine pâtissière": "or pastry flour",
   "Un incontournable avec les salades de poulet.":
     "A classic with chicken salads.",
+  "Pour une mayonnaise bien fraîche, la laisser reposer 30 min au réfrigérateur avant de servir.":
+    "For a well-chilled mayonnaise, refrigerate it for 30 min before serving.",
+  "à convenance": "to taste",
   ramolli: "softened",
   rases: "level",
   "selon le goût": "to taste",
@@ -449,6 +459,12 @@ const noteTranslations: Record<string, string> = {
 };
 
 const stepTranslations: Record<string, string> = {
+  "Mettre la moutarde de Dijon et le jaune d’œuf dans le bol du mixeur, puis mixer.":
+    "Place the Dijon mustard and egg yolk in the blender bowl, then blend.",
+  "Continuer à mixer en versant progressivement l’huile de tournesol en un petit filet, jusqu’à obtenir une mayonnaise bien émulsionnée.":
+    "Keep blending while gradually pouring in the sunflower oil in a thin stream, until the mayonnaise is well emulsified.",
+  "Ajouter quelques gouttes de vinaigre balsamique, puis saler et poivrer à convenance. Mixer une dernière fois pour homogénéiser.":
+    "Add a few drops of balsamic vinegar, then season with salt and pepper to taste. Blend once more until smooth.",
   "Dans un bol, mélanger la farine, le bicarbonate, la levure chimique et le sel.":
     "In a bowl, combine the flour, baking soda, baking powder and salt.",
   "Faire fondre le beurre à feu moyen, puis le verser dans un grand bol.":
@@ -854,6 +870,7 @@ const unitTranslations: Record<string, string> = {
 
 const quantityTranslations: Record<string, string> = {
   "5 à 7": "5 to 7",
+  "quelques gouttes": "a few drops",
 };
 
 const yieldLabelTranslations: Record<string, string> = {
@@ -862,6 +879,7 @@ const yieldLabelTranslations: Record<string, string> = {
   "Environ 500 g de pâte": "About 500 g of dough",
   "Environ 20 gougères": "About 20 gougères",
   "Environ 20 gros cookies": "About 20 large cookies",
+  "Un petit bol": "One small bowl",
 };
 
 export function localizeRecipe(recipe: SourceRecipe, locale: Locale): LocalizedRecipe {

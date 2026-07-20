@@ -784,12 +784,20 @@ export const cleanupHeroImageUpload = mutation({
 export const seed = mutation({
   args: {
     adminPassword: v.string(),
+    slug: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
 
+    const selectedRecipes = args.slug
+      ? recipes.filter((recipe) => recipe.slug === args.slug)
+      : recipes;
+    if (args.slug && selectedRecipes.length === 0) {
+      throw new Error("RECIPE_NOT_FOUND");
+    }
+
     const changes = await Promise.all(
-      recipes.map(async (recipe) => {
+      selectedRecipes.map(async (recipe) => {
         const existing = await ctx.db
           .query("recipes")
           .withIndex("by_slug", (q) => q.eq("slug", recipe.slug))
@@ -841,7 +849,7 @@ export const seed = mutation({
     return {
       inserted: changes.filter((change) => change === "inserted").length,
       updated: changes.filter((change) => change === "updated").length,
-      total: recipes.length,
+      total: selectedRecipes.length,
     };
   },
 });

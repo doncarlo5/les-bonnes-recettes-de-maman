@@ -159,4 +159,66 @@ describe("recipe yield localization", () => {
       "Transfer the cookies to a rack and let them rest for at least 10 min before storing or serving.",
     ]);
   });
+
+  test("localizes Louis's mayonnaise as a savory yield-only recipe", () => {
+    const source = recipes.find((recipe) => recipe.slug === "mayonnaise");
+    expect(source).toBeDefined();
+
+    const seeded = toSeedRecipe(source!);
+    expect(seeded).toMatchObject({
+      slug: "mayonnaise",
+      heroImageUrl: "/images/recipes/mayonnaise.png",
+      categories: ["sale"],
+      legacyCategoryLabels: [],
+    });
+    expect(seeded.referenceServings).toBeUndefined();
+
+    expect(seeded.translations.fr).toMatchObject({
+      title: "Mayonnaise",
+      author: "Louis",
+      yieldLabel: "Un petit bol",
+      prepTime: "5 min",
+      cookTime: "",
+      totalTime: "5 min",
+      servings: null,
+    });
+    expect(seeded.translations.fr.ingredients).toEqual([
+      { name: "moutarde de Dijon", quantity: "2", unit: "c. à café", notes: "" },
+      { name: "jaune d’œuf", quantity: "1", unit: "", notes: "" },
+      { name: "huile de tournesol", quantity: "10", unit: "cl", notes: "" },
+      { name: "vinaigre balsamique", quantity: "quelques gouttes", unit: "", notes: "" },
+      { name: "sel", quantity: "", unit: "", notes: "à convenance" },
+      { name: "poivre", quantity: "", unit: "", notes: "à convenance" },
+    ]);
+    expect(seeded.translations.fr.notes).toEqual([
+      "Pour une mayonnaise bien fraîche, la laisser reposer 30 min au réfrigérateur avant de servir.",
+    ]);
+
+    expect(seeded.translations.en).toMatchObject({
+      title: "Mayonnaise",
+      author: "Louis",
+      description: "Homemade Dijon mustard mayonnaise blended with sunflower oil and seasoned with balsamic vinegar.",
+      yieldLabel: "One small bowl",
+      prepTime: "5 min",
+      cookTime: "",
+      totalTime: "5 min",
+      servings: null,
+    });
+    expect(seeded.translations.en.ingredients).toEqual([
+      { name: "Dijon mustard", quantity: "2", unit: "tsp", notes: "" },
+      { name: "egg yolk", quantity: "1", unit: "", notes: "" },
+      { name: "sunflower oil", quantity: "10", unit: "cl", notes: "" },
+      { name: "balsamic vinegar", quantity: "a few drops", unit: "", notes: "" },
+      { name: "salt", quantity: "", unit: "", notes: "to taste" },
+      { name: "pepper", quantity: "", unit: "", notes: "to taste" },
+    ]);
+    expect(seeded.translations.en.sections[0]?.steps).toEqual([
+      "Place the Dijon mustard and egg yolk in the blender bowl, then blend.",
+      "Keep blending while gradually pouring in the sunflower oil in a thin stream, until the mayonnaise is well emulsified.",
+      "Add a few drops of balsamic vinegar, then season with salt and pepper to taste. Blend once more until smooth.",
+    ]);
+    expect(seeded.translations.en.notes).toEqual([
+      "For a well-chilled mayonnaise, refrigerate it for 30 min before serving.",
+    ]);
+  });
 });
