@@ -1,26 +1,25 @@
 import { Suspense } from "react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
-import type { Recipe } from "@/components/recipes/types";
+import type { RecipeSummary } from "@/components/recipes/types";
 import { RecipeGrid } from "@/components/recipes/recipe-grid";
 import { RecipeListExplorer } from "@/components/recipes/recipe-list-explorer";
 
 type HomePageProps = {
   locale: Locale;
   dict: Dictionary;
-  recipes: Recipe[];
+  recipes: RecipeSummary[];
 };
 
 export function HomePage({ locale, dict, recipes }: HomePageProps) {
   return (
     <main>
-      <h1 className="sr-only md:hidden">{dict.site.title}</h1>
-      <section className="relative hidden overflow-hidden px-5 py-16 md:block sm:py-20 lg:px-10 lg:py-28">
+      <section className="sr-only md:not-sr-only md:relative md:block md:overflow-hidden md:px-5 md:py-20 lg:px-10 lg:py-28">
         <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-border" />
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.42fr)] lg:items-end">
           <div>
           <p className="type-label mb-5 text-primary">{dict.home.eyebrow}</p>
-          <h1 className="type-display text-foreground">
+          <h1 className="type-display sr-only text-foreground md:not-sr-only">
             {dict.site.title}
           </h1>
           </div>
@@ -32,8 +31,7 @@ export function HomePage({ locale, dict, recipes }: HomePageProps) {
 
       <section id="recettes" className="scroll-mt-24 bg-muted/55 px-3 py-3 md:px-5 md:py-16 lg:px-10 lg:py-24">
         <div className="mx-auto max-w-7xl">
-          <h2 className="sr-only md:hidden">{dict.home.allRecipesTitle}</h2>
-          <div className="mb-10 hidden items-end justify-between gap-4 border-b border-border pb-5 md:flex">
+          <div className="sr-only md:not-sr-only md:mb-10 md:flex md:items-end md:justify-between md:gap-4 md:border-b md:border-border md:pb-5">
             <div>
               <p className="type-label mb-2 text-primary">{dict.home.allRecipesEyebrow}</p>
               <h2 className="type-section-title text-foreground">

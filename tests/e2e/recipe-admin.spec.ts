@@ -66,6 +66,9 @@ test.beforeEach(async ({ page }) => {
 
 test("recipe home is usable and accessible at every supported width", async ({ page }, testInfo) => {
   await expect(page.getByRole("heading", { name: /Recettes|Le carnet/ })).toBeVisible();
+  await expect(
+    page.getByRole("textbox", { name: "Rechercher une recette" }),
+  ).toBeVisible();
   const violations = await new AxeBuilder({ page }).analyze();
   expect(violations.violations.filter((violation) => ["serious", "critical"].includes(violation.impact ?? ""))).toEqual([]);
   const minimum = testInfo.project.name.startsWith("mobile-") ? 44 : 40;
@@ -254,6 +257,61 @@ test("desktop internet image search displays its result cards", async ({ page },
   await expect(page.getByRole("main").getByText("Image associée et enregistrée.")).toBeVisible();
   await expect(page.getByRole("region", { name: /Notifications/ }).getByText("Image principale remplacée.")).toBeVisible();
   expect(mutationOrder).toEqual(["save", "image"]);
+});
+
+test("malformed image association responses clean up uploaded storage", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop");
+  await page.unroute("**/api/admin/recipes/**");
+  let cleanupRequests = 0;
+  const origin = new URL(page.url()).origin;
+  await page.route("**/mock-recipe-storage", (route) =>
+    route.fulfill({ json: { storageId: "storage-test" } }),
+  );
+  await page.route("**/api/admin/recipes/**", async (route) => {
+    const pathname = new URL(route.request().url()).pathname;
+    if (pathname.endsWith("/upload-url")) {
+      return route.fulfill({
+        json: { type: "success", uploadUrl: `${origin}/mock-recipe-storage` },
+      });
+    }
+    if (pathname.endsWith("/hero-image")) {
+      return route.fulfill({
+        json: { type: "success", slug: "tarte-de-demonstration" },
+      });
+    }
+    if (pathname.endsWith("/cleanup-image")) {
+      cleanupRequests += 1;
+      return route.fulfill({
+        json: {
+          type: "success",
+          referenced: false,
+          slug: "tarte-de-demonstration",
+        },
+      });
+    }
+    return route.fulfill({
+      json: {
+        type: "success",
+        message: "Enregistré",
+        slug: "tarte-de-demonstration",
+        revision: 4,
+        savedAt: Date.now(),
+      },
+    });
+  });
+
+  await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
+  await page.getByRole("button", { name: "Remplacer l’image" }).click();
+  await page.getByLabel("Choisir une image sur cet appareil").setInputFiles({
+    name: "photo.jpg",
+    mimeType: "image/jpeg",
+    buffer: Buffer.from("test-image"),
+  });
+
+  await expect(
+    page.getByText("La réponse d’image ne contient pas de révision.").first(),
+  ).toBeVisible();
+  expect(cleanupRequests).toBe(1);
 });
 
 test("semantic typography stays readable at every supported width", async ({ page }, testInfo) => {

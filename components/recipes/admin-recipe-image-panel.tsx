@@ -289,6 +289,8 @@ export function AdminRecipeImagePanel({
       typeof data.revision !== "number" ||
       !data.heroImageUrl
     ) {
+      const recovered = await cleanupUpload(storageId);
+      if (recovered) return recovered;
       throw new Error("La réponse d’image ne contient pas de révision.");
     }
     return data;

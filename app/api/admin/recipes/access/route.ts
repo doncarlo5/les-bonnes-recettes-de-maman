@@ -1,34 +1,19 @@
 import { NextRequest } from "next/server";
-import { hasLocale } from "@/i18n/config";
 import {
   getRecipeAdminPassword,
   grantRecipeAdminAccess,
   verifyRecipeAdminPassword,
 } from "@/lib/recipe-admin-auth";
+import { adminAccessRequestSchema } from "@/lib/recipe-admin-contracts";
+import { parseJsonRequest } from "@/lib/recipe-admin-route-errors";
 
 export const dynamic = "force-dynamic";
 
-type AccessBody = {
-  locale?: string;
-  password?: string;
-  redirectTo?: string;
-};
-
 export async function POST(request: NextRequest) {
-  const body = (await request.json()) as AccessBody;
-  const locale = body.locale ?? "";
-  const password = body.password ?? "";
-  const redirectTo = getSafeAdminRedirect(locale, body.redirectTo);
-
-  if (!hasLocale(locale)) {
-    return Response.json(
-      {
-        type: "error",
-        message: "Impossible d'ouvrir l'admin recettes.",
-      },
-      { status: 400 },
-    );
-  }
+  const parsed = await parseJsonRequest(request, adminAccessRequestSchema);
+  if (!parsed.ok) return parsed.response;
+  const { locale, password } = parsed.data;
+  const redirectTo = getSafeAdminRedirect(locale, parsed.data.redirectTo);
 
   if (!getRecipeAdminPassword()) {
     return Response.json(

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 
 import type { Dictionary } from "@/i18n/get-dictionary";
@@ -48,7 +48,7 @@ export function SiteHeader({ locale, dict }: SiteHeaderProps) {
   return (
     <header
       className={cn(
-        "sticky z-40 border-b border-border/60 backdrop-blur transition-[top,background-color] duration-200",
+        "sticky z-40 border-b border-border/60 backdrop-blur transition-[top,background-color] duration-200 focus-within:top-0",
         isHeaderHidden ? "-top-24" : "top-0",
         isHeaderScrolled
           ? "bg-background/85 supports-[backdrop-filter]:bg-background/70"
@@ -79,7 +79,15 @@ export function SiteHeader({ locale, dict }: SiteHeaderProps) {
         </nav>
 
         <div className="flex items-center gap-3">
-          <LocaleSwitcher current={locale} />
+          <Suspense
+            fallback={
+              <span className="type-label inline-flex min-h-11 items-center px-1 text-primary md:min-h-10">
+                {locale}
+              </span>
+            }
+          >
+            <LocaleSwitcher current={locale} />
+          </Suspense>
           <span aria-hidden className="h-4 w-px bg-border" />
           <ThemeToggle />
         </div>

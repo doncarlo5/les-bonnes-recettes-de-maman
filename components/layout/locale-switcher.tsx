@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 import { locales, type Locale } from "@/i18n/config";
 
 const localeSet = new Set<string>(locales);
@@ -12,6 +13,19 @@ type LocaleSwitcherProps = {
 
 export function LocaleSwitcher({ current }: LocaleSwitcherProps) {
   const pathname = usePathname() ?? "/";
+  const searchParams = useSearchParams();
+  const [hash, setHash] = useState("");
+
+  useEffect(() => {
+    const syncHash = () => setHash(window.location.hash);
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+    window.addEventListener("popstate", syncHash);
+    return () => {
+      window.removeEventListener("hashchange", syncHash);
+      window.removeEventListener("popstate", syncHash);
+    };
+  }, []);
 
   return (
     <div className="type-label flex items-center gap-1">
@@ -23,7 +37,9 @@ export function LocaleSwitcher({ current }: LocaleSwitcherProps) {
         } else {
           segments.splice(1, 0, locale);
         }
-        const href = segments.join("/") || `/${locale}`;
+        const localizedPath = segments.join("/") || `/${locale}`;
+        const query = searchParams.toString();
+        const href = `${localizedPath}${query ? `?${query}` : ""}${hash}`;
 
         return (
           <span key={locale} className="flex items-center gap-1">

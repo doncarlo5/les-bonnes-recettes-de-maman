@@ -117,8 +117,58 @@ describe("recipe working drafts", () => {
       locale: "fr",
       slug: "banana-bread-du-kona-inn",
     });
-    expect(localized).toMatchObject({ yieldLabel: "1 cake" });
-    expect(localized).not.toHaveProperty("referenceServings");
+    expect(localized).toMatchObject({ referenceServings: 6 });
+    const editing = await t.query(api.recipes.getForEditing, {
+      locale: "fr",
+      slug: "banana-bread-du-kona-inn",
+      adminPassword: password,
+    });
+    expect(editing).toMatchObject({ hasUnpublishedChanges: true });
+    expect(editing).not.toHaveProperty("referenceServings");
+  });
+
+  test("re-seeding preserves the public snapshot and visibility", async () => {
+    const t = convexTest(schema, modules);
+    await t.mutation(api.recipes.seed, {
+      adminPassword: password,
+      slug: "mayonnaise",
+    });
+    const before = await t.query(api.recipes.getBySlug, {
+      locale: "fr",
+      slug: "mayonnaise",
+    });
+    await t.mutation(api.recipes.unpublish, {
+      slug: "mayonnaise",
+      adminPassword: password,
+    });
+
+    await t.mutation(api.recipes.seed, {
+      adminPassword: password,
+      slug: "mayonnaise",
+    });
+
+    await expect(
+      t.query(api.recipes.getBySlug, { locale: "fr", slug: "mayonnaise" }),
+    ).resolves.toBeNull();
+    const stored = await t.run((ctx) =>
+      ctx.db
+        .query("recipes")
+        .withIndex("by_slug", (q) => q.eq("slug", "mayonnaise"))
+        .unique(),
+    );
+    expect(stored).toMatchObject({
+      status: "draft",
+      translations: { fr: { title: before?.title } },
+    });
+    const editing = await t.query(api.recipes.getForEditing, {
+      locale: "fr",
+      slug: "mayonnaise",
+      adminPassword: password,
+    });
+    expect(editing).toMatchObject({
+      status: "draft",
+      hasUnpublishedChanges: true,
+    });
   });
 
   test("seeding without a slug keeps the global behavior", async () => {
@@ -135,6 +185,28 @@ describe("recipe working drafts", () => {
     await expect(
       t.query(api.recipes.getBySlug, { locale: "fr", slug: "mayonnaise" }),
     ).resolves.not.toBeNull();
+  });
+
+  test("paginates compact public recipe summaries", async () => {
+    const t = convexTest(schema, modules);
+    await t.mutation(api.recipes.seed, { adminPassword: password });
+
+    const first = await t.query(api.recipes.list, {
+      locale: "fr",
+      paginationOpts: { numItems: 1, cursor: null },
+    });
+    expect(first.page).toHaveLength(1);
+    expect(first.isDone).toBe(false);
+    expect(first.page[0]?.title).toEqual(expect.any(String));
+    expect(first.page[0]?.ingredients[0]?.name).toEqual(expect.any(String));
+    expect(first.page[0]).not.toHaveProperty("sections");
+
+    const second = await t.query(api.recipes.list, {
+      locale: "fr",
+      paginationOpts: { numItems: 1, cursor: first.continueCursor },
+    });
+    expect(second.page).toHaveLength(1);
+    expect(second.page[0]?._id).not.toBe(first.page[0]?._id);
   });
 
   test("targeted seeding rejects an unknown slug", async () => {
@@ -425,8 +497,9 @@ describe("recipe working drafts", () => {
     const editing = await t.query(api.recipes.listForEditing, {
       locale: "fr",
       adminPassword: password,
+      paginationOpts: { numItems: 20, cursor: null },
     });
-    expect(editing[0]).toMatchObject({
+    expect(editing.page[0]).toMatchObject({
       slug: created.slug,
       hasUnpublishedChanges: true,
       revision: 0,
@@ -632,6 +705,7 @@ describe("recipe working drafts", () => {
       t.query(api.recipes.listForEditing, {
         locale: "fr",
         adminPassword: "wrong-password",
+        paginationOpts: { numItems: 20, cursor: null },
       }),
       t.query(api.recipes.getForEditing, {
         slug: "missing",
@@ -937,9 +1011,10 @@ describe("recipe working drafts", () => {
     const summaries = await t.query(api.recipes.listForEditing, {
       locale: "fr",
       adminPassword: password,
+      paginationOpts: { numItems: 20, cursor: null },
     });
 
-    expect(summaries[0]).toMatchObject({
+    expect(summaries.page[0]).toMatchObject({
       slug: created.slug,
       hasPublishedVersion: false,
       hasUnpublishedChanges: true,

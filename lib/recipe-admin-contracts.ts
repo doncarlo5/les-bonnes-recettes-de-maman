@@ -5,6 +5,12 @@ const slug = z.string().trim().min(1).max(200);
 const revision = z.number().int().nonnegative();
 const optionalUrl = z.url().max(2_048);
 
+export const adminAccessRequestSchema = z.strictObject({
+  locale: z.enum(["fr", "en"]),
+  password: z.string().max(1_024),
+  redirectTo: z.string().max(2_048).optional(),
+});
+
 export const revisionedRecipeRequestSchema = z.strictObject({
   slug,
   expectedRevision: revision,

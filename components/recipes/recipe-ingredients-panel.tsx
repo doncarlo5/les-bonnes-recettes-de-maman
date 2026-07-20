@@ -172,7 +172,12 @@ function ServingsSelector({
               onChange={(event) => applyDraft(event.currentTarget)}
               className="w-8 bg-transparent text-center text-base outline-none"
             />
-            <span className="truncate text-sm text-muted-foreground">{unit}</span>
+            <span
+              className="truncate text-sm text-muted-foreground"
+              title={unit}
+            >
+              {unit}
+            </span>
           </span>
           {isDefault ? (
             <span className="whitespace-nowrap text-xs font-semibold text-primary">

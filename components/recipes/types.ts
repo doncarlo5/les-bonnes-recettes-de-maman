@@ -66,6 +66,24 @@ export type Recipe = {
   notes: string[];
 };
 
+export type RecipeSummary = Pick<
+  Recipe,
+  | "_id"
+  | "_creationTime"
+  | "slug"
+  | "heroImageUrl"
+  | "categories"
+  | "legacyCategoryLabels"
+  | "title"
+  | "author"
+  | "description"
+  | "prepTime"
+  | "cookTime"
+  | "timeLabel"
+> & {
+  ingredients: Array<Pick<Ingredient, "name">>;
+};
+
 export type EditableRecipeContent = {
   defaultLocale: "fr" | "en";
   referenceServings?: number;

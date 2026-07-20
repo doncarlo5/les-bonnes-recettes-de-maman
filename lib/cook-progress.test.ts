@@ -3,6 +3,9 @@ import {
   createCookContentSignature,
   getCookProgressKey,
   parseCookProgress,
+  readCookProgress,
+  removeCookProgress,
+  writeCookProgress,
   type CookProgressV1,
 } from "./cook-progress";
 
@@ -13,6 +16,32 @@ const content = {
 };
 
 describe("recipe cooking progress", () => {
+  test("degrades when persistent storage is unavailable", () => {
+    const storage = {
+      getItem: () => {
+        throw new DOMException("Blocked", "SecurityError");
+      },
+      setItem: () => {
+        throw new DOMException("Blocked", "SecurityError");
+      },
+      removeItem: () => {
+        throw new DOMException("Blocked", "SecurityError");
+      },
+    };
+    const progress: CookProgressV1 = {
+      version: 1,
+      contentSignature: createCookContentSignature(content),
+      sectionIndex: 0,
+      stepIndex: 0,
+      checkedIngredientIds: [],
+      updatedAt: 1,
+    };
+
+    expect(readCookProgress(storage, "key", content)).toBeNull();
+    expect(writeCookProgress(storage, "key", progress)).toBe(false);
+    expect(removeCookProgress(storage, "key")).toBe(false);
+  });
+
   test("uses independent versioned keys for each locale", () => {
     expect(getCookProgressKey("fr", "tarte")).toBe("recipe-cook:v1:fr:tarte");
     expect(getCookProgressKey("en", "tarte")).toBe("recipe-cook:v1:en:tarte");
