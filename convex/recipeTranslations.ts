@@ -92,6 +92,7 @@ const recipeCategoryTags: Record<string, string[]> = {
   "pain-de-poisson": ["plat", "sale"],
   "pate-feuilletee-maman": ["sucre", "sale"],
   "pate-sucree-de-pierre-herme": ["dessert", "sucre"],
+  "soupe-de-champagne": ["sucre"],
   "tarte-aux-amandes-et-confiture-de-framboises": ["dessert", "sucre"],
   tiramisu: ["dessert", "sucre"],
   vacherin: ["dessert", "sucre"],
@@ -185,6 +186,7 @@ const titleTranslations: Record<string, string> = {
   "Crème au café": "Coffee Custard",
   "Banana bread du Kona Inn": "Kona Inn Banana Bread",
   "Garniture intérieure facultative": "Optional Inner Filling",
+  "Soupe de champagne": "Champagne Punch",
 };
 
 const descriptionTranslations: Record<string, string> = {
@@ -240,6 +242,8 @@ const descriptionTranslations: Record<string, string> = {
     "Sweetened condensed milk flan baked in a water bath with caramel.",
   "Banana bread moelleux aux bananes bien mûres, parfait avec une salade de poulet.":
     "Moist banana bread made with very ripe bananas, perfect with chicken salad.",
+  "Cocktail pétillant au crémant de Loire, Cointreau, Pulco Citron et sirop de sucre de canne, à servir très frais.":
+    "Sparkling cocktail with Loire Valley Crémant, Cointreau, Pulco Citron and cane sugar syrup, served very cold.",
 };
 
 const sectionTranslations: Record<string, string> = {
@@ -305,6 +309,7 @@ const ingredientTranslations: Record<string, string> = {
   "crème fraîche liquide": "liquid crème fraîche",
   "crème fraîche épaisse": "thick crème fraîche",
   "crème liquide": "heavy cream",
+  "crémant de Loire": "Loire Valley Crémant",
   "curry en poudre": "curry powder",
   eau: "water",
   "extrait de café": "coffee extract",
@@ -318,6 +323,7 @@ const ingredientTranslations: Record<string, string> = {
   framboises: "raspberries",
   fécule: "starch",
   "gruyère râpé": "grated Gruyère",
+  glaçons: "ice cubes",
   huile: "oil",
   "huile de tournesol": "sunflower oil",
   "huile d’olive": "olive oil",
@@ -422,10 +428,19 @@ const noteTranslations: Record<string, string> = {
   ramolli: "softened",
   rases: "level",
   "selon le goût": "to taste",
+  "selon besoin": "as needed",
   "écrit « chivre » sur la recette": "written “chivre” on the recipe",
 };
 
 const stepTranslations: Record<string, string> = {
+  "Placer tous les ingrédients au réfrigérateur à l’avance afin qu’ils soient bien frais.":
+    "Chill all the ingredients in advance so they are very cold.",
+  "Dans un saladier, mélanger le Cointreau, le Pulco Citron et le Canadou.":
+    "In a punch bowl, combine the Cointreau, Pulco Citron and Canadou.",
+  "Au dernier moment, ajouter le crémant de Loire.":
+    "At the last moment, add the Loire Valley Crémant.",
+  "Ajouter des glaçons, remuer délicatement et servir aussitôt, très frais.":
+    "Add ice cubes, stir gently and serve immediately, very cold.",
   "Préchauffer le four à 140 °C.": "Preheat the oven to 140 °C.",
   "Préchauffer le four à 160 °C.": "Preheat the oven to 160 °C.",
   "Préchauffer le four à 190 °C.": "Preheat the oven to 190 °C.",
@@ -795,7 +810,12 @@ const unitTranslations: Record<string, string> = {
   verre: "glass",
 };
 
+const quantityTranslations: Record<string, string> = {
+  "5 à 7": "5 to 7",
+};
+
 const yieldLabelTranslations: Record<string, string> = {
+  "Environ 1 litre": "About 1 litre",
   "Environ 1,3 kg de pâte": "About 1.3 kg of dough",
   "Environ 500 g de pâte": "About 500 g of dough",
   "Environ 20 gougères": "About 20 gougères",
@@ -884,7 +904,7 @@ export function toSeedRecipe(recipe: SourceRecipe): SeedRecipe {
 function translateIngredient(ingredient: SourceIngredient): SourceIngredient {
   return {
     name: translate(ingredientTranslations, ingredient.name),
-    quantity: ingredient.quantity,
+    quantity: translate(quantityTranslations, ingredient.quantity),
     unit: translate(unitTranslations, ingredient.unit),
     notes: ingredient.notes ? translate(noteTranslations, ingredient.notes) : "",
   };

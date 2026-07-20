@@ -39,10 +39,26 @@ describe("recipe reference servings readiness", () => {
   });
 
   test("still requires reference servings for a finished cake", () => {
-    const readiness = getRecipeReadiness(recipe("Gâteau au chocolat", "30 min"), true);
+    const cake = recipe("Gâteau au chocolat", "30 min");
+    cake.translations.fr.yieldLabel = "";
+    cake.translations.en.yieldLabel = "";
+    const readiness = getRecipeReadiness(cake, true);
 
     expect(readiness.blockers.map((blocker) => blocker.code)).toContain(
       "reference-servings",
     );
+  });
+
+  test("allows an uncooked drink to use only an editorial yield", () => {
+    const drink = recipe("Soupe de champagne");
+    drink.translations.fr.yieldLabel = "Environ 1 litre";
+    drink.translations.en.yieldLabel = "About 1 litre";
+
+    const readiness = getRecipeReadiness(drink, true);
+
+    expect(readiness.blockers.map((blocker) => blocker.code)).not.toContain(
+      "reference-servings",
+    );
+    expect(readiness.sections.ingredients).toBe(true);
   });
 });

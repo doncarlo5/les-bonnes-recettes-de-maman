@@ -2260,5 +2260,62 @@
     "notes": [
       "Un incontournable avec les salades de poulet."
     ]
+  },
+  {
+    "title": "Soupe de champagne",
+    "slug": "soupe-de-champagne",
+    "author": "Fabrice",
+    "description": "Cocktail pétillant au crémant de Loire, Cointreau, Pulco Citron et sirop de sucre de canne, à servir très frais.",
+    "heroImageUrl": "/images/recipes/soupe-de-champagne.png",
+    "yieldLabel": "Environ 1 litre",
+    "servings": null,
+    "prepTime": "5 min",
+    "cookTime": "",
+    "totalTime": "",
+    "temperature": "",
+    "ingredients": [
+      {
+        "name": "crémant de Loire",
+        "quantity": "75",
+        "unit": "cl",
+        "notes": ""
+      },
+      {
+        "name": "Cointreau",
+        "quantity": "10",
+        "unit": "cl",
+        "notes": ""
+      },
+      {
+        "name": "Pulco Citron",
+        "quantity": "10",
+        "unit": "cl",
+        "notes": ""
+      },
+      {
+        "name": "Canadou",
+        "quantity": "5 à 7",
+        "unit": "cl",
+        "notes": ""
+      },
+      {
+        "name": "glaçons",
+        "quantity": "",
+        "unit": "",
+        "notes": "selon besoin"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Placer tous les ingrédients au réfrigérateur à l’avance afin qu’ils soient bien frais.",
+          "Dans un saladier, mélanger le Cointreau, le Pulco Citron et le Canadou.",
+          "Au dernier moment, ajouter le crémant de Loire.",
+          "Ajouter des glaçons, remuer délicatement et servir aussitôt, très frais."
+        ]
+      }
+    ],
+    "notes": []
   }
 ]

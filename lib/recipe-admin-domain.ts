@@ -92,7 +92,7 @@ export function getRecipeReadiness(
   const hasTime = [fr.prepTime, fr.cookTime, fr.totalTime, fr.timeLabel].some(hasText);
   const hasIngredient = fr.ingredients.some((item) => hasText(item.name));
   const hasReferenceServings = isValidReferenceServings(recipe.referenceServings);
-  const allowsYieldOnly = isYieldOnlyBaseRecipe(fr);
+  const allowsYieldOnly = isYieldOnlyRecipe(fr);
   const hasPreparation = fr.sections.some(
     (section) => hasText(section.title) && section.steps.some(hasText),
   );
@@ -185,8 +185,11 @@ function hasText(value: string) {
   return value.trim().length > 0;
 }
 
-function isYieldOnlyBaseRecipe(recipe: LocalizedRecipeContent) {
-  return /^pâte\b/i.test(recipe.title.trim()) && !hasText(recipe.cookTime);
+function isYieldOnlyRecipe(recipe: LocalizedRecipeContent) {
+  const title = recipe.title.trim();
+  const isBaseDough = /^pâte\b/i.test(title);
+  const isChampagnePunch = /^soupe de champagne$/i.test(title);
+  return hasText(recipe.yieldLabel) && !hasText(recipe.cookTime) && (isBaseDough || isChampagnePunch);
 }
 
 function readinessItem(

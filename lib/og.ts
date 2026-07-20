@@ -43,3 +43,8 @@ export function chefHatSvg(color: string): string {
 export function svgDataUri(svg: string): string {
   return `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`;
 }
+
+/** Resolve public-folder paths for Satori while preserving absolute image URLs. */
+export function resolveOgImageUrl(imageUrl: string, baseUrl: string): string {
+  return new URL(imageUrl, baseUrl).toString();
+}

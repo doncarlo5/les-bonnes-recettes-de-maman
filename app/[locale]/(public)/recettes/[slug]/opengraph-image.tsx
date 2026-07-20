@@ -3,7 +3,8 @@ import { fetchQuery } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { hasLocale, defaultLocale, type Locale } from "@/i18n/config";
-import { brand, chefHatSvg, loadOgFonts, svgDataUri } from "@/lib/og";
+import { brand, chefHatSvg, loadOgFonts, resolveOgImageUrl, svgDataUri } from "@/lib/og";
+import { siteUrl } from "@/lib/site";
 
 export const alt = "Les bonnes recettes de maman";
 export const size = { width: 1200, height: 630 };
@@ -82,7 +83,7 @@ export default async function RecipeOpengraphImage({
     (
       <div style={{ width: "100%", height: "100%", display: "flex", position: "relative" }}>
         <img
-          src={recipe.heroImageUrl}
+          src={resolveOgImageUrl(recipe.heroImageUrl, siteUrl)}
           alt=""
           style={{
             position: "absolute",

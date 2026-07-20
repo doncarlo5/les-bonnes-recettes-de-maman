@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { loadOgFonts } from "./og";
+import { loadOgFonts, resolveOgImageUrl } from "./og";
 
 describe("loadOgFonts", () => {
   it("loads both vendored brand fonts for Open Graph rendering", async () => {
@@ -14,5 +14,25 @@ describe("loadOgFonts", () => {
       expect(font.style).toBe("normal");
       expect(font.data.byteLength).toBeGreaterThan(10_000);
     }
+  });
+});
+
+describe("resolveOgImageUrl", () => {
+  it("resolves a local public image against the site URL", () => {
+    expect(
+      resolveOgImageUrl(
+        "/images/recipes/soupe-de-champagne.png",
+        "https://recettes.example/fr/recettes/soupe-de-champagne",
+      ),
+    ).toBe("https://recettes.example/images/recipes/soupe-de-champagne.png");
+  });
+
+  it("keeps an absolute remote image URL unchanged", () => {
+    expect(
+      resolveOgImageUrl(
+        "https://images.example/photo.jpg",
+        "https://recettes.example",
+      ),
+    ).toBe("https://images.example/photo.jpg");
   });
 });
