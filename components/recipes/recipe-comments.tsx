@@ -284,18 +284,12 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
               <label htmlFor="comment-website">Website</label>
               <input id="comment-website" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(event) => dispatchForm({ type: "patch", value: { honeypot: event.target.value } })} />
             </div>
-            <div className="grid gap-3">
-              <div className="grid min-h-14 gap-1 rounded-xl bg-muted/60 px-4 py-3 shadow-[var(--shadow-border)]">
-                <p className="type-label text-foreground">{labels.photoLabel}</p>
-                <p className="type-meta text-muted-foreground">{labels.photoHelp}</p>
-              </div>
-              <div id="comment-photo-picker">
-                <input key={photoInputRevision} id="comment-photo" className="peer sr-only" type="file" accept={RECIPE_COMMENT_PHOTO_MIME_TYPES.join(",")} aria-label={labels.choosePhoto} onChange={(event) => selectPhoto(event.target.files?.[0] ?? null)} />
-                <label htmlFor="comment-photo" className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg bg-background px-4 text-sm font-semibold text-foreground shadow-[var(--shadow-border)] transition-[scale,box-shadow] duration-150 active:scale-[0.96] peer-focus-visible:ring-3 peer-focus-visible:ring-ring/80">
-                  <ImagePlus className="size-4" />
-                  {labels.choosePhoto}
-                </label>
-              </div>
+            <div id="comment-photo-picker">
+              <input key={photoInputRevision} id="comment-photo" className="peer sr-only" type="file" accept={RECIPE_COMMENT_PHOTO_MIME_TYPES.join(",")} aria-label={labels.choosePhoto} onChange={(event) => selectPhoto(event.target.files?.[0] ?? null)} />
+              <label htmlFor="comment-photo" className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg bg-background px-4 text-sm font-semibold text-foreground shadow-[var(--shadow-border)] transition-[scale,box-shadow] duration-150 active:scale-[0.96] peer-focus-visible:ring-3 peer-focus-visible:ring-ring/80">
+                <ImagePlus className="size-4" />
+                {labels.choosePhoto}
+              </label>
             </div>
             {photo && photoPreviewUrl ? (
               <Attachment className="w-full" state={pending ? "uploading" : "idle"}>
