@@ -93,6 +93,34 @@ describe("recipe working drafts", () => {
     ).resolves.toMatchObject({ title: "Titre éditorial préservé" });
   });
 
+  test("targeted seeding clears stale reference servings from a yield-only recipe", async () => {
+    const t = convexTest(schema, modules);
+    await t.mutation(api.recipes.seed, {
+      adminPassword: password,
+      slug: "banana-bread-du-kona-inn",
+    });
+    await t.run(async (ctx) => {
+      const bananaBread = await ctx.db
+        .query("recipes")
+        .withIndex("by_slug", (q) => q.eq("slug", "banana-bread-du-kona-inn"))
+        .unique();
+      if (!bananaBread) throw new Error("seed fixture missing");
+      await ctx.db.patch(bananaBread._id, { referenceServings: 6 });
+    });
+
+    await t.mutation(api.recipes.seed, {
+      adminPassword: password,
+      slug: "banana-bread-du-kona-inn",
+    });
+
+    const localized = await t.query(api.recipes.getBySlug, {
+      locale: "fr",
+      slug: "banana-bread-du-kona-inn",
+    });
+    expect(localized).toMatchObject({ yieldLabel: "1 cake" });
+    expect(localized).not.toHaveProperty("referenceServings");
+  });
+
   test("seeding without a slug keeps the global behavior", async () => {
     const t = convexTest(schema, modules);
     const result = await t.mutation(api.recipes.seed, {
@@ -132,9 +160,18 @@ describe("recipe working drafts", () => {
         .query("recipes")
         .withIndex("by_slug", (q) => q.eq("slug", "gateau-aux-pommes"))
         .unique();
-      if (!ambiguous || !inferred) throw new Error("seed fixture missing");
+      const yieldLabeled = await ctx.db
+        .query("recipes")
+        .withIndex("by_slug", (q) =>
+          q.eq("slug", "cookies-aux-pepites-de-chocolat-et-fleur-de-sel"),
+        )
+        .unique();
+      if (!ambiguous || !inferred || !yieldLabeled) {
+        throw new Error("seed fixture missing");
+      }
       await ctx.db.patch(ambiguous._id, { referenceServings: 8 });
       await ctx.db.patch(inferred._id, { referenceServings: 7 });
+      await ctx.db.patch(yieldLabeled._id, { referenceServings: 12 });
     });
 
     await t.mutation(api.recipes.seed, { adminPassword: password });
@@ -148,6 +185,12 @@ describe("recipe working drafts", () => {
         slug: "gateau-aux-pommes",
       }),
     ).resolves.toMatchObject({ referenceServings: 7 });
+    await expect(
+      t.query(api.recipes.getBySlug, {
+        locale: "fr",
+        slug: "cookies-aux-pepites-de-chocolat-et-fleur-de-sel",
+      }),
+    ).resolves.toMatchObject({ referenceServings: 12 });
   });
 
   test("re-seeding preserves unknown legacy category labels", async () => {

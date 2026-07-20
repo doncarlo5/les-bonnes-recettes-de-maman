@@ -141,6 +141,7 @@ const openverseImageCreditValidator = v.object({
 });
 
 const recipes = (rawRecipes as SourceRecipe[]).map(toSeedRecipe);
+const referenceServingsResetSlugs = new Set(["banana-bread-du-kona-inn"]);
 
 export const list = query({
   args: {
@@ -804,8 +805,9 @@ export const seed = mutation({
           .unique();
 
         if (existing) {
-          const referenceServings =
-            existing.referenceServings ?? recipe.referenceServings;
+          const referenceServings = referenceServingsResetSlugs.has(recipe.slug)
+            ? recipe.referenceServings
+            : existing.referenceServings ?? recipe.referenceServings;
           const categoryFields = resolveRecipeCategories({
             categories: recipe.categories,
             legacyCategoryLabels: [

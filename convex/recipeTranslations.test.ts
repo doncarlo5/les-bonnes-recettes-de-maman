@@ -258,6 +258,13 @@ describe("recipe yield localization", () => {
         ],
       },
     ]);
+    expect(seeded.translations.en.sections.map(({ title }) => title)).toEqual([
+      "Preparation",
+      "Optional Batter Addition",
+      "Baking",
+      "Cinnamon and Pecan Filling Variation",
+      "Storage",
+    ]);
     expect(seeded.translations.en.sections.flatMap(({ steps }) => steps)).toEqual([
       "Preheat the oven to 175 °C.",
       "Beat the softened butter and sugar until light and fluffy.",

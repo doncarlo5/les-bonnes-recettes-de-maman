@@ -187,7 +187,6 @@ const titleTranslations: Record<string, string> = {
   "Flan au lait concentré sucré Nestlé": "Nestlé Sweetened Condensed Milk Flan",
   "Crème au café": "Coffee Custard",
   "Banana bread du Kona Inn": "Kona Inn Banana Bread",
-  "Garniture intérieure facultative": "Optional Inner Filling",
   "Variante avec garniture à la cannelle et aux noix de pécan":
     "Cinnamon and Pecan Filling Variation",
   "Soupe de champagne": "Champagne Punch",
@@ -267,7 +266,6 @@ const sectionTranslations: Record<string, string> = {
   Décor: "Decoration",
   Finition: "Finishing",
   "Glaçage facultatif": "Optional Glaze",
-  "Garniture intérieure facultative": "Optional Inner Filling",
   "Gâteau de Vichy": "Vichy Cake",
   "Notes de cuisson": "Baking Notes",
   Préparation: "Preparation",
