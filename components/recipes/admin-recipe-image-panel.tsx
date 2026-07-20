@@ -235,7 +235,7 @@ export function AdminRecipeImagePanel({
     }
 
     setSelectedUpload(file);
-    setStatus({ type: "loading", message: "Préparation de l'image..." });
+    setStatus({ type: "loading", message: "Préparation de l’image…" });
     try {
       const preparedRevision = onBeforeChange
         ? await onBeforeChange()
@@ -247,7 +247,7 @@ export function AdminRecipeImagePanel({
         });
         return;
       }
-      setStatus({ type: "loading", message: "Upload de l'image..." });
+      setStatus({ type: "loading", message: "Upload de l’image…" });
 
       const uploadUrlResponse = await fetch("/api/admin/recipes/upload-url", {
         method: "POST",
@@ -309,7 +309,7 @@ export function AdminRecipeImagePanel({
     setIsSearchDialogOpen(true);
     setStatus({
       type: "loading",
-      message: "Recherche Unsplash et Openverse en cours...",
+      message: "Recherche Unsplash et Openverse en cours…",
     });
 
     const [unsplashResult, openverseResult] = await Promise.allSettled([
@@ -378,7 +378,7 @@ export function AdminRecipeImagePanel({
       }
       setStatus({
         type: "loading",
-        message: "Association de l'image Unsplash...",
+        message: "Association de l’image Unsplash…",
       });
 
       const trackingResponse = await fetch("/api/admin/unsplash/download", {
@@ -473,7 +473,7 @@ export function AdminRecipeImagePanel({
       }
       setStatus({
         type: "loading",
-        message: "Import de l'image Openverse dans Convex...",
+        message: "Import de l’image Openverse dans Convex…",
       });
 
       const response = await fetch("/api/admin/openverse/import", {
@@ -546,9 +546,9 @@ export function AdminRecipeImagePanel({
   return (
     <section className={`grid gap-4 rounded-2xl bg-muted/40 p-4 shadow-[var(--shadow-card)] md:rounded-lg md:border md:border-border md:shadow-none ${compact ? "lg:sticky lg:top-28" : ""}`}>
       <div className="flex flex-col gap-1">
-        <h3 className="type-panel-title text-foreground">
+        <h2 className="type-panel-title text-foreground">
           Image principale
-        </h3>
+        </h2>
         <p className="text-sm font-semibold text-muted-foreground">
           Utilisée comme couverture de la recette.
         </p>
@@ -607,7 +607,7 @@ export function AdminRecipeImagePanel({
               status.type === "error"
                 ? "text-sm font-bold text-destructive"
                 : status.type === "success"
-                  ? "text-sm font-bold text-green-600 dark:text-green-400"
+                  ? "text-sm font-bold text-success"
                   : "text-sm font-bold text-muted-foreground"
             }
           >
@@ -668,7 +668,7 @@ export function AdminRecipeImagePanel({
                 handleSearchKeyDown(event, handleInternetSearch)
               }
               className="h-11 font-semibold"
-              placeholder="cake citron, tarte fraise..."
+              placeholder="cake citron, tarte fraise…"
               />
             </InputGroup>
             <Button
@@ -688,7 +688,7 @@ export function AdminRecipeImagePanel({
               status.type === "error"
                 ? "text-sm font-bold text-destructive"
                 : status.type === "success"
-                  ? "text-sm font-bold text-green-600 dark:text-green-400"
+                  ? "text-sm font-bold text-success"
                   : "text-sm font-bold text-muted-foreground"
             }
           >
@@ -763,9 +763,9 @@ function ImageResultsColumn({
 
   return (
     <section className="grid content-start gap-3">
-      <h4 className="type-panel-title text-foreground">
+      <h3 className="type-panel-title text-foreground">
         {title}
-      </h4>
+      </h3>
       {hasResults ? (
         <div className="grid grid-cols-2 gap-3">{children}</div>
       ) : isLoading ? (
@@ -795,7 +795,7 @@ function ImageChoiceCard({
       type="button"
       disabled={disabled}
       onClick={onSelect}
-      className="group grid min-h-11 overflow-hidden rounded-xl bg-card text-left shadow-[var(--shadow-card)] transition-[scale,box-shadow,opacity] duration-150 hover:shadow-[var(--shadow-card-hover)] focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.96] disabled:cursor-not-allowed disabled:opacity-60"
+      className="group grid min-h-11 overflow-hidden rounded-xl bg-card text-left shadow-[var(--shadow-card)] transition-[scale,box-shadow,opacity] duration-150 hover:shadow-[var(--shadow-card-hover)] focus-visible:ring-3 focus-visible:ring-ring/80 active:scale-[0.96] disabled:cursor-not-allowed disabled:opacity-60"
     >
       <div className="aspect-[4/3] bg-muted">
         {/* eslint-disable-next-line @next/next/no-img-element */}

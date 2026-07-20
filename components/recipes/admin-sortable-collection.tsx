@@ -49,7 +49,7 @@ export function SortableCollection({ ids, label, getLabel, onMove, renderItem }:
 export function SortableEditorRow({ id, handleLabel, onOpen, children }: { id: string; handleLabel: string; onOpen: () => void; children: ReactNode }) {
   const { attributes, listeners, setActivatorNodeRef, setNodeRef, transform, transition, isDragging } = useSortable({ id });
   return <div ref={setNodeRef} style={{ transform: CSS.Transform.toString(transform), transition }} className={`grid min-h-14 grid-cols-[2.75rem_1fr] items-stretch gap-1 rounded-xl bg-muted/55 p-1 shadow-[var(--shadow-border)] transition-[opacity,box-shadow] ${isDragging ? "opacity-40" : "opacity-100"}`}>
-    <button ref={setActivatorNodeRef} type="button" aria-label={handleLabel} className="grid size-11 touch-none place-items-center rounded-lg bg-card transition-[scale,background-color] active:scale-[0.96] focus-visible:ring-3 focus-visible:ring-ring/50" {...attributes} {...listeners}><GripVertical className="size-5 text-muted-foreground" /></button>
+    <button ref={setActivatorNodeRef} type="button" aria-label={handleLabel} className="grid size-11 touch-none place-items-center rounded-lg bg-card transition-[scale,background-color] active:scale-[0.96] focus-visible:ring-3 focus-visible:ring-ring/80" {...attributes} {...listeners}><GripVertical className="size-5 text-muted-foreground" /></button>
     <button type="button" data-sortable-open={id} onClick={onOpen} className="min-h-11 min-w-0 rounded-lg px-2 text-left transition-[scale,background-color] active:scale-[0.96]">{children}</button>
   </div>;
 }
@@ -57,7 +57,7 @@ export function SortableEditorRow({ id, handleLabel, onOpen, children }: { id: s
 export function SortableInlineRow({ id, handleLabel, children }: { id: string; handleLabel: string; children: ReactNode }) {
   const { attributes, listeners, setActivatorNodeRef, setNodeRef, transform, transition, isDragging } = useSortable({ id });
   return <div ref={setNodeRef} style={{ transform: CSS.Transform.toString(transform), transition }} className={`grid grid-cols-[2.75rem_1fr] items-start gap-2 rounded-lg border p-2 transition-opacity ${isDragging ? "opacity-40" : "opacity-100"}`}>
-    <button ref={setActivatorNodeRef} type="button" aria-label={handleLabel} className="grid size-11 touch-none place-items-center rounded-lg bg-muted transition-transform active:scale-[0.96] focus-visible:ring-3 focus-visible:ring-ring/50" {...attributes} {...listeners}><GripVertical className="size-5 text-muted-foreground" /></button>
+    <button ref={setActivatorNodeRef} type="button" aria-label={handleLabel} className="grid size-11 touch-none place-items-center rounded-lg bg-muted transition-transform active:scale-[0.96] focus-visible:ring-3 focus-visible:ring-ring/80" {...attributes} {...listeners}><GripVertical className="size-5 text-muted-foreground" /></button>
     <div className="min-w-0">{children}</div>
   </div>;
 }

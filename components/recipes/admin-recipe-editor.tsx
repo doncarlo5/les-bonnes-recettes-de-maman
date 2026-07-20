@@ -623,7 +623,7 @@ function MobileRecipeAdmin({
               <p className="type-body-sm font-semibold text-muted-foreground tabular-nums">{recipes.length} recettes à portée de main.</p>
             </div>
             <div className="grid grid-cols-2 gap-2 sm:flex">
-              <Link href={`/${locale}`} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-border bg-background px-3 text-sm font-semibold whitespace-nowrap transition-[scale,background-color,color,border-color,box-shadow] duration-150 outline-none select-none hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:scale-[0.96] md:min-h-10">
+              <Link href={`/${locale}`} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-border bg-background px-3 text-sm font-semibold whitespace-nowrap transition-[scale,background-color,color,border-color,box-shadow] duration-150 outline-none select-none hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/80 active:scale-[0.96] md:min-h-10">
                 <House data-icon="inline-start" /> Site public
               </Link>
               <Button type="button" onClick={onCreate} className="min-h-11 rounded-xl px-4">
@@ -649,7 +649,7 @@ function MobileRecipeAdmin({
 
         <ItemGroup role="group" className="mx-auto mt-5 grid w-full max-w-5xl gap-3 lg:grid-cols-2" aria-label="Recettes">
           {visibleRecipes.map((recipe) => (
-            <Item key={recipe._id} render={<button type="button" onClick={() => onSelect(recipe.slug)} />} className="group min-h-24 flex-nowrap rounded-2xl border-0 bg-card p-2 text-left shadow-[var(--shadow-card)] transition-[box-shadow,scale] duration-150 active:scale-[0.96]">
+            <Item key={recipe._id} render={<button type="button" onClick={() => onSelect(recipe.slug)} />} className="group min-h-24 flex-nowrap rounded-[1.25rem] border-0 bg-card p-2 text-left shadow-[var(--shadow-card)] transition-[box-shadow,scale] duration-150 active:scale-[0.96]">
               <ItemMedia variant="image" className="relative size-20 rounded-xl bg-muted">
                 {recipe.heroImageUrl ? <Image src={recipe.heroImageUrl} alt="" fill sizes="80px" className="object-cover outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10" /> : <div className="grid size-full place-items-center"><Camera className="size-5 text-muted-foreground" /></div>}
               </ItemMedia>
@@ -759,7 +759,7 @@ function MobileOverview({ recipe, values, readiness, publication, onOpen }: { re
       <div className="relative aspect-[16/9] bg-muted">{recipe?.heroImageUrl ? <Image src={recipe.heroImageUrl} alt="" fill sizes="(max-width: 768px) 100vw, 32rem" className="object-cover outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10" /> : <div className="grid size-full place-items-center gap-2 text-muted-foreground"><Camera /><span className="text-sm font-bold">Ajouter une photo</span></div>}</div>
       <div className="flex items-center justify-between gap-3 p-4"><div><Badge variant={publication.isPublic ? "default" : "secondary"}>{publication.isPublic ? "Visible publiquement" : publication.hasPublishedVersion ? "Version approuvée masquée" : "Jamais publiée"}</Badge><p className="mt-2 text-sm font-semibold text-muted-foreground">{publication.hasUnpublishedChanges ? "Modifications non publiées" : readiness.blockers.length === 0 ? "Prête à publier" : `${readiness.blockers.length} point${readiness.blockers.length > 1 ? "s" : ""} à compléter`}</p></div><Button type="button" variant="outline" onClick={() => onOpen("publish")} className="min-h-11 rounded-xl">Vérifier <ChevronRight /></Button></div>
     </div>
-    <div className="grid gap-2 lg:grid-cols-2">{sections.map(({ id, title, detail, icon: Icon, complete, blockers, warnings }) => <button key={id} type="button" onClick={() => onOpen(id)} className="grid min-h-17 grid-cols-[2.75rem_1fr_auto] items-center gap-3 rounded-2xl bg-card p-3 text-left shadow-[var(--shadow-card)] transition-[scale,box-shadow] active:scale-[0.96]"><span className="grid size-11 place-items-center rounded-xl bg-muted"><Icon className="size-5" /></span><span><span className="block font-black">{title}</span><span className="block text-xs font-semibold text-muted-foreground">{blockers > 0 ? `${blockers} blocage${blockers > 1 ? "s" : ""}` : warnings > 0 ? `${warnings} conseil${warnings > 1 ? "s" : ""}` : detail}</span></span>{blockers > 0 ? <TriangleAlert className="size-5 text-destructive" /> : warnings > 0 ? <TriangleAlert className="size-5 text-amber-600" /> : complete ? <Check className="size-5 text-green-600" /> : <ChevronRight className="size-5 text-muted-foreground" />}</button>)}</div>
+    <div className="grid gap-2 lg:grid-cols-2">{sections.map(({ id, title, detail, icon: Icon, complete, blockers, warnings }) => <button key={id} type="button" onClick={() => onOpen(id)} className="grid min-h-17 grid-cols-[2.75rem_1fr_auto] items-center gap-3 rounded-2xl bg-card p-3 text-left shadow-[var(--shadow-card)] transition-[scale,box-shadow] active:scale-[0.96]"><span className="grid size-11 place-items-center rounded-xl bg-muted"><Icon className="size-5" /></span><span><span className="block font-black">{title}</span><span className="block text-xs font-semibold text-muted-foreground">{blockers > 0 ? `${blockers} blocage${blockers > 1 ? "s" : ""}` : warnings > 0 ? `${warnings} conseil${warnings > 1 ? "s" : ""}` : detail}</span></span>{blockers > 0 ? <TriangleAlert className="size-5 text-destructive" /> : warnings > 0 ? <TriangleAlert className="size-5 text-warning" /> : complete ? <Check className="size-5 text-success" /> : <ChevronRight className="size-5 text-muted-foreground" />}</button>)}</div>
   </div>;
 }
 
@@ -888,11 +888,11 @@ function RecipeCategoryField({ form, value }: { form: RecipeForm; value: RecipeC
       {legacyLabels.length ? (
         <div className="flex flex-wrap gap-2" aria-label="Anciennes catégories à vérifier">
           {legacyLabels.map((label) => (
-            <Badge key={label} variant="outline" className="gap-1">
+            <Badge key={label} variant="outline" className="min-h-11 gap-2 pr-0 pl-3">
               {label}
               <button
                 type="button"
-                className="rounded-sm font-black"
+                className="grid size-11 place-items-center rounded-lg font-black transition-[scale,background-color] hover:bg-muted active:scale-[0.96]"
                 aria-label={`Supprimer l’ancienne catégorie ${label}`}
                 onClick={() => form.setValue(
                   "legacyCategoryLabels",
@@ -921,7 +921,7 @@ function PublishWorkspace({ recipe, readiness, publication, isPending, onPublish
 
   return <div className="grid gap-5">
     <div><p className="type-label text-primary">État de préparation</p><h2 className="type-panel-title mt-2">Avant de publier</h2><p className="type-body-sm mt-2 font-semibold text-muted-foreground [text-wrap:pretty]">{publication.isPublic ? "La version approuvée est visible publiquement." : publication.hasPublishedVersion ? "La version approuvée est actuellement masquée." : "Cette recette n’a jamais été publiée."}</p></div>
-    {readiness.blockers.length ? <div className="grid gap-2"><h3 className="font-black text-destructive">À compléter</h3>{readiness.blockers.map((item) => <button type="button" key={item.code} onClick={() => openItem(item)} className="flex min-h-11 items-center gap-2 rounded-xl bg-destructive/10 p-3 text-left text-sm font-bold text-destructive transition-[scale,background-color] active:scale-[0.96]"><TriangleAlert className="size-5 shrink-0" /><span className="flex-1">{item.label}</span><ChevronRight className="size-5" /></button>)}</div> : <div className="flex gap-3 rounded-xl bg-green-600/10 p-4 font-bold text-green-700 dark:text-green-400"><Check className="size-5" />La version française est prête.</div>}
+    {readiness.blockers.length ? <div className="grid gap-2"><h3 className="font-black text-destructive">À compléter</h3>{readiness.blockers.map((item) => <button type="button" key={item.code} onClick={() => openItem(item)} className="flex min-h-11 items-center gap-2 rounded-xl bg-destructive/10 p-3 text-left text-sm font-bold text-destructive transition-[scale,background-color] active:scale-[0.96]"><TriangleAlert className="size-5 shrink-0" /><span className="flex-1">{item.label}</span><ChevronRight className="size-5" /></button>)}</div> : <div className="flex gap-3 rounded-xl bg-success/10 p-4 font-bold text-success"><Check className="size-5" />La version française est prête.</div>}
     {readiness.warnings.length ? <div className="grid gap-2"><h3 className="font-black">Conseils</h3>{readiness.warnings.map((item) => <button type="button" key={item.code} onClick={() => openItem(item)} className="flex min-h-11 items-center gap-2 rounded-xl bg-muted p-3 text-left text-sm font-semibold transition-[scale,background-color] active:scale-[0.96]"><span className="flex-1">{item.label}</span><ChevronRight className="size-5" /></button>)}</div> : null}
     {publication.isPublic && recipe ? <a href={`../recettes/${recipe.slug}`} target="_blank" rel="noreferrer" className="flex min-h-11 items-center justify-center rounded-xl bg-muted px-4 font-black">Voir la version publiée</a> : null}
     <Button type="button" size="lg" disabled={isPending || readiness.blockers.length > 0} onClick={onPublish} className="min-h-12 rounded-xl active:scale-[0.96] transition-transform">{isPending ? <Spinner /> : <Send />} {publication.hasPublishedVersion ? "Publier les modifications" : "Publier la recette"}</Button>

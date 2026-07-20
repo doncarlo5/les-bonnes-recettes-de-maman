@@ -101,15 +101,15 @@ export function AdminRecipeComments({ slug, locale }: { slug: string; locale: Lo
       {!loading && comments.length === 0 ? <Empty className="bg-muted"><EmptyHeader><EmptyMedia variant="icon"><MessageSquare /></EmptyMedia><EmptyTitle>{labels.adminEmpty}</EmptyTitle></EmptyHeader></Empty> : null}
       <div className="grid gap-3">
         {comments.map((comment) => (
-          <article key={comment._id} className="grid gap-3 rounded-xl border border-border bg-background p-4">
+          <article key={comment._id} className="grid gap-3 rounded-xl bg-background p-4 shadow-[var(--shadow-border)]">
             <header className="flex flex-wrap items-baseline justify-between gap-2">
               <h3 className="font-black">{comment.authorName ?? labels.anonymous}</h3>
               <span className="type-meta text-muted-foreground">{dateFormatter.format(comment._creationTime)}{comment.edited ? ` · ${labels.edited}` : ""}</span>
             </header>
             <p className="whitespace-pre-wrap text-sm font-semibold text-foreground/85">{comment.text}</p>
-            {comment.photoUrl ? <div className="relative aspect-[16/9] max-w-md overflow-hidden rounded-lg bg-muted"><Image src={comment.photoUrl} alt={labels.photoAlt.replace("{author}", comment.authorName ?? labels.anonymous)} fill sizes="28rem" className="object-cover" /></div> : null}
+            {comment.photoUrl ? <div className="relative aspect-[16/9] max-w-md overflow-hidden rounded-lg bg-muted"><Image src={comment.photoUrl} alt={labels.photoAlt.replace("{author}", comment.authorName ?? labels.anonymous)} fill sizes="28rem" className="image-outline object-cover" /></div> : null}
             <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-3">
-              <div className="flex gap-3 text-sm font-bold text-muted-foreground"><span className="inline-flex items-center gap-1"><ThumbsUp className="size-4" />{comment.thumbsUpCount}</span><span className="inline-flex items-center gap-1"><ThumbsDown className="size-4" />{comment.thumbsDownCount}</span></div>
+              <div className="flex gap-3 text-sm font-bold text-muted-foreground tabular-nums"><span className="inline-flex items-center gap-1"><ThumbsUp className="size-4" />{comment.thumbsUpCount}</span><span className="inline-flex items-center gap-1"><ThumbsDown className="size-4" />{comment.thumbsDownCount}</span></div>
               <Button type="button" size="sm" variant="destructive" onClick={() => setDeleteTarget(comment._id)}><Trash2 /> {labels.delete}</Button>
             </footer>
           </article>

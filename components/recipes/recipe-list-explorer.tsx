@@ -117,11 +117,10 @@ export function RecipeListExplorer({
             onClick={() => setMobileSearchOpen((open) => !open)}
             className="surface-elevated inline-flex size-11 items-center justify-center rounded-full bg-card text-foreground transition-[scale,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.96]"
           >
-            {mobileSearchOpen ? (
-              <X aria-hidden className="size-5 stroke-[1.8]" />
-            ) : (
-              <Search aria-hidden className="size-5 stroke-[1.8]" />
-            )}
+            <span aria-hidden className="relative size-5">
+              <Search className={cn("absolute inset-0 size-5 stroke-[1.8] transition-[scale,opacity,filter] duration-300 [transition-timing-function:cubic-bezier(0.2,0,0,1)]", mobileSearchOpen ? "scale-[0.25] opacity-0 blur-[4px]" : "scale-100 opacity-100 blur-0")} />
+              <X className={cn("absolute inset-0 size-5 stroke-[1.8] transition-[scale,opacity,filter] duration-300 [transition-timing-function:cubic-bezier(0.2,0,0,1)]", mobileSearchOpen ? "scale-100 opacity-100 blur-0" : "scale-[0.25] opacity-0 blur-[4px]")} />
+            </span>
           </button>
         </div>
 

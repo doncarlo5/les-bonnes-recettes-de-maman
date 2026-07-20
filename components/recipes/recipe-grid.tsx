@@ -55,7 +55,7 @@ export function RecipeGrid({
                   {recipe.timeLabel}
                 </span>
                 <span
-                  className="type-card-title line-clamp-2 block min-h-[2.1em] max-w-[18ch] text-[1.15rem] leading-[1.05] text-foreground md:min-h-0 md:text-[clamp(1.75rem,1.25rem+2vw,3rem)]"
+                  className="type-card-title type-card-title-compact line-clamp-2 block min-h-[2.1em] max-w-[18ch] text-foreground md:min-h-0"
                   title={recipe.title}
                 >
                   {recipe.title}
@@ -90,7 +90,7 @@ export function RecipeGrid({
               <Plus className="size-6 stroke-[1.8] md:size-10" />
             </span>
             <span className="grid gap-2 px-3 md:px-8">
-              <span className="type-card-title text-[1.15rem] leading-[1.05] text-foreground md:text-[clamp(1.75rem,1.25rem+2vw,3rem)]">
+              <span className="type-card-title type-card-title-compact text-foreground">
                 {dict.recipeList.addRecipeTitle}
               </span>
               <span className="type-body-sm hidden font-bold text-muted-foreground md:block">

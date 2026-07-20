@@ -58,7 +58,7 @@ export function SiteHeader({ locale, dict }: SiteHeaderProps) {
       <div className="mx-auto flex min-h-20 w-full max-w-7xl items-center justify-between gap-4 px-5 lg:px-10">
         <Link
           href={`/${locale}`}
-          className="type-wordmark text-foreground"
+          className="type-wordmark inline-flex min-h-10 items-center text-foreground"
         >
           {dict.site.wordmark}
         </Link>
@@ -66,13 +66,13 @@ export function SiteHeader({ locale, dict }: SiteHeaderProps) {
         <nav className="type-label hidden items-center gap-8 text-muted-foreground md:flex">
           <Link
             href={`/${locale}#recettes`}
-            className="transition-colors duration-150 hover:text-primary"
+            className="inline-flex min-h-10 items-center transition-colors duration-150 hover:text-primary"
           >
             {dict.nav.recipes}
           </Link>
           <Link
             href={`/${locale}/admin/recettes?new=1`}
-            className="transition-colors duration-150 hover:text-primary"
+            className="inline-flex min-h-10 items-center transition-colors duration-150 hover:text-primary"
           >
             {dict.nav.newRecipe}
           </Link>

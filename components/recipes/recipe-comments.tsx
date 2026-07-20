@@ -291,7 +291,7 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
               </div>
               <div id="comment-photo-picker">
                 <input key={photoInputRevision} id="comment-photo" className="peer sr-only" type="file" accept={RECIPE_COMMENT_PHOTO_MIME_TYPES.join(",")} aria-label={labels.choosePhoto} onChange={(event) => selectPhoto(event.target.files?.[0] ?? null)} />
-                <label htmlFor="comment-photo" className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg bg-background px-4 text-sm font-semibold text-foreground shadow-[var(--shadow-border)] transition-[scale,box-shadow] duration-150 active:scale-[0.96] peer-focus-visible:ring-3 peer-focus-visible:ring-ring/50">
+                <label htmlFor="comment-photo" className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg bg-background px-4 text-sm font-semibold text-foreground shadow-[var(--shadow-border)] transition-[scale,box-shadow] duration-150 active:scale-[0.96] peer-focus-visible:ring-3 peer-focus-visible:ring-ring/80">
                   <ImagePlus className="size-4" />
                   {labels.choosePhoto}
                 </label>
@@ -300,7 +300,7 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
             {photo && photoPreviewUrl ? (
               <Attachment className="w-full" state={pending ? "uploading" : "idle"}>
                 <AttachmentMedia variant="image">
-                  <Image src={photoPreviewUrl} alt="" fill unoptimized sizes="3rem" className="object-cover" />
+                  <Image src={photoPreviewUrl} alt="" fill unoptimized sizes="3rem" className="image-outline object-cover" />
                 </AttachmentMedia>
                 <AttachmentContent>
                   <AttachmentTitle>{photo.name}</AttachmentTitle>
@@ -312,7 +312,7 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
               </Attachment>
             ) : displayedPhoto ? (
               <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-muted">
-                <Image src={displayedPhoto} alt="" fill sizes="20rem" className="object-cover" />
+                <Image src={displayedPhoto} alt="" fill sizes="20rem" className="image-outline object-cover" />
                 <Button type="button" size="icon-sm" variant="secondary" className="absolute right-2 top-2" aria-label={labels.removePhoto} onClick={removePhoto}><X /></Button>
               </div>
             ) : null}
@@ -339,7 +339,7 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
                   {comment.photoUrl ? (
                     <Dialog>
                       <DialogTrigger className="relative mt-4 block aspect-[4/3] w-full overflow-hidden rounded-xl bg-muted text-left">
-                        <Image src={comment.photoUrl} alt={labels.photoAlt.replace("{author}", author)} fill sizes="(max-width: 768px) 100vw, 38rem" className="object-cover transition-transform duration-200 hover:scale-[1.02]" />
+                        <Image src={comment.photoUrl} alt={labels.photoAlt.replace("{author}", author)} fill sizes="(max-width: 768px) 100vw, 38rem" className="image-outline object-cover transition-transform duration-200 hover:scale-[1.02]" />
                         <span className="sr-only">{labels.openPhoto.replace("{author}", author)}</span>
                       </DialogTrigger>
                       <DialogContent className="max-w-3xl bg-black p-2" showCloseButton>
@@ -349,7 +349,7 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
                     </Dialog>
                   ) : null}</BubbleContent></Bubble>
                   <MessageFooter className="flex-wrap justify-between gap-3 px-0">
-                    <div className="flex gap-2" role="group" aria-label={labels.title}>
+                    <div className="flex gap-2 tabular-nums" role="group" aria-label={labels.title}>
                       <Button type="button" size="sm" variant={comment.viewerReaction === "up" ? "secondary" : "ghost"} aria-pressed={comment.viewerReaction === "up"} aria-label={labels.thumbUp} disabled={reactionPending === comment._id} onClick={() => react(comment, "up")}><ThumbsUp /> {comment.thumbsUpCount}</Button>
                       <Button type="button" size="sm" variant={comment.viewerReaction === "down" ? "secondary" : "ghost"} aria-pressed={comment.viewerReaction === "down"} aria-label={labels.thumbDown} disabled={reactionPending === comment._id} onClick={() => react(comment, "down")}><ThumbsDown /> {comment.thumbsDownCount}</Button>
                     </div>
