@@ -160,6 +160,121 @@ describe("recipe yield localization", () => {
     ]);
   });
 
+  test("localizes Mary McHale's Kona Inn banana bread as one metric loaf", () => {
+    const source = recipes.find(
+      (recipe) => recipe.slug === "banana-bread-du-kona-inn",
+    );
+    expect(source).toBeDefined();
+
+    const seeded = toSeedRecipe(source!);
+    expect(seeded.referenceServings).toBeUndefined();
+    expect(seeded.translations.fr).toMatchObject({
+      title: "Banana bread du Kona Inn",
+      author: "Mary McHale",
+      yieldLabel: "1 cake",
+      servings: null,
+      prepTime: "20 min",
+      cookTime: "45 à 60 min",
+      temperature: "175 °C",
+    });
+    expect(seeded.translations.fr.ingredients).toEqual([
+      { name: "sucre blanc", quantity: "200", unit: "g", notes: "" },
+      { name: "beurre", quantity: "115", unit: "g", notes: "ramolli" },
+      {
+        name: "bananes bien mûres",
+        quantity: "325 à 350",
+        unit: "g",
+        notes: "écrasées, environ 3 à 4 bananes selon leur taille",
+      },
+      { name: "œufs", quantity: "2", unit: "", notes: "bien battus" },
+      { name: "farine T45", quantity: "130", unit: "g", notes: "" },
+      { name: "Maïzena", quantity: "15", unit: "g", notes: "" },
+      { name: "bicarbonate de soude", quantity: "5", unit: "g", notes: "" },
+      { name: "sel", quantity: "3", unit: "g", notes: "" },
+      {
+        name: "noix de pécan hachées",
+        quantity: "30",
+        unit: "g",
+        notes: "première variante facultative",
+      },
+      {
+        name: "cannelle",
+        quantity: "1",
+        unit: "pincée",
+        notes: "première variante facultative",
+      },
+    ]);
+    expect(seeded.translations.fr.subRecipes).toEqual([
+      {
+        title: "Variante avec garniture à la cannelle et aux noix de pécan",
+        ingredients: [
+          { name: "noix de pécan hachées", quantity: "60", unit: "g", notes: "" },
+          { name: "cassonade foncée", quantity: "25", unit: "g", notes: "" },
+          { name: "cannelle", quantity: "4", unit: "g", notes: "" },
+        ],
+      },
+    ]);
+
+    expect(seeded.translations.en).toMatchObject({
+      title: "Kona Inn Banana Bread",
+      author: "Mary McHale",
+      yieldLabel: "1 loaf",
+      servings: null,
+    });
+    expect(seeded.translations.en.ingredients).toEqual([
+      { name: "white sugar", quantity: "200", unit: "g", notes: "" },
+      { name: "butter", quantity: "115", unit: "g", notes: "softened" },
+      {
+        name: "very ripe bananas",
+        quantity: "325 to 350",
+        unit: "g",
+        notes: "mashed, about 3 to 4 bananas depending on their size",
+      },
+      { name: "eggs", quantity: "2", unit: "", notes: "well beaten" },
+      { name: "T45 flour", quantity: "130", unit: "g", notes: "" },
+      { name: "cornstarch", quantity: "15", unit: "g", notes: "" },
+      { name: "baking soda", quantity: "5", unit: "g", notes: "" },
+      { name: "salt", quantity: "3", unit: "g", notes: "" },
+      {
+        name: "chopped pecans",
+        quantity: "30",
+        unit: "g",
+        notes: "first optional variation",
+      },
+      {
+        name: "cinnamon",
+        quantity: "1",
+        unit: "pinch",
+        notes: "first optional variation",
+      },
+    ]);
+    expect(seeded.translations.en.subRecipes).toEqual([
+      {
+        title: "Cinnamon and Pecan Filling Variation",
+        ingredients: [
+          { name: "chopped pecans", quantity: "60", unit: "g", notes: "" },
+          { name: "dark brown sugar", quantity: "25", unit: "g", notes: "" },
+          { name: "cinnamon", quantity: "4", unit: "g", notes: "" },
+        ],
+      },
+    ]);
+    expect(seeded.translations.en.sections.flatMap(({ steps }) => steps)).toEqual([
+      "Preheat the oven to 175 °C.",
+      "Beat the softened butter and sugar until light and fluffy.",
+      "Add the mashed bananas and beaten eggs, then mix until smooth.",
+      "In another bowl, combine the T45 flour, cornstarch, baking soda and salt. Sift the dry ingredients, ideally several times, then fold them into the banana mixture without overmixing.",
+      "For the first variation, fold the chopped pecans and pinch of cinnamon into the batter. Do not combine this option with the filling variation.",
+      "Pour the batter into 1 lightly greased loaf pan.",
+      "Bake for 45 to 60 min, until the center is firm and a knife or toothpick inserted into it comes out clean or almost clean.",
+      "Let cool in the pan for 10 min, then unmold onto a rack.",
+      "For this variation, omit the pecans and cinnamon intended to be mixed directly into the batter.",
+      "Mix the chopped pecans, dark brown sugar and cinnamon.",
+      "Pour half the batter into the pan, sprinkle with some of the mixture, then add the remaining batter.",
+      "If any mixture remains, sprinkle it on top and press it lightly into the batter.",
+      "This banana bread freezes very well.",
+    ]);
+  });
+
   test("localizes Louis's mayonnaise as a savory yield-only recipe", () => {
     const source = recipes.find((recipe) => recipe.slug === "mayonnaise");
     expect(source).toBeDefined();

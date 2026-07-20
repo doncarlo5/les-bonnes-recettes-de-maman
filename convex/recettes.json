@@ -2131,71 +2131,75 @@
   {
     "title": "Banana bread du Kona Inn",
     "slug": "banana-bread-du-kona-inn",
-    "author": "Kona Inn",
+    "author": "Mary McHale",
     "description": "Banana bread moelleux aux bananes bien mûres, parfait avec une salade de poulet.",
     "heroImageUrl": "",
-    "servings": {
-      "quantity": 2,
-      "unit": "cakes"
-    },
+    "yieldLabel": "1 cake",
+    "servings": null,
     "prepTime": "20 min",
     "cookTime": "45 à 60 min",
     "totalTime": "1 h 05 à 1 h 20",
     "temperature": "175 °C",
     "ingredients": [
       {
-        "name": "sucre semoule",
-        "quantity": "2",
-        "unit": "tasses",
+        "name": "sucre blanc",
+        "quantity": "200",
+        "unit": "g",
         "notes": ""
       },
       {
         "name": "beurre",
-        "quantity": "1",
-        "unit": "tasse",
+        "quantity": "115",
+        "unit": "g",
         "notes": "ramolli"
       },
       {
         "name": "bananes bien mûres",
-        "quantity": "6",
-        "unit": "",
-        "notes": "écrasées, environ 3 tasses"
+        "quantity": "325 à 350",
+        "unit": "g",
+        "notes": "écrasées, environ 3 à 4 bananes selon leur taille"
       },
       {
         "name": "œufs",
-        "quantity": "4",
+        "quantity": "2",
         "unit": "",
         "notes": "bien battus"
       },
       {
-        "name": "farine à gâteau",
-        "quantity": "2 1/2",
-        "unit": "tasses",
-        "notes": "ou farine pâtissière"
+        "name": "farine T45",
+        "quantity": "130",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "Maïzena",
+        "quantity": "15",
+        "unit": "g",
+        "notes": ""
       },
       {
         "name": "bicarbonate de soude",
-        "quantity": "2",
-        "unit": "c. à café",
+        "quantity": "5",
+        "unit": "g",
         "notes": ""
       },
       {
         "name": "sel",
-        "quantity": "1",
-        "unit": "c. à café",
+        "quantity": "3",
+        "unit": "g",
         "notes": ""
       },
       {
         "name": "noix de pécan hachées",
-        "quantity": "1/2",
-        "unit": "tasse",
-        "notes": "ajout manuscrit possible"
+        "quantity": "30",
+        "unit": "g",
+        "notes": "première variante facultative"
       },
       {
         "name": "cannelle",
-        "quantity": "2",
-        "unit": "pincées",
-        "notes": "ajout manuscrit possible"
+        "quantity": "1",
+        "unit": "pincée",
+        "notes": "première variante facultative"
       }
     ],
     "sections": [
@@ -2203,26 +2207,32 @@
         "title": "Préparation",
         "steps": [
           "Préchauffer le four à 175 °C.",
-          "À l’aide d’un batteur électrique, battre le sucre et le beurre jusqu’à obtenir un mélange léger et mousseux.",
-          "Ajouter les bananes écrasées et les œufs, puis battre jusqu’à ce que le mélange soit homogène.",
-          "Tamiser ensemble les ingrédients secs trois fois.",
-          "Incorporer les ingrédients secs au mélange à la banane sans trop mélanger."
+          "Battre le beurre ramolli avec le sucre jusqu’à obtenir un mélange clair, léger et mousseux.",
+          "Ajouter les bananes écrasées et les œufs battus, puis mélanger jusqu’à obtenir une pâte homogène.",
+          "Dans un autre saladier, mélanger la farine T45, la Maïzena, le bicarbonate de soude et le sel. Tamiser idéalement les ingrédients secs plusieurs fois, puis les incorporer à la préparation à la banane sans trop travailler la pâte."
+        ]
+      },
+      {
+        "title": "Ajout facultatif dans la pâte",
+        "steps": [
+          "Pour la première variante, incorporer les noix de pécan hachées et la pincée de cannelle à la pâte. Ne pas cumuler cet ajout avec la variante comportant une garniture."
         ]
       },
       {
         "title": "Cuisson",
         "steps": [
-          "Verser la pâte dans 2 moules à cake légèrement graissés.",
-          "Cuire 45 min à 1 h, jusqu’à ce que le centre soit ferme et que les bords commencent à se détacher des moules.",
-          "Laisser refroidir sur une grille pendant 10 min avant de démouler."
+          "Verser la pâte dans 1 moule à cake légèrement graissé.",
+          "Cuire 45 à 60 min, jusqu’à ce que le centre soit ferme et qu’une lame de couteau ou un cure-dent ressorte propre ou presque propre.",
+          "Laisser refroidir 10 min dans le moule, puis démouler sur une grille."
         ]
       },
       {
-        "title": "Garniture intérieure facultative",
+        "title": "Variante avec garniture à la cannelle et aux noix de pécan",
         "steps": [
+          "Pour cette variante, ne pas ajouter à la pâte les noix de pécan et la cannelle prévues pour être incorporées directement.",
           "Mélanger les noix de pécan hachées, la cassonade foncée et la cannelle.",
-          "Verser la moitié de la pâte dans le moule, saupoudrer avec ce mélange, puis ajouter le reste de pâte.",
-          "S’il reste du mélange, en mettre sur le dessus et l’enfoncer légèrement."
+          "Verser la moitié de la pâte dans le moule, saupoudrer une partie du mélange, puis ajouter le reste de pâte.",
+          "S’il reste du mélange, le répartir sur le dessus et l’enfoncer légèrement dans la pâte."
         ]
       },
       {
@@ -2234,24 +2244,24 @@
     ],
     "subRecipes": [
       {
-        "title": "Garniture intérieure facultative",
+        "title": "Variante avec garniture à la cannelle et aux noix de pécan",
         "ingredients": [
           {
             "name": "noix de pécan hachées",
-            "quantity": "1",
-            "unit": "tasse",
+            "quantity": "60",
+            "unit": "g",
             "notes": ""
           },
           {
             "name": "cassonade foncée",
-            "quantity": "4",
-            "unit": "c. à s.",
+            "quantity": "25",
+            "unit": "g",
             "notes": ""
           },
           {
             "name": "cannelle",
-            "quantity": "1",
-            "unit": "c. à s.",
+            "quantity": "4",
+            "unit": "g",
             "notes": ""
           }
         ]

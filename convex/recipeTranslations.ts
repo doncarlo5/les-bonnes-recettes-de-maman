@@ -188,6 +188,8 @@ const titleTranslations: Record<string, string> = {
   "Crème au café": "Coffee Custard",
   "Banana bread du Kona Inn": "Kona Inn Banana Bread",
   "Garniture intérieure facultative": "Optional Inner Filling",
+  "Variante avec garniture à la cannelle et aux noix de pécan":
+    "Cinnamon and Pecan Filling Variation",
   "Soupe de champagne": "Champagne Punch",
   "Cookies aux pépites de chocolat et fleur de sel":
     "Chocolate Chip Cookies with Fleur de Sel",
@@ -256,6 +258,7 @@ const descriptionTranslations: Record<string, string> = {
 };
 
 const sectionTranslations: Record<string, string> = {
+  "Ajout facultatif dans la pâte": "Optional Batter Addition",
   Conservation: "Storage",
   Crème: "Cream",
   "Crème au café": "Coffee Custard",
@@ -274,6 +277,8 @@ const sectionTranslations: Record<string, string> = {
   Refroidissement: "Cooling",
   Service: "Serving",
   "Suite de la cuisson": "Continuing the Baking",
+  "Variante avec garniture à la cannelle et aux noix de pécan":
+    "Cinnamon and Pecan Filling Variation",
 };
 
 const ingredientTranslations: Record<string, string> = {
@@ -329,6 +334,7 @@ const ingredientTranslations: Record<string, string> = {
   "extrait d’amande amère": "bitter almond extract",
   "fleur de sel": "fleur de sel",
   farine: "flour",
+  "farine T45": "T45 flour",
   "farine à gâteau": "cake flour",
   "farine T55": "T55 flour",
   "farine semi-complète": "semi-wholemeal flour",
@@ -381,6 +387,7 @@ const ingredientTranslations: Record<string, string> = {
   sucre: "sugar",
   "sucre fin": "caster sugar",
   "sucre en poudre": "granulated sugar",
+  "sucre blanc": "white sugar",
   "sucre glace": "icing sugar",
   "sucre semoule": "granulated sugar",
   "sucre roux": "brown sugar",
@@ -431,6 +438,7 @@ const noteTranslations: Record<string, string> = {
   "ou 2 petits": "or 2 small ones",
   "ajout manuscrit possible": "possible handwritten addition",
   "bien battus": "well beaten",
+  "première variante facultative": "first optional variation",
   "pour la crème au citron": "for the lemon cream",
   "pour la cuisson": "for cooking",
   "pour le cake": "for the cake",
@@ -445,6 +453,8 @@ const noteTranslations: Record<string, string> = {
   "pour le sirop": "for the syrup",
   "pour le sirop, note manuscrite 0,08 l": "for the syrup; handwritten note 0.08 l",
   "écrasées, environ 3 tasses": "mashed, about 3 cups",
+  "écrasées, environ 3 à 4 bananes selon leur taille":
+    "mashed, about 3 to 4 bananas depending on their size",
   "ou farine pâtissière": "or pastry flour",
   "Un incontournable avec les salades de poulet.":
     "A classic with chicken salads.",
@@ -459,6 +469,26 @@ const noteTranslations: Record<string, string> = {
 };
 
 const stepTranslations: Record<string, string> = {
+  "Battre le beurre ramolli avec le sucre jusqu’à obtenir un mélange clair, léger et mousseux.":
+    "Beat the softened butter and sugar until light and fluffy.",
+  "Ajouter les bananes écrasées et les œufs battus, puis mélanger jusqu’à obtenir une pâte homogène.":
+    "Add the mashed bananas and beaten eggs, then mix until smooth.",
+  "Dans un autre saladier, mélanger la farine T45, la Maïzena, le bicarbonate de soude et le sel. Tamiser idéalement les ingrédients secs plusieurs fois, puis les incorporer à la préparation à la banane sans trop travailler la pâte.":
+    "In another bowl, combine the T45 flour, cornstarch, baking soda and salt. Sift the dry ingredients, ideally several times, then fold them into the banana mixture without overmixing.",
+  "Pour la première variante, incorporer les noix de pécan hachées et la pincée de cannelle à la pâte. Ne pas cumuler cet ajout avec la variante comportant une garniture.":
+    "For the first variation, fold the chopped pecans and pinch of cinnamon into the batter. Do not combine this option with the filling variation.",
+  "Verser la pâte dans 1 moule à cake légèrement graissé.":
+    "Pour the batter into 1 lightly greased loaf pan.",
+  "Cuire 45 à 60 min, jusqu’à ce que le centre soit ferme et qu’une lame de couteau ou un cure-dent ressorte propre ou presque propre.":
+    "Bake for 45 to 60 min, until the center is firm and a knife or toothpick inserted into it comes out clean or almost clean.",
+  "Laisser refroidir 10 min dans le moule, puis démouler sur une grille.":
+    "Let cool in the pan for 10 min, then unmold onto a rack.",
+  "Pour cette variante, ne pas ajouter à la pâte les noix de pécan et la cannelle prévues pour être incorporées directement.":
+    "For this variation, omit the pecans and cinnamon intended to be mixed directly into the batter.",
+  "Verser la moitié de la pâte dans le moule, saupoudrer une partie du mélange, puis ajouter le reste de pâte.":
+    "Pour half the batter into the pan, sprinkle with some of the mixture, then add the remaining batter.",
+  "S’il reste du mélange, le répartir sur le dessus et l’enfoncer légèrement dans la pâte.":
+    "If any mixture remains, sprinkle it on top and press it lightly into the batter.",
   "Mettre la moutarde de Dijon et le jaune d’œuf dans le bol du mixeur, puis mixer.":
     "Place the Dijon mustard and egg yolk in the blender bowl, then blend.",
   "Continuer à mixer en versant progressivement l’huile de tournesol en un petit filet, jusqu’à obtenir une mayonnaise bien émulsionnée.":
@@ -869,11 +899,13 @@ const unitTranslations: Record<string, string> = {
 };
 
 const quantityTranslations: Record<string, string> = {
+  "325 à 350": "325 to 350",
   "5 à 7": "5 to 7",
   "quelques gouttes": "a few drops",
 };
 
 const yieldLabelTranslations: Record<string, string> = {
+  "1 cake": "1 loaf",
   "Environ 1 litre": "About 1 litre",
   "Environ 1,3 kg de pâte": "About 1.3 kg of dough",
   "Environ 500 g de pâte": "About 500 g of dough",
