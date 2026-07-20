@@ -50,6 +50,7 @@ type LifecycleOptions = {
   validateDraft: () => Promise<RecipeDraftPayload | null>;
   onFieldError: (field: string) => void;
   onCreated: (slug: string) => void;
+  onDeleted: () => void;
   onRefresh: () => void;
 };
 
@@ -67,6 +68,7 @@ export function useRecipeDraftLifecycle({
   validateDraft,
   onFieldError,
   onCreated,
+  onDeleted,
   onRefresh,
 }: LifecycleOptions) {
   const [state, setState] = useState<SaveRecipeState>(initialState);
@@ -274,6 +276,18 @@ export function useRecipeDraftLifecycle({
     return new Promise<void>((resolve) => saveIdleWaitersRef.current.push(resolve));
   }
 
+  async function beginDestructiveOperation() {
+    destructiveOperationRef.current = true;
+    if (autosaveTimerRef.current !== null) {
+      window.clearTimeout(autosaveTimerRef.current);
+    }
+    autosaveTimerRef.current = null;
+    queuedPayloadRef.current = null;
+    for (const resolve of queuedSaveWaitersRef.current) resolve(false);
+    queuedSaveWaitersRef.current = [];
+    await waitForSaveIdle();
+  }
+
   async function saveCurrentDraft(force = false) {
     const payload = await validateDraft();
     if (!payload) {
@@ -324,13 +338,7 @@ export function useRecipeDraftLifecycle({
 
   async function discardChanges() {
     if (!selectedSlug || !window.confirm("Abandonner toutes les modifications non publiees ?")) return;
-    destructiveOperationRef.current = true;
-    if (autosaveTimerRef.current !== null) window.clearTimeout(autosaveTimerRef.current);
-    autosaveTimerRef.current = null;
-    queuedPayloadRef.current = null;
-    for (const resolve of queuedSaveWaitersRef.current) resolve(false);
-    queuedSaveWaitersRef.current = [];
-    await waitForSaveIdle();
+    await beginDestructiveOperation();
     setIsPending(true);
     try {
       const response = await fetch("/api/admin/recipes/discard-draft", {
@@ -353,6 +361,40 @@ export function useRecipeDraftLifecycle({
       } else {
         setSyncState(response.status === 409 ? "conflict" : "error");
       }
+    } finally {
+      destructiveOperationRef.current = false;
+      setIsPending(false);
+    }
+  }
+
+  async function deleteRecipe() {
+    if (!selectedSlug || isPending) return;
+    await beginDestructiveOperation();
+    setIsPending(true);
+    try {
+      const response = await fetch("/api/admin/recipes/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slug: selectedSlug,
+          expectedRevision: revisionRef.current,
+        }),
+      });
+      const data = (await response.json()) as SaveRecipeState;
+      setState(data);
+      if (!response.ok) {
+        setSyncState(response.status === 409 ? "conflict" : "error");
+        return;
+      }
+      localStorage.removeItem(recoveryKey(selectedSlug));
+      setSyncState("idle");
+      onDeleted();
+    } catch {
+      setState({
+        type: "error",
+        message: "Impossible de supprimer cette recette.",
+      });
+      setSyncState("error");
     } finally {
       destructiveOperationRef.current = false;
       setIsPending(false);
@@ -429,6 +471,7 @@ export function useRecipeDraftLifecycle({
     prepareRevisionedMutation,
     publishRecipe,
     discardChanges,
+    deleteRecipe,
     unpublishRecipe,
     handleImageRevision,
     handleImageConflict,

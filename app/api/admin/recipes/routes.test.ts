@@ -20,6 +20,7 @@ import { POST as setUnsplashImage } from "./unsplash-hero-image/route";
 import { POST as setOpenverseImage } from "../openverse/import/route";
 import { POST as publishRecipe } from "./publish/route";
 import { POST as unpublishRecipe } from "./unpublish/route";
+import { DELETE as deleteRecipe } from "./delete/route";
 
 const localized = {
   title: "Tarte mobile",
@@ -143,5 +144,18 @@ describe("recipe admin route contracts", () => {
     fetchMutation.mockResolvedValue({ slug: "tarte-mobile" });
     const response = await unpublishRecipe(request({ slug: "tarte-mobile" }) as never);
     expect(await response.json()).toEqual({ type: "success", slug: "tarte-mobile" });
+  });
+
+  test("delete validates revisions and returns a typed success contract", async () => {
+    expect((await deleteRecipe(request({ slug: "tarte-mobile" }) as never)).status).toBe(400);
+    fetchMutation.mockResolvedValueOnce({ slug: "tarte-mobile" });
+    const success = await deleteRecipe(request({ slug: "tarte-mobile", expectedRevision: 5 }) as never);
+    expect(await success.json()).toEqual({ type: "success", slug: "tarte-mobile" });
+    expect(revalidateRecipePaths).toHaveBeenCalledWith("tarte-mobile");
+
+    fetchMutation.mockRejectedValueOnce(new Error("RECIPE_DRAFT_CONFLICT:7"));
+    const conflict = await deleteRecipe(request({ slug: "tarte-mobile", expectedRevision: 5 }) as never);
+    expect(conflict.status).toBe(409);
+    expect(await conflict.json()).toMatchObject({ type: "conflict", latestRevision: 7 });
   });
 });

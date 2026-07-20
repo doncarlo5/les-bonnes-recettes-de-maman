@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
 import { convexTest } from "convex-test";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { api } from "./_generated/api";
 import schema from "./schema";
 
@@ -454,5 +454,59 @@ describe("recipe working drafts", () => {
     const t = convexTest(schema, modules);
     const created = await t.mutation(api.recipes.create, { recipe: recipe("Nouveau"), adminPassword: password });
     await expect(t.mutation(api.recipes.discardDraft, { slug: created.slug, expectedRevision: 0, adminPassword: password })).rejects.toThrow(/RECIPE_HAS_NO_PUBLISHED_VERSION/);
+  });
+
+  test("deletes a recipe at the expected revision and cleans related records", async () => {
+    vi.useFakeTimers();
+    try {
+      const t = convexTest(schema, modules);
+      const created = await t.mutation(api.recipes.create, {
+        recipe: recipe("À supprimer"),
+        adminPassword: password,
+      });
+      await t.run(async (ctx) => {
+        const commentId = await ctx.db.insert("recipeComments", {
+          recipeId: created.recipeId,
+          ownerDigest: "owner",
+          text: "Commentaire lié",
+        });
+        await ctx.db.insert("commentReactionSummaries", {
+          commentId,
+          thumbsUpCount: 1,
+          thumbsDownCount: 0,
+        });
+        await ctx.db.insert("commentReactions", {
+          commentId,
+          participantDigest: "visitor",
+          direction: "up",
+          updatedAt: Date.now(),
+        });
+      });
+
+      await expect(
+        t.mutation(api.recipes.deleteRecipe, {
+          slug: created.slug,
+          expectedRevision: 4,
+          adminPassword: password,
+        }),
+      ).rejects.toThrow(/RECIPE_DRAFT_CONFLICT:0/);
+
+      await t.mutation(api.recipes.deleteRecipe, {
+        slug: created.slug,
+        expectedRevision: 0,
+        adminPassword: password,
+      });
+      await t.finishAllScheduledFunctions(vi.runAllTimers);
+
+      await t.run(async (ctx) => {
+        expect(await ctx.db.get(created.recipeId)).toBeNull();
+        expect(await ctx.db.query("recipeDrafts").collect()).toHaveLength(0);
+        expect(await ctx.db.query("recipeComments").collect()).toHaveLength(0);
+        expect(await ctx.db.query("commentReactionSummaries").collect()).toHaveLength(0);
+        expect(await ctx.db.query("commentReactions").collect()).toHaveLength(0);
+      });
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

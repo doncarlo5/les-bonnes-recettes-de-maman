@@ -1,4 +1,5 @@
 import { v } from "convex/values";
+import { internal } from "./_generated/api";
 import { mutation, query, type MutationCtx, type QueryCtx } from "./_generated/server";
 import type { Doc, Id } from "./_generated/dataModel";
 import rawRecipes from "./recettes.json";
@@ -488,6 +489,45 @@ export const unpublish = mutation({
     const recipe = await getRecipeBySlug(ctx, args.slug);
     await ensureRecipeDraft(ctx, recipe);
     await ctx.db.patch(recipe._id, { status: "draft" });
+    return { slug: recipe.slug };
+  },
+});
+
+export const deleteRecipe = mutation({
+  args: {
+    slug: v.string(),
+    expectedRevision: v.number(),
+    adminPassword: v.string(),
+  },
+  handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
+    const recipe = await getRecipeBySlug(ctx, args.slug);
+    const draft = await getRecipeDraft(ctx, recipe._id);
+    const currentRevision = draft?.revision ?? 0;
+    if (args.expectedRevision !== currentRevision) {
+      throw new Error(`RECIPE_DRAFT_CONFLICT:${currentRevision}`);
+    }
+
+    const storageIds = new Set(
+      [recipe.heroImageStorageId, draft?.heroImageStorageId].filter(
+        (storageId): storageId is Id<"_storage"> => storageId !== undefined,
+      ),
+    );
+    if (draft) await ctx.db.delete(draft._id);
+    await ctx.db.delete(recipe._id);
+    await Promise.all(
+      [...storageIds].map(async (storageId) => {
+        if (await ctx.db.system.get("_storage", storageId)) {
+          await ctx.storage.delete(storageId);
+        }
+      }),
+    );
+    await ctx.scheduler.runAfter(
+      0,
+      internal.commentMaintenance.cleanupRecipeComments,
+      { recipeId: recipe._id },
+    );
+
     return { slug: recipe.slug };
   },
 });

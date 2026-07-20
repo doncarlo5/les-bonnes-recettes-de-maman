@@ -494,3 +494,31 @@ test("unpublish hides but retains the approved version, then publish restores vi
   await page.getByRole("button", { name: /Publier les modifications/ }).click();
   await expect(page.getByText(/version approuvée est visible publiquement/i)).toBeVisible();
 });
+
+test("deleting a recipe requires confirmation and returns to the recipe list", async ({ page }) => {
+  await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
+  await page
+    .getByRole("navigation", { name: "Actions de la recette" })
+    .getByRole("button", { name: /Publier,/ })
+    .click();
+
+  await page.getByRole("button", { name: "Supprimer la recette" }).click();
+  const dialog = page.getByRole("alertdialog");
+  await expect(dialog.getByRole("heading", { name: /Supprimer « Tarte de démonstration »/ })).toBeVisible();
+  await dialog.getByRole("button", { name: "Annuler" }).click();
+  await expect(page).toHaveURL(/slug=tarte-de-demonstration/);
+
+  const deletion = page.waitForRequest((request) =>
+    request.url().endsWith("/api/admin/recipes/delete"),
+  );
+  await page.getByRole("button", { name: "Supprimer la recette" }).click();
+  await page.getByRole("alertdialog").getByRole("button", { name: "Supprimer définitivement" }).click();
+  const request = await deletion;
+  expect(request.method()).toBe("DELETE");
+  expect(request.postDataJSON()).toMatchObject({
+    slug: "tarte-de-demonstration",
+    expectedRevision: expect.any(Number),
+  });
+  await expect(page).toHaveURL(/\/fr\/admin\/recettes$/);
+  await expect(page.getByPlaceholder("Rechercher une recette")).toBeVisible();
+});

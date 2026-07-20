@@ -1,8 +1,28 @@
 import { v } from "convex/values";
 import { internal } from "./_generated/api";
 import { internalMutation } from "./_generated/server";
+import { removeComment } from "./commentModel";
 
 const hourMs = 60 * 60 * 1000;
+
+export const cleanupRecipeComments = internalMutation({
+  args: { recipeId: v.id("recipes") },
+  handler: async (ctx, args) => {
+    const comments = await ctx.db
+      .query("recipeComments")
+      .withIndex("by_recipeId", (q) => q.eq("recipeId", args.recipeId))
+      .take(25);
+    await Promise.all(comments.map((comment) => removeComment(ctx, comment)));
+    if (comments.length === 25) {
+      await ctx.scheduler.runAfter(
+        0,
+        internal.commentMaintenance.cleanupRecipeComments,
+        { recipeId: args.recipeId },
+      );
+    }
+    return null;
+  },
+});
 
 export const cleanupReactions = internalMutation({
   args: { commentId: v.id("recipeComments") },

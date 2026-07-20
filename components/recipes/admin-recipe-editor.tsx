@@ -55,6 +55,17 @@ import {
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -299,6 +310,13 @@ export function AdminRecipeEditor({
     router.replace(`/${locale}/admin/recettes?slug=${slug}&section=info`);
     router.refresh();
   }, [locale, router]);
+  const handleDeleted = useCallback(() => {
+    setMode("update");
+    setSelectedSlug("");
+    reset(cloneRecipe(blankRecipe));
+    router.replace(`/${locale}/admin/recettes`);
+    router.refresh();
+  }, [locale, reset, router]);
   const refreshRecipe = useCallback(() => router.refresh(), [router]);
   const {
     state,
@@ -312,6 +330,7 @@ export function AdminRecipeEditor({
     prepareRevisionedMutation,
     publishRecipe,
     discardChanges,
+    deleteRecipe,
     unpublishRecipe,
     handleImageRevision,
     handleImageConflict,
@@ -333,6 +352,7 @@ export function AdminRecipeEditor({
     validateDraft,
     onFieldError: revealFieldError,
     onCreated: handleCreated,
+    onDeleted: handleDeleted,
     onRefresh: refreshRecipe,
   });
   const publication = getPublicationState(
@@ -475,6 +495,7 @@ export function AdminRecipeEditor({
         onSave={() => saveCurrentDraft(syncState === "conflict")}
         onPublish={publishRecipe}
         onDiscard={discardChanges}
+        onDelete={deleteRecipe}
         onUnpublish={unpublishRecipe}
         onImageRevision={handleImageMutation}
         onImageConflict={handleImageConflict}
@@ -512,6 +533,7 @@ function MobileRecipeAdmin({
   onSave,
   onPublish,
   onDiscard,
+  onDelete,
   onUnpublish,
   onImageRevision,
   onImageConflict,
@@ -543,6 +565,7 @@ function MobileRecipeAdmin({
   onSave: () => void;
   onPublish: () => void;
   onDiscard: () => void;
+  onDelete: () => void;
   onUnpublish: () => void;
   onImageRevision: (mutation: RecipeImageMutation) => void;
   onImageConflict: (revision?: number, retry?: (revision: number) => Promise<void>) => void;
@@ -669,7 +692,7 @@ function MobileRecipeAdmin({
           <MobileOverview recipe={selectedRecipe} values={values} readiness={readiness} publication={publication} onOpen={onOpenSection} />
         ) : (
           <section className="rounded-2xl bg-card p-4 shadow-[var(--shadow-card)]">
-            <MobileSectionFields section={section} locale={locale} recipe={selectedRecipe} revision={revision} onImageRevision={onImageRevision} onImageConflict={onImageConflict} onBeforeImageChange={onBeforeImageChange} form={form} tagsValue={tagsValue} defaultLocale={defaultLocale} requestedLanguage={requestedLanguage} readiness={readiness} publication={publication} isPending={isPending} onPublish={onPublish} onDiscard={onDiscard} onUnpublish={onUnpublish} />
+            <MobileSectionFields section={section} locale={locale} recipe={selectedRecipe} revision={revision} onImageRevision={onImageRevision} onImageConflict={onImageConflict} onBeforeImageChange={onBeforeImageChange} form={form} tagsValue={tagsValue} defaultLocale={defaultLocale} requestedLanguage={requestedLanguage} readiness={readiness} publication={publication} isPending={isPending} onPublish={onPublish} onDiscard={onDiscard} onDelete={onDelete} onUnpublish={onUnpublish} />
           </section>
         )}
       </div>
@@ -786,7 +809,7 @@ function AdminDraftPreview({
   );
 }
 
-function MobileSectionFields({ section, locale, recipe, revision, onImageRevision, onImageConflict, onBeforeImageChange, form, tagsValue, defaultLocale, requestedLanguage, readiness, publication, isPending, onPublish, onDiscard, onUnpublish }: { section: MobileSection; locale: Locale; recipe: EditableRecipe | null; revision: number; onImageRevision: (mutation: RecipeImageMutation) => void; onImageConflict: (revision?: number, retry?: (revision: number) => Promise<void>) => void; onBeforeImageChange: () => Promise<number | null>; form: RecipeForm; tagsValue: string[]; defaultLocale: LocaleKey; requestedLanguage: LocaleKey; readiness: RecipeReadiness; publication: ReturnType<typeof getPublicationState>; isPending: boolean; onPublish: () => void; onDiscard: () => void; onUnpublish: () => void }) {
+function MobileSectionFields({ section, locale, recipe, revision, onImageRevision, onImageConflict, onBeforeImageChange, form, tagsValue, defaultLocale, requestedLanguage, readiness, publication, isPending, onPublish, onDiscard, onDelete, onUnpublish }: { section: MobileSection; locale: Locale; recipe: EditableRecipe | null; revision: number; onImageRevision: (mutation: RecipeImageMutation) => void; onImageConflict: (revision?: number, retry?: (revision: number) => Promise<void>) => void; onBeforeImageChange: () => Promise<number | null>; form: RecipeForm; tagsValue: string[]; defaultLocale: LocaleKey; requestedLanguage: LocaleKey; readiness: RecipeReadiness; publication: ReturnType<typeof getPublicationState>; isPending: boolean; onPublish: () => void; onDiscard: () => void; onDelete: () => void; onUnpublish: () => void }) {
   const base = `translations.${requestedLanguage}`;
   const errors = form.formState.errors;
   if (section === "info") return <div className="grid gap-5 lg:grid-cols-[minmax(16rem,0.8fr)_minmax(0,1.2fr)] lg:items-start"><div data-field-target="heroImageUrl" tabIndex={-1}><AdminRecipeImagePanel key={recipe?.slug ?? "new"} locale={locale} recipe={recipe} revision={revision} onBeforeChange={onBeforeImageChange} onRevisionChange={onImageRevision} onConflict={onImageConflict} compact /></div><FieldGroup><TextField label="Titre" name={`${base}.title`} register={form.register} errors={errors} /><TextField label="Auteur" name={`${base}.author`} register={form.register} errors={errors} /><TextareaField label="Description" name={`${base}.description`} register={form.register} errors={errors} /><SelectField label="Langue principale" value={defaultLocale} onValueChange={(value) => form.setValue("defaultLocale", value as LocaleKey, { shouldDirty: true })} options={[{ label: "Français", value: "fr" }, { label: "Anglais", value: "en" }]} /><Field><FieldLabel htmlFor="mobile-tags">Catégories</FieldLabel><Input id="mobile-tags" className="h-11" value={tagsValue.join(", ")} onChange={(event) => form.setValue("tags", parseTags(event.target.value), { shouldDirty: true })} /><FieldDescription>Sépare les catégories par des virgules.</FieldDescription></Field></FieldGroup></div>;
@@ -796,11 +819,11 @@ function MobileSectionFields({ section, locale, recipe, revision, onImageRevisio
   if (section === "notes") return <NotesArray name={`${base}.notes`} control={form.control} register={form.register} />;
   if (section === "comments" && recipe) return <AdminRecipeComments slug={recipe.slug} locale={locale} />;
   if (section === "translation") return <div className="grid gap-4"><div className="rounded-xl bg-muted p-3 text-sm font-bold">Traduction {requestedLanguage === "en" ? "anglaise" : "française"}</div><LocalizedRecipeFields localeKey={requestedLanguage} register={form.register} control={form.control} errors={errors} /></div>;
-  if (section === "publish") return <PublishWorkspace recipe={recipe} readiness={readiness} publication={publication} isPending={isPending} onPublish={onPublish} onDiscard={onDiscard} onUnpublish={onUnpublish} />;
+  if (section === "publish") return <PublishWorkspace recipe={recipe} readiness={readiness} publication={publication} isPending={isPending} onPublish={onPublish} onDiscard={onDiscard} onDelete={onDelete} onUnpublish={onUnpublish} />;
   return null;
 }
 
-function PublishWorkspace({ recipe, readiness, publication, isPending, onPublish, onDiscard, onUnpublish }: { recipe: EditableRecipe | null; readiness: RecipeReadiness; publication: ReturnType<typeof getPublicationState>; isPending: boolean; onPublish: () => void; onDiscard: () => void; onUnpublish: () => void }) {
+function PublishWorkspace({ recipe, readiness, publication, isPending, onPublish, onDiscard, onDelete, onUnpublish }: { recipe: EditableRecipe | null; readiness: RecipeReadiness; publication: ReturnType<typeof getPublicationState>; isPending: boolean; onPublish: () => void; onDiscard: () => void; onDelete: () => void; onUnpublish: () => void }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   function openItem(item: (typeof readiness.blockers)[number]) {
@@ -819,6 +842,35 @@ function PublishWorkspace({ recipe, readiness, publication, isPending, onPublish
     <Button type="button" size="lg" disabled={isPending || readiness.blockers.length > 0} onClick={onPublish} className="min-h-12 rounded-xl active:scale-[0.96] transition-transform">{isPending ? <Spinner /> : <Send />} {publication.hasPublishedVersion ? "Publier les modifications" : "Publier la recette"}</Button>
     {publication.canDiscard ? <Button type="button" variant="outline" disabled={isPending} onClick={onDiscard} className="min-h-11 rounded-xl">Abandonner les modifications</Button> : null}
     {publication.isPublic ? <Button type="button" variant="destructive" disabled={isPending} onClick={onUnpublish} className="min-h-11 rounded-xl">Retirer du site public</Button> : null}
+    {recipe ? (
+      <div className="grid gap-3 border-t border-border pt-5">
+        <div>
+          <h3 className="font-black text-destructive">Zone dangereuse</h3>
+          <p className="mt-1 text-sm font-semibold text-muted-foreground [text-wrap:pretty]">
+            La recette, son brouillon, ses images et ses commentaires seront supprimés définitivement.
+          </p>
+        </div>
+        <AlertDialog>
+          <AlertDialogTrigger render={<Button type="button" variant="outline" disabled={isPending} className="min-h-11 rounded-xl border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive" />}>
+            <Trash2 /> Supprimer la recette
+          </AlertDialogTrigger>
+          <AlertDialogContent className="">
+            <AlertDialogHeader className="">
+              <AlertDialogTitle className="">Supprimer « {recipe.title} » ?</AlertDialogTitle>
+              <AlertDialogDescription className="">
+                Cette action est irréversible. La version publiée, le brouillon, les images et les commentaires associés seront supprimés.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter className="">
+              <AlertDialogCancel className="">Annuler</AlertDialogCancel>
+              <AlertDialogAction className="" variant="destructive" onClick={onDelete} disabled={isPending}>
+                {isPending ? <Spinner /> : <Trash2 />} Supprimer définitivement
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
+    ) : null}
   </div>;
 }
 
