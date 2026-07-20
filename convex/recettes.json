@@ -2317,5 +2317,122 @@
       }
     ],
     "notes": []
+  },
+  {
+    "title": "Cookies aux pépites de chocolat et fleur de sel",
+    "slug": "cookies-aux-pepites-de-chocolat-et-fleur-de-sel",
+    "author": "Julien",
+    "description": "Gros cookies aux pépites de chocolat, croustillants sur les bords, moelleux au centre et relevés d’une touche de fleur de sel.",
+    "heroImageUrl": "/images/recipes/cookies-aux-pepites-de-chocolat-et-fleur-de-sel.png",
+    "yieldLabel": "Environ 20 gros cookies",
+    "servings": null,
+    "prepTime": "≈ 40 min",
+    "cookTime": "10 min",
+    "totalTime": "≈ 1 h",
+    "temperature": "180 °C",
+    "ingredients": [
+      {
+        "name": "beurre",
+        "quantity": "200",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "sucre roux",
+        "quantity": "270",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "sucre en poudre",
+        "quantity": "80",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "farine",
+        "quantity": "350",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "bicarbonate alimentaire",
+        "quantity": "1",
+        "unit": "c. à café",
+        "notes": "facultatif"
+      },
+      {
+        "name": "levure chimique",
+        "quantity": "1",
+        "unit": "c. à café",
+        "notes": ""
+      },
+      {
+        "name": "sel",
+        "quantity": "1/2",
+        "unit": "c. à café",
+        "notes": ""
+      },
+      {
+        "name": "gros œuf",
+        "quantity": "1",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "gousse de vanille",
+        "quantity": "1/4",
+        "unit": "",
+        "notes": "graines uniquement"
+      },
+      {
+        "name": "chocolat noir",
+        "quantity": "200",
+        "unit": "g",
+        "notes": "grossièrement haché"
+      },
+      {
+        "name": "fleur de sel",
+        "quantity": "",
+        "unit": "",
+        "notes": "pour parsemer"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation de la pâte",
+        "steps": [
+          "Dans un bol, mélanger la farine, le bicarbonate, la levure chimique et le sel.",
+          "Faire fondre le beurre à feu moyen, puis le verser dans un grand bol.",
+          "Ajouter le sucre roux et le sucre en poudre au beurre fondu, puis mélanger jusqu’à obtenir une préparation homogène.",
+          "Incorporer l’œuf et les graines de vanille jusqu’à obtenir une texture lisse et brillante.",
+          "Ajouter les ingrédients secs en deux fois avec une cuillère en bois, en mélangeant juste assez pour les incorporer.",
+          "Ajouter le chocolat noir grossièrement haché et mélanger une dernière fois sans trop travailler la pâte."
+        ]
+      },
+      {
+        "title": "Repos",
+        "steps": [
+          "Couvrir le bol et placer la pâte au réfrigérateur pendant 30 min."
+        ]
+      },
+      {
+        "title": "Cuisson",
+        "steps": [
+          "Préchauffer le four à 180 °C et recouvrir une plaque de papier cuisson.",
+          "Former de grosses boules de pâte avec une cuillère à glace ou une cuillère à soupe, puis les espacer largement sur la plaque.",
+          "Saupoudrer chaque boule d’une petite pincée de fleur de sel.",
+          "Enfourner pour 8 min, sortir la plaque et la taper légèrement sur le plan de travail pour aider les cookies à s’étaler.",
+          "Poursuivre la cuisson 2 min, puis taper de nouveau la plaque à la sortie du four."
+        ]
+      },
+      {
+        "title": "Refroidissement",
+        "steps": [
+          "Déposer les cookies sur une grille et les laisser reposer au moins 10 min avant de les conserver ou de les déguster."
+        ]
+      }
+    ],
+    "notes": []
   }
 ]

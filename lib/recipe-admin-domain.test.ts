@@ -44,8 +44,11 @@ describe("recipe reference servings readiness", () => {
     cake.translations.en.yieldLabel = "";
     const readiness = getRecipeReadiness(cake, true);
 
-    expect(readiness.blockers.map((blocker) => blocker.code)).toContain(
-      "reference-servings",
+    expect(readiness.blockers).toContainEqual(
+      expect.objectContaining({
+        code: "reference-servings",
+        label: "Indique le rendement ou les portions de référence.",
+      }),
     );
   });
 
@@ -55,6 +58,19 @@ describe("recipe reference servings readiness", () => {
     drink.translations.en.yieldLabel = "About 1 litre";
 
     const readiness = getRecipeReadiness(drink, true);
+
+    expect(readiness.blockers.map((blocker) => blocker.code)).not.toContain(
+      "reference-servings",
+    );
+    expect(readiness.sections.ingredients).toBe(true);
+  });
+
+  test("allows baked pieces to use only an editorial yield", () => {
+    const cookies = recipe("Cookies aux pépites de chocolat", "10 min");
+    cookies.translations.fr.yieldLabel = "Environ 20 gros cookies";
+    cookies.translations.en.yieldLabel = "About 20 large cookies";
+
+    const readiness = getRecipeReadiness(cookies, true);
 
     expect(readiness.blockers.map((blocker) => blocker.code)).not.toContain(
       "reference-servings",

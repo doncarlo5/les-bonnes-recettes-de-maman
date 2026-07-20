@@ -92,7 +92,7 @@ export function getRecipeReadiness(
   const hasTime = [fr.prepTime, fr.cookTime, fr.totalTime, fr.timeLabel].some(hasText);
   const hasIngredient = fr.ingredients.some((item) => hasText(item.name));
   const hasReferenceServings = isValidReferenceServings(recipe.referenceServings);
-  const allowsYieldOnly = isYieldOnlyRecipe(fr);
+  const allowsYieldOnly = hasEditorialYield(fr);
   const hasPreparation = fr.sections.some(
     (section) => hasText(section.title) && section.steps.some(hasText),
   );
@@ -108,7 +108,7 @@ export function getRecipeReadiness(
     readinessItem(!hasText(fr.description), "fr-description", "Ajoute une description française.", "info", "fr", "translations.fr.description"),
     readinessItem(!hasTime, "fr-time", "Indique au moins un temps.", "details", "fr", "translations.fr.timeLabel"),
     readinessItem(!hasIngredient, "fr-ingredient", "Ajoute au moins un ingrédient.", "ingredients", "fr", "translations.fr.ingredients.0.name"),
-    readinessItem(!hasReferenceServings && !allowsYieldOnly, "reference-servings", "Indique les portions de référence.", "ingredients", "fr", "referenceServings"),
+    readinessItem(!hasReferenceServings && !allowsYieldOnly, "reference-servings", "Indique le rendement ou les portions de référence.", "ingredients", "fr", "referenceServings"),
     readinessItem(!hasPreparation, "fr-preparation", "Ajoute une section avec une étape.", "preparation", "fr", "translations.fr.sections.0.title"),
   ].filter((item): item is ReadinessItem => item !== null);
 
@@ -185,11 +185,8 @@ function hasText(value: string) {
   return value.trim().length > 0;
 }
 
-function isYieldOnlyRecipe(recipe: LocalizedRecipeContent) {
-  const title = recipe.title.trim();
-  const isBaseDough = /^pâte\b/i.test(title);
-  const isChampagnePunch = /^soupe de champagne$/i.test(title);
-  return hasText(recipe.yieldLabel) && !hasText(recipe.cookTime) && (isBaseDough || isChampagnePunch);
+function hasEditorialYield(recipe: LocalizedRecipeContent) {
+  return hasText(recipe.yieldLabel);
 }
 
 function readinessItem(

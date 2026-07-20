@@ -254,9 +254,11 @@ describe("recipe working drafts", () => {
     });
   });
 
-  test("allows an incomplete draft but requires reference servings to publish", async () => {
+  test("allows an incomplete draft but requires a yield or reference servings to publish", async () => {
     const t = convexTest(schema, modules);
     const incomplete = { ...recipe(), referenceServings: undefined };
+    incomplete.translations.fr.yieldLabel = "";
+    incomplete.translations.en.yieldLabel = "";
     const created = await t.mutation(api.recipes.create, {
       recipe: incomplete,
       adminPassword: password,
@@ -393,6 +395,34 @@ describe("recipe working drafts", () => {
         adminPassword: password,
       }),
     ).rejects.toThrow(/RECIPE_NOT_READY/);
+  });
+
+  test("publishes a complete piece-based recipe without reference servings", async () => {
+    const t = convexTest(schema, modules);
+    const pieceBasedRecipe = recipe("Cookies aux pépites de chocolat");
+    delete (pieceBasedRecipe as Partial<typeof pieceBasedRecipe>).referenceServings;
+    pieceBasedRecipe.translations.fr.yieldLabel = "Environ 20 gros cookies";
+    pieceBasedRecipe.translations.en.yieldLabel = "About 20 large cookies";
+
+    const created = await t.mutation(api.recipes.create, {
+      recipe: pieceBasedRecipe,
+      adminPassword: password,
+    });
+    await t.mutation(api.recipes.publishDraft, {
+      slug: created.slug,
+      expectedRevision: 0,
+      adminPassword: password,
+    });
+
+    const published = await t.query(api.recipes.getBySlug, {
+      locale: "fr",
+      slug: created.slug,
+    });
+    expect(published).toMatchObject({
+      yieldLabel: "Environ 20 gros cookies",
+      status: "published",
+    });
+    expect(published).not.toHaveProperty("referenceServings");
   });
 
   test("protects admin reads with the configured password", async () => {

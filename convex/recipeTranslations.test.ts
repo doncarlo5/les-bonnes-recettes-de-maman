@@ -87,4 +87,76 @@ describe("recipe yield localization", () => {
       "Add ice cubes, stir gently and serve immediately, very cold.",
     ]);
   });
+
+  test("localizes Julien's chocolate chip cookies as a piece-based recipe", () => {
+    const source = recipes.find(
+      (recipe) => recipe.slug === "cookies-aux-pepites-de-chocolat-et-fleur-de-sel",
+    );
+    expect(source).toBeDefined();
+
+    const seeded = toSeedRecipe(source!);
+    expect(seeded).toMatchObject({
+      slug: "cookies-aux-pepites-de-chocolat-et-fleur-de-sel",
+      heroImageUrl: "/images/recipes/cookies-aux-pepites-de-chocolat-et-fleur-de-sel.png",
+      categories: ["dessert", "sucre"],
+      legacyCategoryLabels: [],
+    });
+    expect(seeded.referenceServings).toBeUndefined();
+
+    expect(seeded.translations.fr).toMatchObject({
+      title: "Cookies aux pépites de chocolat et fleur de sel",
+      author: "Julien",
+      yieldLabel: "Environ 20 gros cookies",
+      prepTime: "≈ 40 min",
+      cookTime: "10 min",
+      totalTime: "≈ 1 h",
+      temperature: "180 °C",
+      servings: null,
+    });
+    expect(seeded.translations.en).toMatchObject({
+      title: "Chocolate Chip Cookies with Fleur de Sel",
+      author: "Julien",
+      description: "Large chocolate chip cookies with crisp edges, soft centers and a touch of fleur de sel.",
+      yieldLabel: "About 20 large cookies",
+      prepTime: "≈ 40 min",
+      cookTime: "10 min",
+      totalTime: "≈ 1 h",
+      temperature: "180 °C",
+      servings: null,
+    });
+    expect(seeded.translations.en.ingredients.map(({ name, notes }) => ({ name, notes }))).toEqual([
+      { name: "butter", notes: "" },
+      { name: "brown sugar", notes: "" },
+      { name: "granulated sugar", notes: "" },
+      { name: "flour", notes: "" },
+      { name: "baking soda", notes: "optional" },
+      { name: "baking powder", notes: "" },
+      { name: "salt", notes: "" },
+      { name: "large egg", notes: "" },
+      { name: "vanilla bean", notes: "seeds only" },
+      { name: "dark chocolate", notes: "roughly chopped" },
+      { name: "fleur de sel", notes: "for sprinkling" },
+    ]);
+    expect(seeded.translations.en.sections.map(({ title }) => title)).toEqual([
+      "Preparing the Dough",
+      "Resting",
+      "Baking",
+      "Cooling",
+    ]);
+    expect(seeded.translations.en.sections.flatMap(({ steps }) => steps)).toEqual([
+      "In a bowl, combine the flour, baking soda, baking powder and salt.",
+      "Melt the butter over medium heat, then pour it into a large bowl.",
+      "Add the brown sugar and granulated sugar to the melted butter, then mix until smooth.",
+      "Mix in the egg and vanilla seeds until smooth and glossy.",
+      "Add the dry ingredients in two batches with a wooden spoon, mixing only until incorporated.",
+      "Add the roughly chopped dark chocolate and mix once more without overworking the dough.",
+      "Cover the bowl and chill the dough for 30 min.",
+      "Preheat the oven to 180 °C and line a baking sheet with parchment paper.",
+      "Shape the dough into large balls with an ice cream scoop or tablespoon, spacing them well apart on the baking sheet.",
+      "Sprinkle each ball with a small pinch of fleur de sel.",
+      "Bake for 8 min, remove the baking sheet and tap it lightly on the counter to help the cookies spread.",
+      "Bake for another 2 min, then tap the baking sheet again after removing it from the oven.",
+      "Transfer the cookies to a rack and let them rest for at least 10 min before storing or serving.",
+    ]);
+  });
 });

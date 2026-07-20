@@ -93,6 +93,7 @@ const recipeCategoryTags: Record<string, string[]> = {
   "pate-feuilletee-maman": ["sucre", "sale"],
   "pate-sucree-de-pierre-herme": ["dessert", "sucre"],
   "soupe-de-champagne": ["sucre"],
+  "cookies-aux-pepites-de-chocolat-et-fleur-de-sel": ["dessert", "sucre"],
   "tarte-aux-amandes-et-confiture-de-framboises": ["dessert", "sucre"],
   tiramisu: ["dessert", "sucre"],
   vacherin: ["dessert", "sucre"],
@@ -187,6 +188,8 @@ const titleTranslations: Record<string, string> = {
   "Banana bread du Kona Inn": "Kona Inn Banana Bread",
   "Garniture intérieure facultative": "Optional Inner Filling",
   "Soupe de champagne": "Champagne Punch",
+  "Cookies aux pépites de chocolat et fleur de sel":
+    "Chocolate Chip Cookies with Fleur de Sel",
 };
 
 const descriptionTranslations: Record<string, string> = {
@@ -244,6 +247,8 @@ const descriptionTranslations: Record<string, string> = {
     "Moist banana bread made with very ripe bananas, perfect with chicken salad.",
   "Cocktail pétillant au crémant de Loire, Cointreau, Pulco Citron et sirop de sucre de canne, à servir très frais.":
     "Sparkling cocktail with Loire Valley Crémant, Cointreau, Pulco Citron and cane sugar syrup, served very cold.",
+  "Gros cookies aux pépites de chocolat, croustillants sur les bords, moelleux au centre et relevés d’une touche de fleur de sel.":
+    "Large chocolate chip cookies with crisp edges, soft centers and a touch of fleur de sel.",
 };
 
 const sectionTranslations: Record<string, string> = {
@@ -259,8 +264,10 @@ const sectionTranslations: Record<string, string> = {
   "Gâteau de Vichy": "Vichy Cake",
   "Notes de cuisson": "Baking Notes",
   Préparation: "Preparation",
+  "Préparation de la pâte": "Preparing the Dough",
   "Préparation du macaron": "Macaron Preparation",
   Repos: "Resting",
+  Refroidissement: "Cooling",
   Service: "Serving",
   "Suite de la cuisson": "Continuing the Baking",
 };
@@ -280,6 +287,7 @@ const ingredientTranslations: Record<string, string> = {
   "beurre à température ambiante": "butter at room temperature",
   "bananes bien mûres": "very ripe bananas",
   "bicarbonate de soude": "baking soda",
+  "bicarbonate alimentaire": "baking soda",
   "biscuits à la cuillère": "ladyfingers",
   "blancs d’œufs": "egg whites",
   "bouquet garni": "bouquet garni",
@@ -315,6 +323,7 @@ const ingredientTranslations: Record<string, string> = {
   "extrait de café": "coffee extract",
   "extrait de vanille": "vanilla extract",
   "extrait d’amande amère": "bitter almond extract",
+  "fleur de sel": "fleur de sel",
   farine: "flour",
   "farine à gâteau": "cake flour",
   "farine T55": "T55 flour",
@@ -323,6 +332,8 @@ const ingredientTranslations: Record<string, string> = {
   framboises: "raspberries",
   fécule: "starch",
   "gruyère râpé": "grated Gruyère",
+  "gros œuf": "large egg",
+  "gousse de vanille": "vanilla bean",
   glaçons: "ice cubes",
   huile: "oil",
   "huile de tournesol": "sunflower oil",
@@ -363,8 +374,10 @@ const ingredientTranslations: Record<string, string> = {
   sel: "salt",
   sucre: "sugar",
   "sucre fin": "caster sugar",
+  "sucre en poudre": "granulated sugar",
   "sucre glace": "icing sugar",
   "sucre semoule": "granulated sugar",
+  "sucre roux": "brown sugar",
   "tapenade verte ou pesto vert": "green tapenade or green pesto",
   thym: "thyme",
   "tomates concassées": "crushed tomatoes",
@@ -399,6 +412,8 @@ const noteTranslations: Record<string, string> = {
   crème: "cream",
   "découpé en petits dés": "cut into small cubes",
   facultatif: "optional",
+  "graines uniquement": "seeds only",
+  "grossièrement haché": "roughly chopped",
   "grand moule": "large pan",
   "jus + zeste": "juice + zest",
   "lotte à l’origine, ou mélange saumon, cabillaud, julienne":
@@ -418,6 +433,7 @@ const noteTranslations: Record<string, string> = {
   "pour le gâteau": "for the cake",
   "pour le moule": "for the pan",
   "pour le plat": "for the dish",
+  "pour parsemer": "for sprinkling",
   "pour saupoudrer": "for dusting",
   "pour le sirop": "for the syrup",
   "pour le sirop, note manuscrite 0,08 l": "for the syrup; handwritten note 0.08 l",
@@ -433,6 +449,32 @@ const noteTranslations: Record<string, string> = {
 };
 
 const stepTranslations: Record<string, string> = {
+  "Dans un bol, mélanger la farine, le bicarbonate, la levure chimique et le sel.":
+    "In a bowl, combine the flour, baking soda, baking powder and salt.",
+  "Faire fondre le beurre à feu moyen, puis le verser dans un grand bol.":
+    "Melt the butter over medium heat, then pour it into a large bowl.",
+  "Ajouter le sucre roux et le sucre en poudre au beurre fondu, puis mélanger jusqu’à obtenir une préparation homogène.":
+    "Add the brown sugar and granulated sugar to the melted butter, then mix until smooth.",
+  "Incorporer l’œuf et les graines de vanille jusqu’à obtenir une texture lisse et brillante.":
+    "Mix in the egg and vanilla seeds until smooth and glossy.",
+  "Ajouter les ingrédients secs en deux fois avec une cuillère en bois, en mélangeant juste assez pour les incorporer.":
+    "Add the dry ingredients in two batches with a wooden spoon, mixing only until incorporated.",
+  "Ajouter le chocolat noir grossièrement haché et mélanger une dernière fois sans trop travailler la pâte.":
+    "Add the roughly chopped dark chocolate and mix once more without overworking the dough.",
+  "Couvrir le bol et placer la pâte au réfrigérateur pendant 30 min.":
+    "Cover the bowl and chill the dough for 30 min.",
+  "Préchauffer le four à 180 °C et recouvrir une plaque de papier cuisson.":
+    "Preheat the oven to 180 °C and line a baking sheet with parchment paper.",
+  "Former de grosses boules de pâte avec une cuillère à glace ou une cuillère à soupe, puis les espacer largement sur la plaque.":
+    "Shape the dough into large balls with an ice cream scoop or tablespoon, spacing them well apart on the baking sheet.",
+  "Saupoudrer chaque boule d’une petite pincée de fleur de sel.":
+    "Sprinkle each ball with a small pinch of fleur de sel.",
+  "Enfourner pour 8 min, sortir la plaque et la taper légèrement sur le plan de travail pour aider les cookies à s’étaler.":
+    "Bake for 8 min, remove the baking sheet and tap it lightly on the counter to help the cookies spread.",
+  "Poursuivre la cuisson 2 min, puis taper de nouveau la plaque à la sortie du four.":
+    "Bake for another 2 min, then tap the baking sheet again after removing it from the oven.",
+  "Déposer les cookies sur une grille et les laisser reposer au moins 10 min avant de les conserver ou de les déguster.":
+    "Transfer the cookies to a rack and let them rest for at least 10 min before storing or serving.",
   "Placer tous les ingrédients au réfrigérateur à l’avance afin qu’ils soient bien frais.":
     "Chill all the ingredients in advance so they are very cold.",
   "Dans un saladier, mélanger le Cointreau, le Pulco Citron et le Canadou.":
@@ -819,6 +861,7 @@ const yieldLabelTranslations: Record<string, string> = {
   "Environ 1,3 kg de pâte": "About 1.3 kg of dough",
   "Environ 500 g de pâte": "About 500 g of dough",
   "Environ 20 gougères": "About 20 gougères",
+  "Environ 20 gros cookies": "About 20 large cookies",
 };
 
 export function localizeRecipe(recipe: SourceRecipe, locale: Locale): LocalizedRecipe {
