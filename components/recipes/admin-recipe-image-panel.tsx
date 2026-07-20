@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import { useRouter } from "next/navigation";
-import { Search, Upload } from "lucide-react";
+import { Camera, Search, Upload } from "lucide-react";
 import type { Id } from "@/convex/_generated/dataModel";
 import type { Locale } from "@/i18n/config";
 import { Button } from "@/components/ui/button";
@@ -30,8 +30,16 @@ type AdminRecipeImagePanelProps = {
     "slug" | "title" | "heroImageUrl" | "imageCredit"
   > | null;
   revision?: number;
-  onRevisionChange?: (revision: number) => void;
+  compact?: boolean;
+  onBeforeChange?: () => Promise<number | null>;
+  onRevisionChange?: (mutation: RecipeImageMutation) => void;
   onConflict?: (latestRevision?: number, retry?: (revision: number) => Promise<void>) => void;
+};
+
+export type RecipeImageMutation = {
+  revision: number;
+  heroImageUrl: string;
+  imageCredit?: Recipe["imageCredit"];
 };
 
 type UploadStatus =
@@ -75,9 +83,6 @@ type ApiErrorResponse = {
   latestRevision?: number;
 };
 
-const defaultRecipeImageUrl =
-  "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=1400&q=85";
-
 const initialStatus: UploadStatus = {
   type: "idle",
   message: "Choisis une source pour remplacer l'image principale.",
@@ -112,6 +117,8 @@ export function AdminRecipeImagePanel({
   locale,
   recipe,
   revision,
+  compact = false,
+  onBeforeChange,
   onRevisionChange,
   onConflict,
 }: AdminRecipeImagePanelProps) {
@@ -127,7 +134,7 @@ export function AdminRecipeImagePanel({
     recipe ? initialStatus : unavailableStatus,
   );
   const [previewUrl, setPreviewUrl] = useState(
-    recipe?.heroImageUrl || defaultRecipeImageUrl,
+    recipe?.heroImageUrl || "",
   );
   const [previewCredit, setPreviewCredit] = useState<Recipe["imageCredit"]>(
     recipe?.imageCredit,
@@ -150,7 +157,11 @@ export function AdminRecipeImagePanel({
     };
   }, [previewObjectUrl]);
 
-  async function associateStoredImage(storageId: Id<"_storage">, expectedRevision = revision) {
+  async function associateStoredImage(
+    storageId: Id<"_storage">,
+    expectedRevision = revision,
+    retry?: (revision: number) => Promise<void>,
+  ) {
     const response = await fetch("/api/admin/recipes/hero-image", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -158,9 +169,45 @@ export function AdminRecipeImagePanel({
     });
     const data = await readJsonResponse<ApiErrorResponse>(response);
     if (!response.ok) {
-      throw imageMutationError(response, data, "Impossible d'associer cette image.", (nextRevision) => associateStoredImage(storageId, nextRevision));
+      throw imageMutationError(
+        response,
+        data,
+        "Impossible d'associer cette image.",
+        retry ?? ((nextRevision) => associateStoredImage(storageId, nextRevision).then(() => undefined)),
+      );
     }
-    if (typeof data.revision === "number") onRevisionChange?.(data.revision);
+    if (typeof data.revision !== "number") {
+      throw new Error("La réponse d’image ne contient pas de révision.");
+    }
+    return data.revision;
+  }
+
+  async function commitStoredImage(
+    storageId: Id<"_storage">,
+    file: File,
+    expectedRevision: number,
+  ) {
+    const nextRevision = await associateStoredImage(
+      storageId,
+      expectedRevision,
+      (revisionAfterConflict) =>
+        commitStoredImage(storageId, file, revisionAfterConflict),
+    );
+    const objectUrl = URL.createObjectURL(file);
+    setPreviewObjectUrl(objectUrl);
+    setPreviewUrl(objectUrl);
+    setPreviewCredit(undefined);
+    onRevisionChange?.({
+      revision: nextRevision,
+      heroImageUrl: objectUrl,
+      imageCredit: undefined,
+    });
+    setStatus({
+      type: "success",
+      message: "Image uploadée et associée.",
+    });
+    setIsSearchDialogOpen(false);
+    router.refresh();
   }
 
   async function handleUploadImage(file: File | null) {
@@ -173,6 +220,16 @@ export function AdminRecipeImagePanel({
     }
 
     try {
+      const preparedRevision = onBeforeChange
+        ? await onBeforeChange()
+        : revision ?? null;
+      if (preparedRevision === null) {
+        setStatus({
+          type: "error",
+          message: "Corrige les champs indiqués avant de remplacer l’image.",
+        });
+        return;
+      }
       setStatus({ type: "loading", message: "Upload de l'image..." });
 
       const uploadUrlResponse = await fetch("/api/admin/recipes/upload-url", {
@@ -202,17 +259,7 @@ export function AdminRecipeImagePanel({
         storageId: Id<"_storage">;
       }>(response);
 
-      await associateStoredImage(storageId);
-
-      const objectUrl = URL.createObjectURL(file);
-      setPreviewObjectUrl(objectUrl);
-      setPreviewUrl(objectUrl);
-      setPreviewCredit(undefined);
-      setStatus({
-        type: "success",
-        message: "Image uploadée et associée.",
-      });
-      router.refresh();
+      await commitStoredImage(storageId, file, preparedRevision);
     } catch (error) {
       setStatus({
         type: "error",
@@ -293,10 +340,24 @@ export function AdminRecipeImagePanel({
     });
   }
 
-  async function handleUseUnsplashImage(photo: UnsplashPhoto, expectedRevision = revision) {
+  async function handleUseUnsplashImage(
+    photo: UnsplashPhoto,
+    expectedRevision?: number,
+    prepare = true,
+  ) {
     if (!recipe) return;
 
     try {
+      const preparedRevision = prepare && onBeforeChange
+        ? await onBeforeChange()
+        : expectedRevision ?? revision ?? null;
+      if (preparedRevision === null) {
+        setStatus({
+          type: "error",
+          message: "Corrige les champs indiqués avant de remplacer l’image.",
+        });
+        return;
+      }
       setStatus({
         type: "loading",
         message: "Association de l'image Unsplash...",
@@ -328,7 +389,7 @@ export function AdminRecipeImagePanel({
             photographerName: photo.photographerName,
             photographerUrl: photo.photographerUrl,
             photoUrl: photo.photoUrl,
-            expectedRevision,
+            expectedRevision: preparedRevision,
           }),
         },
       );
@@ -336,19 +397,25 @@ export function AdminRecipeImagePanel({
         await readJsonResponse<ApiErrorResponse>(imageResponse);
 
       if (!imageResponse.ok) {
-        throw imageMutationError(imageResponse, imageData, "Impossible d'associer cette image Unsplash.", (nextRevision) => handleUseUnsplashImage(photo, nextRevision));
+        throw imageMutationError(imageResponse, imageData, "Impossible d'associer cette image Unsplash.", (nextRevision) => handleUseUnsplashImage(photo, nextRevision, false));
       }
-      if (typeof (imageData as ApiErrorResponse & { revision?: number }).revision === "number") {
-        onRevisionChange?.((imageData as ApiErrorResponse & { revision: number }).revision);
+      const nextRevision = (imageData as ApiErrorResponse & { revision?: number }).revision;
+      if (typeof nextRevision !== "number") {
+        throw new Error("La réponse Unsplash ne contient pas de révision.");
       }
-
-      setPreviewUrl(photo.imageUrl);
-      setPreviewCredit({
+      const imageCredit: Recipe["imageCredit"] = {
         provider: "unsplash",
         photographerName: photo.photographerName,
         photographerUrl: photo.photographerUrl,
         photoUrl: photo.photoUrl,
         alt: photo.alt,
+      };
+      setPreviewUrl(photo.imageUrl);
+      setPreviewCredit(imageCredit);
+      onRevisionChange?.({
+        revision: nextRevision,
+        heroImageUrl: photo.imageUrl,
+        imageCredit,
       });
       setStatus({
         type: "success",
@@ -367,10 +434,24 @@ export function AdminRecipeImagePanel({
     }
   }
 
-  async function handleUseOpenverseImage(photo: OpenversePhoto, expectedRevision = revision) {
+  async function handleUseOpenverseImage(
+    photo: OpenversePhoto,
+    expectedRevision?: number,
+    prepare = true,
+  ) {
     if (!recipe) return;
 
     try {
+      const preparedRevision = prepare && onBeforeChange
+        ? await onBeforeChange()
+        : expectedRevision ?? revision ?? null;
+      if (preparedRevision === null) {
+        setStatus({
+          type: "error",
+          message: "Corrige les champs indiqués avant de remplacer l’image.",
+        });
+        return;
+      }
       setStatus({
         type: "loading",
         message: "Import de l'image Openverse dans Convex...",
@@ -392,20 +473,19 @@ export function AdminRecipeImagePanel({
           source: photo.source,
           attribution: photo.attribution,
           alt: photo.alt,
-          expectedRevision,
+          expectedRevision: preparedRevision,
         }),
       });
       const data = await readJsonResponse<ApiErrorResponse>(response);
 
       if (!response.ok) {
-        throw imageMutationError(response, data, "L'import Openverse a échoué.", (nextRevision) => handleUseOpenverseImage(photo, nextRevision));
+        throw imageMutationError(response, data, "L'import Openverse a échoué.", (nextRevision) => handleUseOpenverseImage(photo, nextRevision, false));
       }
-      if (typeof (data as ApiErrorResponse & { revision?: number }).revision === "number") {
-        onRevisionChange?.((data as ApiErrorResponse & { revision: number }).revision);
+      const nextRevision = (data as ApiErrorResponse & { revision?: number }).revision;
+      if (typeof nextRevision !== "number") {
+        throw new Error("La réponse Openverse ne contient pas de révision.");
       }
-
-      setPreviewUrl(photo.imageUrl);
-      setPreviewCredit({
+      const imageCredit: Recipe["imageCredit"] = {
         provider: "openverse",
         title: photo.title,
         creator: photo.creator,
@@ -418,6 +498,13 @@ export function AdminRecipeImagePanel({
         source: photo.source,
         attribution: photo.attribution,
         alt: photo.alt,
+      };
+      setPreviewUrl(photo.imageUrl);
+      setPreviewCredit(imageCredit);
+      onRevisionChange?.({
+        revision: nextRevision,
+        heroImageUrl: photo.imageUrl,
+        imageCredit,
       });
       setStatus({
         type: "success",
@@ -437,7 +524,7 @@ export function AdminRecipeImagePanel({
   }
 
   return (
-    <section className="grid gap-5 rounded-2xl bg-muted/40 p-4 shadow-[var(--shadow-card)] md:rounded-lg md:border md:border-border md:shadow-none">
+    <section className={`grid gap-4 rounded-2xl bg-muted/40 p-4 shadow-[var(--shadow-card)] md:rounded-lg md:border md:border-border md:shadow-none ${compact ? "lg:sticky lg:top-28" : ""}`}>
       <div className="flex flex-col gap-1">
         <h3 className="type-panel-title text-foreground">
           Image principale
@@ -447,16 +534,23 @@ export function AdminRecipeImagePanel({
         </p>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-[minmax(16rem,0.8fr)_minmax(0,1.2fr)]">
+      <div className="grid gap-4">
         <div className="grid gap-3">
           <div className="overflow-hidden rounded-xl bg-card shadow-[var(--shadow-card)]">
-            <div className="aspect-[16/9] bg-muted">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={previewUrl}
-                alt={previewCredit?.alt ?? ""}
-                className="h-full w-full object-cover outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
-              />
+            <div className="grid aspect-[16/9] place-items-center bg-muted">
+              {previewUrl ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={previewUrl}
+                  alt={previewCredit?.alt ?? ""}
+                  className="h-full w-full object-cover outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
+                />
+              ) : (
+                <span className="grid place-items-center gap-2 text-sm font-bold text-muted-foreground">
+                  <Camera />
+                  Aucune image
+                </span>
+              )}
             </div>
           </div>
           {previewCredit ? <ImageCreditLine imageCredit={previewCredit} /> : null}
@@ -470,68 +564,24 @@ export function AdminRecipeImagePanel({
           ) : null}
         </div>
 
-        <div className="grid content-start gap-4">
+        <div className="grid content-start gap-3">
           {!recipe ? (
             <div className="rounded-lg border border-border bg-card p-4 text-sm font-bold text-muted-foreground">
               Sauvegarde ce brouillon avant d&apos;ajouter une image principale.
             </div>
           ) : null}
 
-          <div className="grid gap-2">
-            <label
-              htmlFor="recipe-image-search-query"
-              className="text-sm font-black text-foreground"
-            >
-              Rechercher une image
-            </label>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Input
-                id="recipe-image-search-query"
-                type="search"
-                value={searchQuery}
-                disabled={isDisabled}
-                onChange={(event) => setSearchQuery(event.target.value)}
-                onKeyDown={(event) =>
-                  handleSearchKeyDown(event, handleInternetSearch)
-                }
-                className="h-11 flex-1 bg-card font-semibold"
-                placeholder="cake citron, tarte fraise..."
-              />
-              <Button
-                type="button"
-                size="lg"
-                disabled={isDisabled}
-                onClick={handleInternetSearch}
-                className="min-h-11"
-              >
-                <Search data-icon="inline-start" />
-                Chercher sur internet
-              </Button>
-            </div>
-          </div>
-
-          <div className="grid gap-2 border-t border-border pt-4">
-            <input
-              ref={fileInputRef}
-              type="file"
-              aria-label="Choisir une image sur cet appareil"
-              accept="image/*"
-              disabled={isDisabled}
-              onChange={handleFileChange}
-              className="sr-only"
-            />
-            <Button
-              type="button"
-              variant="outline"
-              size="lg"
-              disabled={isDisabled}
-              onClick={() => fileInputRef.current?.click()}
-              className="min-h-11 justify-self-start"
-            >
-              <Upload data-icon="inline-start" />
-              Upload a file
-            </Button>
-          </div>
+          <Button
+            type="button"
+            variant="outline"
+            size="lg"
+            disabled={isDisabled}
+            onClick={() => setIsSearchDialogOpen(true)}
+            className="min-h-11 w-full"
+          >
+            <Upload data-icon="inline-start" />
+            Remplacer l’image
+          </Button>
 
           <p
             className={
@@ -550,11 +600,34 @@ export function AdminRecipeImagePanel({
       <Dialog open={isSearchDialogOpen} onOpenChange={setIsSearchDialogOpen}>
         <DialogContent className="inset-0 h-dvh max-h-dvh w-full max-w-none translate-x-0 translate-y-0 overflow-hidden rounded-none sm:inset-auto sm:top-1/2 sm:left-1/2 sm:h-auto sm:max-h-[calc(100vh-2rem)] sm:max-w-5xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-xl">
           <DialogHeader className="">
-            <DialogTitle className="">Recherche internet</DialogTitle>
+            <DialogTitle className="">Remplacer l’image principale</DialogTitle>
             <DialogDescription className="">
               Choisis une image pour remplacer l&apos;image principale de recette.
             </DialogDescription>
           </DialogHeader>
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            aria-label="Choisir une image sur cet appareil"
+            accept="image/*"
+            disabled={isDisabled}
+            onChange={handleFileChange}
+            className="sr-only"
+          />
+          <Button
+            type="button"
+            variant="outline"
+            size="lg"
+            disabled={isDisabled}
+            onClick={() => fileInputRef.current?.click()}
+            className="min-h-11 justify-self-start"
+          >
+            <Upload data-icon="inline-start" />
+            Choisir un fichier
+          </Button>
+
+          <div className="h-px bg-border" />
 
           <div className="flex flex-col gap-3 pr-8 sm:flex-row">
             <Input

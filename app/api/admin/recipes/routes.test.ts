@@ -71,6 +71,34 @@ describe("recipe admin route contracts", () => {
     expect(fetchMutation).not.toHaveBeenCalled();
   });
 
+  test("image routes return typed successful revision responses", async () => {
+    fetchMutation
+      .mockResolvedValueOnce({ slug: "tarte-mobile", revision: 4, savedAt: 1234 })
+      .mockResolvedValueOnce({
+        slug: "tarte-mobile",
+        heroImageUrl: "https://images.example/photo.jpg",
+        revision: 5,
+        savedAt: 2345,
+      });
+
+    const upload = await setHeroImage(request({
+      slug: "tarte-mobile",
+      storageId: "storage-id",
+      expectedRevision: 3,
+    }) as never);
+    const unsplash = await setUnsplashImage(request({
+      slug: "tarte-mobile",
+      imageUrl: "https://images.example/photo.jpg",
+      photographerName: "Maman",
+      photographerUrl: "https://example.com/maman",
+      photoUrl: "https://example.com/photo",
+      expectedRevision: 4,
+    }) as never);
+
+    expect(await upload.json()).toMatchObject({ type: "success", revision: 4 });
+    expect(await unsplash.json()).toMatchObject({ type: "success", revision: 5 });
+  });
+
   test("save and image routes expose typed revision conflicts", async () => {
     fetchMutation.mockRejectedValue(new Error("RECIPE_DRAFT_CONFLICT:7"));
     const saveResponse = await saveRecipe(request({ locale: "fr", mode: "update", slug: "tarte-mobile", expectedRevision: 3, recipePayload: JSON.stringify(payload) }) as never);
@@ -96,7 +124,7 @@ describe("recipe admin route contracts", () => {
   });
 
   test("discard returns the restored draft and publication revisions", async () => {
-    fetchMutation.mockResolvedValue({ slug: "tarte-mobile", revision: 5, publishedRevision: 5, savedAt: 2345, draft: { ...payload, status: "published" } });
+    fetchMutation.mockResolvedValue({ slug: "tarte-mobile", revision: 5, publishedRevision: 5, savedAt: 2345, draft: payload });
     const response = await discardRecipe(request({ slug: "tarte-mobile", expectedRevision: 4 }) as never);
     expect(response.status).toBe(200);
     expect(await response.json()).toMatchObject({ revision: 5, publishedRevision: 5, draft: { translations: { fr: { title: "Tarte mobile" } } } });

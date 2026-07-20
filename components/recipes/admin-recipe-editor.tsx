@@ -11,6 +11,9 @@ import {
   useForm,
   useWatch,
   type Control,
+  type FieldErrors,
+  type FieldArrayPath,
+  type FieldPath,
   type UseFormRegister,
   type UseFormReturn,
 } from "react-hook-form";
@@ -85,10 +88,15 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  editableRecipeContentSchema,
-  type RecipeFormPayload,
+  editableRecipeDraftSchema,
+  parseOptionalNumberInput,
+  type RecipeDraftFormInput,
+  type RecipeDraftPayload,
 } from "./recipe-form-schema";
-import { AdminRecipeImagePanel } from "./admin-recipe-image-panel";
+import {
+  AdminRecipeImagePanel,
+  type RecipeImageMutation,
+} from "./admin-recipe-image-panel";
 import { CompactIngredientsEditor, CompactSectionsEditor } from "./admin-compact-collections";
 import { SortableCollection, SortableInlineRow } from "./admin-sortable-collection";
 import {
@@ -114,8 +122,7 @@ type AdminRecipeEditorProps = {
 
 type MobileSection =
   | "overview"
-  | "essentials"
-  | "photo"
+  | "info"
   | "details"
   | "ingredients"
   | "preparation"
@@ -125,8 +132,24 @@ type MobileSection =
   | "publish";
 
 type LocaleKey = "fr" | "en";
-type RecipeRegister = UseFormRegister<any>;
-type RecipeControl = Control<any>;
+type RecipeFormContext = Record<string, never>;
+type RecipeRegister = UseFormRegister<RecipeDraftFormInput>;
+type RecipeControl = Control<RecipeDraftFormInput>;
+type RecipeFieldName = FieldPath<RecipeDraftFormInput>;
+type RecipeFieldArrayName = FieldArrayPath<RecipeDraftFormInput>;
+type RecipeForm = UseFormReturn<
+  RecipeDraftFormInput,
+  RecipeFormContext,
+  RecipeDraftPayload
+>;
+
+function recipeFieldPath(name: string) {
+  return name as RecipeFieldName;
+}
+
+function recipeFieldArrayPath(name: string) {
+  return name as RecipeFieldArrayName;
+}
 
 const blankIngredient = {
   name: "",
@@ -156,7 +179,7 @@ const blankLocalizedRecipe = {
   notes: [],
 };
 
-const blankRecipe: RecipeFormPayload = {
+const blankRecipe: RecipeDraftPayload = {
   defaultLocale: "fr",
   referenceServings: undefined,
   translations: {
@@ -164,7 +187,6 @@ const blankRecipe: RecipeFormPayload = {
     en: blankLocalizedRecipe,
   },
   tags: [],
-  status: "draft",
 };
 
 export function AdminRecipeEditor({
@@ -182,23 +204,45 @@ export function AdminRecipeEditor({
   const [mode, setMode] = useState<RecipeFormMode>(
     startInCreateMode ? "create" : "update",
   );
-  const selectedRecipe = initialRecipeProp?.slug === selectedSlug ? initialRecipeProp : null;
+  const baseSelectedRecipe = initialRecipeProp?.slug === selectedSlug ? initialRecipeProp : null;
+  const [imageMutation, setImageMutation] = useState<
+    (RecipeImageMutation & { slug: string }) | null
+  >(null);
+  const selectedRecipe =
+    baseSelectedRecipe &&
+    imageMutation?.slug === baseSelectedRecipe.slug &&
+    imageMutation.revision > baseSelectedRecipe.revision
+      ? {
+          ...baseSelectedRecipe,
+          heroImageUrl: imageMutation.heroImageUrl,
+          imageCredit: imageMutation.imageCredit,
+          revision: imageMutation.revision,
+        }
+      : baseSelectedRecipe;
 
-  const form = useForm<any>({
-    resolver: zodResolver(editableRecipeContentSchema),
+  const form = useForm<
+    RecipeDraftFormInput,
+    RecipeFormContext,
+    RecipeDraftPayload
+  >({
+    resolver: zodResolver(editableRecipeDraftSchema),
     defaultValues: selectedRecipe
       ? toFormValues(selectedRecipe)
       : cloneRecipe(blankRecipe),
     mode: "onBlur",
+    reValidateMode: "onChange",
   });
 
   const {
     getValues,
     reset,
-    setValue,
   } = form;
   const watchedValues = useWatch({ control: form.control });
-  const mobileSection = normalizeMobileSection(searchParams.get("section"));
+  const rawMobileSection = searchParams.get("section");
+  const mobileSection =
+    rawMobileSection === null && selectedSlug
+      ? "info"
+      : normalizeMobileSection(rawMobileSection);
   const focusField = searchParams.get("field");
   const isPreview = searchParams.get("mode") === "preview";
 
@@ -217,19 +261,42 @@ export function AdminRecipeEditor({
     name: "defaultLocale",
   });
   const requestedLanguage = normalizeLocaleKey(searchParams.get("lang"), defaultLocale);
-  const status = useWatch({
-    control: form.control,
-    name: "status",
-  });
   const tagsValue = useWatch({
     control: form.control,
     name: "tags",
   });
 
+  const revealFieldError = useCallback((field: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("new");
+    params.delete("mode");
+    if (selectedSlug) params.set("slug", selectedSlug);
+    params.set("section", sectionForField(field));
+    params.set("field", field);
+    const fieldLocale = field.split(".")[1];
+    params.set("lang", fieldLocale === "en" ? "en" : "fr");
+    router.replace(`/${locale}/admin/recettes?${params.toString()}`);
+  }, [locale, router, searchParams, selectedSlug]);
+
+  const validateDraft = useCallback(
+    () =>
+      new Promise<RecipeDraftPayload | null>((resolve) => {
+        void form.handleSubmit(
+          (payload) => resolve(payload),
+          (errors) => {
+            const field = firstFormErrorPath(errors);
+            if (field) revealFieldError(field);
+            resolve(null);
+          },
+        )();
+      }),
+    [form, revealFieldError],
+  );
+
   const handleCreated = useCallback((slug: string) => {
     setMode("update");
     setSelectedSlug(slug);
-    router.replace(`/${locale}/admin/recettes?slug=${slug}`);
+    router.replace(`/${locale}/admin/recettes?slug=${slug}&section=info`);
     router.refresh();
   }, [locale, router]);
   const refreshRecipe = useCallback(() => router.refresh(), [router]);
@@ -239,8 +306,10 @@ export function AdminRecipeEditor({
     syncState,
     revision,
     publishedRevision,
-    savePayload,
+    publicationStatus,
+    saveCurrentDraft,
     flushLatestDraft,
+    prepareRevisionedMutation,
     publishRecipe,
     discardChanges,
     unpublishRecipe,
@@ -256,14 +325,26 @@ export function AdminRecipeEditor({
     selectedSlug,
     selectedRecipe,
     initialRecipe,
-    watchedValues: watchedValues as Partial<RecipeFormPayload> | undefined,
+    watchedValues,
     getValues,
     reset,
-    setValue,
+    setError: form.setError,
+    clearErrors: form.clearErrors,
+    validateDraft,
+    onFieldError: revealFieldError,
     onCreated: handleCreated,
     onRefresh: refreshRecipe,
   });
-  const publication = getPublicationState(status ?? "draft", revision, publishedRevision);
+  const publication = getPublicationState(
+    publicationStatus,
+    revision,
+    publishedRevision,
+  );
+
+  const handleImageMutation = useCallback((mutation: RecipeImageMutation) => {
+    setImageMutation({ ...mutation, slug: selectedSlug });
+    handleImageRevision(mutation.revision);
+  }, [handleImageRevision, selectedSlug]);
 
   useEffect(() => {
     if (!focusField) return;
@@ -279,7 +360,7 @@ export function AdminRecipeEditor({
   async function selectRecipe(slug: string) {
     if (!slug) return;
     if (!(await flushLatestDraft())) return;
-    router.push(`/${locale}/admin/recettes?slug=${slug}`);
+    router.push(`/${locale}/admin/recettes?slug=${slug}&section=info`);
     window.scrollTo({ top: 0, behavior: "auto" });
   }
 
@@ -307,8 +388,7 @@ export function AdminRecipeEditor({
     params.delete("new");
     params.delete("mode");
     params.set("slug", selectedSlug);
-    if (section === "overview") params.delete("section");
-    else params.set("section", section);
+    params.set("section", section);
     params.set("lang", requestedLanguage);
     router.push(`/${locale}/admin/recettes?${params.toString()}`);
     window.scrollTo({ top: 0, behavior: "auto" });
@@ -369,6 +449,9 @@ export function AdminRecipeEditor({
 
   return (
       <FormProvider {...form}>
+      <form action={async () => {
+        await saveCurrentDraft(syncState === "conflict");
+      }}>
       <MobileRecipeAdmin
         locale={locale}
         recipes={recipes}
@@ -389,17 +472,19 @@ export function AdminRecipeEditor({
         onHome={showMobileHome}
         onSelect={selectRecipe}
         onOpenSection={openMobileSection}
-        onSave={() => savePayload(getValues(), syncState === "conflict")}
+        onSave={() => saveCurrentDraft(syncState === "conflict")}
         onPublish={publishRecipe}
         onDiscard={discardChanges}
         onUnpublish={unpublishRecipe}
-        onImageRevision={handleImageRevision}
+        onImageRevision={handleImageMutation}
         onImageConflict={handleImageConflict}
+        onBeforeImageChange={prepareRevisionedMutation}
         onReplaceConflict={replaceConflict}
         onReloadConflict={reloadLatest}
         publication={publication}
         onPreview={openPreview}
       />
+      </form>
       </FormProvider>
     );
 }
@@ -430,6 +515,7 @@ function MobileRecipeAdmin({
   onUnpublish,
   onImageRevision,
   onImageConflict,
+  onBeforeImageChange,
   onReplaceConflict,
   onReloadConflict,
   publication,
@@ -445,7 +531,7 @@ function MobileRecipeAdmin({
   revision: number;
   isPending: boolean;
   state: SaveRecipeState;
-  form: UseFormReturn<any>;
+  form: RecipeForm;
   tagsValue: string[];
   defaultLocale: LocaleKey;
   requestedLanguage: LocaleKey;
@@ -458,8 +544,9 @@ function MobileRecipeAdmin({
   onPublish: () => void;
   onDiscard: () => void;
   onUnpublish: () => void;
-  onImageRevision: (revision: number) => void;
+  onImageRevision: (mutation: RecipeImageMutation) => void;
   onImageConflict: (revision?: number, retry?: (revision: number) => Promise<void>) => void;
+  onBeforeImageChange: () => Promise<number | null>;
   onReplaceConflict: () => void;
   onReloadConflict: () => void;
   publication: ReturnType<typeof getPublicationState>;
@@ -467,12 +554,12 @@ function MobileRecipeAdmin({
 }) {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<"all" | "draft" | "published">("all");
-  const values = useWatch({ control: form.control }) as RecipeFormPayload;
+  const values = useWatch({ control: form.control }) as RecipeDraftPayload;
   const readiness = getRecipeReadiness(
     values,
     Boolean(selectedRecipe?.heroImageUrl),
   );
-  const completedSections = Object.values(readiness.sections).filter(Boolean).length;
+  const blockerCount = readiness.blockers.length;
 
   if (!selectedSlug && mode !== "create") {
     const normalizedQuery = query.trim().toLocaleLowerCase(locale);
@@ -582,7 +669,7 @@ function MobileRecipeAdmin({
           <MobileOverview recipe={selectedRecipe} values={values} readiness={readiness} publication={publication} onOpen={onOpenSection} />
         ) : (
           <section className="rounded-2xl bg-card p-4 shadow-[var(--shadow-card)]">
-            <MobileSectionFields section={section} locale={locale} recipe={selectedRecipe} revision={revision} onImageRevision={onImageRevision} onImageConflict={onImageConflict} form={form} tagsValue={tagsValue} defaultLocale={defaultLocale} requestedLanguage={requestedLanguage} readiness={readiness} publication={publication} isPending={isPending} onPublish={onPublish} onDiscard={onDiscard} onUnpublish={onUnpublish} />
+            <MobileSectionFields section={section} locale={locale} recipe={selectedRecipe} revision={revision} onImageRevision={onImageRevision} onImageConflict={onImageConflict} onBeforeImageChange={onBeforeImageChange} form={form} tagsValue={tagsValue} defaultLocale={defaultLocale} requestedLanguage={requestedLanguage} readiness={readiness} publication={publication} isPending={isPending} onPublish={onPublish} onDiscard={onDiscard} onUnpublish={onUnpublish} />
           </section>
         )}
       </div>
@@ -590,15 +677,15 @@ function MobileRecipeAdmin({
       <nav className="pointer-events-none fixed inset-x-0 bottom-0 z-30 bg-gradient-to-t from-background via-background/95 to-transparent px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-5" aria-label="Actions de la recette">
         <div className="pointer-events-auto mx-auto grid max-w-xl grid-cols-3 gap-1 rounded-[1.125rem] bg-card/95 p-1.5 shadow-[var(--shadow-card)] backdrop-blur-xl">
           <Button type="button" variant={section === "overview" ? "secondary" : "ghost"} onClick={() => onOpenSection("overview")} className="h-12 min-w-0 gap-1 rounded-xl px-2 text-xs sm:text-sm" aria-pressed={section === "overview"}><BookOpen /> Recette</Button>
-          <Button type="button" variant={section === "photo" ? "secondary" : "ghost"} onClick={() => onOpenSection("photo")} className="h-12 min-w-0 gap-1 rounded-xl px-2 text-xs sm:text-sm" aria-pressed={section === "photo"}><Camera /> Photo</Button>
-          <Button type="button" variant={publication.hasUnpublishedChanges ? "default" : section === "publish" ? "secondary" : "ghost"} data-publication-needed={publication.hasUnpublishedChanges || undefined} onClick={() => onOpenSection("publish")} className="h-12 min-w-0 gap-1 rounded-xl px-2 text-xs sm:text-sm" aria-label={`Publier, ${completedSections} sections sur 7 complétées`} aria-pressed={section === "publish"}><Send /> Publier <span className={`rounded-full px-1.5 py-0.5 text-[0.6875rem] font-bold leading-none tabular-nums ${publication.hasUnpublishedChanges ? "bg-primary-foreground/15 text-primary-foreground" : "bg-primary/10 text-primary"}`}>{completedSections}/7</span></Button>
+          <Button type="button" variant={section === "info" ? "secondary" : "ghost"} onClick={() => onOpenSection("info")} className="h-12 min-w-0 gap-1 rounded-xl px-2 text-xs sm:text-sm" aria-pressed={section === "info"}><Camera /> Infos</Button>
+          <Button type="button" variant={publication.hasUnpublishedChanges ? "default" : section === "publish" ? "secondary" : "ghost"} data-publication-needed={publication.hasUnpublishedChanges || undefined} onClick={() => onOpenSection("publish")} className="h-12 min-w-0 gap-1 rounded-xl px-2 text-xs sm:text-sm" aria-label={blockerCount === 0 ? "Publier, recette prête" : `Publier, ${blockerCount} éléments obligatoires à compléter`} aria-pressed={section === "publish"}><Send /> Publier <span className={`rounded-full px-1.5 py-0.5 text-[0.6875rem] font-bold leading-none tabular-nums ${publication.hasUnpublishedChanges ? "bg-primary-foreground/15 text-primary-foreground" : "bg-primary/10 text-primary"}`}>{blockerCount === 0 ? "Prête" : blockerCount}</span></Button>
         </div>
       </nav>
     </main>
   );
 }
 
-function MobileOverview({ recipe, values, readiness, publication, onOpen }: { recipe: EditableRecipe | null; values: RecipeFormPayload; readiness: RecipeReadiness; publication: ReturnType<typeof getPublicationState>; onOpen: (section: MobileSection) => void }) {
+function MobileOverview({ recipe, values, readiness, publication, onOpen }: { recipe: EditableRecipe | null; values: RecipeDraftPayload; readiness: RecipeReadiness; publication: ReturnType<typeof getPublicationState>; onOpen: (section: MobileSection) => void }) {
   function status(section: Exclude<MobileSection, "overview" | "publish">) {
     return {
       blockers: readiness.blockers.filter((item) => item.section === section).length,
@@ -614,8 +701,7 @@ function MobileOverview({ recipe, values, readiness, publication, onOpen }: { re
     blockers: number;
     warnings: number;
   }> = [
-    { id: "essentials", title: "L’essentiel", detail: "Titre, auteur et description", icon: NotebookPen, complete: readiness.sections.essentials, ...status("essentials") },
-    { id: "photo", title: "Photo", detail: "Couverture de la recette", icon: Camera, complete: readiness.sections.photo, ...status("photo") },
+    { id: "info", title: "Informations principales", detail: "Photo, titre, auteur et description", icon: NotebookPen, complete: readiness.sections.info, ...status("info") },
     { id: "details", title: "Détails", detail: "Quantité obtenue, temps et température", icon: Clock3, complete: readiness.sections.details, ...status("details") },
     { id: "ingredients", title: "Ingrédients", detail: `${values.translations[values.defaultLocale].ingredients.filter((item) => item.name.trim()).length} éléments`, icon: ListChecks, complete: readiness.sections.ingredients, ...status("ingredients") },
     { id: "preparation", title: "Préparation", detail: "Sections, étapes et sous-recettes", icon: BookOpen, complete: readiness.sections.preparation, ...status("preparation") },
@@ -644,7 +730,7 @@ function AdminDraftPreview({
 }: {
   dictionaries: Record<LocaleKey, Dictionary>;
   recipe: EditableRecipe;
-  values: RecipeFormPayload;
+  values: RecipeDraftPayload;
   previewLocale: LocaleKey;
   onClose: () => void;
   onPreviewLanguage: (locale: LocaleKey) => void;
@@ -682,8 +768,7 @@ function AdminDraftPreview({
         </div>
         <nav aria-label="Modifier une section" className="flex w-full gap-2 overflow-x-auto pb-1">
           {([
-            ["essentials", "Essentiel"],
-            ["photo", "Photo"],
+            ["info", "Informations"],
             ["details", "Détails"],
             ["ingredients", "Ingrédients"],
             ["preparation", "Préparation"],
@@ -701,11 +786,10 @@ function AdminDraftPreview({
   );
 }
 
-function MobileSectionFields({ section, locale, recipe, revision, onImageRevision, onImageConflict, form, tagsValue, defaultLocale, requestedLanguage, readiness, publication, isPending, onPublish, onDiscard, onUnpublish }: { section: MobileSection; locale: Locale; recipe: EditableRecipe | null; revision: number; onImageRevision: (revision: number) => void; onImageConflict: (revision?: number, retry?: (revision: number) => Promise<void>) => void; form: UseFormReturn<any>; tagsValue: string[]; defaultLocale: LocaleKey; requestedLanguage: LocaleKey; readiness: RecipeReadiness; publication: ReturnType<typeof getPublicationState>; isPending: boolean; onPublish: () => void; onDiscard: () => void; onUnpublish: () => void }) {
+function MobileSectionFields({ section, locale, recipe, revision, onImageRevision, onImageConflict, onBeforeImageChange, form, tagsValue, defaultLocale, requestedLanguage, readiness, publication, isPending, onPublish, onDiscard, onUnpublish }: { section: MobileSection; locale: Locale; recipe: EditableRecipe | null; revision: number; onImageRevision: (mutation: RecipeImageMutation) => void; onImageConflict: (revision?: number, retry?: (revision: number) => Promise<void>) => void; onBeforeImageChange: () => Promise<number | null>; form: RecipeForm; tagsValue: string[]; defaultLocale: LocaleKey; requestedLanguage: LocaleKey; readiness: RecipeReadiness; publication: ReturnType<typeof getPublicationState>; isPending: boolean; onPublish: () => void; onDiscard: () => void; onUnpublish: () => void }) {
   const base = `translations.${requestedLanguage}`;
   const errors = form.formState.errors;
-  if (section === "photo") return <div data-field-target="heroImageUrl" tabIndex={-1}><AdminRecipeImagePanel locale={locale} recipe={recipe} revision={revision} onRevisionChange={onImageRevision} onConflict={onImageConflict} /></div>;
-  if (section === "essentials") return <FieldGroup><TextField label="Titre" name={`${base}.title`} register={form.register} errors={errors} /><TextField label="Auteur" name={`${base}.author`} register={form.register} errors={errors} /><TextareaField label="Description" name={`${base}.description`} register={form.register} errors={errors} /><SelectField label="Langue principale" value={defaultLocale} onValueChange={(value) => form.setValue("defaultLocale", value, { shouldDirty: true })} options={[{ label: "Français", value: "fr" }, { label: "Anglais", value: "en" }]} /><Field><FieldLabel htmlFor="mobile-tags">Catégories</FieldLabel><Input id="mobile-tags" className="h-11" value={tagsValue.join(", ")} onChange={(event) => form.setValue("tags", parseTags(event.target.value), { shouldDirty: true })} /><FieldDescription>Sépare les catégories par des virgules.</FieldDescription></Field></FieldGroup>;
+  if (section === "info") return <div className="grid gap-5 lg:grid-cols-[minmax(16rem,0.8fr)_minmax(0,1.2fr)] lg:items-start"><div data-field-target="heroImageUrl" tabIndex={-1}><AdminRecipeImagePanel key={recipe?.slug ?? "new"} locale={locale} recipe={recipe} revision={revision} onBeforeChange={onBeforeImageChange} onRevisionChange={onImageRevision} onConflict={onImageConflict} compact /></div><FieldGroup><TextField label="Titre" name={`${base}.title`} register={form.register} errors={errors} /><TextField label="Auteur" name={`${base}.author`} register={form.register} errors={errors} /><TextareaField label="Description" name={`${base}.description`} register={form.register} errors={errors} /><SelectField label="Langue principale" value={defaultLocale} onValueChange={(value) => form.setValue("defaultLocale", value as LocaleKey, { shouldDirty: true })} options={[{ label: "Français", value: "fr" }, { label: "Anglais", value: "en" }]} /><Field><FieldLabel htmlFor="mobile-tags">Catégories</FieldLabel><Input id="mobile-tags" className="h-11" value={tagsValue.join(", ")} onChange={(event) => form.setValue("tags", parseTags(event.target.value), { shouldDirty: true })} /><FieldDescription>Sépare les catégories par des virgules.</FieldDescription></Field></FieldGroup></div>;
   if (section === "details") return <FieldGroup><TextField label="Quantité obtenue" name={`${base}.yieldLabel`} register={form.register} errors={errors} placeholder="Environ 20 gougères" /><TextField label="Préparation" name={`${base}.prepTime`} register={form.register} errors={errors} placeholder="20 min" /><TextField label="Cuisson" name={`${base}.cookTime`} register={form.register} errors={errors} placeholder="25 min" /><TextField label="Total" name={`${base}.totalTime`} register={form.register} errors={errors} placeholder="45 min" /><TextField label="Libellé temps" name={`${base}.timeLabel`} register={form.register} errors={errors} placeholder="45 min" /><TextField label="Température" name={`${base}.temperature`} register={form.register} errors={errors} placeholder="180 °C" /></FieldGroup>;
   if (section === "ingredients") return <FieldGroup><TextField label="Portions de référence (personnes)" name="referenceServings" register={form.register} errors={errors} type="number" min={MIN_REFERENCE_SERVINGS} max={MAX_REFERENCE_SERVINGS} /><FieldDescription>Le nombre de personnes par défaut, utilisé comme base pour calculer les proportions de la recette publique.</FieldDescription><CompactIngredientsEditor name={`${base}.ingredients`} control={form.control} register={form.register} /></FieldGroup>;
   if (section === "preparation") return <FieldGroup><CompactSectionsEditor name={`${base}.sections`} control={form.control} register={form.register} /><SubRecipesArray name={`${base}.subRecipes`} control={form.control} register={form.register} /></FieldGroup>;
@@ -749,12 +833,13 @@ function ConflictCard({ onReload, onReplace }: { onReload: () => void; onReplace
 }
 
 function mobileSectionTitle(section: MobileSection) {
-  return ({ overview: "Vue d’ensemble", essentials: "L’essentiel", photo: "Photo", details: "Détails", ingredients: "Ingrédients", preparation: "Préparation", notes: "Notes", comments: "Commentaires", translation: "Traduction", publish: "Publication" } as const)[section];
+  return ({ overview: "Vue d’ensemble", info: "Informations principales", details: "Détails", ingredients: "Ingrédients", preparation: "Préparation", notes: "Notes", comments: "Commentaires", translation: "Traduction", publish: "Publication" } as const)[section];
 }
 
 function normalizeMobileSection(value: string | null): MobileSection {
-  const sections: MobileSection[] = ["overview", "essentials", "photo", "details", "ingredients", "preparation", "notes", "comments", "translation", "publish"];
-  return sections.includes(value as MobileSection) ? (value as MobileSection) : "overview";
+  if (value === "essentials" || value === "photo") return "info";
+  const sections: MobileSection[] = ["overview", "info", "details", "ingredients", "preparation", "notes", "comments", "translation", "publish"];
+  return sections.includes(value as MobileSection) ? (value as MobileSection) : value === null ? "overview" : "info";
 }
 
 function normalizeLocaleKey(value: string | null, fallback: LocaleKey): LocaleKey {
@@ -833,7 +918,7 @@ function LocalizedRecipeFields({
   localeKey: LocaleKey;
   register: RecipeRegister;
   control: RecipeControl;
-  errors: Record<string, unknown>;
+  errors: FieldErrors<RecipeDraftFormInput>;
   serverErrors?: Record<string, string>;
 }) {
   const baseName = `translations.${localeKey}`;
@@ -959,7 +1044,7 @@ function TextField({
   label: string;
   name: string;
   register: RecipeRegister;
-  errors: Record<string, unknown>;
+  errors: FieldErrors<RecipeDraftFormInput>;
   serverErrors?: Record<string, string>;
   type?: string;
   placeholder?: string;
@@ -981,8 +1066,8 @@ function TextField({
         placeholder={placeholder}
       aria-invalid={Boolean(error)}
       autoFocus={autoFocus}
-        {...register(name, type === "number" ? {
-          setValueAs: (value: string) => value === "" ? undefined : Number(value),
+        {...register(recipeFieldPath(name), type === "number" ? {
+          setValueAs: parseOptionalNumberInput,
         } : undefined)}
       />
       <FieldError>{error}</FieldError>
@@ -1000,7 +1085,7 @@ function TextareaField({
   label: string;
   name: string;
   register: RecipeRegister;
-  errors: Record<string, unknown>;
+  errors: FieldErrors<RecipeDraftFormInput>;
   serverErrors?: Record<string, string>;
 }) {
   const error = getFieldError(errors, serverErrors, name);
@@ -1008,7 +1093,7 @@ function TextareaField({
   return (
     <Field data-invalid={Boolean(error)}>
       <FieldLabel htmlFor={name}>{label}</FieldLabel>
-      <Textarea id={name} aria-invalid={Boolean(error)} {...register(name)} />
+      <Textarea id={name} aria-invalid={Boolean(error)} {...register(recipeFieldPath(name))} />
       <FieldError>{error}</FieldError>
     </Field>
   );
@@ -1057,7 +1142,7 @@ function IngredientsArray({
   control: RecipeControl;
   register: RecipeRegister;
 }) {
-  const { append, fields, move, remove } = useFieldArray({ control, name });
+  const { append, fields, move, remove } = useFieldArray({ control, name: recipeFieldArrayPath(name) });
 
   return (
     <FieldSet>
@@ -1069,13 +1154,13 @@ function IngredientsArray({
       <SortableCollection ids={fields.map((field) => field.id)} label={`Réordonner ${title.toLowerCase()}`} getLabel={(index) => `${title} ${index + 1}`} onMove={move} renderItem={(id, index) => (
           <SortableInlineRow key={id} id={id} handleLabel={`Déplacer ${title.toLowerCase()} ${index + 1}`}>
             <div className="grid gap-3 md:grid-cols-[1fr_7rem_7rem_1fr_auto]">
-              <Input placeholder="Nom" {...register(`${name}.${index}.name`)} />
+              <Input placeholder="Nom" {...register(recipeFieldPath(`${name}.${index}.name`))} />
               <Input
                 placeholder="Quantite"
-                {...register(`${name}.${index}.quantity`)}
+                {...register(recipeFieldPath(`${name}.${index}.quantity`))}
               />
-              <Input placeholder="Unite" {...register(`${name}.${index}.unit`)} />
-              <Input placeholder="Notes" {...register(`${name}.${index}.notes`)} />
+              <Input placeholder="Unite" {...register(recipeFieldPath(`${name}.${index}.unit`))} />
+              <Input placeholder="Notes" {...register(recipeFieldPath(`${name}.${index}.notes`))} />
               <ArrayControls
                 index={index}
                 length={fields.length}
@@ -1098,7 +1183,7 @@ function SectionsArray({
   control: RecipeControl;
   register: RecipeRegister;
 }) {
-  const { append, fields, move, remove } = useFieldArray({ control, name });
+  const { append, fields, move, remove } = useFieldArray({ control, name: recipeFieldArrayPath(name) });
 
   return (
     <FieldSet>
@@ -1113,7 +1198,7 @@ function SectionsArray({
             <div className="grid gap-3 md:grid-cols-[1fr_auto]">
               <Input
                 placeholder="Titre de section"
-                {...register(`${name}.${index}.title`)}
+                {...register(recipeFieldPath(`${name}.${index}.title`))}
               />
               <ArrayControls
                 index={index}
@@ -1143,13 +1228,13 @@ function StepsArray({
   control: RecipeControl;
   register: RecipeRegister;
 }) {
-  const { append, fields, move, remove } = useFieldArray({ control, name });
+  const { append, fields, move, remove } = useFieldArray({ control, name: recipeFieldArrayPath(name) });
 
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between gap-3">
         <FieldTitle>Etapes</FieldTitle>
-        <Button type="button" variant="outline" size="sm" onClick={() => append("")}>
+        <Button type="button" variant="outline" size="sm" onClick={() => append("" as never)}>
           <ListPlus data-icon="inline-start" />
           Ajouter
         </Button>
@@ -1157,7 +1242,7 @@ function StepsArray({
       <SortableCollection ids={fields.map((field) => field.id)} label="Réordonner les étapes" getLabel={(index) => `Étape ${index + 1}`} onMove={move} renderItem={(id, index) => (
         <SortableInlineRow key={id} id={id} handleLabel={`Déplacer l’étape ${index + 1}`}>
         <div className="grid gap-2 md:grid-cols-[1fr_auto]">
-          <Textarea placeholder={`Etape ${index + 1}`} {...register(`${name}.${index}`)} />
+          <Textarea placeholder={`Etape ${index + 1}`} {...register(recipeFieldPath(`${name}.${index}`))} />
           <ArrayControls
             index={index}
             length={fields.length}
@@ -1180,7 +1265,7 @@ function SubRecipesArray({
   control: RecipeControl;
   register: RecipeRegister;
 }) {
-  const { append, fields, move, remove } = useFieldArray({ control, name });
+  const { append, fields, move, remove } = useFieldArray({ control, name: recipeFieldArrayPath(name) });
 
   return (
     <FieldSet>
@@ -1195,7 +1280,7 @@ function SubRecipesArray({
             <div className="grid gap-3 md:grid-cols-[1fr_auto]">
               <Input
                 placeholder="Titre de sous-recette"
-                {...register(`${name}.${index}.title`)}
+                {...register(recipeFieldPath(`${name}.${index}.title`))}
               />
               <ArrayControls
                 index={index}
@@ -1226,19 +1311,19 @@ function NotesArray({
   control: RecipeControl;
   register: RecipeRegister;
 }) {
-  const { append, fields, move, remove } = useFieldArray({ control, name });
+  const { append, fields, move, remove } = useFieldArray({ control, name: recipeFieldArrayPath(name) });
 
   return (
     <FieldSet>
       <ArrayHeader
         title="Notes"
-        onAdd={() => append("")}
+        onAdd={() => append("" as never)}
         addLabel="Ajouter une note"
       />
       <div className="flex flex-col gap-2">
         {fields.map((field, index) => (
           <div key={field.id} className="grid gap-2 md:grid-cols-[1fr_auto]">
-            <Textarea placeholder="Note" {...register(`${name}.${index}`)} />
+            <Textarea placeholder="Note" {...register(recipeFieldPath(`${name}.${index}`))} />
             <ArrayControls
               index={index}
               length={fields.length}
@@ -1355,7 +1440,7 @@ function parseTags(value: string) {
 }
 
 function getFieldError(
-  errors: Record<string, unknown>,
+  errors: FieldErrors<RecipeDraftFormInput>,
   serverErrors: Record<string, string> | undefined,
   name: string,
 ) {
@@ -1378,4 +1463,46 @@ function getFieldError(
   }
 
   return "";
+}
+
+function firstFormErrorPath(
+  errors: FieldErrors<RecipeDraftFormInput>,
+  prefix: string[] = [],
+): string | undefined {
+  for (const [key, value] of Object.entries(errors)) {
+    if (!value || key === "root") continue;
+    const path = [...prefix, key];
+    if (typeof value === "object" && "message" in value) {
+      return path.join(".");
+    }
+    if (typeof value === "object") {
+      const nested = firstFormErrorPath(
+        value as FieldErrors<RecipeDraftFormInput>,
+        path,
+      );
+      if (nested) return nested;
+    }
+  }
+  return undefined;
+}
+
+function sectionForField(field: string): MobileSection {
+  if (field === "referenceServings" || field.includes(".ingredients")) {
+    return "ingredients";
+  }
+  if (field.includes(".sections") || field.includes(".subRecipes")) {
+    return "preparation";
+  }
+  if (field.includes(".notes")) return "notes";
+  if (
+    field.includes(".yieldLabel") ||
+    field.includes(".prepTime") ||
+    field.includes(".cookTime") ||
+    field.includes(".totalTime") ||
+    field.includes(".timeLabel") ||
+    field.includes(".temperature")
+  ) {
+    return "details";
+  }
+  return "info";
 }

@@ -1,9 +1,18 @@
 "use client";
 
 import { useCallback, useEffect, useEffectEvent, useRef, useState } from "react";
-import type { UseFormGetValues, UseFormReset, UseFormSetValue } from "react-hook-form";
+import type {
+  FieldPath,
+  UseFormClearErrors,
+  UseFormGetValues,
+  UseFormReset,
+  UseFormSetError,
+} from "react-hook-form";
 import type { Locale } from "@/i18n/config";
-import type { RecipeFormPayload } from "./recipe-form-schema";
+import type {
+  RecipeDraftFormInput,
+  RecipeDraftPayload,
+} from "./recipe-form-schema";
 import type { EditableRecipe } from "./types";
 
 export type SaveRecipeState = {
@@ -15,7 +24,7 @@ export type SaveRecipeState = {
   savedAt?: number;
   latestRevision?: number;
   fieldErrors?: Record<string, string>;
-  draft?: RecipeFormPayload;
+  draft?: RecipeDraftPayload;
 };
 
 export type SyncState = "idle" | "saving" | "saved" | "offline" | "error" | "conflict";
@@ -33,10 +42,13 @@ type LifecycleOptions = {
   selectedSlug: string;
   selectedRecipe: EditableRecipe | null;
   initialRecipe: EditableRecipe | null;
-  watchedValues: Partial<RecipeFormPayload> | undefined;
-  getValues: UseFormGetValues<any>;
-  reset: UseFormReset<any>;
-  setValue: UseFormSetValue<any>;
+  watchedValues: unknown;
+  getValues: UseFormGetValues<RecipeDraftFormInput>;
+  reset: UseFormReset<RecipeDraftFormInput>;
+  setError: UseFormSetError<RecipeDraftFormInput>;
+  clearErrors: UseFormClearErrors<RecipeDraftFormInput>;
+  validateDraft: () => Promise<RecipeDraftPayload | null>;
+  onFieldError: (field: string) => void;
   onCreated: (slug: string) => void;
   onRefresh: () => void;
 };
@@ -50,7 +62,10 @@ export function useRecipeDraftLifecycle({
   watchedValues,
   getValues,
   reset,
-  setValue,
+  setError,
+  clearErrors,
+  validateDraft,
+  onFieldError,
   onCreated,
   onRefresh,
 }: LifecycleOptions) {
@@ -59,21 +74,27 @@ export function useRecipeDraftLifecycle({
   const [syncState, setSyncState] = useState<SyncState>("idle");
   const [revision, setRevision] = useState(initialRecipe?.revision ?? 0);
   const [publishedRevision, setPublishedRevision] = useState(initialRecipe?.publishedRevision ?? -1);
+  const [publicationStatus, setPublicationStatus] = useState<"draft" | "published">(
+    initialRecipe?.status ?? "draft",
+  );
   const revisionRef = useRef(initialRecipe?.revision ?? 0);
   const saveInFlightRef = useRef(false);
-  const queuedPayloadRef = useRef<RecipeFormPayload | null>(null);
+  const queuedPayloadRef = useRef<RecipeDraftPayload | null>(null);
   const queuedForceRef = useRef(false);
   const queuedSaveWaitersRef = useRef<Array<(saved: boolean) => void>>([]);
   const saveIdleWaitersRef = useRef<Array<() => void>>([]);
   const autosaveTimerRef = useRef<number | null>(null);
   const destructiveOperationRef = useRef(false);
   const conflictRetryRef = useRef<((revision: number) => Promise<void>) | null>(null);
-  const savePayloadRef = useRef<((payload: RecipeFormPayload, force?: boolean) => Promise<boolean>) | null>(null);
-  const lastSavedPayloadRef = useRef(
-    draftFingerprint(initialRecipe ? toFormValues(initialRecipe) : getValues()),
-  );
+  const savePayloadRef = useRef<((payload: RecipeDraftPayload, force?: boolean) => Promise<boolean>) | null>(null);
+  const lastSavedPayloadRef = useRef<string | null>(null);
+  if (lastSavedPayloadRef.current === null) {
+    lastSavedPayloadRef.current = draftFingerprint(
+      initialRecipe ? toFormValues(initialRecipe) : getValues(),
+    );
+  }
 
-  const savePayload = useCallback(async (payload: RecipeFormPayload, force = false) => {
+  const savePayload = useCallback(async (payload: RecipeDraftPayload, force = false) => {
     if (saveInFlightRef.current) {
       queuedPayloadRef.current = payload;
       queuedForceRef.current ||= force;
@@ -116,6 +137,19 @@ export function useRecipeDraftLifecycle({
         return false;
       }
       if (!response.ok || data.type !== "success" || !data.slug) {
+        if (data.fieldErrors) {
+          clearErrors();
+          const entries = Object.entries(data.fieldErrors);
+          for (const [path, message] of entries) {
+            setError(path as FieldPath<RecipeDraftFormInput>, {
+              type: "server",
+              message,
+            });
+          }
+          if (entries[0]) onFieldError(entries[0][0]);
+        } else {
+          setError("root.server", { type: "server", message: data.message });
+        }
         setSyncState("error");
         return false;
       }
@@ -124,6 +158,7 @@ export function useRecipeDraftLifecycle({
       revisionRef.current = nextRevision;
       setRevision(nextRevision);
       lastSavedPayloadRef.current = fingerprint;
+      clearErrors("root.server");
       localStorage.removeItem(recoveryKey(data.slug));
       setSyncState("saved");
       if (mode === "create") onCreated(data.slug);
@@ -155,27 +190,30 @@ export function useRecipeDraftLifecycle({
       }
     }
     return saved;
-  }, [locale, mode, onCreated, selectedSlug]);
+  }, [clearErrors, locale, mode, onCreated, onFieldError, selectedSlug, setError]);
 
   useEffect(() => { savePayloadRef.current = savePayload; }, [savePayload]);
 
+  const autosaveLatestDraft = useEffectEvent(() => {
+    if (!destructiveOperationRef.current) void saveCurrentDraft();
+  });
   useEffect(() => {
     if (mode !== "update" || !selectedSlug || !watchedValues) return;
     autosaveTimerRef.current = window.setTimeout(() => {
-      if (!destructiveOperationRef.current) void savePayload(watchedValues as RecipeFormPayload);
+      autosaveLatestDraft();
     }, 800);
     return () => {
       if (autosaveTimerRef.current !== null) window.clearTimeout(autosaveTimerRef.current);
       autosaveTimerRef.current = null;
     };
-  }, [mode, savePayload, selectedSlug, watchedValues]);
+  }, [mode, selectedSlug, watchedValues]);
 
   useEffect(() => {
     if (!selectedSlug) return;
     const recovered = localStorage.getItem(recoveryKey(selectedSlug));
     if (!recovered) return;
     try {
-      const parsed = JSON.parse(recovered) as { payload?: RecipeFormPayload; revision?: number };
+      const parsed = JSON.parse(recovered) as { payload?: RecipeDraftFormInput; revision?: number };
       if (parsed.payload) {
         reset(parsed.payload);
         queueMicrotask(() => {
@@ -193,7 +231,7 @@ export function useRecipeDraftLifecycle({
   }, [reset, selectedSlug]);
 
   const retryOnlineSave = useEffectEvent(() => {
-    if (syncState === "offline") void savePayload(getValues());
+    if (syncState === "offline") void saveCurrentDraft();
   });
   useEffect(() => {
     const retry = () => retryOnlineSave();
@@ -205,7 +243,7 @@ export function useRecipeDraftLifecycle({
     if (!selectedSlug) return;
     const values = getValues();
     if (draftFingerprint(values) !== lastSavedPayloadRef.current) {
-      persistRecovery(selectedSlug, normalizePayload(values), revisionRef.current);
+      persistRecovery(selectedSlug, values, revisionRef.current);
     }
   });
   useEffect(() => {
@@ -221,7 +259,8 @@ export function useRecipeDraftLifecycle({
   useEffect(() => {
     if (!selectedRecipe || selectedRecipe.slug !== selectedSlug) return;
     queueMicrotask(() => setPublishedRevision(selectedRecipe.publishedRevision));
-    if (selectedRecipe.revision !== revisionRef.current || selectedRecipe.status !== getValues("status")) {
+    queueMicrotask(() => setPublicationStatus(selectedRecipe.status));
+    if (selectedRecipe.revision !== revisionRef.current) {
       const values = toFormValues(selectedRecipe);
       reset(values);
       revisionRef.current = selectedRecipe.revision;
@@ -235,13 +274,28 @@ export function useRecipeDraftLifecycle({
     return new Promise<void>((resolve) => saveIdleWaitersRef.current.push(resolve));
   }
 
+  async function saveCurrentDraft(force = false) {
+    const payload = await validateDraft();
+    if (!payload) {
+      if (selectedSlug) persistRecovery(selectedSlug, getValues(), revisionRef.current);
+      setSyncState("error");
+      return false;
+    }
+    return savePayload(payload, force);
+  }
+
   async function flushLatestDraft() {
     if (mode !== "update" || !selectedSlug) return true;
     while (true) {
-      const saved = await savePayload(getValues());
+      const saved = await saveCurrentDraft();
       if (!saved) return false;
-      if (draftFingerprint(getValues()) === lastSavedPayloadRef.current && !saveInFlightRef.current && !queuedPayloadRef.current) return true;
+      const latest = await validateDraft();
+      if (latest && draftFingerprint(latest) === lastSavedPayloadRef.current && !saveInFlightRef.current && !queuedPayloadRef.current) return true;
     }
+  }
+
+  async function prepareRevisionedMutation() {
+    return (await flushLatestDraft()) ? revisionRef.current : null;
   }
 
   async function publishRecipe() {
@@ -259,8 +313,8 @@ export function useRecipeDraftLifecycle({
         setSyncState(response.status === 409 ? "conflict" : "error");
         return;
       }
-      setValue("status", "published");
       setPublishedRevision(data.publishedRevision ?? revisionRef.current);
+      setPublicationStatus("published");
       setSyncState("saved");
       onRefresh();
     } finally {
@@ -315,7 +369,7 @@ export function useRecipeDraftLifecycle({
         body: JSON.stringify({ slug: selectedSlug }),
       });
       if (response.ok) {
-        setValue("status", "draft");
+        setPublicationStatus("draft");
         onRefresh();
       }
     } finally {
@@ -323,10 +377,11 @@ export function useRecipeDraftLifecycle({
     }
   }
 
-  function resetForCreate(payload: RecipeFormPayload) {
+  function resetForCreate(payload: RecipeDraftPayload) {
     revisionRef.current = 0;
     setRevision(0);
     setPublishedRevision(-1);
+    setPublicationStatus("draft");
     setSyncState("idle");
     lastSavedPayloadRef.current = draftFingerprint(payload);
   }
@@ -349,7 +404,7 @@ export function useRecipeDraftLifecycle({
   }
 
   async function replaceConflict() {
-    const saved = await savePayload(getValues(), true);
+    const saved = await saveCurrentDraft(true);
     if (!saved || !conflictRetryRef.current) return;
     const retry = conflictRetryRef.current;
     conflictRetryRef.current = null;
@@ -367,8 +422,11 @@ export function useRecipeDraftLifecycle({
     syncState,
     revision,
     publishedRevision,
+    publicationStatus,
     savePayload,
+    saveCurrentDraft,
     flushLatestDraft,
+    prepareRevisionedMutation,
     publishRecipe,
     discardChanges,
     unpublishRecipe,
@@ -385,21 +443,20 @@ function recoveryKey(slug: string) {
   return `recipe-admin-draft:v1:${slug}`;
 }
 
-function persistRecovery(slug: string, payload: RecipeFormPayload, revision: number) {
+function persistRecovery(slug: string, payload: RecipeDraftFormInput, revision: number) {
   localStorage.setItem(recoveryKey(slug), JSON.stringify({ payload, revision }));
 }
 
-export function toFormValues(recipe: EditableRecipe): RecipeFormPayload {
+export function toFormValues(recipe: EditableRecipe): RecipeDraftPayload {
   return cloneRecipe({
     defaultLocale: recipe.defaultLocale,
     referenceServings: recipe.referenceServings,
     translations: recipe.translations,
     tags: recipe.tags,
-    status: recipe.status,
   });
 }
 
-export function normalizePayload(value: RecipeFormPayload): RecipeFormPayload {
+export function normalizePayload(value: RecipeDraftPayload): RecipeDraftPayload {
   return {
     ...value,
     tags: (value.tags ?? []).flatMap((tag) => tag.trim() ? [tag.trim()] : []),
@@ -410,7 +467,7 @@ export function normalizePayload(value: RecipeFormPayload): RecipeFormPayload {
   };
 }
 
-function draftFingerprint(value: RecipeFormPayload) {
+function draftFingerprint(value: RecipeDraftPayload) {
   const normalized = normalizePayload(value);
   return JSON.stringify({
     defaultLocale: normalized.defaultLocale,
@@ -420,7 +477,7 @@ function draftFingerprint(value: RecipeFormPayload) {
   });
 }
 
-function normalizeLocalizedRecipe(recipe: RecipeFormPayload["translations"][LocaleKey]) {
+function normalizeLocalizedRecipe(recipe: RecipeDraftPayload["translations"][LocaleKey]) {
   return {
     ...recipe,
     yieldLabel: recipe.yieldLabel.trim(),
@@ -447,6 +504,6 @@ function normalizeLocalizedRecipe(recipe: RecipeFormPayload["translations"][Loca
   };
 }
 
-export function cloneRecipe(recipe: RecipeFormPayload): RecipeFormPayload {
+export function cloneRecipe(recipe: RecipeDraftPayload): RecipeDraftPayload {
   return structuredClone(recipe);
 }

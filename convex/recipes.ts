@@ -476,7 +476,6 @@ export const discardDraft = mutation({
         referenceServings: getReferenceServings(recipe),
         translations: toEditableTranslations(recipe.translations, recipe.slug),
         tags: recipe.tags,
-        status: recipe.status,
       },
     };
   },

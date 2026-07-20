@@ -1,5 +1,6 @@
 import { fetchQuery } from "convex/nextjs";
 import { Suspense } from "react";
+import { redirect } from "next/navigation";
 import { AdminAccessForm } from "@/components/recipes/admin-access-form";
 import { AdminRecipeEditor } from "@/components/recipes/admin-recipe-editor";
 import { getRecipeAdminE2EFixtures } from "@/components/recipes/admin-recipe-e2e-fixtures";
@@ -15,12 +16,29 @@ type PageProps = {
   searchParams: Promise<{
     new?: string | string[];
     slug?: string | string[];
+    section?: string | string[];
+    lang?: string | string[];
+    field?: string | string[];
+    mode?: string | string[];
   }>;
 };
 
 export default async function Page({ params, searchParams }: PageProps) {
   const { locale } = await params;
-  const { new: newRecipe, slug } = await searchParams;
+  const resolvedSearchParams = await searchParams;
+  const { new: newRecipe, slug, section } = resolvedSearchParams;
+  const requestedSection = Array.isArray(section) ? section[0] : section;
+  if (requestedSection === "photo" || requestedSection === "essentials") {
+    const canonicalParams = new URLSearchParams();
+    for (const [key, value] of Object.entries(resolvedSearchParams)) {
+      if (value === undefined) continue;
+      for (const item of Array.isArray(value) ? value : [value]) {
+        canonicalParams.append(key, item);
+      }
+    }
+    canonicalParams.set("section", "info");
+    redirect(`/${locale}/admin/recettes?${canonicalParams.toString()}`);
+  }
   const shouldCreateNew = Array.isArray(newRecipe)
     ? newRecipe.includes("1")
     : newRecipe === "1";

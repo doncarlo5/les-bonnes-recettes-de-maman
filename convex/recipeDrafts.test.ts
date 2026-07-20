@@ -370,7 +370,7 @@ describe("recipe working drafts", () => {
       hasUnpublishedChanges: true,
       canDiscard: false,
       readiness: {
-        sections: { essentials: true, details: true, ingredients: true, preparation: true },
+        sections: { info: true, details: true, ingredients: true, preparation: true },
         translation: { fr: true, en: true },
       },
     });

@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
       expectedRevision: body.expectedRevision!,
       adminPassword: adminAccess.adminPassword,
     });
-    return Response.json({ ok: true, slug: result.slug, storageId, revision: result.revision, savedAt: result.savedAt });
+    return Response.json({ type: "success", slug: result.slug, storageId, revision: result.revision, savedAt: result.savedAt });
   } catch (error) {
     return recipeMutationErrorResponse(error, "Impossible d'associer cette image.");
   }

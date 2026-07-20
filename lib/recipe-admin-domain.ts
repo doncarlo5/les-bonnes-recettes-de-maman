@@ -13,8 +13,7 @@ export const RECIPE_FIELD_LIMITS = {
 } as const;
 
 export type RecipeAdminSection =
-  | "essentials"
-  | "photo"
+  | "info"
   | "details"
   | "ingredients"
   | "preparation"
@@ -101,9 +100,9 @@ export function getRecipeReadiness(
     en.ingredients.some((item) => hasText(item.name));
 
   const blockers = [
-    readinessItem(!hasText(fr.title), "fr-title", "Ajoute un titre français.", "essentials", "fr", "translations.fr.title"),
-    readinessItem(!hasText(fr.author), "fr-author", "Ajoute l’auteur.", "essentials", "fr", "translations.fr.author"),
-    readinessItem(!hasText(fr.description), "fr-description", "Ajoute une description française.", "essentials", "fr", "translations.fr.description"),
+    readinessItem(!hasText(fr.title), "fr-title", "Ajoute un titre français.", "info", "fr", "translations.fr.title"),
+    readinessItem(!hasText(fr.author), "fr-author", "Ajoute l’auteur.", "info", "fr", "translations.fr.author"),
+    readinessItem(!hasText(fr.description), "fr-description", "Ajoute une description française.", "info", "fr", "translations.fr.description"),
     readinessItem(!hasTime, "fr-time", "Indique au moins un temps.", "details", "fr", "translations.fr.timeLabel"),
     readinessItem(!hasIngredient, "fr-ingredient", "Ajoute au moins un ingrédient.", "ingredients", "fr", "translations.fr.ingredients.0.name"),
     readinessItem(!hasReferenceServings, "reference-servings", "Indique les portions de référence.", "ingredients", "fr", "referenceServings"),
@@ -111,14 +110,13 @@ export function getRecipeReadiness(
   ].filter((item): item is ReadinessItem => item !== null);
 
   const warnings = [
-    readinessWarning(!hasImage, "main-image", "Ajoute une image principale.", "photo", "fr", "heroImageUrl"),
+    readinessWarning(!hasImage, "main-image", "Ajoute une image principale.", "info", "fr", "heroImageUrl"),
     readinessWarning(!translationEn, "en-translation", "La traduction anglaise est encore incomplète.", "translation", "en", "translations.en.title"),
   ].filter((item): item is ReadinessItem => item !== null);
 
   return {
     sections: {
-      essentials,
-      photo: hasImage,
+      info: essentials,
       details: hasTime,
       ingredients: hasIngredient && hasReferenceServings,
       preparation: hasPreparation,

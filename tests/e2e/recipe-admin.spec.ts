@@ -40,7 +40,7 @@ const localized = {
   yieldLabel: "6 personnes", prepTime: "20 min", cookTime: "30 min", totalTime: "50 min", timeLabel: "50 min", temperature: "180 °C",
   ingredients: [{ name: "Farine", quantity: "200", unit: "g", notes: "" }], sections: [{ title: "Préparation", steps: ["Mélanger."] }], subRecipes: [], notes: [],
 };
-const restoredDraft = { defaultLocale: "fr", translations: { fr: localized, en: { ...localized, title: "Demo tart", yieldLabel: "6 servings" } }, tags: ["dessert"], status: "published" };
+const restoredDraft = { defaultLocale: "fr", translations: { fr: localized, en: { ...localized, title: "Demo tart", yieldLabel: "6 servings" } }, tags: ["dessert"] };
 
 test.beforeEach(async ({ page }) => {
   await mockRecipeApi(page);
@@ -79,7 +79,56 @@ test("editor action dock stays compact at every supported width", async ({ page 
     expect(box?.height).toBeLessThanOrEqual(52);
   }
 
-  await expect(dock.getByRole("button", { name: /Publier, \d sections sur 7 complétées/ })).toBeVisible();
+  await expect(dock.getByRole("button", { name: /Publier, recette prête|Publier, \d+ éléments obligatoires/ })).toBeVisible();
+});
+
+test("legacy photo and essentials links normalize to the combined workspace", async ({ page }) => {
+  for (const legacySection of ["photo", "essentials"]) {
+    await page.goto(`/fr/admin/recettes?slug=tarte-de-demonstration&section=${legacySection}`);
+    await expect(page).toHaveURL(/section=info/);
+    await expect(page.getByRole("heading", { name: "Image principale" })).toBeVisible();
+    await expect(page.getByLabel("Titre")).toBeVisible();
+  }
+});
+
+test("structurally invalid fields block autosave and revalidate while correcting", async ({ page }) => {
+  let saveRequests = 0;
+  page.on("request", (request) => {
+    if (request.url().endsWith("/api/admin/recipes/save")) saveRequests += 1;
+  });
+  await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
+  const title = page.getByLabel("Titre");
+  await title.fill("x".repeat(201));
+  await title.blur();
+  await expect(title).toHaveAttribute("aria-invalid", "true");
+  await page.waitForTimeout(900);
+  expect(saveRequests).toBe(0);
+
+  const saved = page.waitForRequest((request) =>
+    request.url().endsWith("/api/admin/recipes/save"),
+  );
+  await title.fill("Titre corrigé");
+  await expect(title).toHaveAttribute("aria-invalid", "false");
+  await saved;
+});
+
+test("server field errors return to the combined workspace", async ({ page }) => {
+  await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
+  await page.unroute("**/api/admin/recipes/**");
+  await page.route("**/api/admin/recipes/save", (route) => route.fulfill({
+    status: 400,
+    json: {
+      type: "error",
+      message: "Corrige les champs indiqués avant d’enregistrer.",
+      fieldErrors: {
+        "translations.fr.title": "Ce titre est refusé par le serveur.",
+      },
+    },
+  }));
+
+  await page.getByLabel("Titre").fill("Titre envoyé au serveur");
+  await expect(page.getByText("Ce titre est refusé par le serveur.")).toBeVisible();
+  await expect(page).toHaveURL(/section=info.*field=translations.fr.title/);
 });
 
 test("mobile publish action becomes primary when saved changes need publishing", async ({ page }, testInfo) => {
@@ -92,7 +141,7 @@ test("mobile publish action becomes primary when saved changes need publishing",
   await expect(publishAction).not.toHaveAttribute("data-publication-needed");
   await expect(publishAction).not.toHaveClass(/\bbg-primary\b/);
 
-  await page.getByRole("button", { name: /L’essentiel/ }).click();
+  await expect(page).toHaveURL(/section=info/);
   const saveRequest = page.waitForRequest((request) =>
     request.url().endsWith("/api/admin/recipes/save"),
   );
@@ -141,6 +190,7 @@ test("guided editor opens an isolated draft preview", async ({ page }) => {
 
 test("yield is edited as one independent localized field", async ({ page }) => {
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
+  await page.getByRole("navigation", { name: "Actions de la recette" }).getByRole("button", { name: "Recette", exact: true }).click();
   await page.getByRole("button", { name: "Détails" }).click();
 
   const frenchYield = page.getByLabel("Quantité obtenue");
@@ -161,11 +211,18 @@ test("yield is edited as one independent localized field", async ({ page }) => {
 test("desktop internet image search displays its result cards", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await mockImageSearchApi(page);
+  await page.route("**/api/admin/unsplash/download", (route) => route.fulfill({ json: { ok: true } }));
+  const mutationOrder: string[] = [];
+  page.on("request", (request) => {
+    if (request.url().endsWith("/api/admin/recipes/save")) mutationOrder.push("save");
+    if (request.url().endsWith("/api/admin/recipes/unsplash-hero-image")) mutationOrder.push("image");
+  });
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
-  await page.getByRole("button", { name: /^Photo/ }).first().click();
-  await page.getByRole("button", { name: "Chercher sur internet" }).click();
+  await page.getByRole("button", { name: "Remplacer l’image" }).click();
+  await page.getByRole("searchbox", { name: "Mots-clés de recherche d'image" }).fill("tarte fraise");
+  await page.getByRole("button", { name: "Chercher", exact: true }).click();
 
-  const dialog = page.getByRole("dialog", { name: "Recherche internet" });
+  const dialog = page.getByRole("dialog", { name: "Remplacer l’image principale" });
   const result = dialog.getByRole("button", { name: /Photographe test/ });
   await expect(result).toBeVisible();
   const dialogBox = await dialog.boundingBox();
@@ -175,6 +232,10 @@ test("desktop internet image search displays its result cards", async ({ page },
   expect((resultBox?.y ?? 0) + (resultBox?.height ?? 0)).toBeLessThanOrEqual(
     (dialogBox?.y ?? 0) + (dialogBox?.height ?? 0),
   );
+  await page.getByLabel("Titre").fill("Tarte avec nouvelle image");
+  await result.click();
+  await expect(page.getByRole("main").getByText("Image Unsplash associée.")).toBeVisible();
+  expect(mutationOrder).toEqual(["save", "image"]);
 });
 
 test("semantic typography stays readable at every supported width", async ({ page }, testInfo) => {
@@ -303,15 +364,14 @@ test("mobile workspaces preserve URL state, focus blockers, and autosave", async
   test.skip(!testInfo.project.name.startsWith("mobile-"));
   await page.getByPlaceholder("Rechercher une recette").fill("démonstration");
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
-  await page.getByRole("button", { name: /L’essentiel/ }).click();
-  await expect(page).toHaveURL(/section=essentials.*lang=fr/);
+  await expect(page).toHaveURL(/section=info/);
   const save = page.waitForRequest((request) => request.url().endsWith("/api/admin/recipes/save"));
   await page.getByLabel("Description").fill("Une description autosauvegardée.");
   await save;
   await page.getByRole("button", { name: /Retour à la recette/ }).click();
   await page.getByRole("button", { name: /Vérifier/ }).click();
   await page.getByRole("button", { name: /Ajoute une image principale/ }).click();
-  await expect(page).toHaveURL(/section=photo.*field=heroImageUrl/);
+  await expect(page).toHaveURL(/section=info.*field=heroImageUrl/);
   await page.goBack();
   await expect(page).toHaveURL(/section=publish/);
 });
@@ -319,6 +379,7 @@ test("mobile workspaces preserve URL state, focus blockers, and autosave", async
 test("mobile sorting supports keyboard handles and discard restores the approved snapshot", async ({ page }, testInfo) => {
   test.skip(!testInfo.project.name.startsWith("mobile-"));
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
+  await page.getByRole("navigation", { name: "Actions de la recette" }).getByRole("button", { name: "Recette", exact: true }).click();
   await page.getByRole("button", { name: /Ingrédients/ }).click();
   const handle = page.getByRole("button", { name: /Déplacer 200 g Farine/ });
   await handle.focus();
@@ -338,7 +399,9 @@ test("mobile sorting supports keyboard handles and discard restores the approved
 test("mobile section editor remains usable above the software keyboard", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile-390");
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
+  await page.getByRole("navigation", { name: "Actions de la recette" }).getByRole("button", { name: "Recette", exact: true }).click();
   await page.getByRole("button", { name: /Préparation/ }).click();
+  await expect(page).toHaveURL(/section=preparation/);
   await page.getByRole("button", { name: /Préparation.*étapes?/ }).click();
 
   const drawer = page.locator('[data-slot="drawer-content"]');
@@ -377,11 +440,12 @@ test("mobile creation and every focused workspace remain navigable", async ({ pa
   );
   await startRecipe.evaluate((button: HTMLButtonElement) => button.click());
   expect((await creationResponse).ok()).toBe(true);
-  await expect(page).toHaveURL(/slug=tarte-de-demonstration/, { timeout: 10_000 });
+  await expect(page).toHaveURL(/slug=tarte-de-demonstration.*section=info/, { timeout: 10_000 });
 
-  for (const section of ["essentials", "photo", "details", "ingredients", "preparation", "notes", "translation", "publish"]) {
+  await page.getByRole("button", { name: /Retour à la recette/ }).click();
+  for (const section of ["info", "details", "ingredients", "preparation", "notes", "translation", "publish"]) {
     const labels: Record<string, RegExp> = {
-      essentials: /L’essentiel/, photo: /^Photo/, details: /Détails/, ingredients: /Ingrédients/,
+      info: /Informations principales/, details: /Détails/, ingredients: /Ingrédients/,
       preparation: /Préparation/, notes: /^Notes/, translation: /Traduction/, publish: /Vérifier/,
     };
     await page.getByRole("button", { name: labels[section] }).first().click();
@@ -401,8 +465,7 @@ test("browser back returns to the recipe list", async ({ page }, testInfo) => {
 test("offline recovery and typed conflicts surface in the shared sync UI", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile-390");
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
-  await page.getByRole("button", { name: /L’essentiel/ }).click();
-  await expect(page).toHaveURL(/section=essentials/);
+  await expect(page).toHaveURL(/section=info/);
   await expect(page.getByLabel("Auteur")).toBeVisible();
   await page.context().setOffline(true);
   await page.getByLabel("Auteur").fill("Autrice hors ligne");
@@ -417,14 +480,14 @@ test("offline recovery and typed conflicts surface in the shared sync UI", async
   await expect(page.getByText("Modifications sur un autre appareil")).toBeVisible();
   await page.unroute("**/api/admin/recipes/save");
   await mockRecipeApi(page);
-  await page.getByRole("button", { name: "Remplacer" }).click();
+  await page.getByRole("button", { name: "Remplacer", exact: true }).click();
   await expect(page.getByText("Enregistré")).toBeVisible();
 });
 
 test("unpublish hides but retains the approved version, then publish restores visibility", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile-390");
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
-  await page.getByRole("button", { name: /Vérifier/ }).click();
+  await page.getByRole("navigation", { name: "Actions de la recette" }).getByRole("button", { name: /Publier,/ }).click();
   page.once("dialog", (dialog) => dialog.accept());
   await page.getByRole("button", { name: /Retirer du site public/ }).click();
   await expect(page.getByText(/version approuvée est actuellement masquée/i)).toBeVisible();

@@ -94,7 +94,6 @@ export type EditableRecipeContent = {
     >;
   };
   tags: string[];
-  status: "draft" | "published";
 };
 
 export type EditableRecipeSummary = {

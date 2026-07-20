@@ -119,7 +119,7 @@ export async function POST(request: NextRequest) {
     });
 
     return Response.json({
-      ok: true,
+      type: "success",
       slug: result.slug,
       storageId,
       revision: result.revision,
