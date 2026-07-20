@@ -284,6 +284,7 @@ const ingredientTranslations: Record<string, string> = {
   "cassonade foncée": "dark brown sugar",
   cerfeuil: "chervil",
   chocolat: "chocolate",
+  "chocolat en poudre": "cocoa powder",
   "chocolat noir": "dark chocolate",
   chèvre: "goat cheese",
   "chèvre bûche": "goat cheese log",
@@ -378,7 +379,6 @@ const noteTranslations: Record<string, string> = {
     "The exact folding wording was difficult to read.",
   "La phrase « avec 1 c. à s. » est conservée telle quelle car son sens exact n’est pas totalement explicite.":
     "The phrase “with 1 tbsp.” is kept as written because its exact meaning is not fully clear.",
-  "Le « x2 » est noté pour la pâte.": "The “x2” note applies to the batter.",
   "Matériel : plat à gratin.": "Equipment: gratin dish.",
   "Meilleur préparé la veille.": "Best prepared the day before.",
   "PDT sur la recette": "Potato on the recipe",
@@ -408,19 +408,24 @@ const noteTranslations: Record<string, string> = {
   "pour le gâteau": "for the cake",
   "pour le moule": "for the pan",
   "pour le plat": "for the dish",
+  "pour saupoudrer": "for dusting",
   "pour le sirop": "for the syrup",
   "pour le sirop, note manuscrite 0,08 l": "for the syrup; handwritten note 0.08 l",
   "écrasées, environ 3 tasses": "mashed, about 3 cups",
   "ou farine pâtissière": "or pastry flour",
   "Un incontournable avec les salades de poulet.":
     "A classic with chicken salads.",
-  "pâte x2": "batter x2",
   ramolli: "softened",
   rases: "level",
+  "selon le goût": "to taste",
   "écrit « chivre » sur la recette": "written “chivre” on the recipe",
 };
 
 const stepTranslations: Record<string, string> = {
+  "Préchauffer le four à 140 °C.": "Preheat the oven to 140 °C.",
+  "Préchauffer le four à 160 °C.": "Preheat the oven to 160 °C.",
+  "Préchauffer le four à 190 °C.": "Preheat the oven to 190 °C.",
+  "Préchauffer le four à 210 °C (th. 7).": "Preheat the oven to 210 °C (gas mark 7).",
   "Séparer les blancs d’œufs des jaunes.": "Separate the egg whites from the yolks.",
   "Ajouter le sucre dans les jaunes, puis la poudre d’amandes, puis le jus de 1/2 citron et le zeste.":
     "Add the sugar to the yolks, then the almond flour, then the juice of 1/2 lemon and the zest.",
@@ -466,8 +471,9 @@ const stepTranslations: Record<string, string> = {
   "Battre les blancs en neige très ferme.": "Whip the egg whites until very stiff.",
   "Tourner avec le sucre 5 min au batteur électrique.":
     "Beat with the sugar for 5 min using an electric mixer.",
-  "Ajouter ensuite les amandes et la levure.": "Then add the almonds and baking powder.",
-  "Cuire à four doux, 140 °C, pendant 3/4 h.":
+  "Ajouter ensuite les amandes, la levure et l’extrait d’amande amère.":
+    "Then add the almonds, baking powder and bitter almond extract.",
+  "Cuire à four doux, 140 °C, pendant 45 min.":
     "Bake in a low oven at 140 °C for 45 min.",
   "Faire bouillir 1/2 litre de lait avec 1 c. à café très rase de Maïzena.":
     "Bring 1/2 liter of milk to a boil with 1 very level teaspoon of cornstarch.",
@@ -482,7 +488,7 @@ const stepTranslations: Record<string, string> = {
   "Mélanger le sucre et les jaunes d’œufs.": "Mix the sugar and egg yolks.",
   "Ajouter le chocolat et la farine, puis les blancs en neige.":
     "Add the chocolate and flour, then the whipped egg whites.",
-  "Cuire à four moyen pendant 1/2 h, à 180 °C.":
+  "Cuire à four moyen pendant 30 min, à 180 °C.":
     "Bake in a medium oven for 30 min at 180 °C.",
   "Préparation non indiquée sur la page transmise.":
     "Preparation was not shown on the provided page.",
@@ -491,7 +497,7 @@ const stepTranslations: Record<string, string> = {
   "Battre les blancs en neige ferme.": "Whip the egg whites until stiff.",
   "Les incorporer à la pâte en intercalant la farine.":
     "Fold them into the batter, alternating with the flour.",
-  "Cuire à four moyen pendant 3/4 h.": "Bake in a medium oven for 45 min.",
+  "Cuire à four moyen pendant 45 min.": "Bake in a medium oven for 45 min.",
   "Casser les œufs, ajouter le sucre et le beurre.":
     "Crack the eggs, then add the sugar and butter.",
   "Faire fondre.": "Melt.",
@@ -527,7 +533,7 @@ const stepTranslations: Record<string, string> = {
   "Replier : 2 fois dans un bout, 1 fois l’autre.":
     "Fold: twice from one end, once from the other.",
   "Étaler et plier à nouveau.": "Roll out and fold again.",
-  "Laisser reposer 1/4 h avant utilisation.": "Let rest for 15 min before using.",
+  "Laisser reposer 15 min avant utilisation.": "Let rest for 15 min before using.",
   "Préchauffer le four à 180 °C.": "Preheat the oven to 180 °C.",
   "Éplucher les pommes, les couper en 4, ôter le cœur et les pépins, puis les détailler en tranches épaisses.":
     "Peel the apples, quarter them, remove the core and seeds, then cut into thick slices.",
@@ -577,10 +583,11 @@ const stepTranslations: Record<string, string> = {
     "Place the pears in the pan, then pour in the batter.",
   "Cuire 10 min à 200 °C puis 35 à 40 min à 180 °C.":
     "Bake 10 min at 200 °C, then 35 to 40 min at 180 °C.",
-  "Faire cuire tous ces légumes dans 50 cl d’eau avec du sel.":
-    "Cook all the vegetables in 50 cl water with salt.",
+  "Faire cuire tous ces légumes dans 50 cl d’eau avec du sel et le thym.":
+    "Cook all the vegetables in 50 cl water with the salt and thyme.",
   "Laisser mijoter 15 min puis mixer.": "Simmer for 15 min, then blend.",
-  "Ajouter le fromage fondu et la crème.": "Add the processed cheese and cream.",
+  "Ajouter le fromage fondu et la crème, puis poivrer et ajouter la muscade selon le goût.":
+    "Add the processed cheese and cream, then season with pepper and nutmeg to taste.",
   "Fariner la viande.": "Dust the meat with flour.",
   "Faire dorer sur toutes les faces dans la cocotte avec un fond d’huile.":
     "Brown on all sides in the casserole with a little oil.",
@@ -629,7 +636,7 @@ const stepTranslations: Record<string, string> = {
     "Gradually add the oil and warm milk with the grated cheese.",
   "Ajouter le chèvre écrasé, les noix et les olives.":
     "Add the mashed goat cheese, walnuts and olives.",
-  "Cuire 1/2 h à 180 °C.": "Bake for 30 min at 180 °C.",
+  "Cuire 30 min à 180 °C.": "Bake for 30 min at 180 °C.",
   "Faire rissoler la courgette coupée en rondelles dans l’huile d’olive pendant 15 min, puis disposer sur du sopalin.":
     "Brown the sliced zucchini in olive oil for 15 min, then place on paper towels.",
   "Fouetter les œufs, la farine, la levure, le sel et le poivre.":

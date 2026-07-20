@@ -714,6 +714,12 @@
         "quantity": "1",
         "unit": "c. à s.",
         "notes": ""
+      },
+      {
+        "name": "chocolat en poudre",
+        "quantity": "",
+        "unit": "",
+        "notes": "pour saupoudrer"
       }
     ],
     "sections": [
@@ -965,6 +971,7 @@
       {
         "title": "Préparation",
         "steps": [
+          "Préchauffer le four à 180 °C.",
           "Mélanger les œufs et le sucre jusqu’à obtenir un mélange mousseux.",
           "Ajouter la farine et la levure.",
           "Ajouter le beurre fondu, puis le jus d’orange et le zeste."
@@ -1060,6 +1067,18 @@
         "quantity": "120",
         "unit": "g",
         "notes": ""
+      },
+      {
+        "name": "sel",
+        "quantity": "",
+        "unit": "",
+        "notes": "selon le goût"
+      },
+      {
+        "name": "poivre",
+        "quantity": "",
+        "unit": "",
+        "notes": "selon le goût"
       }
     ],
     "sections": [
@@ -1264,9 +1283,9 @@
       {
         "title": "Préparation",
         "steps": [
-          "Faire cuire tous ces légumes dans 50 cl d’eau avec du sel.",
+          "Faire cuire tous ces légumes dans 50 cl d’eau avec du sel et le thym.",
           "Laisser mijoter 15 min puis mixer.",
-          "Ajouter le fromage fondu et la crème."
+          "Ajouter le fromage fondu et la crème, puis poivrer et ajouter la muscade selon le goût."
         ]
       }
     ],
@@ -1549,6 +1568,7 @@
       {
         "title": "Préparation",
         "steps": [
+          "Préchauffer le four à 190 °C.",
           "Faire fondre le beurre dans l’eau avec le sel.",
           "Quand ça mousse, ajouter la farine tamisée.",
           "Laisser 2 min dans la casserole pour l’évaporation de l’eau.",
@@ -1573,7 +1593,7 @@
     "heroImageUrl": "",
     "servings": null,
     "prepTime": "",
-    "cookTime": "1/2 h",
+    "cookTime": "30 min",
     "totalTime": "",
     "temperature": "180 °C",
     "ingredients": [
@@ -1648,6 +1668,7 @@
       {
         "title": "Préparation",
         "steps": [
+          "Préchauffer le four à 180 °C.",
           "Mélanger les œufs, la farine, la levure, le sel et le poivre.",
           "Ajouter petit à petit l’huile et le lait chaud avec le fromage râpé.",
           "Ajouter le chèvre écrasé, les noix et les olives."
@@ -1656,7 +1677,7 @@
       {
         "title": "Cuisson",
         "steps": [
-          "Cuire 1/2 h à 180 °C."
+          "Cuire 30 min à 180 °C."
         ]
       }
     ],
@@ -1751,6 +1772,7 @@
       {
         "title": "Préparation",
         "steps": [
+          "Préchauffer le four à 180 °C.",
           "Faire rissoler la courgette coupée en rondelles dans l’huile d’olive pendant 15 min, puis disposer sur du sopalin.",
           "Fouetter les œufs, la farine, la levure, le sel et le poivre.",
           "Incorporer petit à petit l’huile et le lait chauffé.",
@@ -2008,6 +2030,7 @@
           "Mélanger dans une jatte le concentré, les œufs, la crème et la Maïzena diluée.",
           "Ajouter le sel et le poivre, puis goûter pour vérifier l’assaisonnement.",
           "Ajouter le poisson dans la jatte et mélanger le tout au robot pour obtenir la consistance souhaitée et réduire les arêtes s’il y en a.",
+          "Préchauffer le four à 210 °C (th. 7).",
           "Verser le tout dans le moule beurré.",
           "Cuire au bain-marie dans un four à th. 7 pendant 40 min.",
           "Vérifier la cuisson avec un couteau ; le dessus doit être légèrement doré.",
@@ -2073,6 +2096,7 @@
       {
         "title": "Préparation",
         "steps": [
+          "Préchauffer le four à 180 °C.",
           "Faire fondre le beurre et le chocolat 2 min au micro-ondes.",
           "Mélanger les œufs, le sucre et la farine.",
           "Verser cette préparation dans le mélange beurre-chocolat.",
