@@ -29,6 +29,8 @@ test("recipe comments form is localized and keeps a browser participant key", as
 });
 
 test("recipe comments remain usable when persistent browser storage is unavailable", async ({ page }) => {
+  const pageErrors: Error[] = [];
+  page.on("pageerror", (error) => pageErrors.push(error));
   await page.addInitScript(() => {
     Object.defineProperty(Storage.prototype, "getItem", { configurable: true, value: () => { throw new DOMException("Blocked", "SecurityError"); } });
     Object.defineProperty(Storage.prototype, "setItem", { configurable: true, value: () => { throw new DOMException("Blocked", "SecurityError"); } });
@@ -37,6 +39,7 @@ test("recipe comments remain usable when persistent browser storage is unavailab
   await expect(page.getByRole("heading", { name: "Commentaires", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Ajouter un commentaire" }).click();
   await expect(page.getByRole("button", { name: "Publier le commentaire" })).toBeEnabled();
+  expect(pageErrors).toEqual([]);
 });
 
 test("recipe editor exposes protected comment moderation", async ({ page }) => {

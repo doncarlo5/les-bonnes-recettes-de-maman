@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
-import type { Recipe } from "./types";
+import type { RecipeSummary } from "./types";
 import { EmptyState } from "./empty-state";
 import { RecipeGrid } from "./recipe-grid";
 import { RecipeListExplorer } from "./recipe-list-explorer";
@@ -10,7 +10,7 @@ type RecipeListPageProps = {
   locale: Locale;
   dict: Dictionary;
   hasInitialFilters?: boolean;
-  recipes: Recipe[];
+  recipes: RecipeSummary[];
 };
 
 export function RecipeListPage({
@@ -32,8 +32,7 @@ export function RecipeListPage({
   return (
     <main className="px-3 py-3 md:px-6 md:py-16 lg:px-10 lg:py-20">
       <section className="mx-auto w-full max-w-6xl">
-        <h1 className="sr-only md:hidden">{dict.site.title}</h1>
-        <div className="mb-12 hidden max-w-2xl md:block">
+        <div className="sr-only md:not-sr-only md:mb-12 md:block md:max-w-2xl">
           <p className="type-label mb-3 text-primary">{dict.recipeList.eyebrow}</p>
           <h1 className="type-page-title text-foreground">
             {dict.site.title}

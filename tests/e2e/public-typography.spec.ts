@@ -6,11 +6,31 @@ const longTitles = {
   en: "A very long collection of family recipes with lemon, hazelnuts, and homemade vanilla custard",
 } as const;
 
+test("keyboard focus reveals the auto-hidden site header", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name.startsWith("mobile-"), "Desktop navigation only");
+  await page.goto("/fr");
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+  await page.mouse.wheel(0, 600);
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(100);
+  const header = page.locator("header").first();
+  await expect
+    .poll(async () => (await header.boundingBox())?.y ?? 0)
+    .toBeLessThan(0);
+
+  await header.getByRole("link", { name: "Les Bonnes Recettes de Maman" }).focus();
+  await expect
+    .poll(async () => (await header.boundingBox())?.y ?? -1)
+    .toBeGreaterThanOrEqual(0);
+});
+
 test("public typography holds across locales, themes, and widths", async ({ page, request }, testInfo) => {
   for (const locale of ["fr", "en"] as const) {
     await page.goto(`/${locale}`);
     await page.evaluate(() => document.fonts.ready);
     await expect(page.locator("html")).toHaveAttribute("lang", locale);
+    await expect(page.locator("main h1")).toHaveCount(1);
+    await expect(page.locator("main h2")).toHaveCount(1);
 
     const pageTitles = page.locator("main h1:visible");
     await expect(pageTitles).toHaveCount(1);

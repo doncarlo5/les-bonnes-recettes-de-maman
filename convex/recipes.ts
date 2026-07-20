@@ -1,4 +1,5 @@
 import { v } from "convex/values";
+import { paginationOptsValidator } from "convex/server";
 import { internal } from "./_generated/api";
 import {
   mutation,
@@ -146,20 +147,35 @@ const referenceServingsResetSlugs = new Set(["banana-bread-du-kona-inn"]);
 export const list = query({
   args: {
     locale: localeValidator,
+    paginationOpts: paginationOptsValidator,
   },
   handler: async (ctx, args) => {
     const publishedRecipes = await ctx.db
       .query("recipes")
       .withIndex("by_status", (q) => q.eq("status", "published"))
-      .collect();
+      .paginate(args.paginationOpts);
 
     const localizedRecipes = await Promise.all(
-      publishedRecipes.map((recipe) => localize(ctx, recipe, args.locale)),
+      publishedRecipes.page.map((recipe) =>
+        localizeSummary(ctx, recipe, args.locale),
+      ),
     );
 
-    return localizedRecipes.sort((a, b) =>
-      a.title.localeCompare(b.title, args.locale),
-    );
+    return { ...publishedRecipes, page: localizedRecipes };
+  },
+});
+
+export const listSlugs = query({
+  args: { paginationOpts: paginationOptsValidator },
+  handler: async (ctx, args) => {
+    const result = await ctx.db
+      .query("recipes")
+      .withIndex("by_status", (q) => q.eq("status", "published"))
+      .paginate(args.paginationOpts);
+    return {
+      ...result,
+      page: result.page.map((recipe) => ({ slug: recipe.slug })),
+    };
   },
 });
 
@@ -186,16 +202,17 @@ export const listForEditing = query({
   args: {
     locale: localeValidator,
     adminPassword: v.string(),
+    paginationOpts: paginationOptsValidator,
   },
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
     const editableRecipes = await ctx.db
       .query("recipes")
       .order("desc")
-      .take(200);
+      .paginate(args.paginationOpts);
 
     const localized = await Promise.all(
-      editableRecipes.map(async (recipe) => {
+      editableRecipes.page.map(async (recipe) => {
         const draft = await getRecipeDraft(ctx, recipe._id);
         const source = draft ?? recipe;
         const storedHeroImageUrl = source.heroImageStorageId
@@ -232,7 +249,7 @@ export const listForEditing = query({
       }),
     );
 
-    return localized.sort((a, b) => b.updatedAt - a.updatedAt);
+    return { ...editableRecipes, page: localized };
   },
 });
 
@@ -805,19 +822,22 @@ export const seed = mutation({
           .unique();
 
         if (existing) {
+          const draft = await getRecipeDraft(ctx, existing._id);
+          const source = draft ?? existing;
           const referenceServings = referenceServingsResetSlugs.has(recipe.slug)
             ? recipe.referenceServings
-            : existing.referenceServings ?? recipe.referenceServings;
+            : source.referenceServings ?? recipe.referenceServings;
           const categoryFields = resolveRecipeCategories({
             categories: recipe.categories,
             legacyCategoryLabels: [
               ...recipe.legacyCategoryLabels,
-              ...(existing.legacyCategoryLabels ?? []),
+              ...(source.legacyCategoryLabels ?? []),
             ],
-            tags: existing.tags,
+            tags: source.tags,
           });
-          const seededRecipe = {
-            ...recipe,
+          const seededContent = {
+            defaultLocale: recipe.defaultLocale,
+            translations: recipe.translations,
             ...categoryFields,
             tags: toLegacyTags(
               categoryFields.categories,
@@ -825,20 +845,24 @@ export const seed = mutation({
             ),
             ...(referenceServings !== undefined ? { referenceServings } : {}),
           };
-          const nextRecipe = existing.imageCredit
-            ? {
-                ...seededRecipe,
-                heroImageStorageId: existing.heroImageStorageId,
-                heroImageUrl: existing.heroImageUrl,
-                imageCredit: existing.imageCredit,
-              }
-            : {
-                ...seededRecipe,
-                heroImageStorageId: existing.heroImageStorageId,
-              };
+          const nextDraft = {
+            recipeId: existing._id,
+            heroImageUrl: source.heroImageUrl,
+            ...(source.heroImageStorageId
+              ? { heroImageStorageId: source.heroImageStorageId }
+              : {}),
+            ...(source.imageCredit ? { imageCredit: source.imageCredit } : {}),
+            ...seededContent,
+            revision: (draft?.revision ?? 0) + 1,
+            publishedRevision:
+              draft?.publishedRevision ??
+              (existing.status === "published" ? 0 : -1),
+            updatedAt: Date.now(),
+          };
 
-          assertStoredRecipeBytes(nextRecipe);
-          await ctx.db.replace(existing._id, nextRecipe);
+          assertProspectiveDraft(nextDraft, existing.slug);
+          if (draft) await ctx.db.replace(draft._id, nextDraft);
+          else await ctx.db.insert("recipeDrafts", nextDraft);
           return "updated" as const;
         } else {
           assertStoredRecipeBytes(recipe);
@@ -887,6 +911,31 @@ async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
       yieldLabel,
       servings,
     }),
+  };
+}
+
+async function localizeSummary(
+  ctx: QueryCtx,
+  recipe: RecipeDoc,
+  locale: Locale,
+) {
+  const translation = recipe.translations[locale];
+  const storedHeroImageUrl = recipe.heroImageStorageId
+    ? await ctx.storage.getUrl(recipe.heroImageStorageId)
+    : null;
+  return {
+    _id: recipe._id,
+    _creationTime: recipe._creationTime,
+    slug: recipe.slug,
+    heroImageUrl: storedHeroImageUrl ?? recipe.heroImageUrl,
+    ...resolveRecipeCategories(recipe),
+    title: translation.title,
+    author: translation.author,
+    description: translation.description,
+    prepTime: translation.prepTime,
+    cookTime: translation.cookTime,
+    timeLabel: translation.timeLabel,
+    ingredients: translation.ingredients.map(({ name }) => ({ name })),
   };
 }
 

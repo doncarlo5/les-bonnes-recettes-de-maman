@@ -267,6 +267,14 @@ test("the legacy collection URL preserves discovery state", async ({ page }) => 
   await expect(searchbox).toHaveValue("tarte");
 });
 
+test("locale switching preserves discovery and anchor state", async ({ page }) => {
+  await page.goto("/fr?q=tarte&cat=dessert&view=list&sort=date#recettes");
+  await page.getByRole("link", { name: "en", exact: true }).click();
+  await expect(page).toHaveURL(
+    /\/en\?q=tarte&cat=dessert&view=list&sort=date#recettes$/,
+  );
+});
+
 test("homepage discovery state remains URL-backed", async ({ page }, testInfo) => {
   await page.goto("/fr");
   const searchbox = page.getByRole("searchbox");

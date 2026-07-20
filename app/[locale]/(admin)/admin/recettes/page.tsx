@@ -8,6 +8,8 @@ import { api } from "@/convex/_generated/api";
 import type { Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getRecipeAdminAccess } from "@/lib/recipe-admin-auth";
+import type { EditableRecipeSummary } from "@/components/recipes/types";
+import { collectPaginated } from "@/lib/convex-pagination";
 
 type PageProps = {
   params: Promise<{
@@ -69,10 +71,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   }
 
   const [recipes, initialRecipe] = await Promise.all([
-    fetchQuery(api.recipes.listForEditing, {
-      locale,
-      adminPassword: adminAccess.adminPassword,
-    }),
+    listAllRecipesForEditing(locale, adminAccess.adminPassword),
     initialSlug
       ? fetchQuery(api.recipes.getForEditing, {
           locale,
@@ -95,4 +94,18 @@ export default async function Page({ params, searchParams }: PageProps) {
     />
     </Suspense>
   );
+}
+
+async function listAllRecipesForEditing(
+  locale: Locale,
+  adminPassword: string,
+) {
+  const recipes = await collectPaginated<EditableRecipeSummary>((cursor) =>
+    fetchQuery(api.recipes.listForEditing, {
+      locale,
+      adminPassword,
+      paginationOpts: { numItems: 50, cursor },
+    }),
+  );
+  return recipes.sort((a, b) => b.updatedAt - a.updatedAt);
 }

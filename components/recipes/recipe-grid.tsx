@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Clock3, Plus } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
-import type { Recipe } from "./types";
+import type { RecipeSummary } from "./types";
 
 const defaultRecipeImageUrl =
   "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=1400&q=85";
@@ -11,7 +11,7 @@ const defaultRecipeImageUrl =
 type RecipeGridProps = {
   locale: Locale;
   dict: Dictionary;
-  recipes: Recipe[];
+  recipes: RecipeSummary[];
   showAddRecipeCard?: boolean;
   priorityFirstImage?: boolean;
 };

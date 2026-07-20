@@ -1,8 +1,15 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 
-const { fetchMutation, revalidateRecipePaths } = vi.hoisted(() => ({
+const {
+  fetchMutation,
+  revalidateRecipePaths,
+  grantRecipeAdminAccess,
+  verifyRecipeAdminPassword,
+} = vi.hoisted(() => ({
   fetchMutation: vi.fn(),
   revalidateRecipePaths: vi.fn(),
+  grantRecipeAdminAccess: vi.fn(),
+  verifyRecipeAdminPassword: vi.fn(() => true),
 }));
 
 vi.mock("convex/nextjs", () => ({ fetchMutation }));
@@ -13,6 +20,9 @@ vi.mock("@/lib/recipe-admin-auth", () => ({
     adminPassword: "test-password",
   })),
   adminUnauthorizedResponse: vi.fn(),
+  getRecipeAdminPassword: vi.fn(() => "test-password"),
+  grantRecipeAdminAccess,
+  verifyRecipeAdminPassword,
 }));
 vi.mock("@/lib/recipe-admin-revalidate", () => ({ revalidateRecipePaths }));
 
@@ -25,6 +35,7 @@ import { POST as publishRecipe } from "./publish/route";
 import { POST as unpublishRecipe } from "./unpublish/route";
 import { DELETE as deleteRecipe } from "./delete/route";
 import { POST as cleanupImage } from "./cleanup-image/route";
+import { POST as accessAdmin } from "./access/route";
 
 const localized = {
   title: "Tarte mobile",
@@ -81,6 +92,7 @@ describe("recipe admin route contracts", () => {
       publishRecipe(malformedRequest() as never),
       unpublishRecipe(malformedRequest() as never),
       deleteRecipe(malformedRequest() as never),
+      accessAdmin(malformedRequest() as never),
     ]);
     for (const response of responses) {
       expect(response.status).toBe(400);

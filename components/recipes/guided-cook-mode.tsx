@@ -14,7 +14,9 @@ import {
 import {
   createCookContentSignature,
   getCookProgressKey,
-  parseCookProgress,
+  getCookProgressStorage,
+  readCookProgress,
+  writeCookProgress,
   type CookProgressV1,
 } from "@/lib/cook-progress";
 import { Button } from "@/components/ui/button";
@@ -67,7 +69,10 @@ export function GuidedCookMode({
   const wakeLockListenerCleanupRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
-    const restored = parseCookProgress(window.localStorage.getItem(storageKey), recipe);
+    const storage = getCookProgressStorage();
+    const restored = storage
+      ? readCookProgress(storage, storageKey, recipe)
+      : null;
     queueMicrotask(() => {
       setProgress(restored ?? createInitialProgress(contentSignature));
       setWakeLockSupported(Boolean((navigator as NavigatorWithWakeLock).wakeLock));
@@ -77,7 +82,8 @@ export function GuidedCookMode({
 
   useEffect(() => {
     if (!isReady) return;
-    window.localStorage.setItem(storageKey, JSON.stringify(progress));
+    const storage = getCookProgressStorage();
+    if (storage) writeCookProgress(storage, storageKey, progress);
   }, [isReady, progress, storageKey]);
 
   const releaseWakeLock = useCallback(async () => {

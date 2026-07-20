@@ -2,13 +2,18 @@ import type { MetadataRoute } from "next";
 import { fetchQuery } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
 import { siteUrl } from "@/lib/site";
-import { locales, defaultLocale } from "@/i18n/config";
+import { locales } from "@/i18n/config";
+import { collectPaginated } from "@/lib/convex-pagination";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Recipes share one slug across locales — fetch once to enumerate them.
   let recipes: { slug: string }[] = [];
   try {
-    recipes = await fetchQuery(api.recipes.list, { locale: defaultLocale });
+    recipes = await collectPaginated<{ slug: string }>((cursor) =>
+      fetchQuery(api.recipes.listSlugs, {
+        paginationOpts: { numItems: 100, cursor },
+      }),
+    );
   } catch {
     recipes = [];
   }

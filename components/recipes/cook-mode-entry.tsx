@@ -5,7 +5,12 @@ import Link from "next/link";
 import { RotateCcw, UtensilsCrossed } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
-import { getCookProgressKey, parseCookProgress } from "@/lib/cook-progress";
+import {
+  getCookProgressKey,
+  getCookProgressStorage,
+  readCookProgress,
+  removeCookProgress,
+} from "@/lib/cook-progress";
 import { buildServingsQuery } from "@/lib/recipe-servings";
 import type { Recipe } from "./types";
 
@@ -27,12 +32,14 @@ export function CookModeEntry({
 
   useEffect(() => {
     queueMicrotask(() => {
-      setHasProgress(Boolean(parseCookProgress(window.localStorage.getItem(key), recipe)));
+      const storage = getCookProgressStorage();
+      setHasProgress(Boolean(storage && readCookProgress(storage, key, recipe)));
     });
   }, [key, recipe]);
 
   function resetProgress() {
-    window.localStorage.removeItem(key);
+    const storage = getCookProgressStorage();
+    if (storage) removeCookProgress(storage, key);
     setHasProgress(false);
   }
 

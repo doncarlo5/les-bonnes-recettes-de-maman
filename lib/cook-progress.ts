@@ -15,8 +15,55 @@ export type CookableContent = {
   subRecipes: SubRecipe[];
 };
 
+type CookProgressStorage = Pick<Storage, "getItem" | "setItem" | "removeItem">;
+
+export function getCookProgressStorage() {
+  try {
+    return typeof window === "undefined" ? null : window.localStorage;
+  } catch {
+    return null;
+  }
+}
+
 export function getCookProgressKey(locale: string, slug: string) {
   return `recipe-cook:v1:${locale}:${slug}`;
+}
+
+export function readCookProgress(
+  storage: Pick<CookProgressStorage, "getItem">,
+  key: string,
+  content: CookableContent,
+) {
+  try {
+    return parseCookProgress(storage.getItem(key), content);
+  } catch {
+    return null;
+  }
+}
+
+export function writeCookProgress(
+  storage: Pick<CookProgressStorage, "setItem">,
+  key: string,
+  progress: CookProgressV1,
+) {
+  try {
+    storage.setItem(key, JSON.stringify(progress));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function removeCookProgress(
+  storage: Pick<CookProgressStorage, "removeItem">,
+  key: string,
+) {
+  try {
+    storage.removeItem(key);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export function createCookContentSignature(content: CookableContent) {

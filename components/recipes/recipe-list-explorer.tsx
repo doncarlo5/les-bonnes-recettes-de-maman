@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
-import type { Recipe } from "./types";
+import type { RecipeSummary } from "./types";
 import { RecipeGrid } from "./recipe-grid";
 import { RecipeListRows } from "./recipe-list-rows";
 
@@ -26,7 +26,7 @@ type RecipeSort = (typeof sortValues)[number];
 type RecipeListExplorerProps = {
   locale: Locale;
   dict: Dictionary;
-  recipes: Recipe[];
+  recipes: RecipeSummary[];
 };
 
 export function RecipeListExplorer({
@@ -279,7 +279,7 @@ export function RecipeListExplorer({
 }
 
 function filterRecipes(
-  recipes: Recipe[],
+  recipes: RecipeSummary[],
   query: string,
   categories: RecipeCategory[],
 ) {
@@ -298,7 +298,7 @@ function filterRecipes(
   });
 }
 
-function sortRecipes(recipes: Recipe[], sort: RecipeSort, locale: Locale) {
+function sortRecipes(recipes: RecipeSummary[], sort: RecipeSort, locale: Locale) {
   return [...recipes].sort((recipeA, recipeB) => {
     if (sort === "date") {
       return recipeB._creationTime - recipeA._creationTime;
@@ -308,7 +308,7 @@ function sortRecipes(recipes: Recipe[], sort: RecipeSort, locale: Locale) {
   });
 }
 
-function getRecipeSearchText(recipe: Recipe) {
+function getRecipeSearchText(recipe: RecipeSummary) {
   return normalizeSearchText(
     [recipe.title, ...recipe.ingredients.map((ingredient) => ingredient.name)].join(
       " ",
