@@ -42,6 +42,10 @@ export function AdminDraftPreview({
     imageCredit: recipe.imageCredit,
     defaultLocale: values.defaultLocale,
     referenceServings: values.referenceServings,
+    relatedRecipes: values.relatedRecipeSlugs.map((slug) => ({
+      slug,
+      title: slug,
+    })),
     categories: values.categories,
     status: recipe.status,
     ...localized,

@@ -15,9 +15,11 @@ const blankLocalizedRecipe = {
   yieldLabel: "",
   prepTime: "",
   cookTime: "",
+  restTime: "",
   totalTime: "",
   timeLabel: "",
   temperature: "",
+  equipment: [],
   ingredients: [{ name: "", quantity: "", unit: "", notes: "" }],
   sections: [{ title: "", steps: [""] }],
   subRecipes: [],
@@ -33,6 +35,7 @@ function blankDraft(): RecipeDraftFormInput {
       en: structuredClone(blankLocalizedRecipe),
     },
     categories: [],
+    relatedRecipeSlugs: [],
   };
 }
 
@@ -64,7 +67,17 @@ describe("editableRecipeDraftSchema", () => {
     if (result.success) {
       expect(result.data).not.toHaveProperty("status");
       expect(result.data.referenceServings).toBeUndefined();
+      expect(result.data.relatedRecipeSlugs).toEqual([]);
     }
+  });
+
+  it("accepts Marmiton-style resting time, utensils and related recipes", () => {
+    const draft = blankDraft();
+    draft.translations.fr.restTime = "30 min";
+    draft.translations.fr.equipment = ["1 moule à cake"];
+    draft.relatedRecipeSlugs = ["mayonnaise"];
+
+    expect(editableRecipeDraftSchema.safeParse(draft).success).toBe(true);
   });
 
   it("rejects structurally invalid working draft fields", () => {

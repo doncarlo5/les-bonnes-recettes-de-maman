@@ -1,6 +1,10 @@
 import { describe, expect, test } from "vitest";
 import rawRecipes from "./recettes.json";
-import { localizeRecipe, toSeedRecipe, type SourceRecipe } from "./recipeTranslations";
+import {
+  localizeRecipe,
+  toSeedRecipe,
+  type SourceRecipe,
+} from "./recipeTranslations";
 
 const recipes = rawRecipes as SourceRecipe[];
 
@@ -12,7 +16,9 @@ describe("recipe yield localization", () => {
 
       expect(french.yieldLabel).toBeTypeOf("string");
       expect(english.yieldLabel).toBeTypeOf("string");
-      if (recipe.servings && recipe.slug !== "gougeres") {
+      if (recipe.yieldLabel) {
+        expect(french.yieldLabel).toBe(recipe.yieldLabel);
+      } else if (recipe.servings && recipe.slug !== "gougeres") {
         expect(french.yieldLabel).toBe(
           `${recipe.servings.quantity} ${recipe.servings.unit}`.trim(),
         );
@@ -30,7 +36,9 @@ describe("recipe yield localization", () => {
   });
 
   test("localizes Fabrice's champagne punch without changing its brands or quantities", () => {
-    const source = recipes.find((recipe) => recipe.slug === "soupe-de-champagne");
+    const source = recipes.find(
+      (recipe) => recipe.slug === "soupe-de-champagne",
+    );
     expect(source).toBeDefined();
 
     const seeded = toSeedRecipe(source!);
@@ -45,7 +53,13 @@ describe("recipe yield localization", () => {
       prepTime: "5 min",
       servings: null,
     });
-    expect(seeded.translations.fr.ingredients.map(({ name, quantity, unit }) => ({ name, quantity, unit }))).toEqual([
+    expect(
+      seeded.translations.fr.ingredients.map(({ name, quantity, unit }) => ({
+        name,
+        quantity,
+        unit,
+      })),
+    ).toEqual([
       { name: "crémant de Loire", quantity: "75", unit: "cl" },
       { name: "Cointreau", quantity: "10", unit: "cl" },
       { name: "Pulco Citron", quantity: "10", unit: "cl" },
@@ -63,8 +77,12 @@ describe("recipe yield localization", () => {
     const fixedVolume = liquidIngredients
       .slice(0, 3)
       .reduce((total, ingredient) => total + Number(ingredient.quantity), 0);
-    const canadouRange = liquidIngredients[3]!.quantity.split(" à ").map(Number);
-    expect(canadouRange.map((quantity) => fixedVolume + quantity)).toEqual([100, 102]);
+    const canadouRange = liquidIngredients[3]!.quantity
+      .split(" à ")
+      .map(Number);
+    expect(canadouRange.map((quantity) => fixedVolume + quantity)).toEqual([
+      100, 102,
+    ]);
 
     expect(seeded.translations.en).toMatchObject({
       title: "Champagne Punch",
@@ -73,7 +91,12 @@ describe("recipe yield localization", () => {
       prepTime: "5 min",
       servings: null,
     });
-    expect(seeded.translations.en.ingredients.map(({ name, quantity }) => ({ name, quantity }))).toEqual([
+    expect(
+      seeded.translations.en.ingredients.map(({ name, quantity }) => ({
+        name,
+        quantity,
+      })),
+    ).toEqual([
       { name: "Loire Valley Crémant", quantity: "75" },
       { name: "Cointreau", quantity: "10" },
       { name: "Pulco Citron", quantity: "10" },
@@ -90,14 +113,16 @@ describe("recipe yield localization", () => {
 
   test("localizes Julien's chocolate chip cookies as a piece-based recipe", () => {
     const source = recipes.find(
-      (recipe) => recipe.slug === "cookies-aux-pepites-de-chocolat-et-fleur-de-sel",
+      (recipe) =>
+        recipe.slug === "cookies-aux-pepites-de-chocolat-et-fleur-de-sel",
     );
     expect(source).toBeDefined();
 
     const seeded = toSeedRecipe(source!);
     expect(seeded).toMatchObject({
       slug: "cookies-aux-pepites-de-chocolat-et-fleur-de-sel",
-      heroImageUrl: "/images/recipes/cookies-aux-pepites-de-chocolat-et-fleur-de-sel.png",
+      heroImageUrl:
+        "/images/recipes/cookies-aux-pepites-de-chocolat-et-fleur-de-sel.png",
       categories: ["dessert", "sucre"],
       legacyCategoryLabels: [],
     });
@@ -116,7 +141,8 @@ describe("recipe yield localization", () => {
     expect(seeded.translations.en).toMatchObject({
       title: "Chocolate Chip Cookies with Fleur de Sel",
       author: "Julien",
-      description: "Large chocolate chip cookies with crisp edges, soft centers and a touch of fleur de sel.",
+      description:
+        "Large chocolate chip cookies with crisp edges, soft centers and a touch of fleur de sel.",
       yieldLabel: "About 20 large cookies",
       prepTime: "≈ 40 min",
       cookTime: "10 min",
@@ -124,7 +150,12 @@ describe("recipe yield localization", () => {
       temperature: "180 °C",
       servings: null,
     });
-    expect(seeded.translations.en.ingredients.map(({ name, notes }) => ({ name, notes }))).toEqual([
+    expect(
+      seeded.translations.en.ingredients.map(({ name, notes }) => ({
+        name,
+        notes,
+      })),
+    ).toEqual([
       { name: "butter", notes: "" },
       { name: "brown sugar", notes: "" },
       { name: "granulated sugar", notes: "" },
@@ -143,7 +174,9 @@ describe("recipe yield localization", () => {
       "Baking",
       "Cooling",
     ]);
-    expect(seeded.translations.en.sections.flatMap(({ steps }) => steps)).toEqual([
+    expect(
+      seeded.translations.en.sections.flatMap(({ steps }) => steps),
+    ).toEqual([
       "In a bowl, combine the flour, baking soda, baking powder and salt.",
       "Melt the butter over medium heat, then pour it into a large bowl.",
       "Add the brown sugar and granulated sugar to the melted butter, then mix until smooth.",
@@ -203,17 +236,26 @@ describe("recipe yield localization", () => {
         unit: "pincée",
         notes: "première variante facultative",
       },
-    ]);
-    expect(seeded.translations.fr.subRecipes).toEqual([
       {
-        title: "Variante avec garniture à la cannelle et aux noix de pécan",
-        ingredients: [
-          { name: "noix de pécan hachées", quantity: "60", unit: "g", notes: "" },
-          { name: "cassonade foncée", quantity: "25", unit: "g", notes: "" },
-          { name: "cannelle", quantity: "4", unit: "g", notes: "" },
-        ],
+        name: "noix de pécan hachées",
+        quantity: "60",
+        unit: "g",
+        notes: "variante avec garniture facultative",
+      },
+      {
+        name: "cassonade foncée",
+        quantity: "25",
+        unit: "g",
+        notes: "variante avec garniture facultative",
+      },
+      {
+        name: "cannelle",
+        quantity: "4",
+        unit: "g",
+        notes: "variante avec garniture facultative",
       },
     ]);
+    expect(seeded.translations.fr.subRecipes).toEqual([]);
 
     expect(seeded.translations.en).toMatchObject({
       title: "Banana Bread",
@@ -247,17 +289,26 @@ describe("recipe yield localization", () => {
         unit: "pinch",
         notes: "first optional variation",
       },
-    ]);
-    expect(seeded.translations.en.subRecipes).toEqual([
       {
-        title: "Cinnamon and Pecan Filling Variation",
-        ingredients: [
-          { name: "chopped pecans", quantity: "60", unit: "g", notes: "" },
-          { name: "dark brown sugar", quantity: "25", unit: "g", notes: "" },
-          { name: "cinnamon", quantity: "4", unit: "g", notes: "" },
-        ],
+        name: "chopped pecans",
+        quantity: "60",
+        unit: "g",
+        notes: "optional filling variation",
+      },
+      {
+        name: "dark brown sugar",
+        quantity: "25",
+        unit: "g",
+        notes: "optional filling variation",
+      },
+      {
+        name: "cinnamon",
+        quantity: "4",
+        unit: "g",
+        notes: "optional filling variation",
       },
     ]);
+    expect(seeded.translations.en.subRecipes).toEqual([]);
     expect(seeded.translations.en.sections.map(({ title }) => title)).toEqual([
       "Preparation",
       "Optional Batter Addition",
@@ -265,7 +316,9 @@ describe("recipe yield localization", () => {
       "Cinnamon and Pecan Filling Variation",
       "Storage",
     ]);
-    expect(seeded.translations.en.sections.flatMap(({ steps }) => steps)).toEqual([
+    expect(
+      seeded.translations.en.sections.flatMap(({ steps }) => steps),
+    ).toEqual([
       "Preheat the oven to 175 °C.",
       "Beat the softened butter and sugar until light and fluffy.",
       "Add the mashed bananas and beaten eggs, then mix until smooth.",
@@ -305,10 +358,20 @@ describe("recipe yield localization", () => {
       servings: null,
     });
     expect(seeded.translations.fr.ingredients).toEqual([
-      { name: "moutarde de Dijon", quantity: "2", unit: "c. à café", notes: "" },
+      {
+        name: "moutarde de Dijon",
+        quantity: "2",
+        unit: "c. à café",
+        notes: "",
+      },
       { name: "jaune d’œuf", quantity: "1", unit: "", notes: "" },
       { name: "huile de tournesol", quantity: "10", unit: "cl", notes: "" },
-      { name: "vinaigre balsamique", quantity: "quelques gouttes", unit: "", notes: "" },
+      {
+        name: "vinaigre balsamique",
+        quantity: "quelques gouttes",
+        unit: "",
+        notes: "",
+      },
       { name: "sel", quantity: "", unit: "", notes: "à convenance" },
       { name: "poivre", quantity: "", unit: "", notes: "à convenance" },
     ]);
@@ -319,7 +382,8 @@ describe("recipe yield localization", () => {
     expect(seeded.translations.en).toMatchObject({
       title: "Mayonnaise",
       author: "Louis",
-      description: "Homemade Dijon mustard mayonnaise blended with sunflower oil and seasoned with balsamic vinegar.",
+      description:
+        "Homemade Dijon mustard mayonnaise blended with sunflower oil and seasoned with balsamic vinegar.",
       yieldLabel: "One small bowl",
       prepTime: "5 min",
       cookTime: "",
@@ -330,7 +394,12 @@ describe("recipe yield localization", () => {
       { name: "Dijon mustard", quantity: "2", unit: "tsp", notes: "" },
       { name: "egg yolk", quantity: "1", unit: "", notes: "" },
       { name: "sunflower oil", quantity: "10", unit: "cl", notes: "" },
-      { name: "balsamic vinegar", quantity: "a few drops", unit: "", notes: "" },
+      {
+        name: "balsamic vinegar",
+        quantity: "a few drops",
+        unit: "",
+        notes: "",
+      },
       { name: "salt", quantity: "", unit: "", notes: "to taste" },
       { name: "pepper", quantity: "", unit: "", notes: "to taste" },
     ]);
@@ -342,5 +411,21 @@ describe("recipe yield localization", () => {
     expect(seeded.translations.en.notes).toEqual([
       "For a well-chilled mayonnaise, refrigerate it for 30 min before serving.",
     ]);
+  });
+
+  test("seeds Marmiton-style metadata and structured recipe links", () => {
+    const source = recipes.find((recipe) => recipe.slug === "pain-de-poisson");
+    expect(source).toBeDefined();
+
+    const seeded = toSeedRecipe(source!);
+    expect(seeded.relatedRecipeSlugs).toEqual(["mayonnaise"]);
+    expect(seeded.translations.fr).toMatchObject({
+      restTime: "Jusqu’à complet refroidissement",
+      equipment: ["1 moule à cake", "1 plat pour bain-marie"],
+    });
+    expect(seeded.translations.en).toMatchObject({
+      restTime: "Until completely cool",
+      equipment: ["1 loaf pan", "1 roasting dish for the water bath"],
+    });
   });
 });

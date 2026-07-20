@@ -44,9 +44,11 @@ const localized = {
   yieldLabel: "",
   prepTime: "10 min",
   cookTime: "",
+  restTime: "",
   totalTime: "",
   timeLabel: "",
   temperature: "",
+  equipment: [],
   ingredients: [{ name: "Farine", quantity: "100", unit: "g", notes: "" }],
   sections: [{ title: "Préparation", steps: ["Mélanger"] }],
   subRecipes: [],
@@ -57,6 +59,7 @@ const payload = {
   referenceServings: 6,
   translations: { fr: localized, en: localized },
   categories: [],
+  relatedRecipeSlugs: [],
 };
 
 function request(body: unknown) {

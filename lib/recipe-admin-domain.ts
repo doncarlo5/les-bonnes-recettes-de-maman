@@ -44,9 +44,11 @@ type LocalizedRecipeContent = {
   yieldLabel: string;
   prepTime: string;
   cookTime: string;
+  restTime: string;
   totalTime: string;
   timeLabel: string;
   temperature: string;
+  equipment: string[];
   ingredients: IngredientContent[];
   sections: Array<{ title: string; steps: string[] }>;
   subRecipes: Array<{ title: string; ingredients: IngredientContent[] }>;
@@ -56,6 +58,7 @@ type LocalizedRecipeContent = {
 export type RecipeDraftContentLike = {
   defaultLocale: "fr" | "en";
   referenceServings?: number;
+  relatedRecipeSlugs: string[];
   translations: { fr: LocalizedRecipeContent; en: LocalizedRecipeContent };
   categories: RecipeCategory[];
   legacyCategoryLabels?: string[];
@@ -89,32 +92,104 @@ export function getRecipeReadiness(
 ): RecipeReadiness {
   const fr = recipe.translations.fr;
   const en = recipe.translations.en;
-  const hasTime = [fr.prepTime, fr.cookTime, fr.totalTime, fr.timeLabel].some(hasText);
+  const hasTime = [
+    fr.prepTime,
+    fr.cookTime,
+    fr.restTime,
+    fr.totalTime,
+    fr.timeLabel,
+  ].some(hasText);
   const hasIngredient = fr.ingredients.some((item) => hasText(item.name));
-  const hasReferenceServings = isValidReferenceServings(recipe.referenceServings);
+  const hasReferenceServings = isValidReferenceServings(
+    recipe.referenceServings,
+  );
   const allowsYieldOnly = hasEditorialYield(fr);
   const hasPreparation = fr.sections.some(
     (section) => hasText(section.title) && section.steps.some(hasText),
   );
-  const essentials = hasText(fr.title) && hasText(fr.author) && hasText(fr.description);
+  const essentials =
+    hasText(fr.title) && hasText(fr.author) && hasText(fr.description);
   const translationEn =
     hasText(en.title) &&
     hasText(en.description) &&
     en.ingredients.some((item) => hasText(item.name));
 
   const blockers = [
-    readinessItem(!hasText(fr.title), "fr-title", "Ajoute un titre français.", "info", "fr", "translations.fr.title"),
-    readinessItem(!hasText(fr.author), "fr-author", "Ajoute l’auteur.", "info", "fr", "translations.fr.author"),
-    readinessItem(!hasText(fr.description), "fr-description", "Ajoute une description française.", "info", "fr", "translations.fr.description"),
-    readinessItem(!hasTime, "fr-time", "Indique au moins un temps.", "details", "fr", "translations.fr.timeLabel"),
-    readinessItem(!hasIngredient, "fr-ingredient", "Ajoute au moins un ingrédient.", "ingredients", "fr", "translations.fr.ingredients.0.name"),
-    readinessItem(!hasReferenceServings && !allowsYieldOnly, "reference-servings", "Indique le rendement ou les portions de référence.", "ingredients", "fr", "referenceServings"),
-    readinessItem(!hasPreparation, "fr-preparation", "Ajoute une section avec une étape.", "preparation", "fr", "translations.fr.sections.0.title"),
+    readinessItem(
+      !hasText(fr.title),
+      "fr-title",
+      "Ajoute un titre français.",
+      "info",
+      "fr",
+      "translations.fr.title",
+    ),
+    readinessItem(
+      !hasText(fr.author),
+      "fr-author",
+      "Ajoute l’auteur.",
+      "info",
+      "fr",
+      "translations.fr.author",
+    ),
+    readinessItem(
+      !hasText(fr.description),
+      "fr-description",
+      "Ajoute une description française.",
+      "info",
+      "fr",
+      "translations.fr.description",
+    ),
+    readinessItem(
+      !hasTime,
+      "fr-time",
+      "Indique au moins un temps.",
+      "details",
+      "fr",
+      "translations.fr.timeLabel",
+    ),
+    readinessItem(
+      !hasIngredient,
+      "fr-ingredient",
+      "Ajoute au moins un ingrédient.",
+      "ingredients",
+      "fr",
+      "translations.fr.ingredients.0.name",
+    ),
+    readinessItem(
+      !hasReferenceServings && !allowsYieldOnly,
+      "reference-servings",
+      "Indique le rendement ou les portions de référence.",
+      "ingredients",
+      "fr",
+      "referenceServings",
+    ),
+    readinessItem(
+      !hasPreparation,
+      "fr-preparation",
+      "Ajoute une section avec une étape.",
+      "preparation",
+      "fr",
+      "translations.fr.sections.0.title",
+    ),
   ].filter((item): item is ReadinessItem => item !== null);
 
   const warnings = [
-    readinessWarning(!hasImage, "main-image", "Ajoute une image principale.", "info", "fr", "heroImageUrl"),
-    readinessWarning(!translationEn, "en-translation", "La traduction anglaise est encore incomplète.", "translation", "en", "translations.en.title"),
+    readinessWarning(
+      !hasImage,
+      "main-image",
+      "Ajoute une image principale.",
+      "info",
+      "fr",
+      "heroImageUrl",
+    ),
+    readinessWarning(
+      !translationEn,
+      "en-translation",
+      "La traduction anglaise est encore incomplète.",
+      "translation",
+      "en",
+      "translations.en.title",
+    ),
   ].filter((item): item is ReadinessItem => item !== null);
 
   return {
@@ -136,31 +211,47 @@ export function getRecipeReadiness(
 }
 
 export function assertRecipeDraftLimits(value: RecipeDraftContentLike) {
-  if (value.referenceServings !== undefined && !isValidReferenceServings(value.referenceServings)) {
+  if (
+    value.referenceServings !== undefined &&
+    !isValidReferenceServings(value.referenceServings)
+  ) {
     throw new Error("RECIPE_LIMIT_EXCEEDED");
   }
-  const { title, author, description, ingredientName, shortValue, longText } = RECIPE_FIELD_LIMITS;
+  const { title, author, description, ingredientName, shortValue, longText } =
+    RECIPE_FIELD_LIMITS;
   for (const localized of Object.values(value.translations)) {
     assertLength(localized.title, title);
     assertLength(localized.author, author);
     assertLength(localized.description, description);
     assertLength(localized.yieldLabel, shortValue);
-    for (const field of [localized.prepTime, localized.cookTime, localized.totalTime, localized.timeLabel, localized.temperature]) {
+    for (const field of [
+      localized.prepTime,
+      localized.cookTime,
+      localized.restTime,
+      localized.totalTime,
+      localized.timeLabel,
+      localized.temperature,
+    ]) {
       assertLength(field, shortValue);
     }
-    for (const ingredient of localized.ingredients) assertIngredient(ingredient);
+    for (const item of localized.equipment) assertLength(item, shortValue);
+    for (const ingredient of localized.ingredients)
+      assertIngredient(ingredient);
     for (const section of localized.sections) {
       assertLength(section.title, title);
       for (const step of section.steps) assertLength(step, longText);
     }
     for (const subRecipe of localized.subRecipes) {
       assertLength(subRecipe.title, title);
-      for (const ingredient of subRecipe.ingredients) assertIngredient(ingredient);
+      for (const ingredient of subRecipe.ingredients)
+        assertIngredient(ingredient);
     }
     for (const note of localized.notes) assertLength(note, longText);
   }
   for (const tag of value.categories) assertLength(tag, shortValue);
-  for (const label of value.legacyCategoryLabels ?? []) assertLength(label, shortValue);
+  for (const label of value.legacyCategoryLabels ?? [])
+    assertLength(label, shortValue);
+  for (const slug of value.relatedRecipeSlugs) assertLength(slug, shortValue);
   assertRecipeDraftBytes(value);
 
   function assertIngredient(ingredient: IngredientContent) {
@@ -172,7 +263,10 @@ export function assertRecipeDraftLimits(value: RecipeDraftContentLike) {
 }
 
 export function assertRecipeDraftBytes(value: unknown) {
-  if (new TextEncoder().encode(JSON.stringify(value)).byteLength > RECIPE_FIELD_LIMITS.draftBytes) {
+  if (
+    new TextEncoder().encode(JSON.stringify(value)).byteLength >
+    RECIPE_FIELD_LIMITS.draftBytes
+  ) {
     throw new Error("RECIPE_DRAFT_TOO_LARGE");
   }
 }
@@ -197,7 +291,9 @@ function readinessItem(
   locale: "fr" | "en",
   field: string,
 ): ReadinessItem | null {
-  return include ? { code, level: "blocker", label, section, locale, field } : null;
+  return include
+    ? { code, level: "blocker", label, section, locale, field }
+    : null;
 }
 
 function readinessWarning(
@@ -208,5 +304,7 @@ function readinessWarning(
   locale: "fr" | "en",
   field: string,
 ): ReadinessItem | null {
-  return include ? { code, level: "warning", label, section, locale, field } : null;
+  return include
+    ? { code, level: "warning", label, section, locale, field }
+    : null;
 }

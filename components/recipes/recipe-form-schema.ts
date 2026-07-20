@@ -39,9 +39,11 @@ const localizedRecipeSchema = z.strictObject({
   yieldLabel: z.string().max(limits.shortValue),
   prepTime: z.string().max(limits.shortValue),
   cookTime: z.string().max(limits.shortValue),
+  restTime: z.string().max(limits.shortValue),
   totalTime: z.string().max(limits.shortValue),
   timeLabel: z.string().max(limits.shortValue),
   temperature: z.string().max(limits.shortValue),
+  equipment: z.array(z.string().max(limits.shortValue)).max(50),
   ingredients: z.array(ingredientSchema).max(200),
   sections: z.array(sectionSchema).max(50),
   subRecipes: z.array(subRecipeSchema).max(25),
@@ -56,6 +58,7 @@ const editableRecipeDraftObject = z.strictObject({
     .min(MIN_REFERENCE_SERVINGS)
     .max(MAX_REFERENCE_SERVINGS)
     .optional(),
+  relatedRecipeSlugs: z.array(z.string().max(limits.shortValue)).max(20),
   translations: z.strictObject({
     fr: localizedRecipeSchema,
     en: localizedRecipeSchema,
@@ -104,7 +107,7 @@ export type RecipeDraftFormInput = z.input<typeof editableRecipeDraftSchema>;
 export type RecipeDraftPayload = z.output<typeof editableRecipeDraftSchema>;
 
 const recipeFieldPathPattern =
-  /^(defaultLocale|referenceServings|categories(?:\.\d+)?|legacyCategoryLabels(?:\.\d+)?|translations\.(fr|en)\.(title|author|description|yieldLabel|prepTime|cookTime|totalTime|timeLabel|temperature|ingredients\.\d+\.(name|quantity|unit|notes)|sections\.\d+\.(title|steps\.\d+)|subRecipes\.\d+\.(title|ingredients\.\d+\.(name|quantity|unit|notes))|notes\.\d+))$/;
+  /^(defaultLocale|referenceServings|relatedRecipeSlugs(?:\.\d+)?|categories(?:\.\d+)?|legacyCategoryLabels(?:\.\d+)?|translations\.(fr|en)\.(title|author|description|yieldLabel|prepTime|cookTime|restTime|totalTime|timeLabel|temperature|equipment\.\d+|ingredients\.\d+\.(name|quantity|unit|notes)|sections\.\d+\.(title|steps\.\d+)|subRecipes\.\d+\.(title|ingredients\.\d+\.(name|quantity|unit|notes))|notes\.\d+))$/;
 
 /** The only runtime boundary allowed to turn a server issue path into an RHF path. */
 export function toRecipeFieldPath(

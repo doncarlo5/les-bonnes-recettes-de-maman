@@ -33,9 +33,11 @@ const localizedRecipe = v.object({
   yieldLabel: v.optional(v.string()),
   prepTime: v.string(),
   cookTime: v.string(),
+  restTime: v.optional(v.string()),
   totalTime: v.string(),
   timeLabel: v.string(),
   temperature: v.string(),
+  equipment: v.optional(v.array(v.string())),
   ingredients: v.array(ingredient),
   sections: v.array(section),
   subRecipes: v.array(subRecipe),
@@ -81,6 +83,7 @@ export default defineSchema({
     imageCredit: v.optional(imageCredit),
     defaultLocale: v.union(v.literal("fr"), v.literal("en")),
     referenceServings: v.optional(v.number()),
+    relatedRecipeSlugs: v.optional(v.array(v.string())),
     translations: v.object({
       fr: localizedRecipe,
       en: localizedRecipe,
@@ -102,6 +105,7 @@ export default defineSchema({
     imageCredit: v.optional(imageCredit),
     defaultLocale: v.union(v.literal("fr"), v.literal("en")),
     referenceServings: v.optional(v.number()),
+    relatedRecipeSlugs: v.optional(v.array(v.string())),
     translations: v.object({
       fr: localizedRecipe,
       en: localizedRecipe,

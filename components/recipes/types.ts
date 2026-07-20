@@ -57,9 +57,12 @@ export type Recipe = {
   yieldLabel: string;
   prepTime: string;
   cookTime: string;
+  restTime: string;
   totalTime: string;
   timeLabel: string;
   temperature: string;
+  equipment: string[];
+  relatedRecipes: Array<{ slug: string; title: string }>;
   ingredients: Ingredient[];
   sections: RecipeSection[];
   subRecipes: SubRecipe[];
@@ -87,6 +90,7 @@ export type RecipeSummary = Pick<
 export type EditableRecipeContent = {
   defaultLocale: "fr" | "en";
   referenceServings?: number;
+  relatedRecipeSlugs: string[];
   translations: {
     fr: Omit<
       Recipe,
@@ -100,6 +104,7 @@ export type EditableRecipeContent = {
       | "categories"
       | "legacyCategoryLabels"
       | "status"
+      | "relatedRecipes"
     >;
     en: Omit<
       Recipe,
@@ -113,6 +118,7 @@ export type EditableRecipeContent = {
       | "categories"
       | "legacyCategoryLabels"
       | "status"
+      | "relatedRecipes"
     >;
   };
   categories: RecipeCategory[];

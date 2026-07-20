@@ -41,7 +41,16 @@ export function RecipeDetailPage({
   mode = "public",
   initialServings,
 }: RecipeDetailPageProps) {
-  return <RecipePresentation key={`${recipe.slug}:${recipe.referenceServings ?? "none"}:${initialServings ?? "default"}`} locale={locale} dict={dict} recipe={recipe} mode={mode} initialServings={initialServings} />;
+  return (
+    <RecipePresentation
+      key={`${recipe.slug}:${recipe.referenceServings ?? "none"}:${initialServings ?? "default"}`}
+      locale={locale}
+      dict={dict}
+      recipe={recipe}
+      mode={mode}
+      initialServings={initialServings}
+    />
+  );
 }
 
 export function RecipePresentation({
@@ -51,10 +60,13 @@ export function RecipePresentation({
   mode,
   initialServings,
 }: RecipeDetailPageProps & { mode: "public" | "preview" }) {
-  const [selectedServings, setSelectedServings] = useState(
+  const [selectedServings, setSelectedServings] = useState(() =>
     resolveSelectedServings(recipe.referenceServings, initialServings),
   );
-  const servingsFactor = getServingsFactor(recipe.referenceServings, selectedServings);
+  const servingsFactor = getServingsFactor(
+    recipe.referenceServings,
+    selectedServings,
+  );
   return (
     <main className="text-foreground">
       <header className="px-5 py-8 sm:py-12 lg:px-10 lg:py-20">
@@ -104,7 +116,12 @@ export function RecipePresentation({
             ) : null}
             {mode === "public" ? (
               <div className="mt-8 grid gap-4">
-                <CookModeEntry locale={locale} dict={dict} recipe={recipe} selectedServings={selectedServings} />
+                <CookModeEntry
+                  locale={locale}
+                  dict={dict}
+                  recipe={recipe}
+                  selectedServings={selectedServings}
+                />
                 <EditRecipeAccess locale={locale} slug={recipe.slug} />
               </div>
             ) : null}
@@ -120,156 +137,208 @@ export function RecipePresentation({
           <div className="mt-8 grid gap-8 lg:mt-12 lg:grid-cols-[minmax(0,65ch)_20rem] lg:justify-between lg:gap-14">
             <div className="min-w-0">
               <div className="space-y-8 lg:space-y-12">
-              {recipe.sections.map((section) => (
-                <div key={section.title}>
-                  <h2 className="type-content-title mb-4 text-foreground lg:mb-6">
-                    {section.title}
-                  </h2>
-                  <ol className="space-y-4 lg:space-y-6">
-                    {section.steps.map((step, index) => (
-                      <li
-                        key={step}
-                        className="type-body-spacious grid grid-cols-[2rem_1fr] gap-3 text-foreground/90 lg:grid-cols-[2.5rem_1fr] lg:gap-5"
-                      >
-                        <span className="type-meta mt-0.5 flex size-7 items-center justify-center rounded-full bg-primary/10 text-primary lg:mt-1 lg:size-9">
-                          {index + 1}
-                        </span>
-                        <span>{step}</span>
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-              ))}
-            </div>
+                {recipe.equipment.length > 0 ? (
+                  <div>
+                    <h2 className="type-content-title mb-4 text-foreground lg:mb-6">
+                      {dict.recipeDetail.equipment}
+                    </h2>
+                    <ul className="type-body-spacious list-disc space-y-2 pl-5 text-foreground/90">
+                      {recipe.equipment.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+                {recipe.sections.map((section) => (
+                  <div key={section.title}>
+                    <h2 className="type-content-title mb-4 text-foreground lg:mb-6">
+                      {section.title}
+                    </h2>
+                    <ol className="space-y-4 lg:space-y-6">
+                      {section.steps.map((step, index) => (
+                        <li
+                          key={step}
+                          className="type-body-spacious grid grid-cols-[2rem_1fr] gap-3 text-foreground/90 lg:grid-cols-[2.5rem_1fr] lg:gap-5"
+                        >
+                          <span className="type-meta mt-0.5 flex size-7 items-center justify-center rounded-full bg-primary/10 text-primary lg:mt-1 lg:size-9">
+                            {index + 1}
+                          </span>
+                          <span>{step}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                ))}
+                {recipe.relatedRecipes.length > 0 ? (
+                  <div>
+                    <h2 className="type-content-title mb-4 text-foreground lg:mb-6">
+                      {dict.recipeDetail.relatedRecipes}
+                    </h2>
+                    <ul className="space-y-3">
+                      {recipe.relatedRecipes.map((related) => (
+                        <li key={related.slug}>
+                          <Link
+                            href={`/${locale}/recettes/${related.slug}`}
+                            className="type-body-spacious font-semibold text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary"
+                          >
+                            {related.title}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
+              </div>
 
-            {recipe.subRecipes.length > 0 ? (
-              <>
-                {/* Mobile: accordion */}
-                <div className="mt-8 lg:hidden">
-                  <h2 className="type-content-title mb-3 text-foreground">
-                    {dict.recipeDetail.subRecipes}
-                  </h2>
-                  <Accordion
-                    className="border-t border-border"
-                    defaultValue={recipe.subRecipes[0]?.title}
-                  >
+              {recipe.subRecipes.length > 0 ? (
+                <>
+                  {/* Mobile: accordion */}
+                  <div className="mt-8 lg:hidden">
+                    <h2 className="type-content-title mb-3 text-foreground">
+                      {dict.recipeDetail.subRecipes}
+                    </h2>
+                    <Accordion
+                      className="border-t border-border"
+                      defaultValue={recipe.subRecipes[0]?.title}
+                    >
+                      {recipe.subRecipes.map((subRecipe) => (
+                        <AccordionItem
+                          key={subRecipe.title}
+                          value={subRecipe.title}
+                        >
+                          <AccordionTrigger className="type-subsection-title text-foreground">
+                            {subRecipe.title}
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <ul className="divide-y divide-border">
+                              {subRecipe.ingredients.map(
+                                (ingredient, index) => (
+                                  <li
+                                    key={`${subRecipe.title}-${ingredient.name}-${ingredient.unit}-${index}`}
+                                    className="type-body-sm flex items-baseline justify-between gap-4 py-2.5"
+                                  >
+                                    <span
+                                      data-ingredient-name
+                                      className="font-semibold text-foreground first-letter:uppercase"
+                                    >
+                                      {ingredient.name}
+                                    </span>
+                                    <span className="shrink-0 font-bold text-muted-foreground tabular-nums">
+                                      {formatScaledIngredient(
+                                        ingredient,
+                                        servingsFactor,
+                                        locale,
+                                      )}
+                                    </span>
+                                  </li>
+                                ),
+                              )}
+                            </ul>
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
+                  </div>
+
+                  {/* Desktop: stacked */}
+                  <div className="mt-14 hidden space-y-8 lg:block">
+                    <h2 className="type-content-title text-foreground">
+                      {dict.recipeDetail.subRecipes}
+                    </h2>
                     {recipe.subRecipes.map((subRecipe) => (
-                      <AccordionItem
-                        key={subRecipe.title}
-                        value={subRecipe.title}
-                      >
-                        <AccordionTrigger className="type-subsection-title text-foreground">
+                      <div key={subRecipe.title}>
+                        <h3 className="type-subsection-title mb-3 text-foreground">
                           {subRecipe.title}
+                        </h3>
+                        <ul className="divide-y divide-border">
+                          {subRecipe.ingredients.map((ingredient, index) => (
+                            <li
+                              key={`${subRecipe.title}-${ingredient.name}-${ingredient.unit}-${index}`}
+                              className="type-body flex items-baseline justify-between gap-5 py-3"
+                            >
+                              <span
+                                data-ingredient-name
+                                className="font-semibold text-foreground first-letter:uppercase"
+                              >
+                                {ingredient.name}
+                              </span>
+                              <span className="shrink-0 font-bold text-muted-foreground tabular-nums">
+                                {formatScaledIngredient(
+                                  ingredient,
+                                  servingsFactor,
+                                  locale,
+                                )}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : null}
+
+              {recipe.notes.length > 0 ? (
+                <>
+                  {/* Mobile: collapsed accordion */}
+                  <div className="mt-8 lg:hidden">
+                    <Accordion>
+                      <AccordionItem
+                        value="notes"
+                        className="border-t border-border"
+                      >
+                        <AccordionTrigger className="type-content-title text-foreground">
+                          {dict.recipeDetail.notes}
                         </AccordionTrigger>
                         <AccordionContent>
-                          <ul className="divide-y divide-border">
-                            {subRecipe.ingredients.map((ingredient, index) => (
+                          <ul className="type-body space-y-2 text-muted-foreground">
+                            {recipe.notes.map((note) => (
                               <li
-                                key={`${subRecipe.title}-${ingredient.name}-${ingredient.unit}-${index}`}
-                                className="type-body-sm flex items-baseline justify-between gap-4 py-2.5"
+                                key={note}
+                                className="border-l-2 border-primary/40 pl-4 italic"
                               >
-                                <span data-ingredient-name className="font-semibold text-foreground first-letter:uppercase">
-                                  {ingredient.name}
-                                </span>
-                                <span className="shrink-0 font-bold text-muted-foreground tabular-nums">
-                                  {formatScaledIngredient(ingredient, servingsFactor, locale)}
-                                </span>
+                                {note}
                               </li>
                             ))}
                           </ul>
                         </AccordionContent>
                       </AccordionItem>
-                    ))}
-                  </Accordion>
-                </div>
+                    </Accordion>
+                  </div>
 
-                {/* Desktop: stacked */}
-                <div className="mt-14 hidden space-y-8 lg:block">
-                  <h2 className="type-content-title text-foreground">
-                    {dict.recipeDetail.subRecipes}
-                  </h2>
-                  {recipe.subRecipes.map((subRecipe) => (
-                    <div key={subRecipe.title}>
-                      <h3 className="type-subsection-title mb-3 text-foreground">
-                        {subRecipe.title}
-                      </h3>
-                      <ul className="divide-y divide-border">
-                        {subRecipe.ingredients.map((ingredient, index) => (
-                          <li
-                            key={`${subRecipe.title}-${ingredient.name}-${ingredient.unit}-${index}`}
-                            className="type-body flex items-baseline justify-between gap-5 py-3"
-                          >
-                            <span data-ingredient-name className="font-semibold text-foreground first-letter:uppercase">
-                              {ingredient.name}
-                            </span>
-                            <span className="shrink-0 font-bold text-muted-foreground tabular-nums">
-                              {formatScaledIngredient(ingredient, servingsFactor, locale)}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </>
-            ) : null}
+                  {/* Desktop */}
+                  <div className="mt-14 hidden lg:block">
+                    <h2 className="type-content-title mb-5 text-foreground">
+                      {dict.recipeDetail.notes}
+                    </h2>
+                    <ul className="type-body-spacious space-y-3 text-muted-foreground">
+                      {recipe.notes.map((note) => (
+                        <li
+                          key={note}
+                          className="border-l-2 border-primary/40 pl-5 italic"
+                        >
+                          {note}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </>
+              ) : null}
+            </div>
 
-            {recipe.notes.length > 0 ? (
-              <>
-                {/* Mobile: collapsed accordion */}
-                <div className="mt-8 lg:hidden">
-                  <Accordion>
-                    <AccordionItem value="notes" className="border-t border-border">
-                      <AccordionTrigger className="type-content-title text-foreground">
-                        {dict.recipeDetail.notes}
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <ul className="type-body space-y-2 text-muted-foreground">
-                          {recipe.notes.map((note) => (
-                            <li
-                              key={note}
-                              className="border-l-2 border-primary/40 pl-4 italic"
-                            >
-                              {note}
-                            </li>
-                          ))}
-                        </ul>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </div>
-
-                {/* Desktop */}
-                <div className="mt-14 hidden lg:block">
-                  <h2 className="type-content-title mb-5 text-foreground">
-                    {dict.recipeDetail.notes}
-                  </h2>
-                  <ul className="type-body-spacious space-y-3 text-muted-foreground">
-                    {recipe.notes.map((note) => (
-                      <li
-                        key={note}
-                        className="border-l-2 border-primary/40 pl-5 italic"
-                      >
-                        {note}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </>
-            ) : null}
-          </div>
-
-          <RecipeIngredientsPanel
-            locale={locale}
-            dict={dict}
-            recipe={recipe}
-            selectedServings={selectedServings}
-            onSelectedServingsChange={setSelectedServings}
-          />
+            <RecipeIngredientsPanel
+              locale={locale}
+              dict={dict}
+              recipe={recipe}
+              selectedServings={selectedServings}
+              onSelectedServingsChange={setSelectedServings}
+            />
           </div>
         </div>
       </section>
-      {mode === "public" ? <RecipeComments locale={locale} dict={dict} slug={recipe.slug} /> : null}
+      {mode === "public" ? (
+        <RecipeComments locale={locale} dict={dict} slug={recipe.slug} />
+      ) : null}
     </main>
   );
 }
@@ -278,6 +347,7 @@ function RecipeMeta({ dict, recipe }: { dict: Dictionary; recipe: Recipe }) {
   const meta = [
     [dict.recipeDetail.prepTime, recipe.prepTime],
     [dict.recipeDetail.cookTime, recipe.cookTime],
+    [dict.recipeDetail.restTime, recipe.restTime],
     [dict.recipeDetail.totalTime, recipe.totalTime],
     [dict.recipeDetail.temperature, recipe.temperature],
   ].filter(([, value]) => value);
@@ -288,9 +358,7 @@ function RecipeMeta({ dict, recipe }: { dict: Dictionary; recipe: Recipe }) {
     <dl className="flex flex-wrap items-start gap-x-8 gap-y-4 border-y border-border py-4 lg:gap-x-12 lg:py-5">
       {meta.map(([label, value]) => (
         <div key={label} className="grid min-w-fit gap-1">
-          <dt className="type-label text-primary">
-            {label}
-          </dt>
+          <dt className="type-label text-primary">{label}</dt>
           <dd className="whitespace-nowrap text-base font-bold leading-tight text-foreground tabular-nums">
             {value}
           </dd>

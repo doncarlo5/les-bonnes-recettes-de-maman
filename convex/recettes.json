@@ -11,6 +11,7 @@
     "cookTime": "35 min",
     "totalTime": "",
     "temperature": "160 °C",
+    "equipment": ["1 moule à gâteau"],
     "ingredients": [
       {
         "name": "sucre",
@@ -35,12 +36,19 @@
         "quantity": "1/2",
         "unit": "",
         "notes": "jus + zeste"
+      },
+      {
+        "name": "sucre glace",
+        "quantity": "",
+        "unit": "",
+        "notes": "selon besoin, pour le glaçage facultatif"
       }
     ],
     "sections": [
       {
         "title": "Préparation",
         "steps": [
+          "Préchauffer le four à 160 °C.",
           "Séparer les blancs d’œufs des jaunes.",
           "Ajouter le sucre dans les jaunes, puis la poudre d’amandes, puis le jus de 1/2 citron et le zeste.",
           "Monter les blancs en neige et les ajouter délicatement au mélange aux amandes."
@@ -48,9 +56,7 @@
       },
       {
         "title": "Cuisson",
-        "steps": [
-          "Cuire 35 min à 160 °C."
-        ]
+        "steps": ["Cuire 35 min à 160 °C."]
       },
       {
         "title": "Glaçage facultatif",
@@ -127,6 +133,7 @@
       {
         "title": "Préparation",
         "steps": [
+          "Préchauffer le four à 160 °C.",
           "Mélanger le beurre ramolli avec le sucre et les jaunes d’œufs.",
           "Ajouter les amandes, puis les blancs d’œufs montés en neige.",
           "Étaler la confiture sur la pâte, puis ajouter le mélange aux amandes."
@@ -134,9 +141,7 @@
       },
       {
         "title": "Cuisson",
-        "steps": [
-          "Cuire 30 à 35 min à 160 °C."
-        ]
+        "steps": ["Cuire 30 à 35 min à 160 °C."]
       },
       {
         "title": "Décor",
@@ -154,61 +159,63 @@
     "description": "Gâteau aux pommes avec une pâte simple et une crème versée en cours de cuisson.",
     "heroImageUrl": "",
     "servings": {
-      "quantity": 4,
+      "quantity": 6,
       "unit": "personnes"
     },
-    "prepTime": "",
-    "cookTime": "",
-    "totalTime": "",
-    "temperature": "four moyen",
+    "referenceServings": 6,
+    "prepTime": "25 min",
+    "cookTime": "40 min",
+    "totalTime": "1 h 05",
+    "temperature": "180 °C",
+    "equipment": ["1 moule à manqué", "1 casserole"],
     "ingredients": [
       {
         "name": "farine",
-        "quantity": "5",
+        "quantity": "10",
         "unit": "c. à s.",
-        "notes": "pâte x2"
+        "notes": ""
       },
       {
         "name": "sucre",
-        "quantity": "4",
+        "quantity": "8",
         "unit": "c. à s.",
-        "notes": "pâte x2"
+        "notes": ""
       },
       {
         "name": "lait",
-        "quantity": "3",
+        "quantity": "6",
         "unit": "c. à s.",
-        "notes": "pâte x2"
+        "notes": ""
       },
       {
         "name": "huile",
-        "quantity": "2",
+        "quantity": "4",
         "unit": "c. à s.",
-        "notes": "pâte x2"
+        "notes": ""
       },
       {
         "name": "pommes",
-        "quantity": "2",
+        "quantity": "4",
         "unit": "belles",
-        "notes": "pâte x2"
+        "notes": ""
       },
       {
         "name": "œuf",
-        "quantity": "1",
+        "quantity": "2",
         "unit": "",
-        "notes": "pâte x2"
+        "notes": ""
       },
       {
         "name": "sel",
-        "quantity": "1",
-        "unit": "pincée",
-        "notes": "pâte x2"
+        "quantity": "2",
+        "unit": "pincées",
+        "notes": ""
       },
       {
         "name": "levure",
-        "quantity": "1/2",
+        "quantity": "1",
         "unit": "paquet",
-        "notes": "pâte x2"
+        "notes": ""
       },
       {
         "name": "beurre",
@@ -239,11 +246,12 @@
       {
         "title": "Préparation",
         "steps": [
+          "Préchauffer le four à 180 °C.",
           "Mélanger la farine, le sucre, la levure et le sel.",
-          "Ajouter le lait, l’œuf et l’huile.",
+          "Ajouter le lait, les œufs et l’huile.",
           "Travailler le tout.",
           "Verser dans un moule à manqué garni de tranches de pommes.",
-          "Mettre à four moyen."
+          "Enfourner à 180 °C pendant 25 min."
         ]
       },
       {
@@ -256,19 +264,15 @@
       {
         "title": "Suite de la cuisson",
         "steps": [
-          "Au bout de 25 min, quand le gâteau commence à monter et à dorer, ajouter la crème et continuer la cuisson."
+          "Au bout de 25 min, quand le gâteau commence à monter et à dorer, verser la crème sur le gâteau et poursuivre la cuisson 15 min."
         ]
       },
       {
         "title": "Conservation",
-        "steps": [
-          "Ce gâteau se conserve 3 à 4 jours."
-        ]
+        "steps": ["Ce gâteau se conserve 3 à 4 jours."]
       }
     ],
-    "notes": [
-      "Le « x2 » est noté pour la pâte."
-    ]
+    "notes": []
   },
   {
     "title": "Vacherin",
@@ -278,12 +282,15 @@
     "heroImageUrl": "",
     "servings": {
       "quantity": 8,
-      "unit": "à 10 personnes"
+      "unit": "personnes"
     },
+    "referenceServings": 8,
     "prepTime": "20 min",
     "cookTime": "",
-    "totalTime": "3 h de congélation",
+    "restTime": "3 h au congélateur",
+    "totalTime": "3 h 20",
     "temperature": "",
+    "equipment": ["1 moule en couronne"],
     "ingredients": [
       {
         "name": "huile",
@@ -349,16 +356,17 @@
     "title": "Macaron tante Maria",
     "slug": "macaron-tante-maria",
     "author": "Tante Maria",
-    "description": "Gâteau macaron aux blancs d’œufs, amandes et extrait d’amande amère, accompagné d’une crème au café.",
+    "description": "Gâteau macaron aux blancs d’œufs, amandes et extrait d’amande amère, servi avec une crème anglaise à la vanille.",
     "heroImageUrl": "",
     "servings": {
       "quantity": 8,
       "unit": "personnes"
     },
     "prepTime": "",
-    "cookTime": "3/4 h",
+    "cookTime": "45 min",
     "totalTime": "",
     "temperature": "140 °C",
+    "equipment": ["1 batteur électrique", "1 casserole"],
     "ingredients": [
       {
         "name": "blancs d’œufs",
@@ -389,73 +397,67 @@
         "quantity": "1",
         "unit": "c. à c.",
         "notes": ""
+      },
+      {
+        "name": "jaunes d’œufs",
+        "quantity": "6",
+        "unit": "",
+        "notes": "pour la crème anglaise, jaunes restant après le macaron"
+      },
+      {
+        "name": "lait",
+        "quantity": "50",
+        "unit": "cl",
+        "notes": "pour la crème anglaise"
+      },
+      {
+        "name": "sucre fin",
+        "quantity": "100",
+        "unit": "g",
+        "notes": "pour la crème anglaise"
+      },
+      {
+        "name": "Maïzena",
+        "quantity": "1",
+        "unit": "c. à café très rase",
+        "notes": "pour la crème anglaise"
+      },
+      {
+        "name": "gousse de vanille",
+        "quantity": "1",
+        "unit": "",
+        "notes": "pour la crème anglaise ; à défaut, utiliser de l’extrait de vanille selon le dosage du flacon"
       }
     ],
     "sections": [
       {
         "title": "Préparation du macaron",
         "steps": [
+          "Préchauffer le four à 140 °C.",
           "Battre les blancs en neige très ferme.",
           "Tourner avec le sucre 5 min au batteur électrique.",
-          "Ajouter ensuite les amandes et la levure."
+          "Ajouter ensuite les amandes, la levure et l’extrait d’amande amère."
         ]
       },
       {
         "title": "Cuisson",
-        "steps": [
-          "Cuire à four doux, 140 °C, pendant 3/4 h."
-        ]
+        "steps": ["Cuire à four doux, 140 °C, pendant 45 min."]
       },
       {
-        "title": "Crème au café",
+        "title": "Crème anglaise à la vanille",
         "steps": [
-          "Faire bouillir 1/2 litre de lait avec 1 c. à café très rase de Maïzena.",
+          "Fendre la gousse de vanille et gratter les graines.",
+          "Faire bouillir 50 cl de lait avec la gousse, les graines de vanille et 1 c. à café très rase de Maïzena.",
           "Mélanger 6 jaunes d’œufs avec 100 g de sucre fin.",
-          "Ajouter le lait bouillant en tournant.",
-          "Remettre dans la casserole et faire prendre la crème 1 à 2 min à peine.",
-          "Ajouter 2 c. à c. d’extrait de café.",
-          "Servir frais."
+          "Retirer la gousse, puis verser progressivement le lait bouillant sur les jaunes en remuant.",
+          "Remettre dans la casserole et faire épaissir la crème 1 à 2 min à feu doux, sans la laisser bouillir.",
+          "Laisser refroidir et servir la crème anglaise bien fraîche à côté du macaron."
         ]
       }
     ],
-    "subRecipes": [
-      {
-        "title": "Crème au café",
-        "ingredients": [
-          {
-            "name": "jaunes d’œufs",
-            "quantity": "6",
-            "unit": "",
-            "notes": ""
-          },
-          {
-            "name": "lait",
-            "quantity": "1/2",
-            "unit": "litre",
-            "notes": ""
-          },
-          {
-            "name": "sucre fin",
-            "quantity": "100",
-            "unit": "g",
-            "notes": ""
-          },
-          {
-            "name": "extrait de café",
-            "quantity": "2",
-            "unit": "c. à c.",
-            "notes": ""
-          },
-          {
-            "name": "Maïzena",
-            "quantity": "1",
-            "unit": "c. à café très rase",
-            "notes": ""
-          }
-        ]
-      }
-    ],
-    "notes": []
+    "notes": [
+      "Variante au café : remplacer la vanille par 2 c. à c. d’extrait de café, ajoutées hors du feu."
+    ]
   },
   {
     "title": "Gâteau au chocolat",
@@ -466,15 +468,16 @@
     "servings": null,
     "referenceServings": 6,
     "prepTime": "",
-    "cookTime": "1/2 h",
+    "cookTime": "30 min",
     "totalTime": "",
     "temperature": "180 °C",
+    "equipment": ["1 moule à gâteau"],
     "ingredients": [
       {
         "name": "sucre",
         "quantity": "200",
         "unit": "g",
-        "notes": "150 g noté entre parenthèses"
+        "notes": ""
       },
       {
         "name": "chocolat",
@@ -505,16 +508,16 @@
       {
         "title": "Préparation",
         "steps": [
+          "Préchauffer le four à 180 °C.",
           "Faire fondre le chocolat avec le beurre.",
           "Mélanger le sucre et les jaunes d’œufs.",
-          "Ajouter le chocolat et la farine, puis les blancs en neige."
+          "Ajouter le chocolat et la farine, puis incorporer délicatement les blancs en neige.",
+          "Verser la pâte dans le moule."
         ]
       },
       {
         "title": "Cuisson",
-        "steps": [
-          "Cuire à four moyen pendant 1/2 h, à 180 °C."
-        ]
+        "steps": ["Cuire à four moyen pendant 30 min, à 180 °C."]
       }
     ],
     "notes": []
@@ -523,16 +526,17 @@
     "title": "Gâteau au citron",
     "slug": "gateau-au-citron",
     "author": "Maman",
-    "description": "Gâteau de Vichy garni ou accompagné d’une crème au citron.",
+    "description": "Gâteau de Vichy coupé en deux disques et garni de crème au citron.",
     "heroImageUrl": "",
     "servings": {
       "quantity": 6,
       "unit": "personnes"
     },
     "prepTime": "",
-    "cookTime": "3/4 h",
+    "cookTime": "45 min",
     "totalTime": "",
-    "temperature": "four moyen",
+    "temperature": "160 °C",
+    "equipment": ["1 moule à manqué", "1 casserole", "1 couteau à longue lame"],
     "ingredients": [
       {
         "name": "œufs",
@@ -581,10 +585,11 @@
       {
         "title": "Gâteau de Vichy",
         "steps": [
+          "Préchauffer le four à 160 °C.",
           "Mélanger le sucre avec 3 jaunes d’œufs + 1 œuf entier.",
           "Battre les blancs en neige ferme.",
           "Les incorporer à la pâte en intercalant la farine.",
-          "Cuire à four moyen pendant 3/4 h."
+          "Verser la pâte dans le moule et cuire 45 min à 160 °C."
         ]
       },
       {
@@ -594,6 +599,14 @@
           "Faire fondre.",
           "Râper finement le zeste de citron, l’ajouter ainsi que le jus à la composition.",
           "Tourner sur le feu pour faire prendre la crème, mais attention qu’elle ne tourne pas."
+        ]
+      },
+      {
+        "title": "Montage",
+        "steps": [
+          "Laisser refroidir complètement le gâteau de Vichy.",
+          "Couper horizontalement le gâteau en deux disques à l’aide d’un couteau à longue lame.",
+          "Étaler la crème au citron sur le disque inférieur, puis replacer délicatement le disque supérieur."
         ]
       }
     ],
@@ -609,8 +622,10 @@
     "referenceServings": 6,
     "prepTime": "",
     "cookTime": "",
-    "totalTime": "10 à 12 h de repos",
+    "restTime": "10 à 12 h au réfrigérateur",
+    "totalTime": "10 à 12 h de repos, hors préparation",
     "temperature": "",
+    "equipment": ["1 batteur électrique", "1 maryse", "1 plat de service"],
     "ingredients": [
       {
         "name": "mascarpone",
@@ -679,9 +694,7 @@
       },
       {
         "title": "Repos",
-        "steps": [
-          "Mettre au frigo 10 à 12 h."
-        ]
+        "steps": ["Mettre au frigo 10 à 12 h."]
       }
     ],
     "notes": [
@@ -698,8 +711,10 @@
     "yieldLabel": "Environ 1,3 kg de pâte",
     "prepTime": "",
     "cookTime": "",
-    "totalTime": "1/4 h de repos",
+    "restTime": "15 min",
+    "totalTime": "15 min de repos, hors préparation",
     "temperature": "",
+    "equipment": ["1 rouleau à pâtisserie"],
     "ingredients": [
       {
         "name": "farine",
@@ -723,7 +738,7 @@
         "name": "eau",
         "quantity": "1",
         "unit": "verre",
-        "notes": ""
+        "notes": "environ 20 cl, à ajouter progressivement"
       }
     ],
     "sections": [
@@ -731,19 +746,16 @@
         "title": "Préparation",
         "steps": [
           "Mettre la farine sur le plan de travail.",
-          "Faire un puits et mettre la margarine en morceaux, puis le sel et l’eau.",
-          "Garder 70 g de margarine.",
-          "Malaxer et ajouter l’eau au fur et à mesure.",
-          "Étaler et tartiner sur toute la surface.",
-          "Replier : 2 fois dans un bout, 1 fois l’autre.",
-          "Étaler et plier à nouveau.",
-          "Laisser reposer 1/4 h avant utilisation."
+          "Réserver 70 g de margarine. Mettre le reste de la margarine en morceaux dans un puits formé au centre de la farine, puis ajouter le sel.",
+          "Malaxer en ajoutant progressivement l’eau, jusqu’à obtenir une pâte homogène.",
+          "Étaler la pâte au rouleau, puis répartir les 70 g de margarine réservés sur toute la surface.",
+          "Effectuer un premier tour simple : replier un tiers de la pâte vers le centre, puis rabattre l’autre tiers par-dessus.",
+          "Étaler de nouveau la pâte, puis effectuer une seconde fois le même pliage en trois.",
+          "Laisser reposer 15 min avant utilisation."
         ]
       }
     ],
-    "notes": [
-      "La formulation exacte du pliage était difficile à lire."
-    ]
+    "notes": []
   },
   {
     "title": "Crumble aux pommes du verger",
@@ -760,6 +772,7 @@
     "cookTime": "35 min",
     "totalTime": "",
     "temperature": "180 °C",
+    "equipment": ["1 plat à gratin"],
     "ingredients": [
       {
         "name": "pommes",
@@ -831,9 +844,7 @@
         ]
       }
     ],
-    "notes": [
-      "Matériel : plat à gratin."
-    ]
+    "notes": []
   },
   {
     "title": "Cake orange",
@@ -842,6 +853,7 @@
     "description": "Cake à l’orange et au beurre salé avec glaçage ou sirop à l’orange.",
     "heroImageUrl": "",
     "servings": null,
+    "referenceServings": 6,
     "prepTime": "",
     "cookTime": "40 min",
     "totalTime": "",
@@ -920,9 +932,7 @@
       },
       {
         "title": "Cuisson",
-        "steps": [
-          "Cuire 40 min à 180 °C."
-        ]
+        "steps": ["Cuire 40 min à 180 °C."]
       },
       {
         "title": "Finition",
@@ -945,9 +955,10 @@
       "unit": "moule tablette ou 12 mini cakes"
     },
     "prepTime": "",
-    "cookTime": "40 min grand cake ou 30 min petits cakes",
+    "cookTime": "30 à 40 min selon le format",
     "totalTime": "",
     "temperature": "180 °C",
+    "equipment": ["1 moule à cake ou 12 moules à mini-cakes"],
     "ingredients": [
       {
         "name": "persil",
@@ -1039,14 +1050,10 @@
       },
       {
         "title": "Service",
-        "steps": [
-          "Accompagner d’une salade verte."
-        ]
+        "steps": ["Accompagner d’une salade verte."]
       }
     ],
-    "notes": [
-      "Meilleur préparé la veille."
-    ]
+    "notes": ["Meilleur préparé la veille."]
   },
   {
     "title": "Clafoutis poires et framboises",
@@ -1055,8 +1062,9 @@
     "description": "Clafoutis aux poires, avec quelques framboises facultatives.",
     "heroImageUrl": "",
     "servings": null,
+    "referenceServings": 6,
     "prepTime": "",
-    "cookTime": "10 min + 35 à 40 min",
+    "cookTime": "45 à 50 min",
     "totalTime": "",
     "temperature": "200 °C puis 180 °C",
     "ingredients": [
@@ -1118,7 +1126,7 @@
         "name": "poires",
         "quantity": "2 à 3",
         "unit": "",
-        "notes": "noté « 2/3 poires »"
+        "notes": ""
       }
     ],
     "sections": [
@@ -1134,9 +1142,7 @@
       },
       {
         "title": "Cuisson",
-        "steps": [
-          "Cuire 10 min à 200 °C puis 35 à 40 min à 180 °C."
-        ]
+        "steps": ["Cuire 10 min à 200 °C puis 35 à 40 min à 180 °C."]
       }
     ],
     "notes": []
@@ -1164,7 +1170,7 @@
         "name": "pomme de terre",
         "quantity": "1",
         "unit": "",
-        "notes": "PDT sur la recette"
+        "notes": ""
       },
       {
         "name": "ail",
@@ -1188,7 +1194,7 @@
         "name": "Vache qui rit / Kiri",
         "quantity": "2",
         "unit": "portions",
-        "notes": "Carré frais indiqué par correction utilisateur"
+        "notes": ""
       },
       {
         "name": "thym",
@@ -1247,12 +1253,13 @@
     "cookTime": "45 min",
     "totalTime": "",
     "temperature": "feu doux",
+    "equipment": ["1 cocotte-minute"],
     "ingredients": [
       {
         "name": "jarret de veau",
         "quantity": "4",
         "unit": "tranches",
-        "notes": "200 g indiqué sur la recette"
+        "notes": "environ 200 g chacune"
       },
       {
         "name": "huile",
@@ -1340,10 +1347,12 @@
       "quantity": 1,
       "unit": "cake"
     },
+    "referenceServings": 6,
     "prepTime": "10 min",
     "cookTime": "60 min",
     "totalTime": "1 h 10 min",
     "temperature": "165 °C",
+    "equipment": ["1 moule à cake"],
     "ingredients": [
       {
         "name": "farine",
@@ -1403,7 +1412,7 @@
         "name": "eau",
         "quantity": "75",
         "unit": "g",
-        "notes": "pour le sirop, note manuscrite 0,08 l"
+        "notes": "pour le sirop"
       },
       {
         "name": "sucre",
@@ -1456,6 +1465,7 @@
     "cookTime": "30 min",
     "totalTime": "",
     "temperature": "190 °C",
+    "equipment": ["1 casserole", "1 plaque de cuisson"],
     "ingredients": [
       {
         "name": "beurre",
@@ -1520,9 +1530,7 @@
       },
       {
         "title": "Cuisson",
-        "steps": [
-          "Cuire 30 min à 190 °C."
-        ]
+        "steps": ["Cuire 30 min à 190 °C."]
       }
     ],
     "notes": []
@@ -1534,6 +1542,7 @@
     "description": "Cake salé au chèvre, noix, olives et comté râpé.",
     "heroImageUrl": "",
     "servings": null,
+    "referenceServings": 6,
     "prepTime": "",
     "cookTime": "30 min",
     "totalTime": "",
@@ -1567,7 +1576,7 @@
         "name": "chèvre",
         "quantity": "150",
         "unit": "g",
-        "notes": "écrit « chivre » sur la recette"
+        "notes": ""
       },
       {
         "name": "lait",
@@ -1618,9 +1627,7 @@
       },
       {
         "title": "Cuisson",
-        "steps": [
-          "Cuire 30 min à 180 °C."
-        ]
+        "steps": ["Cuire 30 min à 180 °C."]
       }
     ],
     "notes": []
@@ -1632,10 +1639,12 @@
     "description": "Cake salé au chèvre, courgette, gruyère râpé et cerfeuil.",
     "heroImageUrl": "",
     "servings": null,
+    "referenceServings": 6,
     "prepTime": "",
     "cookTime": "45 min",
     "totalTime": "",
     "temperature": "180 °C",
+    "equipment": ["1 moule à cake"],
     "ingredients": [
       {
         "name": "œufs",
@@ -1695,7 +1704,7 @@
         "name": "cerfeuil",
         "quantity": "1",
         "unit": "bouquet",
-        "notes": "correction utilisateur"
+        "notes": ""
       },
       {
         "name": "sel",
@@ -1725,9 +1734,7 @@
       },
       {
         "title": "Cuisson",
-        "steps": [
-          "Cuire 45 min à 180 °C."
-        ]
+        "steps": ["Cuire 45 min à 180 °C."]
       }
     ],
     "notes": []
@@ -1746,6 +1753,7 @@
     "cookTime": "30 min",
     "totalTime": "50 min",
     "temperature": "180 °C",
+    "equipment": ["1 poêle", "6 petites cocottes"],
     "ingredients": [
       {
         "name": "filet de cabillaud sans peau et sans arêtes",
@@ -1845,8 +1853,10 @@
     "yieldLabel": "Environ 500 g de pâte",
     "prepTime": "",
     "cookTime": "",
-    "totalTime": "2 à 3 h de repos, idéalement 1 nuit",
+    "restTime": "2 à 3 h au réfrigérateur, idéalement 1 nuit",
+    "totalTime": "2 à 3 h de repos, hors préparation",
     "temperature": "",
+    "equipment": ["1 rouleau à pâtisserie"],
     "ingredients": [
       {
         "name": "beurre à température ambiante",
@@ -1910,16 +1920,19 @@
     "description": "Pain de poisson au concentré de tomate, crème fraîche et œufs, servi froid avec mayonnaise maison.",
     "heroImageUrl": "",
     "servings": null,
+    "referenceServings": 6,
     "prepTime": "30 min",
-    "cookTime": "40 min",
-    "totalTime": "",
+    "cookTime": "50 à 55 min",
+    "restTime": "Jusqu’à complet refroidissement",
+    "totalTime": "1 h 20 à 1 h 25, hors refroidissement",
     "temperature": "th. 7 / 210 °C",
+    "equipment": ["1 moule à cake", "1 plat pour bain-marie"],
     "ingredients": [
       {
         "name": "poisson",
         "quantity": "800",
         "unit": "g",
-        "notes": "lotte à l’origine, ou mélange saumon, cabillaud, julienne"
+        "notes": "mélange de poissons surgelés sans arêtes"
       },
       {
         "name": "concentré de tomate",
@@ -1969,24 +1982,25 @@
         "title": "Préparation",
         "steps": [
           "Préparer un moule à cake avec du papier sulfurisé au fond.",
-          "Cuire le poisson au court-bouillon acheté tout prêt selon la quantité, environ 10 à 15 min.",
+          "Cuire le mélange de poissons surgelés dans un court-bouillon prêt à l’emploi, environ 10 à 15 min, puis bien l’égoutter.",
           "Mélanger dans une jatte le concentré, les œufs, la crème et la Maïzena diluée.",
           "Ajouter le sel et le poivre, puis goûter pour vérifier l’assaisonnement.",
-          "Ajouter le poisson dans la jatte et mélanger le tout au robot pour obtenir la consistance souhaitée et réduire les arêtes s’il y en a.",
+          "Ajouter le poisson dans la jatte et mélanger le tout au robot jusqu’à obtenir la consistance souhaitée.",
           "Préchauffer le four à 210 °C (th. 7).",
           "Verser le tout dans le moule beurré.",
           "Cuire au bain-marie dans un four à th. 7 pendant 40 min.",
           "Vérifier la cuisson avec un couteau ; le dessus doit être légèrement doré.",
-          "Laisser bien refroidir avant de démouler."
+          "Laisser complètement refroidir avant de démouler, puis réserver au réfrigérateur jusqu’au service."
         ]
       },
       {
         "title": "Service",
         "steps": [
-          "Servir avec une belle mayonnaise maison et garnir de salade autour du plat."
+          "Servir froid avec une mayonnaise maison et garnir de salade autour du plat."
         ]
       }
     ],
+    "relatedRecipeSlugs": ["mayonnaise"],
     "notes": []
   },
   {
@@ -1996,14 +2010,16 @@
     "description": "Petits coulants au chocolat noir à servir tièdes avec une boule de glace vanille.",
     "heroImageUrl": "",
     "servings": {
-      "quantity": 6,
-      "unit": "moules"
+      "quantity": 5,
+      "unit": "coulants"
     },
-    "referenceServings": 6,
+    "referenceServings": 5,
+    "yieldLabel": "Environ 5 coulants",
     "prepTime": "",
     "cookTime": "10 min",
     "totalTime": "",
     "temperature": "180 °C",
+    "equipment": ["5 empreintes à muffins"],
     "ingredients": [
       {
         "name": "chocolat noir",
@@ -2034,6 +2050,12 @@
         "quantity": "50",
         "unit": "g",
         "notes": ""
+      },
+      {
+        "name": "glace à la vanille",
+        "quantity": "5",
+        "unit": "boules",
+        "notes": "facultatif, pour le service"
       }
     ],
     "sections": [
@@ -2044,26 +2066,22 @@
           "Faire fondre le beurre et le chocolat 2 min au micro-ondes.",
           "Mélanger les œufs, le sucre et la farine.",
           "Verser cette préparation dans le mélange beurre-chocolat.",
-          "Répartir dans les 6 moules."
+          "Répartir dans 5 empreintes à muffins, en forme de petits cupcakes."
         ]
       },
       {
         "title": "Cuisson",
-        "steps": [
-          "Cuire 10 min à four chaud à 180 °C."
-        ]
+        "steps": ["Cuire 10 min à four chaud à 180 °C."]
       },
       {
         "title": "Service",
         "steps": [
-          "Laisser refroidir avant de démouler avec 1 c. à s.",
-          "Servir tiède avec une boule de glace vanille."
+          "Laisser tiédir, puis passer délicatement une cuillère à soupe entre chaque coulant et son moule pour le démouler sans le casser.",
+          "Servir chaque coulant tiède avec une boule de glace à la vanille."
         ]
       }
     ],
-    "notes": [
-      "La phrase « avec 1 c. à s. » est conservée telle quelle car son sens exact n’est pas totalement explicite."
-    ]
+    "notes": ["Cette recette donne plutôt 5 coulants que 6."]
   },
   {
     "title": "Flan au lait concentré sucré Nestlé",
@@ -2071,11 +2089,16 @@
     "author": "Maman",
     "description": "Flan au lait concentré sucré cuit au bain-marie avec caramel.",
     "heroImageUrl": "",
-    "servings": null,
+    "servings": {
+      "quantity": 6,
+      "unit": "personnes"
+    },
+    "referenceServings": 6,
     "prepTime": "",
     "cookTime": "30 à 45 min",
     "totalTime": "",
     "temperature": "170 °C",
+    "equipment": ["1 moule à cake", "1 plat pour bain-marie"],
     "ingredients": [
       {
         "name": "lait concentré sucré",
@@ -2140,6 +2163,7 @@
     "cookTime": "45 à 60 min",
     "totalTime": "1 h 05 à 1 h 20",
     "temperature": "175 °C",
+    "equipment": ["1 moule à cake"],
     "ingredients": [
       {
         "name": "sucre blanc",
@@ -2200,6 +2224,24 @@
         "quantity": "1",
         "unit": "pincée",
         "notes": "première variante facultative"
+      },
+      {
+        "name": "noix de pécan hachées",
+        "quantity": "60",
+        "unit": "g",
+        "notes": "variante avec garniture facultative"
+      },
+      {
+        "name": "cassonade foncée",
+        "quantity": "25",
+        "unit": "g",
+        "notes": "variante avec garniture facultative"
+      },
+      {
+        "name": "cannelle",
+        "quantity": "4",
+        "unit": "g",
+        "notes": "variante avec garniture facultative"
       }
     ],
     "sections": [
@@ -2237,39 +2279,10 @@
       },
       {
         "title": "Conservation",
-        "steps": [
-          "Ce banana bread se congèle très bien."
-        ]
+        "steps": ["Ce banana bread se congèle très bien."]
       }
     ],
-    "subRecipes": [
-      {
-        "title": "Variante avec garniture à la cannelle et aux noix de pécan",
-        "ingredients": [
-          {
-            "name": "noix de pécan hachées",
-            "quantity": "60",
-            "unit": "g",
-            "notes": ""
-          },
-          {
-            "name": "cassonade foncée",
-            "quantity": "25",
-            "unit": "g",
-            "notes": ""
-          },
-          {
-            "name": "cannelle",
-            "quantity": "4",
-            "unit": "g",
-            "notes": ""
-          }
-        ]
-      }
-    ],
-    "notes": [
-      "Un incontournable avec les salades de poulet."
-    ]
+    "notes": ["Un incontournable avec les salades de poulet."]
   },
   {
     "title": "Soupe de champagne",
@@ -2340,6 +2353,7 @@
     "cookTime": "10 min",
     "totalTime": "≈ 1 h",
     "temperature": "180 °C",
+    "equipment": ["1 plaque de cuisson"],
     "ingredients": [
       {
         "name": "beurre",
@@ -2457,6 +2471,7 @@
     "cookTime": "",
     "totalTime": "5 min",
     "temperature": "",
+    "equipment": ["1 mixeur"],
     "ingredients": [
       {
         "name": "moutarde de Dijon",

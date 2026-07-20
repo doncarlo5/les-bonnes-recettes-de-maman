@@ -1,46 +1,70 @@
 import type { Id } from "@/convex/_generated/dataModel";
-import { getPublicationState, getRecipeReadiness } from "@/lib/recipe-admin-domain";
+import {
+  getPublicationState,
+  getRecipeReadiness,
+} from "@/lib/recipe-admin-domain";
 import type { RecipeCategory } from "@/lib/recipe-categories";
 import type { EditableRecipe, EditableRecipeSummary, Recipe } from "./types";
 
 const localized = {
   title: "Tarte de démonstration",
   author: "Maman",
-  description: "Une recette utilisée uniquement par les tests du studio mobile.",
+  description:
+    "Une recette utilisée uniquement par les tests du studio mobile.",
   yieldLabel: "6 personnes",
   prepTime: "20 min",
   cookTime: "30 min",
+  restTime: "",
   totalTime: "50 min",
   timeLabel: "50 min",
   temperature: "four moyen",
+  equipment: ["1 moule à tarte"],
   ingredients: [
     { name: "Farine", quantity: "200", unit: "g", notes: "tamisée" },
     { name: "Œufs", quantity: "3", unit: "", notes: "" },
   ],
-  sections: [{ title: "Préparation", steps: ["Mélanger les ingrédients.", "Cuire au four."] }],
-  subRecipes: [{
-    title: "Crème",
-    ingredients: [
-      { name: "Lait", quantity: "100", unit: "ml", notes: "" },
-      { name: "Vanille", quantity: "un peu", unit: "", notes: "" },
-    ],
-  }],
+  sections: [
+    {
+      title: "Préparation",
+      steps: ["Mélanger les ingrédients.", "Cuire au four."],
+    },
+  ],
+  subRecipes: [
+    {
+      title: "Crème",
+      ingredients: [
+        { name: "Lait", quantity: "100", unit: "ml", notes: "" },
+        { name: "Vanille", quantity: "un peu", unit: "", notes: "" },
+      ],
+    },
+  ],
   notes: ["Servir tiède."],
 };
 
 const content = {
   defaultLocale: "fr" as const,
   referenceServings: 6,
+  relatedRecipeSlugs: [],
   translations: {
     fr: localized,
-    en: { ...localized, title: "Demo tart", description: "A recipe used by mobile studio tests.", yieldLabel: "6 servings", prepTime: "" },
+    en: {
+      ...localized,
+      title: "Demo tart",
+      description: "A recipe used by mobile studio tests.",
+      yieldLabel: "6 servings",
+      prepTime: "",
+    },
   },
   categories: ["dessert"] as RecipeCategory[],
   status: "published" as const,
 };
 
 export function getRecipeAdminE2EFixtures() {
-  if (process.env.NODE_ENV === "production" || process.env.RECIPE_ADMIN_E2E !== "1") return null;
+  if (
+    process.env.NODE_ENV === "production" ||
+    process.env.RECIPE_ADMIN_E2E !== "1"
+  )
+    return null;
   const publication = getPublicationState("published", 3, 3);
   const readiness = getRecipeReadiness(content, false);
   const recipe: EditableRecipe = {
@@ -95,6 +119,7 @@ export function getPublicRecipeE2EFixture(locale: "fr" | "en", slug?: string) {
     imageCredit: recipe.imageCredit,
     defaultLocale: recipe.defaultLocale,
     referenceServings: recipe.referenceServings,
+    relatedRecipes: [],
     categories: recipe.categories,
     status: recipe.status,
     ...recipe.translations[locale],
@@ -105,7 +130,10 @@ export function getPublicRecipeE2EFixture(locale: "fr" | "en", slug?: string) {
     return {
       ...publicRecipe,
       slug,
-      title: locale === "fr" ? "Autre recette de démonstration" : "Another demo recipe",
+      title:
+        locale === "fr"
+          ? "Autre recette de démonstration"
+          : "Another demo recipe",
       referenceServings: 4,
       yieldLabel: locale === "fr" ? "4 personnes" : "4 servings",
     } satisfies Recipe;
@@ -114,7 +142,10 @@ export function getPublicRecipeE2EFixture(locale: "fr" | "en", slug?: string) {
     return {
       ...publicRecipe,
       slug,
-      title: locale === "fr" ? "Ancienne recette sans portions" : "Legacy recipe without servings",
+      title:
+        locale === "fr"
+          ? "Ancienne recette sans portions"
+          : "Legacy recipe without servings",
       referenceServings: undefined,
       yieldLabel: "2 cakes",
     } satisfies Recipe;

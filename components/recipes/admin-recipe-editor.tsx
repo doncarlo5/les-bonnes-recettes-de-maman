@@ -175,7 +175,8 @@ type RecipeFieldName = FieldPath<RecipeDraftFormInput>;
 type RecipeFieldArrayName = FieldArrayPath<RecipeDraftFormInput>;
 type PrimitiveArrayFieldName = Extract<
   RecipeFieldName,
-  `translations.${LocaleKey}.${"notes" | `sections.${number}.steps`}`
+  | "relatedRecipeSlugs"
+  | `translations.${LocaleKey}.${"notes" | "equipment" | `sections.${number}.steps`}`
 >;
 type RecipeForm = UseFormReturn<
   RecipeDraftFormInput,
@@ -245,9 +246,11 @@ const blankLocalizedRecipe = {
   yieldLabel: "",
   prepTime: "",
   cookTime: "",
+  restTime: "",
   totalTime: "",
   timeLabel: "",
   temperature: "",
+  equipment: [],
   ingredients: [blankIngredient],
   sections: [
     {
@@ -262,6 +265,7 @@ const blankLocalizedRecipe = {
 const blankRecipe: RecipeDraftPayload = {
   defaultLocale: "fr",
   referenceServings: undefined,
+  relatedRecipeSlugs: [],
   translations: {
     fr: blankLocalizedRecipe,
     en: blankLocalizedRecipe,
@@ -1222,6 +1226,13 @@ function MobileSectionFields({
           placeholder="25 min"
         />
         <TextField
+          label="Repos"
+          name={`${base}.restTime`}
+          register={form.register}
+          errors={errors}
+          placeholder="30 min"
+        />
+        <TextField
           label="Total"
           name={`${base}.totalTime`}
           register={form.register}
@@ -1241,6 +1252,22 @@ function MobileSectionFields({
           register={form.register}
           errors={errors}
           placeholder="180 °C"
+        />
+        <TextArray
+          title="Ustensiles"
+          addLabel="Ajouter un ustensile"
+          placeholder="1 moule à cake"
+          name={`${base}.equipment`}
+          control={form.control}
+          register={form.register}
+        />
+        <TextArray
+          title="Recettes associées"
+          addLabel="Ajouter une recette associée"
+          placeholder="mayonnaise"
+          name="relatedRecipeSlugs"
+          control={form.control}
+          register={form.register}
         />
       </FieldGroup>
     );
@@ -1616,6 +1643,14 @@ function LocalizedRecipeFields({
           placeholder="25 min"
         />
         <TextField
+          label="Repos"
+          name={`${baseName}.restTime`}
+          register={register}
+          errors={errors}
+          serverErrors={serverErrors}
+          placeholder="30 min"
+        />
+        <TextField
           label="Total"
           name={`${baseName}.totalTime`}
           register={register}
@@ -1624,6 +1659,15 @@ function LocalizedRecipeFields({
           placeholder="45 min"
         />
       </div>
+
+      <TextArray
+        title="Ustensiles"
+        addLabel="Ajouter un ustensile"
+        placeholder="1 moule à cake"
+        name={`${baseName}.equipment`}
+        control={control}
+        register={register}
+      />
 
       <IngredientsArray
         title="Ingredients"
@@ -2009,6 +2053,36 @@ function NotesArray({
   control: RecipeControl;
   register: RecipeRegister;
 }) {
+  return (
+    <TextArray
+      title="Notes"
+      addLabel="Ajouter une note"
+      placeholder="Note"
+      name={name}
+      control={control}
+      register={register}
+      multiline
+    />
+  );
+}
+
+function TextArray({
+  title,
+  addLabel,
+  placeholder,
+  name,
+  control,
+  register,
+  multiline = false,
+}: {
+  title: string;
+  addLabel: string;
+  placeholder: string;
+  name: PrimitiveArrayFieldName;
+  control: RecipeControl;
+  register: RecipeRegister;
+  multiline?: boolean;
+}) {
   const { append, fields, move, remove } = useFieldArray({
     control,
     name: primitiveArrayPath(name),
@@ -2017,17 +2091,24 @@ function NotesArray({
   return (
     <FieldSet>
       <ArrayHeader
-        title="Notes"
+        title={title}
         onAdd={() => append("" as never)}
-        addLabel="Ajouter une note"
+        addLabel={addLabel}
       />
       <div className="flex flex-col gap-2">
         {fields.map((field, index) => (
           <div key={field.id} className="grid gap-2 md:grid-cols-[1fr_auto]">
-            <Textarea
-              placeholder="Note"
-              {...register(primitiveChildFieldPath(name, index))}
-            />
+            {multiline ? (
+              <Textarea
+                placeholder={placeholder}
+                {...register(primitiveChildFieldPath(name, index))}
+              />
+            ) : (
+              <Input
+                placeholder={placeholder}
+                {...register(primitiveChildFieldPath(name, index))}
+              />
+            )}
             <ArrayControls
               index={index}
               length={fields.length}
@@ -2197,9 +2278,12 @@ function sectionForField(field: string): MobileSection {
     field.includes(".yieldLabel") ||
     field.includes(".prepTime") ||
     field.includes(".cookTime") ||
+    field.includes(".restTime") ||
     field.includes(".totalTime") ||
     field.includes(".timeLabel") ||
-    field.includes(".temperature")
+    field.includes(".temperature") ||
+    field.includes(".equipment") ||
+    field.includes("relatedRecipeSlugs")
   ) {
     return "details";
   }

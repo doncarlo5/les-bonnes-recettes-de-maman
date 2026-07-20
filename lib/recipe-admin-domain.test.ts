@@ -12,9 +12,11 @@ function recipe(title: string, cookTime = ""): RecipeDraftContentLike {
     yieldLabel: "Environ 500 g de pâte",
     prepTime: "15 min",
     cookTime,
+    restTime: "",
     totalTime: "15 min",
     timeLabel: "15 min",
     temperature: "",
+    equipment: [],
     ingredients: [{ name: "farine", quantity: "500", unit: "g", notes: "" }],
     sections: [{ title: "Préparation", steps: ["Mélanger."] }],
     subRecipes: [],
@@ -23,6 +25,7 @@ function recipe(title: string, cookTime = ""): RecipeDraftContentLike {
 
   return {
     defaultLocale: "fr",
+    relatedRecipeSlugs: [],
     translations: { fr: localized, en: { ...localized, title: "Dough" } },
     categories: [],
   };

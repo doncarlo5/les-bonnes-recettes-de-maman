@@ -588,6 +588,7 @@ export function toFormValues(recipe: EditableRecipe): RecipeDraftPayload {
   return cloneRecipe({
     defaultLocale: recipe.defaultLocale,
     referenceServings: recipe.referenceServings,
+    relatedRecipeSlugs: recipe.relatedRecipeSlugs,
     translations: recipe.translations,
     categories: recipe.categories,
     legacyCategoryLabels: recipe.legacyCategoryLabels,
@@ -599,6 +600,9 @@ export function normalizePayload(
 ): RecipeDraftPayload {
   return {
     ...value,
+    relatedRecipeSlugs: value.relatedRecipeSlugs.flatMap((slug) =>
+      slug.trim() ? [slug.trim()] : [],
+    ),
     categories: [...new Set(value.categories ?? [])],
     legacyCategoryLabels: (value.legacyCategoryLabels ?? []).flatMap((label) =>
       label.trim() ? [label.trim()] : [],
@@ -615,6 +619,7 @@ function draftFingerprint(value: RecipeDraftPayload) {
   return JSON.stringify({
     defaultLocale: normalized.defaultLocale,
     referenceServings: normalized.referenceServings,
+    relatedRecipeSlugs: normalized.relatedRecipeSlugs,
     translations: normalized.translations,
     categories: normalized.categories,
     legacyCategoryLabels: normalized.legacyCategoryLabels,
@@ -627,6 +632,9 @@ function normalizeLocalizedRecipe(
   return {
     ...recipe,
     yieldLabel: recipe.yieldLabel.trim(),
+    equipment: recipe.equipment.flatMap((item) =>
+      item.trim() ? [item.trim()] : [],
+    ),
     ingredients: recipe.ingredients.map((ingredient) => ({
       name: ingredient.name.trim(),
       quantity: ingredient.quantity.trim(),
