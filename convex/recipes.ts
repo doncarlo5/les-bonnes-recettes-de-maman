@@ -34,6 +34,7 @@ declare const process: {
 };
 
 const localeValidator = v.union(v.literal("fr"), v.literal("en"));
+const recipeSlugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const recipeCategoryValidator = v.union(
   v.literal("dessert"),
   v.literal("plat"),
@@ -172,6 +173,7 @@ const categoryResetSlugs = new Set([
   "pate-feuilletee-maman",
   "vacherin",
 ]);
+const obsoleteRecipeSlugs = ["moka"] as const;
 
 export const list = query({
   args: {
@@ -348,6 +350,7 @@ export const create = mutation({
     const title = normalizedRecipe.translations.fr.title.trim();
     const baseSlug = slugify(title || "nouvelle-recette");
     const slug = await getAvailableSlug(ctx, baseSlug);
+    assertNoSelfRelatedRecipe(slug, normalizedRecipe.relatedRecipeSlugs);
 
     const storedTranslations = toStoredTranslations(
       normalizedRecipe.translations,
@@ -424,6 +427,10 @@ export const saveDraft = mutation({
     if (!existing) {
       throw new Error("RECIPE_NOT_FOUND");
     }
+    assertNoSelfRelatedRecipe(
+      existing.slug,
+      normalizedRecipe.relatedRecipeSlugs,
+    );
 
     const currentDraft = await getRecipeDraft(ctx, existing._id);
     const currentRevision = currentDraft?.revision ?? 0;
@@ -500,6 +507,10 @@ export const publishDraft = mutation({
     }
     assertRecipeBounds(toEditableRecipeContent(draft, recipe.slug));
     assertDraftReadyForPublication(draft, recipe.slug);
+    const relatedRecipeSlugs = normalizeRelatedRecipeSlugs(
+      draft.relatedRecipeSlugs ?? [],
+    );
+    await assertRelatedRecipesPublishable(ctx, recipe.slug, relatedRecipeSlugs);
 
     const publishedPatch = {
       heroImageStorageId: draft.heroImageStorageId,
@@ -507,7 +518,7 @@ export const publishDraft = mutation({
       imageCredit: draft.imageCredit,
       defaultLocale: draft.defaultLocale,
       referenceServings: draft.referenceServings,
-      relatedRecipeSlugs: draft.relatedRecipeSlugs,
+      relatedRecipeSlugs,
       translations: draft.translations,
       ...toStoredCategoryFields(resolveRecipeCategories(draft)),
       status: "published",
@@ -520,6 +531,7 @@ export const publishDraft = mutation({
       recipe.slug,
     );
     await ctx.db.patch(draft._id, {
+      relatedRecipeSlugs,
       publishedRevision: draft.revision,
       updatedAt: savedAt,
     });
@@ -621,23 +633,7 @@ export const deleteRecipe = mutation({
       throw new Error(`RECIPE_DRAFT_CONFLICT:${currentRevision}`);
     }
 
-    const storageIds = new Set(
-      [recipe.heroImageStorageId, draft?.heroImageStorageId].filter(
-        (storageId): storageId is Id<"_storage"> => storageId !== undefined,
-      ),
-    );
-    if (draft) await ctx.db.delete(draft._id);
-    await ctx.db.delete(recipe._id);
-    await Promise.all(
-      [...storageIds].map((storageId) =>
-        deleteStorageIfOrphaned(ctx, storageId),
-      ),
-    );
-    await ctx.scheduler.runAfter(
-      0,
-      internal.commentMaintenance.cleanupRecipeComments,
-      { recipeId: recipe._id },
-    );
+    await removeRecipeBySlugIfPresent(ctx, recipe.slug);
 
     return { slug: recipe.slug };
   },
@@ -851,80 +847,273 @@ export const seed = mutation({
       throw new Error("RECIPE_NOT_FOUND");
     }
 
-    const changes = await Promise.all(
-      selectedRecipes.map(async (recipe) => {
-        const existing = await ctx.db
-          .query("recipes")
-          .withIndex("by_slug", (q) => q.eq("slug", recipe.slug))
-          .unique();
-
-        if (existing) {
-          const draft = await getRecipeDraft(ctx, existing._id);
-          const source = draft ?? existing;
-          const referenceServings = referenceServingsResetSlugs.has(recipe.slug)
-            ? recipe.referenceServings
-            : (source.referenceServings ?? recipe.referenceServings);
-          const resetCategories = categoryResetSlugs.has(recipe.slug);
-          const categoryFields = resolveRecipeCategories(
-            resetCategories
-              ? {
-                  categories: recipe.categories,
-                  legacyCategoryLabels: recipe.legacyCategoryLabels,
-                }
-              : {
-                  categories: recipe.categories,
-                  legacyCategoryLabels: [
-                    ...recipe.legacyCategoryLabels,
-                    ...(source.legacyCategoryLabels ?? []),
-                  ],
-                  tags: source.tags,
-                },
-          );
-          const seededContent = {
-            defaultLocale: recipe.defaultLocale,
-            relatedRecipeSlugs: recipe.relatedRecipeSlugs,
-            translations: recipe.translations,
-            ...categoryFields,
-            tags: toLegacyTags(
-              categoryFields.categories,
-              categoryFields.legacyCategoryLabels,
-            ),
-            ...(referenceServings !== undefined ? { referenceServings } : {}),
-          };
-          const nextDraft = {
-            recipeId: existing._id,
-            heroImageUrl: source.heroImageUrl,
-            ...(source.heroImageStorageId
-              ? { heroImageStorageId: source.heroImageStorageId }
-              : {}),
-            ...(source.imageCredit ? { imageCredit: source.imageCredit } : {}),
-            ...seededContent,
-            revision: (draft?.revision ?? 0) + 1,
-            publishedRevision:
-              draft?.publishedRevision ??
-              (existing.status === "published" ? 0 : -1),
-            updatedAt: Date.now(),
-          };
-
-          assertProspectiveDraft(nextDraft, existing.slug);
-          if (draft) await ctx.db.replace(draft._id, nextDraft);
-          else await ctx.db.insert("recipeDrafts", nextDraft);
-          return "updated" as const;
-        } else {
-          assertStoredRecipeBytes(recipe);
-          await ctx.db.insert("recipes", recipe);
-          return "inserted" as const;
-        }
-      }),
-    );
-
-    return {
-      inserted: changes.filter((change) => change === "inserted").length,
-      updated: changes.filter((change) => change === "updated").length,
-      total: selectedRecipes.length,
-    };
+    return syncSeedRecipes(ctx, selectedRecipes, false);
   },
 });
+
+export const syncProduction = mutation({
+  args: { adminPassword: v.string() },
+  handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
+    const [result, removals] = await Promise.all([
+      syncSeedRecipes(ctx, recipes, true),
+      Promise.all(
+        obsoleteRecipeSlugs.map((slug) =>
+          removeRecipeBySlugIfPresent(ctx, slug),
+        ),
+      ),
+    ]);
+    const removed = removals.filter(Boolean).length;
+    return { ...result, removed };
+  },
+});
+
+async function syncSeedRecipes(
+  ctx: MutationCtx,
+  selectedRecipes: typeof recipes,
+  publish: boolean,
+) {
+  const changes = await Promise.all(
+    selectedRecipes.map(async (recipe) => {
+      const existing = await ctx.db
+        .query("recipes")
+        .withIndex("by_slug", (q) => q.eq("slug", recipe.slug))
+        .unique();
+
+      if (!existing) {
+        assertStoredRecipeBytes(recipe);
+        await ctx.db.insert("recipes", recipe);
+        return "inserted" as const;
+      }
+
+      const draft = await getRecipeDraft(ctx, existing._id);
+      const source = draft ?? existing;
+      const resetReferenceServings =
+        publish || referenceServingsResetSlugs.has(recipe.slug);
+      const referenceServings = resetReferenceServings
+        ? recipe.referenceServings
+        : (source.referenceServings ?? recipe.referenceServings);
+      const resetCategories = publish || categoryResetSlugs.has(recipe.slug);
+      const categoryFields = resolveRecipeCategories(
+        resetCategories
+          ? {
+              categories: recipe.categories,
+              legacyCategoryLabels: recipe.legacyCategoryLabels,
+            }
+          : {
+              categories: recipe.categories,
+              legacyCategoryLabels: [
+                ...recipe.legacyCategoryLabels,
+                ...(source.legacyCategoryLabels ?? []),
+              ],
+              tags: source.tags,
+            },
+      );
+      const seededContent = {
+        defaultLocale: recipe.defaultLocale,
+        relatedRecipeSlugs: recipe.relatedRecipeSlugs,
+        translations: recipe.translations,
+        ...categoryFields,
+        tags: toLegacyTags(
+          categoryFields.categories,
+          categoryFields.legacyCategoryLabels,
+        ),
+        ...(referenceServings !== undefined ? { referenceServings } : {}),
+      };
+      const publishedPatch = {
+        heroImageStorageId: source.heroImageStorageId,
+        heroImageUrl: source.heroImageUrl,
+        imageCredit: source.imageCredit,
+        defaultLocale: recipe.defaultLocale,
+        referenceServings,
+        relatedRecipeSlugs: recipe.relatedRecipeSlugs,
+        translations: recipe.translations,
+        ...categoryFields,
+        tags: toLegacyTags(
+          categoryFields.categories,
+          categoryFields.legacyCategoryLabels,
+        ),
+        status: "published" as const,
+      };
+      if (
+        publish &&
+        matchesPublishedSeed(existing, publishedPatch) &&
+        (!draft || matchesPublishedDraft(draft, publishedPatch))
+      ) {
+        return "unchanged" as const;
+      }
+      const revision = (draft?.revision ?? 0) + 1;
+      const updatedAt = Date.now();
+      const nextDraft = {
+        recipeId: existing._id,
+        heroImageUrl: source.heroImageUrl,
+        ...(source.heroImageStorageId
+          ? { heroImageStorageId: source.heroImageStorageId }
+          : {}),
+        ...(source.imageCredit ? { imageCredit: source.imageCredit } : {}),
+        ...seededContent,
+        revision,
+        publishedRevision: publish
+          ? revision
+          : (draft?.publishedRevision ??
+            (existing.status === "published" ? 0 : -1)),
+        updatedAt,
+      };
+
+      assertProspectiveDraft(nextDraft, existing.slug);
+      if (publish) {
+        assertStoredRecipeBytes({ ...existing, ...publishedPatch });
+        await ctx.db.patch(existing._id, publishedPatch);
+      }
+      if (draft) await ctx.db.replace(draft._id, nextDraft);
+      else await ctx.db.insert("recipeDrafts", nextDraft);
+      return "updated" as const;
+    }),
+  );
+
+  return {
+    inserted: changes.filter((change) => change === "inserted").length,
+    updated: changes.filter((change) => change === "updated").length,
+    total: selectedRecipes.length,
+  };
+}
+
+function matchesPublishedSeed(
+  recipe: RecipeDoc,
+  expected: Pick<
+    RecipeDoc,
+    | "heroImageStorageId"
+    | "heroImageUrl"
+    | "imageCredit"
+    | "defaultLocale"
+    | "referenceServings"
+    | "relatedRecipeSlugs"
+    | "translations"
+    | "categories"
+    | "legacyCategoryLabels"
+    | "tags"
+    | "status"
+  >,
+) {
+  return sameJson(
+    {
+      heroImageStorageId: recipe.heroImageStorageId,
+      heroImageUrl: recipe.heroImageUrl,
+      imageCredit: recipe.imageCredit,
+      defaultLocale: recipe.defaultLocale,
+      referenceServings: recipe.referenceServings,
+      relatedRecipeSlugs: recipe.relatedRecipeSlugs,
+      translations: recipe.translations,
+      categories: recipe.categories,
+      legacyCategoryLabels: recipe.legacyCategoryLabels,
+      tags: recipe.tags,
+      status: recipe.status,
+    },
+    expected,
+  );
+}
+
+function matchesPublishedDraft(
+  draft: RecipeDraftDoc,
+  expected: Pick<
+    RecipeDoc,
+    | "heroImageStorageId"
+    | "heroImageUrl"
+    | "imageCredit"
+    | "defaultLocale"
+    | "referenceServings"
+    | "relatedRecipeSlugs"
+    | "translations"
+    | "categories"
+    | "legacyCategoryLabels"
+    | "tags"
+  >,
+) {
+  const {
+    heroImageStorageId,
+    heroImageUrl,
+    imageCredit,
+    defaultLocale,
+    referenceServings,
+    relatedRecipeSlugs,
+    translations,
+    categories,
+    legacyCategoryLabels,
+    tags,
+  } = expected;
+  return (
+    draft.revision === draft.publishedRevision &&
+    sameJson(
+      {
+        heroImageStorageId: draft.heroImageStorageId,
+        heroImageUrl: draft.heroImageUrl,
+        imageCredit: draft.imageCredit,
+        defaultLocale: draft.defaultLocale,
+        referenceServings: draft.referenceServings,
+        relatedRecipeSlugs: draft.relatedRecipeSlugs,
+        translations: draft.translations,
+        categories: draft.categories,
+        legacyCategoryLabels: draft.legacyCategoryLabels,
+        tags: draft.tags,
+      },
+      {
+        heroImageStorageId,
+        heroImageUrl,
+        imageCredit,
+        defaultLocale,
+        referenceServings,
+        relatedRecipeSlugs,
+        translations,
+        categories,
+        legacyCategoryLabels,
+        tags,
+      },
+    )
+  );
+}
+
+function sameJson(left: unknown, right: unknown) {
+  return JSON.stringify(sortJson(left)) === JSON.stringify(sortJson(right));
+}
+
+function sortJson(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(sortJson);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value)
+        .filter(([, item]) => item !== undefined)
+        .sort(([left], [right]) => left.localeCompare(right))
+        .map(([key, item]) => [key, sortJson(item)]),
+    );
+  }
+  return value;
+}
+
+async function removeRecipeBySlugIfPresent(ctx: MutationCtx, slug: string) {
+  const recipe = await ctx.db
+    .query("recipes")
+    .withIndex("by_slug", (q) => q.eq("slug", slug))
+    .unique();
+  if (!recipe) return false;
+
+  const draft = await getRecipeDraft(ctx, recipe._id);
+  const storageIds = new Set(
+    [recipe.heroImageStorageId, draft?.heroImageStorageId].filter(
+      (storageId): storageId is Id<"_storage"> => storageId !== undefined,
+    ),
+  );
+  if (draft) await ctx.db.delete(draft._id);
+  await ctx.db.delete(recipe._id);
+  await Promise.all(
+    [...storageIds].map((storageId) => deleteStorageIfOrphaned(ctx, storageId)),
+  );
+  await ctx.scheduler.runAfter(
+    0,
+    internal.commentMaintenance.cleanupRecipeComments,
+    { recipeId: recipe._id },
+  );
+  return true;
+}
 
 async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
   if (!recipe.translations || !recipe.defaultLocale) {
@@ -938,17 +1127,20 @@ async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
     : null;
   const relatedRecipes = (
     await Promise.all(
-      (recipe.relatedRecipeSlugs ?? []).slice(0, 20).map(async (slug) => {
-        const related = await ctx.db
-          .query("recipes")
-          .withIndex("by_slug", (q) => q.eq("slug", slug))
-          .unique();
-        if (!related || related.status !== "published") return null;
-        return {
-          slug: related.slug,
-          title: related.translations[locale].title,
-        };
-      }),
+      [...new Set(recipe.relatedRecipeSlugs ?? [])]
+        .filter((slug) => slug !== recipe.slug)
+        .slice(0, 20)
+        .map(async (slug) => {
+          const related = await ctx.db
+            .query("recipes")
+            .withIndex("by_slug", (q) => q.eq("slug", slug))
+            .unique();
+          if (!related || related.status !== "published") return null;
+          return {
+            slug: related.slug,
+            title: related.translations[locale].title,
+          };
+        }),
     )
   ).filter((item): item is { slug: string; title: string } => item !== null);
 
@@ -1343,7 +1535,9 @@ function normalizeCategoryPayload<
 >(source: T) {
   return {
     ...source,
-    relatedRecipeSlugs: [...(source.relatedRecipeSlugs ?? [])],
+    relatedRecipeSlugs: normalizeRelatedRecipeSlugs(
+      source.relatedRecipeSlugs ?? [],
+    ),
     translations: {
       fr: {
         ...source.translations.fr,
@@ -1358,6 +1552,53 @@ function normalizeCategoryPayload<
     },
     ...resolveRecipeCategories(source),
   };
+}
+
+function normalizeRelatedRecipeSlugs(values: readonly string[]) {
+  const slugs = [
+    ...new Set(
+      values.flatMap((value) => {
+        const slug = value.trim();
+        return slug ? [slug] : [];
+      }),
+    ),
+  ];
+  if (slugs.some((slug) => !recipeSlugPattern.test(slug))) {
+    throw new Error("RECIPE_RELATED_RECIPE_INVALID");
+  }
+  return slugs;
+}
+
+function assertNoSelfRelatedRecipe(
+  slug: string,
+  relatedSlugs: readonly string[],
+) {
+  if (relatedSlugs.includes(slug)) {
+    throw new Error("RECIPE_RELATED_RECIPE_SELF_REFERENCE");
+  }
+}
+
+async function assertRelatedRecipesPublishable(
+  ctx: MutationCtx,
+  recipeSlug: string,
+  relatedSlugs: readonly string[],
+) {
+  assertNoSelfRelatedRecipe(recipeSlug, relatedSlugs);
+  const relations = await Promise.all(
+    relatedSlugs.map(async (slug) => ({
+      slug,
+      recipe: await ctx.db
+        .query("recipes")
+        .withIndex("by_slug", (q) => q.eq("slug", slug))
+        .unique(),
+    })),
+  );
+  const invalid = relations.find(
+    ({ recipe }) => !recipe || recipe.status !== "published",
+  );
+  if (invalid) {
+    throw new Error(`RECIPE_RELATED_RECIPE_NOT_FOUND:${invalid.slug}`);
+  }
 }
 
 function assertRecipeAdminPassword(adminPassword: string) {

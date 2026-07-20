@@ -93,6 +93,167 @@ describe("recipe working drafts", () => {
     ).resolves.toMatchObject({ title: "Titre éditorial préservé" });
   });
 
+  test("production sync publishes canonical data and removes obsolete Moka", async () => {
+    const t = convexTest(schema, modules);
+    await t.mutation(api.recipes.seed, {
+      adminPassword: password,
+      slug: "amandin",
+    });
+    const moka = await t.mutation(api.recipes.create, {
+      recipe: recipe("Moka"),
+      adminPassword: password,
+    });
+    await t.mutation(api.recipes.publishDraft, {
+      slug: moka.slug,
+      expectedRevision: moka.revision,
+      adminPassword: password,
+    });
+    await t.run(async (ctx) => {
+      const amandin = await ctx.db
+        .query("recipes")
+        .withIndex("by_slug", (q) => q.eq("slug", "amandin"))
+        .unique();
+      if (!amandin) throw new Error("seed fixture missing");
+      await ctx.db.patch(amandin._id, {
+        referenceServings: 99,
+        categories: ["sale"],
+        legacyCategoryLabels: ["Obsolète"],
+        tags: ["Salé", "Obsolète"],
+        translations: {
+          ...amandin.translations,
+          fr: { ...amandin.translations.fr, title: "Ancien Amandin" },
+        },
+      });
+    });
+
+    await t.mutation(api.recipes.syncProduction, {
+      adminPassword: password,
+    });
+
+    await expect(
+      t.query(api.recipes.getBySlug, { locale: "fr", slug: "moka" }),
+    ).resolves.toBeNull();
+    await expect(
+      t.query(api.recipes.getBySlug, { locale: "fr", slug: "amandin" }),
+    ).resolves.toMatchObject({ title: "Amandin", status: "published" });
+    await expect(
+      t.query(api.recipes.getForEditing, {
+        locale: "fr",
+        slug: "amandin",
+        adminPassword: password,
+      }),
+    ).resolves.toMatchObject({
+      referenceServings: 6,
+      categories: ["dessert", "sucre"],
+      legacyCategoryLabels: [],
+    });
+    await expect(
+      t.query(api.recipes.getForEditing, {
+        locale: "fr",
+        slug: "amandin",
+        adminPassword: password,
+      }),
+    ).resolves.toMatchObject({ hasUnpublishedChanges: false });
+
+    const beforeSecondSync = await t.query(api.recipes.getForEditing, {
+      locale: "fr",
+      slug: "amandin",
+      adminPassword: password,
+    });
+    await expect(
+      t.mutation(api.recipes.syncProduction, { adminPassword: password }),
+    ).resolves.toMatchObject({ inserted: 0, updated: 0, removed: 0 });
+    await expect(
+      t.query(api.recipes.getForEditing, {
+        locale: "fr",
+        slug: "amandin",
+        adminPassword: password,
+      }),
+    ).resolves.toMatchObject({ revision: beforeSecondSync?.revision });
+  });
+
+  test("normalizes valid related slugs and rejects broken relationships", async () => {
+    const t = convexTest(schema, modules);
+    const target = await t.mutation(api.recipes.create, {
+      recipe: recipe("Mayonnaise liée"),
+      adminPassword: password,
+    });
+    await t.mutation(api.recipes.publishDraft, {
+      slug: target.slug,
+      expectedRevision: target.revision,
+      adminPassword: password,
+    });
+    const parent = await t.mutation(api.recipes.create, {
+      recipe: {
+        ...recipe("Pain lié"),
+        relatedRecipeSlugs: [" mayonnaise-liee ", "mayonnaise-liee"],
+      },
+      adminPassword: password,
+    });
+    await t.run(async (ctx) => {
+      const parentRecipe = await ctx.db
+        .query("recipes")
+        .withIndex("by_slug", (q) => q.eq("slug", parent.slug))
+        .unique();
+      if (!parentRecipe) throw new Error("parent fixture missing");
+      const parentDraft = await ctx.db
+        .query("recipeDrafts")
+        .withIndex("by_recipeId", (q) => q.eq("recipeId", parentRecipe._id))
+        .unique();
+      if (!parentDraft) throw new Error("parent draft fixture missing");
+      await ctx.db.patch(parentDraft._id, {
+        relatedRecipeSlugs: ["mayonnaise-liee", "mayonnaise-liee"],
+      });
+    });
+    await expect(
+      t.mutation(api.recipes.publishDraft, {
+        slug: parent.slug,
+        expectedRevision: parent.revision,
+        adminPassword: password,
+      }),
+    ).resolves.toMatchObject({ slug: "pain-lie" });
+    await expect(
+      t.query(api.recipes.getForEditing, {
+        locale: "fr",
+        slug: parent.slug,
+        adminPassword: password,
+      }),
+    ).resolves.toMatchObject({ relatedRecipeSlugs: ["mayonnaise-liee"] });
+
+    const broken = await t.mutation(api.recipes.create, {
+      recipe: {
+        ...recipe("Lien cassé"),
+        relatedRecipeSlugs: ["recette-inconnue"],
+      },
+      adminPassword: password,
+    });
+    await expect(
+      t.mutation(api.recipes.publishDraft, {
+        slug: broken.slug,
+        expectedRevision: broken.revision,
+        adminPassword: password,
+      }),
+    ).rejects.toThrow("RECIPE_RELATED_RECIPE_NOT_FOUND:recette-inconnue");
+    await expect(
+      t.mutation(api.recipes.create, {
+        recipe: {
+          ...recipe("Auto relation"),
+          relatedRecipeSlugs: ["auto-relation"],
+        },
+        adminPassword: password,
+      }),
+    ).rejects.toThrow("RECIPE_RELATED_RECIPE_SELF_REFERENCE");
+    await expect(
+      t.mutation(api.recipes.create, {
+        recipe: {
+          ...recipe("Lien invalide"),
+          relatedRecipeSlugs: ["../mayonnaise"],
+        },
+        adminPassword: password,
+      }),
+    ).rejects.toThrow("RECIPE_RELATED_RECIPE_INVALID");
+  });
+
   test("targeted seeding clears stale reference servings from a yield-only recipe", async () => {
     const t = convexTest(schema, modules);
     await t.mutation(api.recipes.seed, {

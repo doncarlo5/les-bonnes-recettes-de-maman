@@ -249,6 +249,38 @@ describe("recipe admin route contracts", () => {
     }
   });
 
+  test("related recipe validation errors remain actionable through admin routes", async () => {
+    fetchMutation
+      .mockRejectedValueOnce(new Error("RECIPE_RELATED_RECIPE_SELF_REFERENCE"))
+      .mockRejectedValueOnce(
+        new Error("RECIPE_RELATED_RECIPE_NOT_FOUND:mayonnaise"),
+      );
+    const saveResponse = await saveRecipe(
+      request({
+        locale: "fr",
+        mode: "update",
+        slug: "tarte-mobile",
+        expectedRevision: 3,
+        recipePayload: JSON.stringify(payload),
+      }) as never,
+    );
+    const publishResponse = await publishRecipe(
+      request({ slug: "tarte-mobile", expectedRevision: 3 }) as never,
+    );
+
+    expect(saveResponse.status).toBe(400);
+    expect(await saveResponse.json()).toMatchObject({
+      type: "error",
+      message: "Une recette ne peut pas être associée à elle-même.",
+    });
+    expect(publishResponse.status).toBe(400);
+    expect(await publishResponse.json()).toMatchObject({
+      type: "error",
+      message:
+        "La recette associée « mayonnaise » est introuvable ou n’est pas publiée.",
+    });
+  });
+
   test("Openverse image association exposes the same typed conflict", async () => {
     fetchMutation.mockRejectedValueOnce(new Error("RECIPE_DRAFT_CONFLICT:9"));
     const response = await setOpenverseImage(

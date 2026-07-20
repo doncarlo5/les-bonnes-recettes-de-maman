@@ -14,6 +14,10 @@ import {
 } from "@/lib/recipe-categories";
 
 const limits = RECIPE_FIELD_LIMITS;
+const recipeSlugSchema = z
+  .string()
+  .max(limits.shortValue)
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Utilise le slug exact de la recette.");
 
 const ingredientSchema = z.strictObject({
   name: z.string().max(limits.ingredientName),
@@ -58,7 +62,7 @@ const editableRecipeDraftObject = z.strictObject({
     .min(MIN_REFERENCE_SERVINGS)
     .max(MAX_REFERENCE_SERVINGS)
     .optional(),
-  relatedRecipeSlugs: z.array(z.string().max(limits.shortValue)).max(20),
+  relatedRecipeSlugs: z.array(recipeSlugSchema).max(20),
   translations: z.strictObject({
     fr: localizedRecipeSchema,
     en: localizedRecipeSchema,
@@ -84,7 +88,33 @@ export const editableRecipeDraftSchema = editableRecipeDraftObject.superRefine(
   },
 );
 
-const legacyRecipeDraftSchema = editableRecipeDraftObject
+const legacyLocalizedRecipeSchema = localizedRecipeSchema.extend({
+  restTime: z.string().max(limits.shortValue).optional().default(""),
+  equipment: z
+    .array(z.string().max(limits.shortValue))
+    .max(50)
+    .optional()
+    .default([]),
+});
+
+const preMarmitonRecipeDraftSchema = editableRecipeDraftObject
+  .omit({
+    relatedRecipeSlugs: true,
+    translations: true,
+  })
+  .extend({
+    relatedRecipeSlugs: z
+      .array(recipeSlugSchema)
+      .max(20)
+      .optional()
+      .default([]),
+    translations: z.strictObject({
+      fr: legacyLocalizedRecipeSchema,
+      en: legacyLocalizedRecipeSchema,
+    }),
+  });
+
+const legacyRecipeDraftSchema = preMarmitonRecipeDraftSchema
   .omit({ categories: true, legacyCategoryLabels: true })
   .extend({
     tags: z.array(z.string().max(limits.shortValue)).max(50),
@@ -95,7 +125,11 @@ const legacyRecipeDraftSchema = editableRecipeDraftObject
 
 /** Transitional parser for route payloads and recovery records created before categories. */
 export const compatibleRecipeDraftSchema = z
-  .union([editableRecipeDraftSchema, legacyRecipeDraftSchema])
+  .union([
+    editableRecipeDraftSchema,
+    preMarmitonRecipeDraftSchema,
+    legacyRecipeDraftSchema,
+  ])
   .transform((recipe) => {
     if (!("tags" in recipe)) return recipe;
     const { tags, status: _status, ...content } = recipe;

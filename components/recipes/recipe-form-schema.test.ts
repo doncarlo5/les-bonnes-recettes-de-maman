@@ -60,6 +60,25 @@ describe("editableRecipeDraftSchema", () => {
     }
   });
 
+  it("restores recovery records created before Marmiton metadata existed", () => {
+    const { relatedRecipeSlugs: _related, ...legacyDraft } = blankDraft();
+    for (const localized of Object.values(legacyDraft.translations)) {
+      delete (localized as Partial<typeof blankLocalizedRecipe>).restTime;
+      delete (localized as Partial<typeof blankLocalizedRecipe>).equipment;
+    }
+
+    const result = compatibleRecipeDraftSchema.safeParse(legacyDraft);
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.relatedRecipeSlugs).toEqual([]);
+      expect(result.data.translations.fr.restTime).toBe("");
+      expect(result.data.translations.fr.equipment).toEqual([]);
+      expect(result.data.translations.en.restTime).toBe("");
+      expect(result.data.translations.en.equipment).toEqual([]);
+    }
+  });
+
   it("accepts an incomplete working draft without a publication status", () => {
     const result = editableRecipeDraftSchema.safeParse(blankDraft());
 
@@ -78,6 +97,13 @@ describe("editableRecipeDraftSchema", () => {
     draft.relatedRecipeSlugs = ["mayonnaise"];
 
     expect(editableRecipeDraftSchema.safeParse(draft).success).toBe(true);
+  });
+
+  it("rejects malformed related recipe slugs", () => {
+    const draft = blankDraft();
+    draft.relatedRecipeSlugs = ["../mayonnaise"];
+
+    expect(editableRecipeDraftSchema.safeParse(draft).success).toBe(false);
   });
 
   it("rejects structurally invalid working draft fields", () => {

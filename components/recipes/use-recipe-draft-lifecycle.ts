@@ -600,9 +600,13 @@ export function normalizePayload(
 ): RecipeDraftPayload {
   return {
     ...value,
-    relatedRecipeSlugs: value.relatedRecipeSlugs.flatMap((slug) =>
-      slug.trim() ? [slug.trim()] : [],
-    ),
+    relatedRecipeSlugs: [
+      ...new Set(
+        value.relatedRecipeSlugs.flatMap((slug) =>
+          slug.trim() ? [slug.trim()] : [],
+        ),
+      ),
+    ],
     categories: [...new Set(value.categories ?? [])],
     legacyCategoryLabels: (value.legacyCategoryLabels ?? []).flatMap((label) =>
       label.trim() ? [label.trim()] : [],

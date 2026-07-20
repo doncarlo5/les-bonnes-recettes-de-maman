@@ -102,6 +102,26 @@ export function recipeMutationErrorResponse(error: unknown, fallback: string) {
       { status: 400 },
     );
   }
+  if (message.includes("RECIPE_RELATED_RECIPE_SELF_REFERENCE")) {
+    return errorResponse(
+      "Une recette ne peut pas être associée à elle-même.",
+      400,
+    );
+  }
+  if (message.includes("RECIPE_RELATED_RECIPE_INVALID")) {
+    return errorResponse("Le slug d’une recette associée est invalide.", 400);
+  }
+  if (message.includes("RECIPE_RELATED_RECIPE_NOT_FOUND")) {
+    const relatedSlug = message.match(
+      /RECIPE_RELATED_RECIPE_NOT_FOUND:([a-z0-9]+(?:-[a-z0-9]+)*)/,
+    )?.[1];
+    return errorResponse(
+      relatedSlug
+        ? `La recette associée « ${relatedSlug} » est introuvable ou n’est pas publiée.`
+        : "Une recette associée est introuvable ou n’est pas publiée.",
+      400,
+    );
+  }
   if (message.includes("RECIPE_NOT_FOUND")) {
     return Response.json(
       mutationErrorSchema.parse({

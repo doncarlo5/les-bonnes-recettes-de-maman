@@ -8,6 +8,7 @@
     "vercel-build": "if [ \"$VERCEL_ENV\" = \"production\" ]; then npx convex deploy --cmd 'npm run build'; else npm run build; fi",
     "start": "next start",
     "lint": "eslint",
+    "sync:recipes:production": "node --env-file-if-exists=.env.local scripts/sync-production-recipes.mjs",
     "test": "vitest run",
     "test:e2e": "playwright test"
   },
