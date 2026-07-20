@@ -186,7 +186,7 @@ const titleTranslations: Record<string, string> = {
   "Coulants au chocolat": "Chocolate Lava Cakes",
   "Flan au lait concentré sucré Nestlé": "Nestlé Sweetened Condensed Milk Flan",
   "Crème au café": "Coffee Custard",
-  "Banana bread du Kona Inn": "Kona Inn Banana Bread",
+  "Banana bread": "Banana Bread",
   "Variante avec garniture à la cannelle et aux noix de pécan":
     "Cinnamon and Pecan Filling Variation",
   "Soupe de champagne": "Champagne Punch",

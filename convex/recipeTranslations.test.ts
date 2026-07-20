@@ -160,7 +160,7 @@ describe("recipe yield localization", () => {
     ]);
   });
 
-  test("localizes Mary McHale's Kona Inn banana bread as one metric loaf", () => {
+  test("localizes Mary McHale's banana bread as one metric loaf", () => {
     const source = recipes.find(
       (recipe) => recipe.slug === "banana-bread-du-kona-inn",
     );
@@ -169,7 +169,7 @@ describe("recipe yield localization", () => {
     const seeded = toSeedRecipe(source!);
     expect(seeded.referenceServings).toBeUndefined();
     expect(seeded.translations.fr).toMatchObject({
-      title: "Banana bread du Kona Inn",
+      title: "Banana bread",
       author: "Mary McHale",
       yieldLabel: "1 cake",
       servings: null,
@@ -216,7 +216,7 @@ describe("recipe yield localization", () => {
     ]);
 
     expect(seeded.translations.en).toMatchObject({
-      title: "Kona Inn Banana Bread",
+      title: "Banana Bread",
       author: "Mary McHale",
       yieldLabel: "1 loaf",
       servings: null,
