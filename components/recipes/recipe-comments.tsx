@@ -16,7 +16,6 @@ import { uploadRecipeCommentPhoto } from "@/lib/recipe-comment-photo-upload";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
 import {
   Dialog,
   DialogContent,
@@ -46,7 +45,6 @@ type CommentFormState = {
   text: string;
   honeypot: string;
   photo: File | null;
-  photoEnabled: boolean;
   photoInputRevision: number;
   existingPhotoUrl: string | null;
   photoRemoved: boolean;
@@ -58,7 +56,6 @@ const initialCommentFormState: CommentFormState = {
   text: "",
   honeypot: "",
   photo: null,
-  photoEnabled: false,
   photoInputRevision: 0,
   existingPhotoUrl: null,
   photoRemoved: false,
@@ -78,7 +75,6 @@ function commentFormReducer(state: CommentFormState, action: CommentFormAction):
       authorName: action.comment.authorName ?? "",
       text: action.comment.text,
       photo: null,
-      photoEnabled: Boolean(action.comment.photoUrl),
       photoInputRevision: state.photoInputRevision + 1,
       existingPhotoUrl: action.comment.photoUrl,
       photoRemoved: false,
@@ -92,7 +88,7 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
   const labels = dict.recipeDetail.comments;
   const participantKey = useRecipeCommentParticipantKey();
   const [formState, dispatchForm] = useReducer(commentFormReducer, initialCommentFormState);
-  const { authorName, text, honeypot, photo, photoEnabled, photoInputRevision, existingPhotoUrl, photoRemoved, editingId } = formState;
+  const { authorName, text, honeypot, photo, photoInputRevision, existingPhotoUrl, photoRemoved, editingId } = formState;
   const [pending, setPending] = useState(false);
   const [reactionPending, setReactionPending] = useState<Id<"recipeComments"> | null>(null);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
@@ -140,24 +136,21 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
       return;
     }
     if (!(RECIPE_COMMENT_PHOTO_MIME_TYPES as readonly string[]).includes(file.type) || file.size > RECIPE_COMMENT_MAX_PHOTO_BYTES) {
-      dispatchForm({ type: "patch", value: { photo: null, photoEnabled: true, photoInputRevision: photoInputRevision + 1 } });
+      dispatchForm({ type: "patch", value: { photo: null, photoInputRevision: photoInputRevision + 1 } });
       setMessage({ type: "error", text: labels.photoInvalid });
       return;
     }
-    dispatchForm({ type: "patch", value: { photo: file, photoEnabled: true, photoRemoved: false } });
+    dispatchForm({ type: "patch", value: { photo: file, photoRemoved: false } });
   }
 
-  function togglePhoto(enabled: boolean) {
+  function removePhoto() {
     dispatchForm({
       type: "patch",
-      value: enabled
-        ? { photoEnabled: true, photoRemoved: false }
-        : {
-            photo: null,
-            photoEnabled: false,
-            photoRemoved: Boolean(existingPhotoUrl || photo),
-            photoInputRevision: photoInputRevision + 1,
-          },
+      value: {
+        photo: null,
+        photoRemoved: Boolean(existingPhotoUrl || photo),
+        photoInputRevision: photoInputRevision + 1,
+      },
     });
   }
 
@@ -171,10 +164,6 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
     if (!participantKey || pending) return;
     if (!text.trim()) {
       setMessage({ type: "error", text: labels.textRequired });
-      return;
-    }
-    if (photoEnabled && !photo && !(existingPhotoUrl && !photoRemoved)) {
-      setMessage({ type: "error", text: labels.photoRequired });
       return;
     }
     setPending(true);
@@ -270,27 +259,22 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
               <input id="comment-website" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(event) => dispatchForm({ type: "patch", value: { honeypot: event.target.value } })} />
             </div>
             <div className="grid gap-3">
-              <div className="flex min-h-14 items-center justify-between gap-4 rounded-xl bg-muted/60 px-4 py-3 shadow-[var(--shadow-border)]">
-                <div className="grid gap-1">
-                  <label htmlFor="comment-photo-toggle" className="type-label cursor-pointer text-foreground">{labels.photoLabel}</label>
-                  <p className="type-meta text-muted-foreground">{labels.photoHelp}</p>
-                </div>
-                <Switch className="cursor-pointer after:-inset-y-[13px]" id="comment-photo-toggle" checked={photoEnabled} onCheckedChange={togglePhoto} aria-controls="comment-photo-picker" />
+              <div className="grid min-h-14 gap-1 rounded-xl bg-muted/60 px-4 py-3 shadow-[var(--shadow-border)]">
+                <p className="type-label text-foreground">{labels.photoLabel}</p>
+                <p className="type-meta text-muted-foreground">{labels.photoHelp}</p>
               </div>
-              {photoEnabled ? (
-                <div id="comment-photo-picker">
-                  <input key={photoInputRevision} id="comment-photo" className="peer sr-only" type="file" accept={RECIPE_COMMENT_PHOTO_MIME_TYPES.join(",")} aria-label={labels.choosePhoto} onChange={(event) => selectPhoto(event.target.files?.[0] ?? null)} />
-                  <label htmlFor="comment-photo" className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg bg-background px-4 text-sm font-semibold text-foreground shadow-[var(--shadow-border)] transition-[scale,box-shadow] duration-150 active:scale-[0.96] peer-focus-visible:ring-3 peer-focus-visible:ring-ring/50">
-                    <ImagePlus className="size-4" />
-                    {labels.choosePhoto}
-                  </label>
-                </div>
-              ) : null}
+              <div id="comment-photo-picker">
+                <input key={photoInputRevision} id="comment-photo" className="peer sr-only" type="file" accept={RECIPE_COMMENT_PHOTO_MIME_TYPES.join(",")} aria-label={labels.choosePhoto} onChange={(event) => selectPhoto(event.target.files?.[0] ?? null)} />
+                <label htmlFor="comment-photo" className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg bg-background px-4 text-sm font-semibold text-foreground shadow-[var(--shadow-border)] transition-[scale,box-shadow] duration-150 active:scale-[0.96] peer-focus-visible:ring-3 peer-focus-visible:ring-ring/50">
+                  <ImagePlus className="size-4" />
+                  {labels.choosePhoto}
+                </label>
+              </div>
             </div>
             {displayedPhoto ? (
               <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-muted">
                 <Image src={displayedPhoto} alt="" fill unoptimized={displayedPhoto.startsWith("blob:")} sizes="20rem" className="object-cover" />
-                <Button type="button" size="icon-sm" variant="secondary" className="absolute right-2 top-2" aria-label={labels.removePhoto} onClick={() => togglePhoto(false)}><X /></Button>
+                <Button type="button" size="icon-sm" variant="secondary" className="absolute right-2 top-2" aria-label={labels.removePhoto} onClick={removePhoto}><X /></Button>
               </div>
             ) : null}
             {message ? <p role="status" className={`text-sm font-semibold ${message.type === "error" ? "text-destructive" : "text-primary"}`}>{message.text}</p> : null}
