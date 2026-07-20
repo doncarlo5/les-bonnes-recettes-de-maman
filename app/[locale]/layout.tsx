@@ -7,6 +7,8 @@ import { hasLocale, locales } from "@/i18n/config";
 import { siteUrl } from "@/lib/site";
 import { ConvexClientProvider } from "@/components/convex-client-provider";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import "../globals.css";
 
 type RootLayoutProps = {
@@ -96,9 +98,12 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <ThemeProvider>
-          <ConvexClientProvider>
-            {children}
-          </ConvexClientProvider>
+          <TooltipProvider>
+            <ConvexClientProvider>
+              {children}
+            </ConvexClientProvider>
+            <Toaster />
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>

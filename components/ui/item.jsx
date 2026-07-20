@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
 
 function ItemGroup({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -23,7 +23,7 @@ function ItemGroup({
 }
 
 function ItemSeparator({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -58,10 +58,10 @@ const itemVariants = cva(
 )
 
 function Item({
-  className,
+  className = "",
   variant = "default",
   size = "default",
-  render,
+  render = /** @type {any} */ (null),
   ...props
 }) {
   return useRender({
@@ -96,7 +96,7 @@ const itemMediaVariants = cva(
 )
 
 function ItemMedia({
-  className,
+  className = "",
   variant = "default",
   ...props
 }) {
@@ -110,7 +110,7 @@ function ItemMedia({
 }
 
 function ItemContent({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -125,7 +125,7 @@ function ItemContent({
 }
 
 function ItemTitle({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -140,7 +140,7 @@ function ItemTitle({
 }
 
 function ItemDescription({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -155,7 +155,7 @@ function ItemDescription({
 }
 
 function ItemActions({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -167,7 +167,7 @@ function ItemActions({
 }
 
 function ItemHeader({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -179,7 +179,7 @@ function ItemHeader({
 }
 
 function ItemFooter({
-  className,
+  className = "",
   ...props
 }) {
   return (

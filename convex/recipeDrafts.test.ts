@@ -2,8 +2,9 @@
 
 import { convexTest } from "convex-test";
 import { describe, expect, test, vi } from "vitest";
-import { api } from "./_generated/api";
+import { api, internal } from "./_generated/api";
 import schema from "./schema";
+import type { RecipeCategory } from "../lib/recipe-categories";
 
 const modules = import.meta.glob("./**/*.ts");
 const password = "test-password";
@@ -29,7 +30,7 @@ function recipe(title = "Tarte mobile") {
     defaultLocale: "fr" as const,
     referenceServings: 6,
     translations: { fr: localized, en: { ...localized, title: "Mobile tart" } },
-    tags: ["dessert"],
+    categories: ["dessert"] as RecipeCategory[],
     status: "draft" as const,
   };
 }
@@ -65,6 +66,81 @@ describe("recipe working drafts", () => {
       .resolves.toMatchObject({ referenceServings: 7 });
   });
 
+  test("re-seeding preserves unknown legacy category labels", async () => {
+    const t = convexTest(schema, modules);
+    await t.mutation(api.recipes.seed, { adminPassword: password });
+    await t.run(async (ctx) => {
+      const seeded = await ctx.db.query("recipes").withIndex("by_slug", (q) => q.eq("slug", "amandin")).unique();
+      if (!seeded) throw new Error("seed fixture missing");
+      await ctx.db.patch(seeded._id, { tags: [...(seeded.tags ?? []), "recette de famille"] });
+    });
+
+    await t.mutation(api.recipes.seed, { adminPassword: password });
+    const editing = await t.query(api.recipes.getForEditing, {
+      slug: "amandin",
+      locale: "fr",
+      adminPassword: password,
+    });
+    expect(editing?.legacyCategoryLabels).toContain("recette de famille");
+  });
+
+  test("category migration dry-runs, migrates recipes and drafts, and is idempotent", async () => {
+    const t = convexTest(schema, modules);
+    const content = recipe("Migration des catégories");
+    const storedTranslations = {
+      fr: { ...content.translations.fr, servings: null },
+      en: { ...content.translations.en, servings: null },
+    };
+    await t.run(async (ctx) => {
+      const recipeId = await ctx.db.insert("recipes", {
+        slug: "migration-categories",
+        heroImageUrl: "",
+        defaultLocale: content.defaultLocale,
+        translations: storedTranslations,
+        tags: ["plat", "héritage"],
+        status: "draft",
+      });
+      await ctx.db.insert("recipeDrafts", {
+        recipeId,
+        heroImageUrl: "",
+        defaultLocale: content.defaultLocale,
+        translations: storedTranslations,
+        tags: ["sale", "cahier bleu"],
+        revision: 0,
+        publishedRevision: -1,
+        updatedAt: Date.now(),
+      });
+    });
+
+    const migrationArgs = { cursor: null, oneBatchOnly: true, batchSize: 100 } as const;
+    const readMigratedCategoryFields = () => t.run(async (ctx) => {
+      const migratedRecipe = await ctx.db.query("recipes").withIndex("by_slug", (q) => q.eq("slug", "migration-categories")).unique();
+      if (!migratedRecipe) throw new Error("migration recipe missing");
+      const migratedDraft = await ctx.db.query("recipeDrafts").withIndex("by_recipeId", (q) => q.eq("recipeId", migratedRecipe._id)).unique();
+      if (!migratedDraft) throw new Error("migration draft missing");
+      return {
+        recipe: { categories: migratedRecipe.categories, legacyCategoryLabels: migratedRecipe.legacyCategoryLabels },
+        draft: { categories: migratedDraft.categories, legacyCategoryLabels: migratedDraft.legacyCategoryLabels },
+      };
+    });
+    await expect(t.mutation(internal.migrations.backfillRecipeCategories, {
+      ...migrationArgs,
+      dryRun: true,
+    })).rejects.toThrow();
+
+    await t.mutation(internal.migrations.backfillRecipeCategories, { ...migrationArgs, dryRun: false });
+    await t.mutation(internal.migrations.backfillDraftCategories, { ...migrationArgs, dryRun: false });
+    const first = await readMigratedCategoryFields();
+    expect(first).toEqual({
+      recipe: { categories: ["plat"], legacyCategoryLabels: ["héritage"] },
+      draft: { categories: ["sale"], legacyCategoryLabels: ["cahier bleu"] },
+    });
+
+    await t.mutation(internal.migrations.backfillRecipeCategories, { ...migrationArgs, dryRun: false });
+    await t.mutation(internal.migrations.backfillDraftCategories, { ...migrationArgs, dryRun: false });
+    await expect(readMigratedCategoryFields()).resolves.toEqual(first);
+  });
+
   test("falls back to the public snapshot for legacy recipes without a draft", async () => {
     const t = convexTest(schema, modules);
     const content = recipe("Recette historique");
@@ -80,7 +156,7 @@ describe("recipe working drafts", () => {
         heroImageUrl: "",
         defaultLocale: content.defaultLocale,
         translations: legacyTranslations,
-        tags: content.tags,
+        categories: content.categories,
         status: "published",
       });
     });
@@ -96,6 +172,64 @@ describe("recipe working drafts", () => {
       slug: "gougeres",
     });
     expect(publicRecipe?.yieldLabel).toBe("About 20 gougères");
+  });
+
+  test("dual-reads legacy tags and dual-writes canonical categories without losing unknown labels", async () => {
+    const t = convexTest(schema, modules);
+    const content = recipe("Recette avec catégories historiques");
+    await t.run(async (ctx) => {
+      await ctx.db.insert("recipes", {
+        slug: "categories-historiques",
+        heroImageUrl: "",
+        defaultLocale: content.defaultLocale,
+        referenceServings: content.referenceServings,
+        translations: {
+          fr: { ...content.translations.fr, servings: null },
+          en: { ...content.translations.en, servings: null },
+        },
+        tags: ["dessert", "famille"],
+        status: "published",
+      });
+    });
+
+    const editing = await t.query(api.recipes.getForEditing, {
+      slug: "categories-historiques",
+      locale: "fr",
+      adminPassword: password,
+    });
+    expect(editing).toMatchObject({
+      categories: ["dessert"],
+      legacyCategoryLabels: ["famille"],
+    });
+
+    const saved = await t.mutation(api.recipes.saveDraft, {
+      slug: "categories-historiques",
+      expectedRevision: 0,
+      adminPassword: password,
+      recipe: {
+        defaultLocale: content.defaultLocale,
+        referenceServings: content.referenceServings,
+        translations: content.translations,
+        tags: ["dessert", "famille"],
+      },
+    });
+
+    await t.run(async (ctx) => {
+      const draft = await ctx.db.query("recipeDrafts").unique();
+      expect(draft).toMatchObject({
+        categories: ["dessert"],
+        legacyCategoryLabels: ["famille"],
+        tags: ["dessert", "famille"],
+      });
+    });
+
+    await t.mutation(api.recipes.publishDraft, {
+      slug: "categories-historiques",
+      expectedRevision: saved.revision,
+      adminPassword: password,
+    });
+    await expect(t.query(api.recipes.getBySlug, { locale: "fr", slug: "categories-historiques" }))
+      .resolves.toMatchObject({ categories: ["dessert"] });
   });
 
   test("creates a private draft with an initial revision", async () => {
@@ -157,7 +291,7 @@ describe("recipe working drafts", () => {
         defaultLocale: next.defaultLocale,
         referenceServings: next.referenceServings,
         translations: next.translations,
-        tags: next.tags,
+        categories: next.categories,
       },
       expectedRevision: 0,
       adminPassword: password,
@@ -170,7 +304,7 @@ describe("recipe working drafts", () => {
           defaultLocale: next.defaultLocale,
           referenceServings: next.referenceServings,
           translations: next.translations,
-          tags: next.tags,
+          categories: next.categories,
         },
         expectedRevision: 0,
         adminPassword: password,
@@ -184,14 +318,14 @@ describe("recipe working drafts", () => {
     const first = recipe("Premier appareil");
     await t.mutation(api.recipes.saveDraft, {
       slug: created.slug,
-      recipe: { defaultLocale: first.defaultLocale, referenceServings: first.referenceServings, translations: first.translations, tags: first.tags },
+      recipe: { defaultLocale: first.defaultLocale, referenceServings: first.referenceServings, translations: first.translations, categories: first.categories },
       expectedRevision: 0,
       adminPassword: password,
     });
     const replacement = recipe("Téléphone prioritaire");
     const saved = await t.mutation(api.recipes.saveDraft, {
       slug: created.slug,
-      recipe: { defaultLocale: replacement.defaultLocale, referenceServings: replacement.referenceServings, translations: replacement.translations, tags: replacement.tags },
+      recipe: { defaultLocale: replacement.defaultLocale, referenceServings: replacement.referenceServings, translations: replacement.translations, categories: replacement.categories },
       expectedRevision: 0,
       force: true,
       adminPassword: password,
@@ -220,7 +354,7 @@ describe("recipe working drafts", () => {
         defaultLocale: changed.defaultLocale,
         referenceServings: changed.referenceServings,
         translations: changed.translations,
-        tags: changed.tags,
+        categories: changed.categories,
       },
       expectedRevision: 0,
       adminPassword: password,
@@ -326,7 +460,7 @@ describe("recipe working drafts", () => {
         defaultLocale: changed.defaultLocale,
         referenceServings: changed.referenceServings,
         translations: changed.translations,
-        tags: changed.tags,
+        categories: changed.categories,
       },
       expectedRevision: 0,
       adminPassword: password,
@@ -441,7 +575,7 @@ describe("recipe working drafts", () => {
           fr: { ...legacyFrench, servings: { quantity: 6, unit: "personnes" } },
           en: { ...legacyEnglish, servings: { quantity: 6, unit: "people" } },
         },
-        tags: content.tags,
+        categories: content.categories,
         status: "published",
       });
     });

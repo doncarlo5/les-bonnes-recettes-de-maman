@@ -1,23 +1,25 @@
 "use client";
 
-import { type FormEvent, useMemo, useState } from "react";
+import { type ChangeEvent, type FormEvent, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowDownAZ, CalendarDays, LayoutGrid, List, Plus, Search, X } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils";
+import { RECIPE_CATEGORIES, type RecipeCategory } from "@/lib/recipe-categories";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import type { Recipe } from "./types";
 import { RecipeGrid } from "./recipe-grid";
 import { RecipeListRows } from "./recipe-list-rows";
 
-const categoryValues = ["dessert", "plat", "sucre", "sale"] as const;
+const categoryValues = RECIPE_CATEGORIES;
 const viewValues = ["cards", "list"] as const;
 const sortValues = ["alpha", "date"] as const;
 
-type RecipeCategory = (typeof categoryValues)[number];
 type RecipeView = (typeof viewValues)[number];
 type RecipeSort = (typeof sortValues)[number];
 
@@ -52,20 +54,6 @@ export function RecipeListExplorer({
     updateUrl({
       query: draftQuery.trim(),
       categories: activeCategories,
-      view: activeView,
-      sort: activeSort,
-      mode: "push",
-    });
-  }
-
-  function toggleCategory(category: RecipeCategory) {
-    const nextCategories = activeCategories.includes(category)
-      ? activeCategories.filter((value) => value !== category)
-      : [...activeCategories, category];
-
-    updateUrl({
-      query,
-      categories: nextCategories,
       view: activeView,
       sort: activeSort,
       mode: "push",
@@ -151,12 +139,9 @@ export function RecipeListExplorer({
             <label className="sr-only" htmlFor="recipe-search">
               {dict.recipeList.searchLabel}
             </label>
-            <div className="relative">
-              <Search
-                aria-hidden
-                className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
-              />
-              <Input
+            <InputGroup className="h-11">
+              <InputGroupAddon><Search aria-hidden /></InputGroupAddon>
+              <InputGroupInput
                 id="recipe-search"
                 name="q"
                 type="search"
@@ -165,13 +150,13 @@ export function RecipeListExplorer({
                 autoCapitalize="none"
                 autoCorrect="off"
                 value={draftQuery}
-                onChange={(event) =>
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
                   setDraftState({ query, value: event.target.value })
                 }
-                className="h-11 pl-9"
+                className="h-11"
                 placeholder={dict.recipeList.searchPlaceholder}
               />
-            </div>
+            </InputGroup>
             <Button type="submit" size="lg" className="h-11">
               <Search data-icon="inline-start" />
               {dict.recipeList.searchSubmit}
@@ -179,30 +164,20 @@ export function RecipeListExplorer({
           </form>
 
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <div
-              className="flex flex-wrap gap-2"
+            <ToggleGroup
+              multiple
+              value={activeCategories}
+              onValueChange={(values: string[]) => updateUrl({ query, categories: values as RecipeCategory[], view: activeView, sort: activeSort, mode: "push" })}
+              spacing={2}
+              className="flex w-full flex-wrap"
               aria-label={dict.recipeList.categoriesLabel}
             >
-              {categoryValues.map((category) => {
-                const isActive = activeCategories.includes(category);
-                return (
-                  <button
-                    key={category}
-                    type="button"
-                    aria-pressed={isActive}
-                    onClick={() => toggleCategory(category)}
-                    className={cn(
-                      "inline-flex min-h-11 items-center rounded-full px-4 text-sm font-bold shadow-[0_0_0_1px_var(--border)] transition-[scale,background-color,color,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.96] md:min-h-10",
-                      isActive
-                        ? "bg-primary text-primary-foreground shadow-[0_0_0_1px_var(--primary)]"
-                        : "bg-background text-foreground hover:text-primary hover:shadow-[0_0_0_1px_var(--primary)]",
-                    )}
-                  >
+              {categoryValues.map((category) => (
+                  <ToggleGroupItem key={category} value={category} className="min-h-11 rounded-full px-4 font-bold md:min-h-10">
                     {dict.recipeList.categories[category]}
-                  </button>
-                );
-              })}
-            </div>
+                  </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
 
             <div className="flex flex-wrap items-center gap-3 text-sm font-bold text-muted-foreground">
               <span aria-live="polite" className="tabular-nums">
@@ -223,59 +198,41 @@ export function RecipeListExplorer({
           </div>
 
           <div className="flex flex-col gap-3 border-t border-border pt-4 md:flex-row md:items-center md:justify-between">
-            <div
-              className="hidden flex-wrap gap-2 md:flex"
+            <ToggleGroup
+              value={[activeView]}
+              onValueChange={(values: string[]) => values[0] && setView(values[0] as RecipeView)}
+              spacing={2}
+              className="hidden flex-wrap md:flex"
               aria-label={dict.recipeList.viewLabel}
             >
               {viewValues.map((view) => {
-                const isActive = activeView === view;
                 const Icon = view === "cards" ? LayoutGrid : List;
                 return (
-                  <button
-                    key={view}
-                    type="button"
-                    aria-pressed={isActive}
-                    onClick={() => setView(view)}
-                    className={cn(
-                      "inline-flex min-h-10 items-center gap-2 rounded-full px-4 text-sm font-bold shadow-[0_0_0_1px_var(--border)] transition-[scale,background-color,color,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.96]",
-                      isActive
-                        ? "bg-foreground text-background shadow-[0_0_0_1px_var(--foreground)]"
-                        : "bg-background text-foreground hover:shadow-[0_0_0_1px_var(--foreground)]",
-                    )}
-                  >
-                    <Icon className="size-4 stroke-[1.8]" />
+                  <ToggleGroupItem key={view} value={view} className="min-h-10 rounded-full px-4 font-bold">
+                    <Icon data-icon="inline-start" />
                     {dict.recipeList.views[view]}
-                  </button>
+                  </ToggleGroupItem>
                 );
               })}
-            </div>
+            </ToggleGroup>
 
-            <div
-              className="flex flex-wrap gap-2"
+            <ToggleGroup
+              value={[activeSort]}
+              onValueChange={(values: string[]) => values[0] && setSort(values[0] as RecipeSort)}
+              spacing={2}
+              className="flex flex-wrap"
               aria-label={dict.recipeList.sortLabel}
             >
               {sortValues.map((sort) => {
-                const isActive = activeSort === sort;
                 const Icon = sort === "alpha" ? ArrowDownAZ : CalendarDays;
                 return (
-                  <button
-                    key={sort}
-                    type="button"
-                    aria-pressed={isActive}
-                    onClick={() => setSort(sort)}
-                    className={cn(
-                      "inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-sm font-bold shadow-[0_0_0_1px_var(--border)] transition-[scale,background-color,color,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.96] md:min-h-10",
-                      isActive
-                        ? "bg-foreground text-background shadow-[0_0_0_1px_var(--foreground)]"
-                        : "bg-background text-foreground hover:shadow-[0_0_0_1px_var(--foreground)]",
-                    )}
-                  >
-                    <Icon className="size-4 stroke-[1.8]" />
+                  <ToggleGroupItem key={sort} value={sort} className="min-h-11 rounded-full px-4 font-bold md:min-h-10">
+                    <Icon data-icon="inline-start" />
                     {dict.recipeList.sorts[sort]}
-                  </button>
+                  </ToggleGroupItem>
                 );
               })}
-            </div>
+            </ToggleGroup>
           </div>
         </div>
       </section>
@@ -307,16 +264,16 @@ export function RecipeListExplorer({
           />
         )
       ) : (
-        <div className="rounded-lg border border-dashed border-border px-6 py-12 text-center">
-          <h2 className="type-content-title text-foreground">
-            {dict.recipeList.noResultsTitle}
-          </h2>
-          <p className="type-body mx-auto mt-3 max-w-xl font-semibold text-muted-foreground [text-wrap:pretty]">
+        <Empty className="border border-border py-12">
+          <EmptyHeader className="">
+          <EmptyTitle className="type-content-title">{dict.recipeList.noResultsTitle}</EmptyTitle>
+          <EmptyDescription className="type-body max-w-xl font-semibold">
             {recipes.length === 0
               ? dict.recipeList.emptyDescription
               : dict.recipeList.noResultsDescription}
-          </p>
-        </div>
+          </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
       )}
     </div>
   );
@@ -336,7 +293,7 @@ function filterRecipes(
       getRecipeSearchText(recipe).includes(normalizedQuery);
     const matchesCategory =
       categories.length === 0 ||
-      recipe.tags.some((category) => selectedCategories.has(category));
+      recipe.categories.some((category) => selectedCategories.has(category));
 
     return matchesQuery && matchesCategory;
   });

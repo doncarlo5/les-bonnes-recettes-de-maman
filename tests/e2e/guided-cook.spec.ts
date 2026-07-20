@@ -102,6 +102,11 @@ test("the portions control remains accessible at every recipe breakpoint", async
   await expect(counter).toBeVisible();
   await expect(panel.getByRole("button", { name: "Diminuer le nombre de personnes" })).toBeVisible();
   await expect(panel.getByRole("button", { name: "Augmenter le nombre de personnes" })).toBeVisible();
+  const selectorLayout = await panel.locator("[data-servings-selector]").evaluate((element) => ({
+    clientWidth: element.clientWidth,
+    scrollWidth: element.scrollWidth,
+  }));
+  expect(selectorLayout.scrollWidth).toBeLessThanOrEqual(selectorLayout.clientWidth);
   await panel.getByRole("button", { name: "Augmenter le nombre de personnes" }).click();
   await expect(counter).toHaveValue("7");
   await expect(panel).toContainText("233,33 g");
@@ -248,28 +253,33 @@ test("mobile cook mode fits the visible viewport without page scrolling", async 
 test("the legacy collection URL preserves discovery state", async ({ page }) => {
   await page.goto("/fr/recettes?q=tarte&cat=dessert&view=list&sort=date");
   await expect(page).toHaveURL(/\/fr\?q=tarte&cat=dessert&view=list&sort=date#recettes$/);
+  await expect(page.getByRole("region", { name: "Recherche et filtres des recettes" })).toBeAttached();
   const searchbox = page.getByRole("searchbox");
-  if (!(await searchbox.isVisible())) {
-    await page.getByRole("button", { name: "Rechercher une recette" }).click();
+  const revealSearch = page.getByRole("button", { name: "Rechercher une recette" });
+  await expect(revealSearch.or(searchbox)).toBeVisible();
+  if (await revealSearch.isVisible()) {
+    await expect(async () => {
+      if (!(await searchbox.isVisible())) await revealSearch.click();
+      await expect(searchbox).toBeVisible({ timeout: 500 });
+    }).toPass({ timeout: 5_000 });
   }
+  await expect(searchbox).toBeVisible();
   await expect(searchbox).toHaveValue("tarte");
 });
 
 test("homepage discovery state remains URL-backed", async ({ page }, testInfo) => {
   await page.goto("/fr");
   const searchbox = page.getByRole("searchbox");
-  if (!(await searchbox.isVisible())) {
-    await page.getByRole("button", { name: "Rechercher une recette" }).click();
-  }
+  const revealSearch = page.getByRole("button", { name: "Rechercher une recette" });
+  if (await revealSearch.count()) await revealSearch.click();
+  await expect(searchbox).toBeVisible();
   await searchbox.fill("tarte");
   await page.getByRole("button", { name: "Rechercher" }).click();
   await expect(page).toHaveURL(/q=tarte/);
 
   const revealFilters = async (controlName: string) => {
     const control = page.getByRole("button", { name: controlName });
-    if (!(await control.isVisible())) {
-      await page.getByRole("button", { name: "Rechercher une recette" }).click();
-    }
+    if (!(await control.isVisible()) && await revealSearch.count()) await revealSearch.click();
     await expect(control).toBeVisible();
   };
   await revealFilters("Dessert");

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { ChevronDown, ImagePlus, MessageSquarePlus, Pencil, ThumbsDown, ThumbsUp, Trash2, X } from "lucide-react";
 import { useMutation, usePaginatedQuery } from "convex/react";
+import { toast } from "sonner";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import type { Dictionary } from "@/i18n/get-dictionary";
@@ -14,6 +15,27 @@ import {
 } from "@/lib/recipe-comment-policy";
 import { uploadRecipeCommentPhoto } from "@/lib/recipe-comment-photo-upload";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
+  Attachment,
+  AttachmentAction,
+  AttachmentActions,
+  AttachmentContent,
+  AttachmentDescription,
+  AttachmentMedia,
+  AttachmentTitle,
+} from "@/components/ui/attachment";
+import { Bubble, BubbleContent } from "@/components/ui/bubble";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -24,6 +46,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Message, MessageContent, MessageFooter, MessageHeader } from "@/components/ui/message";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useRecipeCommentParticipantKey } from "./use-recipe-comment-participant";
 
 type CommentItem = {
@@ -93,6 +117,7 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
   const [reactionPending, setReactionPending] = useState<Id<"recipeComments"> | null>(null);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [composerOpen, setComposerOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<Id<"recipeComments"> | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
   const query = usePaginatedQuery(
@@ -107,7 +132,7 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
   const discardPhoto = useMutation(api.comments.discardPhoto);
   const photoPreviewUrl = useMemo(() => (photo ? URL.createObjectURL(photo) : null), [photo]);
   const dateFormatter = useMemo(
-    () => new Intl.DateTimeFormat(locale, { dateStyle: "long", timeZone: "UTC" }),
+    () => new Intl.DateTimeFormat(locale, { dateStyle: "long", timeZone: "Europe/Paris" }),
     [locale],
   );
 
@@ -180,7 +205,7 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
           photoAction: uploadedStorageId ? "replace" : photoRemoved ? "remove" : "keep",
           ...(uploadedStorageId ? { photoStorageId: uploadedStorageId } : {}),
         });
-        setMessage({ type: "success", text: labels.updated });
+        toast.success(labels.updated);
       } else {
         await createComment({
           slug,
@@ -190,7 +215,7 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
           honeypot,
           ...(uploadedStorageId ? { photoStorageId: uploadedStorageId } : {}),
         });
-        setMessage({ type: "success", text: labels.success });
+        toast.success(labels.success);
       }
       resetForm();
     } catch (error) {
@@ -202,11 +227,12 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
   }
 
   async function deleteComment(commentId: Id<"recipeComments">) {
-    if (!participantKey || !window.confirm(labels.deleteConfirm)) return;
+    if (!participantKey) return;
     setMessage(null);
     try {
       await removeOwn({ commentId, participantKey });
       if (editingId === commentId) resetForm();
+      setDeleteTarget(null);
     } catch {
       setMessage({ type: "error", text: labels.error });
     }
@@ -271,9 +297,22 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
                 </label>
               </div>
             </div>
-            {displayedPhoto ? (
+            {photo && photoPreviewUrl ? (
+              <Attachment className="w-full" state={pending ? "uploading" : "idle"}>
+                <AttachmentMedia variant="image">
+                  <Image src={photoPreviewUrl} alt="" fill unoptimized sizes="3rem" className="object-cover" />
+                </AttachmentMedia>
+                <AttachmentContent>
+                  <AttachmentTitle>{photo.name}</AttachmentTitle>
+                  <AttachmentDescription>{Math.ceil(photo.size / 1024)} Ko</AttachmentDescription>
+                </AttachmentContent>
+                <AttachmentActions>
+                  <AttachmentAction type="button" aria-label={labels.removePhoto} onClick={removePhoto}><X /></AttachmentAction>
+                </AttachmentActions>
+              </Attachment>
+            ) : displayedPhoto ? (
               <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-muted">
-                <Image src={displayedPhoto} alt="" fill unoptimized={displayedPhoto.startsWith("blob:")} sizes="20rem" className="object-cover" />
+                <Image src={displayedPhoto} alt="" fill sizes="20rem" className="object-cover" />
                 <Button type="button" size="icon-sm" variant="secondary" className="absolute right-2 top-2" aria-label={labels.removePhoto} onClick={removePhoto}><X /></Button>
               </div>
             ) : null}
@@ -286,18 +325,17 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
         </div>
 
         <div className="min-w-0" aria-live="polite">
-          {!participantKey || query.status === "LoadingFirstPage" ? <p className="type-body text-muted-foreground">{labels.loading}</p> : null}
-          {query.status !== "LoadingFirstPage" && query.results.length === 0 ? <p className="rounded-2xl bg-muted p-6 text-center font-semibold text-muted-foreground">{labels.empty}</p> : null}
+          {!participantKey || query.status === "LoadingFirstPage" ? <div className="grid gap-4" aria-label={labels.loading}><Skeleton className="h-32 rounded-2xl" /><Skeleton className="h-32 rounded-2xl" /></div> : null}
+          {query.status !== "LoadingFirstPage" && query.results.length === 0 ? <Empty className="bg-muted"><EmptyHeader><EmptyMedia variant="icon"><MessageSquarePlus /></EmptyMedia><EmptyTitle>{labels.empty}</EmptyTitle><EmptyDescription>{labels.description}</EmptyDescription></EmptyHeader></Empty> : null}
           <div className="grid gap-5">
             {(query.results as CommentItem[]).map((comment) => {
               const author = comment.authorName ?? labels.anonymous;
               return (
-                <article key={comment._id} className="rounded-2xl bg-card p-5 shadow-[var(--shadow-card)]">
-                  <header className="flex flex-wrap items-baseline justify-between gap-2">
-                    <h3 className="font-black text-foreground">{author}</h3>
-                    <p className="type-meta text-muted-foreground">{formattedDate(comment._creationTime)}{comment.edited ? ` · ${labels.edited}` : ""}</p>
-                  </header>
-                  <p className="type-body mt-3 whitespace-pre-wrap text-foreground/90">{comment.text}</p>
+                <article key={comment._id}>
+                  <Message>
+                    <MessageContent>
+                      <MessageHeader className="justify-between gap-2 px-0"><h3 className="font-black text-foreground">{author}</h3><span>{formattedDate(comment._creationTime)}{comment.edited ? ` · ${labels.edited}` : ""}</span></MessageHeader>
+                      <Bubble variant="outline" className="max-w-full w-full"><BubbleContent className="w-full bg-card p-5 shadow-[var(--shadow-card)]"><p className="type-body whitespace-pre-wrap text-foreground/90">{comment.text}</p>
                   {comment.photoUrl ? (
                     <Dialog>
                       <DialogTrigger className="relative mt-4 block aspect-[4/3] w-full overflow-hidden rounded-xl bg-muted text-left">
@@ -309,14 +347,16 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
                         <div className="relative aspect-[4/3] overflow-hidden rounded-lg"><Image src={comment.photoUrl} alt={labels.photoAlt.replace("{author}", author)} fill sizes="90vw" className="object-contain" /></div>
                       </DialogContent>
                     </Dialog>
-                  ) : null}
-                  <footer className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-3">
+                  ) : null}</BubbleContent></Bubble>
+                  <MessageFooter className="flex-wrap justify-between gap-3 px-0">
                     <div className="flex gap-2" role="group" aria-label={labels.title}>
                       <Button type="button" size="sm" variant={comment.viewerReaction === "up" ? "secondary" : "ghost"} aria-pressed={comment.viewerReaction === "up"} aria-label={labels.thumbUp} disabled={reactionPending === comment._id} onClick={() => react(comment, "up")}><ThumbsUp /> {comment.thumbsUpCount}</Button>
                       <Button type="button" size="sm" variant={comment.viewerReaction === "down" ? "secondary" : "ghost"} aria-pressed={comment.viewerReaction === "down"} aria-label={labels.thumbDown} disabled={reactionPending === comment._id} onClick={() => react(comment, "down")}><ThumbsDown /> {comment.thumbsDownCount}</Button>
                     </div>
-                    {comment.canEdit ? <div className="flex gap-1"><Button type="button" size="sm" variant="ghost" onClick={() => startEditing(comment)}><Pencil /> {labels.edit}</Button><Button type="button" size="sm" variant="destructive" onClick={() => deleteComment(comment._id)}><Trash2 /> {labels.delete}</Button></div> : null}
-                  </footer>
+                    {comment.canEdit ? <div className="flex gap-1"><Button type="button" size="sm" variant="ghost" onClick={() => startEditing(comment)}><Pencil /> {labels.edit}</Button><Button type="button" size="sm" variant="destructive" onClick={() => setDeleteTarget(comment._id)}><Trash2 /> {labels.delete}</Button></div> : null}
+                  </MessageFooter>
+                    </MessageContent>
+                  </Message>
                 </article>
               );
             })}
@@ -324,6 +364,12 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
           {query.status === "CanLoadMore" ? <Button type="button" variant="outline" className="mt-6 w-full" onClick={() => query.loadMore(10)}>{labels.loadMore}</Button> : null}
         </div>
       </div>
+      <AlertDialog open={deleteTarget !== null} onOpenChange={(open: boolean) => !open && setDeleteTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader><AlertDialogTitle>{labels.delete}</AlertDialogTitle><AlertDialogDescription>{labels.deleteConfirm}</AlertDialogDescription></AlertDialogHeader>
+          <AlertDialogFooter><AlertDialogCancel>{labels.cancel}</AlertDialogCancel><AlertDialogAction variant="destructive" onClick={() => deleteTarget && void deleteComment(deleteTarget)}>{labels.delete}</AlertDialogAction></AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </section>
   );
 }

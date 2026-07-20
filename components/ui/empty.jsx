@@ -3,7 +3,7 @@ import { cva } from "class-variance-authority";
 import { cn } from "@/lib/utils"
 
 function Empty({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -18,7 +18,7 @@ function Empty({
 }
 
 function EmptyHeader({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -45,7 +45,7 @@ const emptyMediaVariants = cva(
 )
 
 function EmptyMedia({
-  className,
+  className = "",
   variant = "default",
   ...props
 }) {
@@ -59,7 +59,7 @@ function EmptyMedia({
 }
 
 function EmptyTitle({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -71,7 +71,7 @@ function EmptyTitle({
 }
 
 function EmptyDescription({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -86,7 +86,7 @@ function EmptyDescription({
 }
 
 function EmptyContent({
-  className,
+  className = "",
   ...props
 }) {
   return (

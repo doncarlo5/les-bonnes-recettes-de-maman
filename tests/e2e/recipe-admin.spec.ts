@@ -40,11 +40,12 @@ const localized = {
   yieldLabel: "6 personnes", prepTime: "20 min", cookTime: "30 min", totalTime: "50 min", timeLabel: "50 min", temperature: "180 °C",
   ingredients: [{ name: "Farine", quantity: "200", unit: "g", notes: "" }], sections: [{ title: "Préparation", steps: ["Mélanger."] }], subRecipes: [], notes: [],
 };
-const restoredDraft = { defaultLocale: "fr", translations: { fr: localized, en: { ...localized, title: "Demo tart", yieldLabel: "6 servings" } }, tags: ["dessert"] };
+const restoredDraft = { defaultLocale: "fr", translations: { fr: localized, en: { ...localized, title: "Demo tart", yieldLabel: "6 servings" } }, categories: ["dessert"] };
 
 test.beforeEach(async ({ page }) => {
   await mockRecipeApi(page);
   await page.goto("/fr/admin/recettes");
+  await expect(page.locator("form[data-recipe-admin-hydrated=true]")).toBeAttached();
 });
 
 test("recipe home is usable and accessible at every supported width", async ({ page }, testInfo) => {
@@ -235,6 +236,7 @@ test("desktop internet image search displays its result cards", async ({ page },
   await page.getByLabel("Titre").fill("Tarte avec nouvelle image");
   await result.click();
   await expect(page.getByRole("main").getByText("Image Unsplash associée.")).toBeVisible();
+  await expect(page.getByRole("region", { name: /Notifications/ }).getByText("Image principale remplacée.")).toBeVisible();
   expect(mutationOrder).toEqual(["save", "image"]);
 });
 
@@ -391,8 +393,8 @@ test("mobile sorting supports keyboard handles and discard restores the approved
   await expect(page.getByText(/déplacé en position 2/)).toBeAttached();
   await page.getByRole("button", { name: /Retour à la recette/ }).click();
   await page.getByRole("button", { name: /Vérifier/ }).click();
-  page.once("dialog", (dialog) => dialog.accept());
   await page.getByRole("button", { name: /Abandonner les modifications/ }).click();
+  await page.getByRole("alertdialog").getByRole("button", { name: "Abandonner", exact: true }).click();
   await expect(page.getByText("Modifications non publiées")).toHaveCount(0);
 });
 
@@ -432,12 +434,14 @@ test("mobile section editor remains usable above the software keyboard", async (
 test("mobile creation and every focused workspace remain navigable", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile-390");
   await page.getByRole("button", { name: /Nouvelle/ }).click();
+  await expect(page.locator("form[data-recipe-admin-mode=create]")).toBeAttached();
   await page.getByLabel("Titre français").fill("Nouvelle tarte mobile");
   const startRecipe = page.getByRole("button", { name: /Commencer la recette/ });
   await expect(startRecipe).toBeEnabled();
-  const creationResponse = page.waitForResponse((response) =>
-    response.url().endsWith("/api/admin/recipes/save"),
-  );
+  const creationResponse = page.waitForResponse((response) => {
+    if (!response.url().endsWith("/api/admin/recipes/save")) return false;
+    return response.request().postData()?.includes("Nouvelle tarte mobile") ?? false;
+  });
   await startRecipe.evaluate((button: HTMLButtonElement) => button.click());
   expect((await creationResponse).ok()).toBe(true);
   await expect(page).toHaveURL(/slug=tarte-de-demonstration.*section=info/, { timeout: 10_000 });
@@ -488,8 +492,8 @@ test("unpublish hides but retains the approved version, then publish restores vi
   test.skip(testInfo.project.name !== "mobile-390");
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
   await page.getByRole("navigation", { name: "Actions de la recette" }).getByRole("button", { name: /Publier,/ }).click();
-  page.once("dialog", (dialog) => dialog.accept());
   await page.getByRole("button", { name: /Retirer du site public/ }).click();
+  await page.getByRole("alertdialog").getByRole("button", { name: "Retirer du site", exact: true }).click();
   await expect(page.getByText(/version approuvée est actuellement masquée/i)).toBeVisible();
   await page.getByRole("button", { name: /Publier les modifications/ }).click();
   await expect(page.getByText(/version approuvée est visible publiquement/i)).toBeVisible();
@@ -502,10 +506,12 @@ test("deleting a recipe requires confirmation and returns to the recipe list", a
     .getByRole("button", { name: /Publier,/ })
     .click();
 
-  await page.getByRole("button", { name: "Supprimer la recette" }).click();
+  const deleteButton = page.getByRole("button", { name: "Supprimer la recette" });
+  await deleteButton.click();
   const dialog = page.getByRole("alertdialog");
   await expect(dialog.getByRole("heading", { name: /Supprimer « Tarte de démonstration »/ })).toBeVisible();
   await dialog.getByRole("button", { name: "Annuler" }).click();
+  await expect(deleteButton).toBeFocused();
   await expect(page).toHaveURL(/slug=tarte-de-demonstration/);
 
   const deletion = page.waitForRequest((request) =>

@@ -222,6 +222,24 @@ test("desktop recipe body aligns preparation with a compact ingredient panel", a
   expect(temperatureLayout.height).toBeLessThanOrEqual(temperatureLayout.lineHeight + 1);
 });
 
+test("desktop ingredient yield stays inside its compact panel", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop");
+  await page.goto("/fr/recettes/ancienne-recette-sans-portions");
+
+  const panel = page.locator('[data-ingredients-layout="desktop"]');
+  const heading = panel.getByRole("heading", { name: "Ingrédients" });
+  const yieldLabel = heading.locator("xpath=following-sibling::span");
+  await yieldLabel.evaluate((element) => {
+    element.textContent = "8 à 10 personnes";
+  });
+
+  const layout = await panel.evaluate((element) => ({
+    clientWidth: element.clientWidth,
+    scrollWidth: element.scrollWidth,
+  }));
+  expect(layout.scrollWidth).toBeLessThanOrEqual(layout.clientWidth);
+});
+
 async function expectDescendingOutline(page: Page) {
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   const headings = await page.getByRole("heading").evaluateAll((elements) =>

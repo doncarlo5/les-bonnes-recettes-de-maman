@@ -19,6 +19,7 @@ import {
 } from "@/lib/cook-progress";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Progress, ProgressLabel, ProgressValue } from "@/components/ui/progress";
 import {
   Sheet,
   SheetContent,
@@ -30,7 +31,7 @@ import type { Ingredient, Recipe } from "./types";
 
 type WakeLockSentinelLike = {
   release: () => Promise<void>;
-  addEventListener: (type: "release", listener: () => void) => void;
+  onrelease: (() => void) | null;
 };
 
 type NavigatorWithWakeLock = Navigator & {
@@ -63,6 +64,7 @@ export function GuidedCookMode({
   const [wakeLockSupported, setWakeLockSupported] = useState(true);
   const wakeLockRef = useRef<WakeLockSentinelLike | null>(null);
   const wakeLockRequestRef = useRef(0);
+  const wakeLockListenerCleanupRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     const restored = parseCookProgress(window.localStorage.getItem(storageKey), recipe);
@@ -80,6 +82,8 @@ export function GuidedCookMode({
 
   const releaseWakeLock = useCallback(async () => {
     wakeLockRequestRef.current += 1;
+    wakeLockListenerCleanupRef.current?.();
+    wakeLockListenerCleanupRef.current = null;
     const sentinel = wakeLockRef.current;
     wakeLockRef.current = null;
     if (sentinel) await sentinel.release().catch(() => undefined);
@@ -99,9 +103,12 @@ export function GuidedCookMode({
         return;
       }
       wakeLockRef.current = sentinel;
-      sentinel.addEventListener("release", () => {
+      const handleRelease = () => {
         if (wakeLockRef.current === sentinel) wakeLockRef.current = null;
-      });
+        wakeLockListenerCleanupRef.current = null;
+      };
+      sentinel.onrelease = handleRelease;
+      wakeLockListenerCleanupRef.current = () => { sentinel.onrelease = null; };
     } catch {
       setKeepAwake(false);
     }
@@ -210,12 +217,15 @@ export function GuidedCookMode({
         ) : (
           <section aria-live="polite" className="max-w-3xl">
             <p className="type-label mb-4 text-primary">{section?.title}</p>
-            <p className="type-meta mb-7 text-muted-foreground">
-              {format(dict.cookMode.stepCounter, {
-                current: currentFlatIndex + 1,
-                total: flattened.length,
-              })}
-            </p>
+            <Progress className="mb-7" value={((currentFlatIndex + 1) / flattened.length) * 100}>
+              <ProgressLabel>{dict.cookMode.eyebrow}</ProgressLabel>
+              <ProgressValue>
+                {format(dict.cookMode.stepCounter, {
+                  current: currentFlatIndex + 1,
+                  total: flattened.length,
+                })}
+              </ProgressValue>
+            </Progress>
             <h1 className="type-page-title max-w-[22ch] text-pretty">{step}</h1>
             <div className="mt-10 flex flex-wrap gap-3">
               <Button
@@ -324,6 +334,7 @@ function IngredientGroup({
   factor: number;
   locale: Locale;
 }) {
+  const checkedSet = new Set(checked);
   return (
     <ul className="divide-y divide-border">
       {ingredients.map((ingredient, index) => {
@@ -331,7 +342,7 @@ function IngredientGroup({
         return (
           <li key={id}>
             <label className="flex min-h-14 cursor-pointer items-center gap-4 py-2">
-              <Checkbox className="" checked={checked.includes(id)} onCheckedChange={() => onToggle(id)} />
+              <Checkbox className="" checked={checkedSet.has(id)} onCheckedChange={() => onToggle(id)} />
               <span className="type-body flex min-w-0 flex-1 items-baseline justify-between gap-3">
                 <span data-ingredient-name className="first-letter:uppercase">{ingredient.name}</span>
                 <span className="shrink-0 font-semibold text-muted-foreground tabular-nums">

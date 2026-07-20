@@ -1,6 +1,6 @@
 import { fetchMutation } from "convex/nextjs";
 import { NextRequest } from "next/server";
-import { editableRecipeDraftSchema } from "@/components/recipes/recipe-form-schema";
+import { compatibleRecipeDraftSchema } from "@/components/recipes/recipe-form-schema";
 import { api } from "@/convex/_generated/api";
 import { hasLocale } from "@/i18n/config";
 import {
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const validation = editableRecipeDraftSchema.safeParse(parsedPayload);
+  const validation = compatibleRecipeDraftSchema.safeParse(parsedPayload);
 
   if (!validation.success) {
     return Response.json(

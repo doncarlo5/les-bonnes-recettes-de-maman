@@ -5,7 +5,7 @@ import { Progress as ProgressPrimitive } from "@base-ui/react/progress"
 import { cn } from "@/lib/utils"
 
 function Progress({
-  className,
+  className = "",
   children,
   value,
   ...props
@@ -25,7 +25,7 @@ function Progress({
 }
 
 function ProgressTrack({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -40,7 +40,7 @@ function ProgressTrack({
 }
 
 function ProgressIndicator({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -52,7 +52,7 @@ function ProgressIndicator({
 }
 
 function ProgressLabel({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -64,7 +64,7 @@ function ProgressLabel({
 }
 
 function ProgressValue({
-  className,
+  className = "",
   ...props
 }) {
   return (

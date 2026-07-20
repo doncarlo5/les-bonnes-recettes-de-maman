@@ -3,6 +3,7 @@ import { components, internal } from "./_generated/api";
 import type { DataModel } from "./_generated/dataModel";
 import { backfillYieldLabels } from "../lib/recipe-yield";
 import { resolveReferenceServings } from "../lib/recipe-servings";
+import { resolveRecipeCategories } from "../lib/recipe-categories";
 
 export const migrations = new Migrations<DataModel>(components.migrations);
 
@@ -60,4 +61,33 @@ export const runReferenceServingsBackfill = migrations.runner([
   internal.migrations.backfillDraftReferenceServings,
 ]);
 
+export const backfillRecipeCategories = migrations.define({
+  table: "recipes",
+  migrateOne: (_ctx, recipe) => {
+    const resolved = resolveRecipeCategories(recipe);
+    return sameCategoryFields(recipe, resolved) ? undefined : resolved;
+  },
+});
+
+export const backfillDraftCategories = migrations.define({
+  table: "recipeDrafts",
+  migrateOne: (_ctx, draft) => {
+    const resolved = resolveRecipeCategories(draft);
+    return sameCategoryFields(draft, resolved) ? undefined : resolved;
+  },
+});
+
+export const runCategoryBackfill = migrations.runner([
+  internal.migrations.backfillRecipeCategories,
+  internal.migrations.backfillDraftCategories,
+]);
+
 export const run = migrations.runner();
+
+function sameCategoryFields(
+  source: { categories?: readonly string[]; legacyCategoryLabels?: readonly string[] },
+  resolved: { categories: readonly string[]; legacyCategoryLabels: readonly string[] },
+) {
+  return JSON.stringify(source.categories ?? []) === JSON.stringify(resolved.categories)
+    && JSON.stringify(source.legacyCategoryLabels ?? []) === JSON.stringify(resolved.legacyCategoryLabels);
+}

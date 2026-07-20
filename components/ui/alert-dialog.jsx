@@ -25,7 +25,7 @@ function AlertDialogPortal({
 }
 
 function AlertDialogOverlay({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -40,7 +40,7 @@ function AlertDialogOverlay({
 }
 
 function AlertDialogContent({
-  className,
+  className = "",
   size = "default",
   ...props
 }) {
@@ -60,7 +60,7 @@ function AlertDialogContent({
 }
 
 function AlertDialogHeader({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -75,7 +75,7 @@ function AlertDialogHeader({
 }
 
 function AlertDialogFooter({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -90,7 +90,7 @@ function AlertDialogFooter({
 }
 
 function AlertDialogMedia({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -105,7 +105,7 @@ function AlertDialogMedia({
 }
 
 function AlertDialogTitle({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -120,7 +120,7 @@ function AlertDialogTitle({
 }
 
 function AlertDialogDescription({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -135,14 +135,14 @@ function AlertDialogDescription({
 }
 
 function AlertDialogAction({
-  className,
+  className = "",
   ...props
 }) {
   return (<Button data-slot="alert-dialog-action" className={cn(className)} {...props} />);
 }
 
 function AlertDialogCancel({
-  className,
+  className = "",
   variant = "outline",
   size = "default",
   ...props

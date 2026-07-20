@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 
 function InputGroup({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -46,7 +46,7 @@ const inputGroupAddonVariants = cva(
 )
 
 function InputGroupAddon({
-  className,
+  className = "",
   align = "inline-start",
   ...props
 }) {
@@ -82,7 +82,7 @@ const inputGroupButtonVariants = cva("flex items-center gap-2 text-sm shadow-non
 })
 
 function InputGroupButton({
-  className,
+  className = "",
   type = "button",
   variant = "ghost",
   size = "xs",
@@ -99,7 +99,7 @@ function InputGroupButton({
 }
 
 function InputGroupText({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -113,7 +113,7 @@ function InputGroupText({
 }
 
 function InputGroupInput({
-  className,
+  className = "",
   ...props
 }) {
   return (
@@ -128,7 +128,7 @@ function InputGroupInput({
 }
 
 function InputGroupTextarea({
-  className,
+  className = "",
   ...props
 }) {
   return (

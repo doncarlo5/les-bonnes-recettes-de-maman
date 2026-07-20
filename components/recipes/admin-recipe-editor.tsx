@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactElement } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -69,6 +69,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
 import {
   Field,
   FieldDescription,
@@ -79,6 +80,19 @@ import {
   FieldTitle,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from "@/components/ui/item";
+import {
+  Combobox,
+  ComboboxChip,
+  ComboboxChips,
+  ComboboxChipsInput,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxItem,
+  ComboboxList,
+  ComboboxValue,
+} from "@/components/ui/combobox";
+import { RECIPE_CATEGORIES, type RecipeCategory } from "@/lib/recipe-categories";
 import {
   Select,
   SelectContent,
@@ -97,6 +111,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Textarea } from "@/components/ui/textarea";
 import {
   editableRecipeDraftSchema,
@@ -197,7 +213,8 @@ const blankRecipe: RecipeDraftPayload = {
     fr: blankLocalizedRecipe,
     en: blankLocalizedRecipe,
   },
-  tags: [],
+  categories: [],
+  legacyCategoryLabels: [],
 };
 
 export function AdminRecipeEditor({
@@ -211,6 +228,7 @@ export function AdminRecipeEditor({
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialRecipe = startInCreateMode ? null : initialRecipeProp ?? null;
+  const editorFormRef = useRef<HTMLFormElement>(null);
   const [selectedSlug, setSelectedSlug] = useState(initialRecipe?.slug ?? "");
   const [mode, setMode] = useState<RecipeFormMode>(
     startInCreateMode ? "create" : "update",
@@ -258,6 +276,10 @@ export function AdminRecipeEditor({
   const isPreview = searchParams.get("mode") === "preview";
 
   useEffect(() => {
+    editorFormRef.current?.setAttribute("data-recipe-admin-hydrated", "true");
+  }, []);
+
+  useEffect(() => {
     if (searchParams.get("new") === "1") return;
     const urlSlug = searchParams.get("slug") ?? "";
     if (urlSlug === selectedSlug) return;
@@ -272,9 +294,9 @@ export function AdminRecipeEditor({
     name: "defaultLocale",
   });
   const requestedLanguage = normalizeLocaleKey(searchParams.get("lang"), defaultLocale);
-  const tagsValue = useWatch({
+  const categoryValues = useWatch({
     control: form.control,
-    name: "tags",
+    name: "categories",
   });
 
   const revealFieldError = useCallback((field: string) => {
@@ -308,7 +330,6 @@ export function AdminRecipeEditor({
     setMode("update");
     setSelectedSlug(slug);
     router.replace(`/${locale}/admin/recettes?slug=${slug}&section=info`);
-    router.refresh();
   }, [locale, router]);
   const handleDeleted = useCallback(() => {
     setMode("update");
@@ -469,7 +490,7 @@ export function AdminRecipeEditor({
 
   return (
       <FormProvider {...form}>
-      <form action={async () => {
+      <form ref={editorFormRef} data-recipe-admin-hydrated="false" data-recipe-admin-mode={mode} action={async () => {
         await saveCurrentDraft(syncState === "conflict");
       }}>
       <MobileRecipeAdmin
@@ -484,7 +505,7 @@ export function AdminRecipeEditor({
         isPending={isPending}
         state={state}
         form={form}
-        tagsValue={tagsValue ?? []}
+        categoryValues={categoryValues ?? []}
         defaultLocale={defaultLocale}
         requestedLanguage={requestedLanguage}
         onLanguage={selectEditorLanguage}
@@ -522,7 +543,7 @@ function MobileRecipeAdmin({
   isPending,
   state,
   form,
-  tagsValue,
+  categoryValues,
   defaultLocale,
   requestedLanguage,
   onLanguage,
@@ -554,7 +575,7 @@ function MobileRecipeAdmin({
   isPending: boolean;
   state: SaveRecipeState;
   form: RecipeForm;
-  tagsValue: string[];
+  categoryValues: RecipeCategory[];
   defaultLocale: LocaleKey;
   requestedLanguage: LocaleKey;
   onLanguage: (locale: LocaleKey) => void;
@@ -588,7 +609,7 @@ function MobileRecipeAdmin({
     const normalizedQuery = query.trim().toLocaleLowerCase(locale);
     const visibleRecipes = recipes.filter((recipe) => {
       const matchesFilter = filter === "all" || recipe.status === filter;
-      const haystack = `${recipe.title} ${recipe.slug} ${recipe.tags.join(" ")}`.toLocaleLowerCase(locale);
+      const haystack = `${recipe.title} ${recipe.slug} ${recipe.categories.join(" ")}`.toLocaleLowerCase(locale);
       return matchesFilter && (!normalizedQuery || haystack.includes(normalizedQuery));
     });
 
@@ -616,36 +637,36 @@ function MobileRecipeAdmin({
               <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher une recette" className="h-11 rounded-xl border-0 bg-muted/60 pl-10 shadow-none" />
             </div>
-            <div className="mt-2 grid grid-cols-3 gap-1" aria-label="Filtrer les recettes">
+            <ToggleGroup value={[filter]} onValueChange={(values: string[]) => setFilter((values[0] as typeof filter | undefined) ?? filter)} variant="default" size="default" spacing={1} className="mt-2 grid w-full grid-cols-3" aria-label="Filtrer les recettes">
               {(["all", "draft", "published"] as const).map((value) => (
-                <Button key={value} type="button" variant={filter === value ? "secondary" : "ghost"} onClick={() => setFilter(value)} className="min-h-11 rounded-xl">
+                <ToggleGroupItem key={value} value={value} className="min-h-11 rounded-xl" aria-label={value === "all" ? "Toutes" : value === "draft" ? "Brouillons" : "Publiées"}>
                   {value === "all" ? "Toutes" : value === "draft" ? "Brouillons" : "Publiées"}
-                </Button>
+                </ToggleGroupItem>
               ))}
-            </div>
+            </ToggleGroup>
           </div>
         </header>
 
-        <section className="mx-auto mt-5 grid w-full max-w-5xl gap-3 lg:grid-cols-2" aria-label="Recettes">
+        <ItemGroup role="group" className="mx-auto mt-5 grid w-full max-w-5xl gap-3 lg:grid-cols-2" aria-label="Recettes">
           {visibleRecipes.map((recipe) => (
-            <button key={recipe._id} type="button" onClick={() => onSelect(recipe.slug)} className="group grid min-h-24 grid-cols-[5rem_1fr_auto] items-center gap-3 rounded-2xl bg-card p-2 text-left shadow-[var(--shadow-card)] transition-[box-shadow,scale] duration-150 active:scale-[0.96]">
-              <div className="relative size-20 overflow-hidden rounded-xl bg-muted">
+            <Item key={recipe._id} render={<button type="button" onClick={() => onSelect(recipe.slug)} />} className="group min-h-24 flex-nowrap rounded-2xl border-0 bg-card p-2 text-left shadow-[var(--shadow-card)] transition-[box-shadow,scale] duration-150 active:scale-[0.96]">
+              <ItemMedia variant="image" className="relative size-20 rounded-xl bg-muted">
                 {recipe.heroImageUrl ? <Image src={recipe.heroImageUrl} alt="" fill sizes="80px" className="object-cover outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10" /> : <div className="grid size-full place-items-center"><Camera className="size-5 text-muted-foreground" /></div>}
-              </div>
-              <span className="min-w-0">
-                <span className="type-panel-title line-clamp-2" title={recipe.title || "Recette sans titre"}>{recipe.title || "Recette sans titre"}</span>
-                <span className="mt-1 flex flex-wrap items-center gap-1.5 text-xs font-bold text-muted-foreground">
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle className="type-panel-title line-clamp-2" title={recipe.title || "Recette sans titre"}>{recipe.title || "Recette sans titre"}</ItemTitle>
+                <ItemDescription className="mt-1 flex flex-wrap items-center gap-1.5 text-xs font-bold">
                   {recipe.isPublic ? "Visible" : recipe.hasPublishedVersion ? "Masquée" : "Jamais publiée"}
                   {recipe.hasUnpublishedChanges ? <><span aria-hidden>·</span><span className="text-primary">Modifications non publiées</span></> : null}
                   <span aria-hidden>·</span>
                   {recipe.readiness.blockers.length === 0 ? "Prête" : `${recipe.readiness.blockers.length} à compléter`}
-                </span>
-              </span>
-              <ChevronRight className="mr-1 size-5 text-muted-foreground transition-transform group-active:translate-x-0.5" />
-            </button>
+                </ItemDescription>
+              </ItemContent>
+              <ItemActions><ChevronRight className="mr-1 size-5 text-muted-foreground transition-transform group-active:translate-x-0.5" /></ItemActions>
+            </Item>
           ))}
-          {visibleRecipes.length === 0 ? <div className="rounded-2xl bg-card p-8 text-center text-sm font-semibold text-muted-foreground shadow-[var(--shadow-card)]">Aucune recette ne correspond.</div> : null}
-        </section>
+          {visibleRecipes.length === 0 ? <Empty className="bg-card shadow-[var(--shadow-card)]"><EmptyHeader><EmptyTitle>Aucune recette</EmptyTitle><EmptyDescription>Aucune recette ne correspond aux filtres actuels.</EmptyDescription></EmptyHeader></Empty> : null}
+        </ItemGroup>
       </main>
     );
   }
@@ -675,12 +696,12 @@ function MobileRecipeAdmin({
         <header className="sticky top-2 z-20 mb-4 grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 rounded-[1.25rem] bg-card/95 p-2 shadow-[var(--shadow-card)] backdrop-blur-xl sm:grid-cols-[auto_minmax(0,1fr)_auto_auto]">
           <Button type="button" variant="ghost" size="icon" onClick={() => section === "overview" ? onHome() : onOpenSection("overview")} className="size-11 rounded-xl" aria-label={section === "overview" ? "Retour au carnet" : "Retour à la recette"}><ArrowLeft /></Button>
           <div className="min-w-0 flex-1"><p className="type-label truncate text-muted-foreground" title={sectionTitle}>{sectionTitle}</p><h1 className="type-panel-title truncate ![text-wrap:nowrap]" title={values.translations[defaultLocale]?.title || "Recette sans titre"}>{values.translations[defaultLocale]?.title || "Recette sans titre"}</h1></div>
-          <div className="col-span-3 row-start-2 flex items-center gap-1 rounded-xl bg-muted p-1 sm:col-span-1 sm:col-start-3 sm:row-start-1" role="group" aria-label="Langue du contenu">
-            <Button type="button" variant="ghost" onClick={() => onLanguage("fr")} className={`h-10 min-h-10 flex-1 rounded-lg px-3 text-sm sm:flex-none ${requestedLanguage === "fr" ? "bg-card text-foreground shadow-[var(--shadow-border)] hover:bg-card" : "text-muted-foreground"}`} aria-pressed={requestedLanguage === "fr"}>Français</Button>
-            <Button type="button" variant="ghost" onClick={() => onLanguage("en")} className={`h-10 min-h-10 flex-1 rounded-lg px-3 text-sm sm:flex-none ${requestedLanguage === "en" ? "bg-card text-foreground shadow-[var(--shadow-border)] hover:bg-card" : "text-muted-foreground"}`} aria-pressed={requestedLanguage === "en"}>Anglais</Button>
-          </div>
+          <ToggleGroup value={[requestedLanguage]} onValueChange={(values: string[]) => values[0] && onLanguage(values[0] as LocaleKey)} spacing={1} className="col-span-3 row-start-2 grid w-full grid-cols-2 rounded-xl bg-muted p-1 sm:col-span-1 sm:col-start-3 sm:row-start-1" aria-label="Langue du contenu">
+            <ToggleGroupItem value="fr" className="h-10 min-h-10 rounded-lg px-3 text-sm">Français</ToggleGroupItem>
+            <ToggleGroupItem value="en" className="h-10 min-h-10 rounded-lg px-3 text-sm">Anglais</ToggleGroupItem>
+          </ToggleGroup>
           <div className="col-start-3 row-start-1 flex items-center gap-1 sm:col-start-4">
-            <Button type="button" variant="ghost" size="icon" onClick={onPreview} className="rounded-xl" aria-label="Prévisualiser le brouillon" title="Prévisualiser le brouillon"><Eye /></Button>
+            <Tooltip><TooltipTrigger render={<Button type="button" variant="ghost" size="icon" onClick={onPreview} className="rounded-xl" aria-label="Prévisualiser le brouillon"><Eye /></Button>} /><TooltipContent className="">Prévisualiser le brouillon</TooltipContent></Tooltip>
             <SyncPill state={syncState} revision={revision} />
           </div>
         </header>
@@ -692,7 +713,7 @@ function MobileRecipeAdmin({
           <MobileOverview recipe={selectedRecipe} values={values} readiness={readiness} publication={publication} onOpen={onOpenSection} />
         ) : (
           <section className="rounded-2xl bg-card p-4 shadow-[var(--shadow-card)]">
-            <MobileSectionFields section={section} locale={locale} recipe={selectedRecipe} revision={revision} onImageRevision={onImageRevision} onImageConflict={onImageConflict} onBeforeImageChange={onBeforeImageChange} form={form} tagsValue={tagsValue} defaultLocale={defaultLocale} requestedLanguage={requestedLanguage} readiness={readiness} publication={publication} isPending={isPending} onPublish={onPublish} onDiscard={onDiscard} onDelete={onDelete} onUnpublish={onUnpublish} />
+            <MobileSectionFields section={section} locale={locale} recipe={selectedRecipe} revision={revision} onImageRevision={onImageRevision} onImageConflict={onImageConflict} onBeforeImageChange={onBeforeImageChange} form={form} categoryValues={categoryValues} defaultLocale={defaultLocale} requestedLanguage={requestedLanguage} readiness={readiness} publication={publication} isPending={isPending} onPublish={onPublish} onDiscard={onDiscard} onDelete={onDelete} onUnpublish={onUnpublish} />
           </section>
         )}
       </div>
@@ -768,7 +789,7 @@ function AdminDraftPreview({
     imageCredit: recipe.imageCredit,
     defaultLocale: values.defaultLocale,
     referenceServings: values.referenceServings,
-    tags: values.tags,
+    categories: values.categories,
     status: recipe.status,
     ...localized,
   };
@@ -809,10 +830,10 @@ function AdminDraftPreview({
   );
 }
 
-function MobileSectionFields({ section, locale, recipe, revision, onImageRevision, onImageConflict, onBeforeImageChange, form, tagsValue, defaultLocale, requestedLanguage, readiness, publication, isPending, onPublish, onDiscard, onDelete, onUnpublish }: { section: MobileSection; locale: Locale; recipe: EditableRecipe | null; revision: number; onImageRevision: (mutation: RecipeImageMutation) => void; onImageConflict: (revision?: number, retry?: (revision: number) => Promise<void>) => void; onBeforeImageChange: () => Promise<number | null>; form: RecipeForm; tagsValue: string[]; defaultLocale: LocaleKey; requestedLanguage: LocaleKey; readiness: RecipeReadiness; publication: ReturnType<typeof getPublicationState>; isPending: boolean; onPublish: () => void; onDiscard: () => void; onDelete: () => void; onUnpublish: () => void }) {
+function MobileSectionFields({ section, locale, recipe, revision, onImageRevision, onImageConflict, onBeforeImageChange, form, categoryValues, defaultLocale, requestedLanguage, readiness, publication, isPending, onPublish, onDiscard, onDelete, onUnpublish }: { section: MobileSection; locale: Locale; recipe: EditableRecipe | null; revision: number; onImageRevision: (mutation: RecipeImageMutation) => void; onImageConflict: (revision?: number, retry?: (revision: number) => Promise<void>) => void; onBeforeImageChange: () => Promise<number | null>; form: RecipeForm; categoryValues: RecipeCategory[]; defaultLocale: LocaleKey; requestedLanguage: LocaleKey; readiness: RecipeReadiness; publication: ReturnType<typeof getPublicationState>; isPending: boolean; onPublish: () => void; onDiscard: () => void; onDelete: () => void; onUnpublish: () => void }) {
   const base = `translations.${requestedLanguage}`;
   const errors = form.formState.errors;
-  if (section === "info") return <div className="grid gap-5 lg:grid-cols-[minmax(16rem,0.8fr)_minmax(0,1.2fr)] lg:items-start"><div data-field-target="heroImageUrl" tabIndex={-1}><AdminRecipeImagePanel key={recipe?.slug ?? "new"} locale={locale} recipe={recipe} revision={revision} onBeforeChange={onBeforeImageChange} onRevisionChange={onImageRevision} onConflict={onImageConflict} compact /></div><FieldGroup><TextField label="Titre" name={`${base}.title`} register={form.register} errors={errors} /><TextField label="Auteur" name={`${base}.author`} register={form.register} errors={errors} /><TextareaField label="Description" name={`${base}.description`} register={form.register} errors={errors} /><SelectField label="Langue principale" value={defaultLocale} onValueChange={(value) => form.setValue("defaultLocale", value as LocaleKey, { shouldDirty: true })} options={[{ label: "Français", value: "fr" }, { label: "Anglais", value: "en" }]} /><Field><FieldLabel htmlFor="mobile-tags">Catégories</FieldLabel><Input id="mobile-tags" className="h-11" value={tagsValue.join(", ")} onChange={(event) => form.setValue("tags", parseTags(event.target.value), { shouldDirty: true })} /><FieldDescription>Sépare les catégories par des virgules.</FieldDescription></Field></FieldGroup></div>;
+  if (section === "info") return <div className="grid gap-5 lg:grid-cols-[minmax(16rem,0.8fr)_minmax(0,1.2fr)] lg:items-start"><div data-field-target="heroImageUrl" tabIndex={-1}><AdminRecipeImagePanel key={recipe?.slug ?? "new"} locale={locale} recipe={recipe} revision={revision} onBeforeChange={onBeforeImageChange} onRevisionChange={onImageRevision} onConflict={onImageConflict} compact /></div><FieldGroup><TextField label="Titre" name={`${base}.title`} register={form.register} errors={errors} /><TextField label="Auteur" name={`${base}.author`} register={form.register} errors={errors} /><TextareaField label="Description" name={`${base}.description`} register={form.register} errors={errors} /><SelectField label="Langue principale" value={defaultLocale} onValueChange={(value) => form.setValue("defaultLocale", value as LocaleKey, { shouldDirty: true })} options={[{ label: "Français", value: "fr" }, { label: "Anglais", value: "en" }]} /><RecipeCategoryField form={form} value={categoryValues} /></FieldGroup></div>;
   if (section === "details") return <FieldGroup><TextField label="Quantité obtenue" name={`${base}.yieldLabel`} register={form.register} errors={errors} placeholder="Environ 20 gougères" /><TextField label="Préparation" name={`${base}.prepTime`} register={form.register} errors={errors} placeholder="20 min" /><TextField label="Cuisson" name={`${base}.cookTime`} register={form.register} errors={errors} placeholder="25 min" /><TextField label="Total" name={`${base}.totalTime`} register={form.register} errors={errors} placeholder="45 min" /><TextField label="Libellé temps" name={`${base}.timeLabel`} register={form.register} errors={errors} placeholder="45 min" /><TextField label="Température" name={`${base}.temperature`} register={form.register} errors={errors} placeholder="180 °C" /></FieldGroup>;
   if (section === "ingredients") return <FieldGroup><TextField label="Portions de référence (personnes)" name="referenceServings" register={form.register} errors={errors} type="number" min={MIN_REFERENCE_SERVINGS} max={MAX_REFERENCE_SERVINGS} /><FieldDescription>Le nombre de personnes par défaut, utilisé comme base pour calculer les proportions de la recette publique.</FieldDescription><CompactIngredientsEditor name={`${base}.ingredients`} control={form.control} register={form.register} /></FieldGroup>;
   if (section === "preparation") return <FieldGroup><CompactSectionsEditor name={`${base}.sections`} control={form.control} register={form.register} /><SubRecipesArray name={`${base}.subRecipes`} control={form.control} register={form.register} /></FieldGroup>;
@@ -821,6 +842,70 @@ function MobileSectionFields({ section, locale, recipe, revision, onImageRevisio
   if (section === "translation") return <div className="grid gap-4"><div className="rounded-xl bg-muted p-3 text-sm font-bold">Traduction {requestedLanguage === "en" ? "anglaise" : "française"}</div><LocalizedRecipeFields localeKey={requestedLanguage} register={form.register} control={form.control} errors={errors} /></div>;
   if (section === "publish") return <PublishWorkspace recipe={recipe} readiness={readiness} publication={publication} isPending={isPending} onPublish={onPublish} onDiscard={onDiscard} onDelete={onDelete} onUnpublish={onUnpublish} />;
   return null;
+}
+
+const categoryLabels: Record<RecipeCategory, string> = {
+  dessert: "Dessert",
+  plat: "Plat",
+  sucre: "Sucré",
+  sale: "Salé",
+};
+
+function RecipeCategoryField({ form, value }: { form: RecipeForm; value: RecipeCategory[] }) {
+  const legacyLabels = useWatch({ control: form.control, name: "legacyCategoryLabels" }) ?? [];
+
+  return (
+    <Field>
+      <FieldLabel>Catégories</FieldLabel>
+      <Combobox
+        items={[...RECIPE_CATEGORIES]}
+        multiple
+        value={value}
+        onValueChange={(nextValue) => form.setValue("categories", nextValue as RecipeCategory[], {
+          shouldDirty: true,
+          shouldTouch: true,
+          shouldValidate: true,
+        })}
+      >
+        <ComboboxChips className="min-h-11">
+          <ComboboxValue>
+            {value.map((category) => (
+              <ComboboxChip key={category} className="">{categoryLabels[category]}</ComboboxChip>
+            ))}
+          </ComboboxValue>
+          <ComboboxChipsInput className="" placeholder={value.length ? "Ajouter" : "Choisir les catégories"} />
+        </ComboboxChips>
+        <ComboboxContent className="" anchor={undefined}>
+          <ComboboxEmpty className="">Aucune catégorie.</ComboboxEmpty>
+          <ComboboxList className="">
+            {(category: RecipeCategory) => (
+              <ComboboxItem key={category} value={category} className="">{categoryLabels[category]}</ComboboxItem>
+            )}
+          </ComboboxList>
+        </ComboboxContent>
+      </Combobox>
+      <FieldDescription>Choisis parmi les quatre catégories du carnet public.</FieldDescription>
+      {legacyLabels.length ? (
+        <div className="flex flex-wrap gap-2" aria-label="Anciennes catégories à vérifier">
+          {legacyLabels.map((label) => (
+            <Badge key={label} variant="outline" className="gap-1">
+              {label}
+              <button
+                type="button"
+                className="rounded-sm font-black"
+                aria-label={`Supprimer l’ancienne catégorie ${label}`}
+                onClick={() => form.setValue(
+                  "legacyCategoryLabels",
+                  legacyLabels.filter((candidate) => candidate !== label),
+                  { shouldDirty: true, shouldValidate: true },
+                )}
+              >×</button>
+            </Badge>
+          ))}
+        </div>
+      ) : null}
+    </Field>
+  );
 }
 
 function PublishWorkspace({ recipe, readiness, publication, isPending, onPublish, onDiscard, onDelete, onUnpublish }: { recipe: EditableRecipe | null; readiness: RecipeReadiness; publication: ReturnType<typeof getPublicationState>; isPending: boolean; onPublish: () => void; onDiscard: () => void; onDelete: () => void; onUnpublish: () => void }) {
@@ -840,16 +925,16 @@ function PublishWorkspace({ recipe, readiness, publication, isPending, onPublish
     {readiness.warnings.length ? <div className="grid gap-2"><h3 className="font-black">Conseils</h3>{readiness.warnings.map((item) => <button type="button" key={item.code} onClick={() => openItem(item)} className="flex min-h-11 items-center gap-2 rounded-xl bg-muted p-3 text-left text-sm font-semibold transition-[scale,background-color] active:scale-[0.96]"><span className="flex-1">{item.label}</span><ChevronRight className="size-5" /></button>)}</div> : null}
     {publication.isPublic && recipe ? <a href={`../recettes/${recipe.slug}`} target="_blank" rel="noreferrer" className="flex min-h-11 items-center justify-center rounded-xl bg-muted px-4 font-black">Voir la version publiée</a> : null}
     <Button type="button" size="lg" disabled={isPending || readiness.blockers.length > 0} onClick={onPublish} className="min-h-12 rounded-xl active:scale-[0.96] transition-transform">{isPending ? <Spinner /> : <Send />} {publication.hasPublishedVersion ? "Publier les modifications" : "Publier la recette"}</Button>
-    {publication.canDiscard ? <Button type="button" variant="outline" disabled={isPending} onClick={onDiscard} className="min-h-11 rounded-xl">Abandonner les modifications</Button> : null}
-    {publication.isPublic ? <Button type="button" variant="destructive" disabled={isPending} onClick={onUnpublish} className="min-h-11 rounded-xl">Retirer du site public</Button> : null}
     {recipe ? (
       <div className="grid gap-3 border-t border-border pt-5">
         <div>
           <h3 className="font-black text-destructive">Zone dangereuse</h3>
           <p className="mt-1 text-sm font-semibold text-muted-foreground [text-wrap:pretty]">
-            La recette, son brouillon, ses images et ses commentaires seront supprimés définitivement.
+            Ces actions retirent du contenu ou annulent des modifications. La suppression est définitive.
           </p>
         </div>
+        {publication.canDiscard ? <ConfirmRecipeAction title="Abandonner les modifications ?" description="Le brouillon sera remplacé par la dernière version publiée." confirmLabel="Abandonner" onConfirm={onDiscard}><Button type="button" variant="outline" disabled={isPending} className="min-h-11 rounded-xl">Abandonner les modifications</Button></ConfirmRecipeAction> : null}
+        {publication.isPublic ? <ConfirmRecipeAction title="Retirer la recette du site ?" description="La version publiée sera masquée, mais elle ne sera pas supprimée." confirmLabel="Retirer du site" onConfirm={onUnpublish}><Button type="button" variant="outline" disabled={isPending} className="min-h-11 rounded-xl border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive">Retirer du site public</Button></ConfirmRecipeAction> : null}
         <AlertDialog>
           <AlertDialogTrigger render={<Button type="button" variant="outline" disabled={isPending} className="min-h-11 rounded-xl border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive" />}>
             <Trash2 /> Supprimer la recette
@@ -872,6 +957,24 @@ function PublishWorkspace({ recipe, readiness, publication, isPending, onPublish
       </div>
     ) : null}
   </div>;
+}
+
+function ConfirmRecipeAction({ title, description, confirmLabel, onConfirm, children }: { title: string; description: string; confirmLabel: string; onConfirm: () => void; children: ReactElement }) {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger render={children} />
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogDescription>{description}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Annuler</AlertDialogCancel>
+          <AlertDialogAction onClick={onConfirm}>{confirmLabel}</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
 }
 
 function SyncPill({ state, revision }: { state: SyncState; revision: number }) {
@@ -938,9 +1041,9 @@ function RecipeTable({
                   <span className="truncate text-xs text-muted-foreground" title={recipe.slug}>
                     {recipe.slug}
                   </span>
-                  {recipe.tags.length > 0 ? (
-                    <span className="truncate text-xs text-muted-foreground" title={recipe.tags.join(", ")}>
-                      {recipe.tags.join(", ")}
+                  {recipe.categories.length > 0 ? (
+                    <span className="truncate text-xs text-muted-foreground" title={recipe.categories.join(", ")}>
+                      {recipe.categories.join(", ")}
                     </span>
                   ) : null}
                 </div>
@@ -1480,15 +1583,6 @@ function SaveStateAlert({
       <AlertDescription>{state.message}</AlertDescription>
     </Alert>
   );
-}
-
-function parseTags(value: string) {
-  return value
-    .split(",")
-    .flatMap((tag) => {
-      const trimmed = tag.trim();
-      return trimmed ? [trimmed] : [];
-    });
 }
 
 function getFieldError(

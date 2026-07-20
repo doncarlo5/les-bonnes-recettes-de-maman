@@ -7,6 +7,7 @@ import {
   MAX_REFERENCE_SERVINGS,
   MIN_REFERENCE_SERVINGS,
 } from "@/lib/recipe-servings";
+import { RECIPE_CATEGORIES, resolveRecipeCategories } from "@/lib/recipe-categories";
 
 const limits = RECIPE_FIELD_LIMITS;
 
@@ -55,7 +56,8 @@ const editableRecipeDraftObject = z.object({
     fr: localizedRecipeSchema,
     en: localizedRecipeSchema,
   }),
-  tags: z.array(z.string().max(limits.shortValue)).max(50),
+  categories: z.array(z.enum(RECIPE_CATEGORIES)).max(RECIPE_CATEGORIES.length),
+  legacyCategoryLabels: z.array(z.string().max(limits.shortValue)).max(50).optional(),
 });
 
 export const editableRecipeDraftSchema = editableRecipeDraftObject.superRefine(
@@ -71,6 +73,20 @@ export const editableRecipeDraftSchema = editableRecipeDraftObject.superRefine(
     }
   },
 );
+
+const legacyRecipeDraftSchema = editableRecipeDraftObject
+  .omit({ categories: true, legacyCategoryLabels: true })
+  .extend({ tags: z.array(z.string().max(limits.shortValue)).max(50) });
+
+/** Transitional parser for route payloads and recovery records created before categories. */
+export const compatibleRecipeDraftSchema = z
+  .union([editableRecipeDraftSchema, legacyRecipeDraftSchema])
+  .transform((recipe) => {
+    if (!("tags" in recipe)) return recipe;
+    const { tags, ...content } = recipe;
+    return { ...content, ...resolveRecipeCategories({ tags }) };
+  })
+  .pipe(editableRecipeDraftSchema);
 
 export type RecipeDraftFormInput = z.input<typeof editableRecipeDraftSchema>;
 export type RecipeDraftPayload = z.output<typeof editableRecipeDraftSchema>;

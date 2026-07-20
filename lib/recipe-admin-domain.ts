@@ -1,4 +1,5 @@
 import { isValidReferenceServings } from "./recipe-servings";
+import type { RecipeCategory } from "./recipe-categories";
 
 export const RECIPE_FIELD_LIMITS = {
   title: 200,
@@ -56,7 +57,8 @@ export type RecipeDraftContentLike = {
   defaultLocale: "fr" | "en";
   referenceServings?: number;
   translations: { fr: LocalizedRecipeContent; en: LocalizedRecipeContent };
-  tags: string[];
+  categories: RecipeCategory[];
+  legacyCategoryLabels?: string[];
 };
 
 export type RecipeReadiness = {
@@ -157,7 +159,8 @@ export function assertRecipeDraftLimits(value: RecipeDraftContentLike) {
     }
     for (const note of localized.notes) assertLength(note, longText);
   }
-  for (const tag of value.tags) assertLength(tag, shortValue);
+  for (const tag of value.categories) assertLength(tag, shortValue);
+  for (const label of value.legacyCategoryLabels ?? []) assertLength(label, shortValue);
   assertRecipeDraftBytes(value);
 
   function assertIngredient(ingredient: IngredientContent) {

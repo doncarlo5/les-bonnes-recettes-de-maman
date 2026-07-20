@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useEffectEvent, useRef, useState } from "react";
+import { useCallback, useEffect, useEffectEvent, useLayoutEffect, useRef, useState } from "react";
 import type {
   FieldPath,
   UseFormClearErrors,
@@ -13,6 +13,7 @@ import type {
   RecipeDraftFormInput,
   RecipeDraftPayload,
 } from "./recipe-form-schema";
+import { compatibleRecipeDraftSchema } from "./recipe-form-schema";
 import type { EditableRecipe } from "./types";
 
 export type SaveRecipeState = {
@@ -194,7 +195,7 @@ export function useRecipeDraftLifecycle({
     return saved;
   }, [clearErrors, locale, mode, onCreated, onFieldError, selectedSlug, setError]);
 
-  useEffect(() => { savePayloadRef.current = savePayload; }, [savePayload]);
+  useLayoutEffect(() => { savePayloadRef.current = savePayload; }, [savePayload]);
 
   const autosaveLatestDraft = useEffectEvent(() => {
     if (!destructiveOperationRef.current) void saveCurrentDraft();
@@ -215,9 +216,10 @@ export function useRecipeDraftLifecycle({
     const recovered = localStorage.getItem(recoveryKey(selectedSlug));
     if (!recovered) return;
     try {
-      const parsed = JSON.parse(recovered) as { payload?: RecipeDraftFormInput; revision?: number };
-      if (parsed.payload) {
-        reset(parsed.payload);
+      const parsed = JSON.parse(recovered) as { payload?: unknown; revision?: number };
+      const recoveredPayload = compatibleRecipeDraftSchema.safeParse(parsed.payload);
+      if (recoveredPayload.success) {
+        reset(recoveredPayload.data);
         queueMicrotask(() => {
           if (parsed.revision === revisionRef.current) {
             setSyncState("offline");
@@ -337,7 +339,7 @@ export function useRecipeDraftLifecycle({
   }
 
   async function discardChanges() {
-    if (!selectedSlug || !window.confirm("Abandonner toutes les modifications non publiees ?")) return;
+    if (!selectedSlug) return;
     await beginDestructiveOperation();
     setIsPending(true);
     try {
@@ -402,7 +404,7 @@ export function useRecipeDraftLifecycle({
   }
 
   async function unpublishRecipe() {
-    if (!selectedSlug || !window.confirm("Retirer cette recette du site public ?")) return;
+    if (!selectedSlug) return;
     setIsPending(true);
     try {
       const response = await fetch("/api/admin/recipes/unpublish", {
@@ -495,14 +497,16 @@ export function toFormValues(recipe: EditableRecipe): RecipeDraftPayload {
     defaultLocale: recipe.defaultLocale,
     referenceServings: recipe.referenceServings,
     translations: recipe.translations,
-    tags: recipe.tags,
+    categories: recipe.categories,
+    legacyCategoryLabels: recipe.legacyCategoryLabels,
   });
 }
 
 export function normalizePayload(value: RecipeDraftPayload): RecipeDraftPayload {
   return {
     ...value,
-    tags: (value.tags ?? []).flatMap((tag) => tag.trim() ? [tag.trim()] : []),
+    categories: [...new Set(value.categories ?? [])],
+    legacyCategoryLabels: (value.legacyCategoryLabels ?? []).flatMap((label) => label.trim() ? [label.trim()] : []),
     translations: {
       fr: normalizeLocalizedRecipe(value.translations.fr),
       en: normalizeLocalizedRecipe(value.translations.en),
@@ -516,7 +520,8 @@ function draftFingerprint(value: RecipeDraftPayload) {
     defaultLocale: normalized.defaultLocale,
     referenceServings: normalized.referenceServings,
     translations: normalized.translations,
-    tags: normalized.tags,
+    categories: normalized.categories,
+    legacyCategoryLabels: normalized.legacyCategoryLabels,
   });
 }
 

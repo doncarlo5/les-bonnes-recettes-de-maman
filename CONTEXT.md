@@ -11,6 +11,7 @@ _Avoid_: Article, fiche, page
 **Categorie de recette**:
 Facette publique qui aide a parcourir le carnet selon le moment de service ou le gout dominant.
 Une Recette peut appartenir a plusieurs categories.
+Le vocabulaire est fermé : `dessert`, `plat`, `sucre` et `sale`. Un ancien libellé non reconnu est conservé temporairement pour correction éditoriale, mais ne participe jamais aux filtres publics.
 _Avoid_: Tag technique, source, collection
 
 **Recherche de recette**:

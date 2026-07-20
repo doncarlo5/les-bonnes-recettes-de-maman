@@ -1,5 +1,6 @@
 import type { Id } from "@/convex/_generated/dataModel";
 import { getPublicationState, getRecipeReadiness } from "@/lib/recipe-admin-domain";
+import type { RecipeCategory } from "@/lib/recipe-categories";
 import type { EditableRecipe, EditableRecipeSummary, Recipe } from "./types";
 
 const localized = {
@@ -34,7 +35,7 @@ const content = {
     fr: localized,
     en: { ...localized, title: "Demo tart", description: "A recipe used by mobile studio tests.", yieldLabel: "6 servings", prepTime: "" },
   },
-  tags: ["dessert"],
+  categories: ["dessert"] as RecipeCategory[],
   status: "published" as const,
 };
 
@@ -68,7 +69,7 @@ export function getRecipeAdminE2EFixtures() {
     slug: recipe.slug,
     title: recipe.title,
     heroImageUrl: recipe.heroImageUrl,
-    tags: recipe.tags,
+    categories: recipe.categories,
     status: recipe.status,
     revision: recipe.revision,
     publishedRevision: recipe.publishedRevision,
@@ -94,7 +95,7 @@ export function getPublicRecipeE2EFixture(locale: "fr" | "en", slug?: string) {
     imageCredit: recipe.imageCredit,
     defaultLocale: recipe.defaultLocale,
     referenceServings: recipe.referenceServings,
-    tags: recipe.tags,
+    categories: recipe.categories,
     status: recipe.status,
     ...recipe.translations[locale],
   } satisfies Recipe;

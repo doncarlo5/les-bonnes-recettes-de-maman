@@ -68,11 +68,12 @@ test("recipe editor exposes protected comment moderation", async ({ page }) => {
     });
   });
   await page.goto("/fr/admin/recettes?slug=tarte-de-demonstration");
+  await page.getByRole("navigation", { name: "Actions de la recette" }).getByRole("button", { name: "Recette", exact: true }).click();
   await page.getByRole("button", { name: /Commentaires/ }).click();
   await expect(page.getByRole("heading", { name: "Commentaires de la recette" })).toBeVisible();
   await expect(page.getByText("Très bonne recette.")).toBeVisible();
-  page.on("dialog", (dialog) => dialog.accept());
   await page.getByRole("button", { name: "Supprimer" }).click();
+  await confirmDestructiveAction(page, "Supprimer");
   await expect(page.getByText("Très bonne recette.")).toHaveCount(0);
   expect(deletedCommentId).toBe("comment-e2e");
 });
@@ -140,8 +141,8 @@ test("visitor publishes, reacts, edits, reloads and deletes comments with and wi
   article = page.locator("article").filter({ hasText: editedMarker });
   await expect(article.getByRole("button", { name: "Ouvrir la photo de Anonyme" })).toBeVisible();
 
-  page.on("dialog", (dialog) => dialog.accept());
   await article.getByRole("button", { name: "Supprimer" }).click();
+  await confirmDestructiveAction(page, "Supprimer");
   await expect(article).toHaveCount(0);
 
   const namedMarker = `${marker} nommé`;
@@ -151,6 +152,7 @@ test("visitor publishes, reacts, edits, reloads and deletes comments with and wi
   const namedArticle = page.locator("article").filter({ hasText: namedMarker });
   await expect(namedArticle.getByRole("heading", { name: "Julien E2E" })).toBeVisible();
   await namedArticle.getByRole("button", { name: "Supprimer" }).click();
+  await confirmDestructiveAction(page, "Supprimer");
   await expect(namedArticle).toHaveCount(0);
 
   const englishMarker = `${marker} English`;
@@ -185,6 +187,7 @@ test("visitor publishes, reacts, edits, reloads and deletes comments with and wi
   englishArticle = page.locator("article").filter({ hasText: editedEnglishMarker });
   await expect(englishArticle).toContainText("edited");
   await englishArticle.getByRole("button", { name: "Delete" }).click();
+  await confirmDestructiveAction(page, "Delete");
   await expect(englishArticle).toHaveCount(0);
 });
 
@@ -194,7 +197,6 @@ test("visitor loads comments beyond the first batch of ten", async ({ page }, te
   const marker = `Pagination E2E ${Date.now()}`;
   const participantKeySeed = Date.now().toString(16);
   const participantKeys = Array.from({ length: 11 }, (_, index) => `${participantKeySeed}${index.toString(16).padStart(2, "0")}`.padEnd(48, "0"));
-  page.on("dialog", (dialog) => dialog.accept());
   await page.goto("/fr/recettes/amandin");
   await page.getByRole("button", { name: "Ajouter un commentaire" }).click();
 
@@ -214,6 +216,7 @@ test("visitor loads comments beyond the first batch of ten", async ({ page }, te
     await switchParticipant(page, participantKeys[index]);
     const article = commentArticle(page, `${marker} ${index + 1}`);
     await article.getByRole("button", { name: "Supprimer" }).click();
+    await confirmDestructiveAction(page, "Supprimer");
     await expect(article).toHaveCount(0);
   }
 });
@@ -226,6 +229,12 @@ async function switchParticipant(page: import("@playwright/test").Page, key: str
       newValue: nextKey,
     }));
   }, key);
+}
+
+async function confirmDestructiveAction(page: import("@playwright/test").Page, label: string) {
+  const dialog = page.getByRole("alertdialog");
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole("button", { name: label, exact: true }).click();
 }
 
 function commentArticle(page: import("@playwright/test").Page, text: string) {

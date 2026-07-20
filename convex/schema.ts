@@ -66,6 +66,13 @@ const imageCredit = v.union(
   }),
 );
 
+const recipeCategory = v.union(
+  v.literal("dessert"),
+  v.literal("plat"),
+  v.literal("sucre"),
+  v.literal("sale"),
+);
+
 export default defineSchema({
   recipes: defineTable({
     slug: v.string(),
@@ -78,7 +85,11 @@ export default defineSchema({
       fr: localizedRecipe,
       en: localizedRecipe,
     }),
-    tags: v.array(v.string()),
+    // Transitional fields for the categories migration. `tags` is removed after
+    // every production document has categories and no legacy labels remain.
+    tags: v.optional(v.array(v.string())),
+    categories: v.optional(v.array(recipeCategory)),
+    legacyCategoryLabels: v.optional(v.array(v.string())),
     status: v.union(v.literal("draft"), v.literal("published")),
   })
     .index("by_slug", ["slug"])
@@ -94,7 +105,9 @@ export default defineSchema({
       fr: localizedRecipe,
       en: localizedRecipe,
     }),
-    tags: v.array(v.string()),
+    tags: v.optional(v.array(v.string())),
+    categories: v.optional(v.array(recipeCategory)),
+    legacyCategoryLabels: v.optional(v.array(v.string())),
     revision: v.number(),
     publishedRevision: v.number(),
     updatedAt: v.number(),

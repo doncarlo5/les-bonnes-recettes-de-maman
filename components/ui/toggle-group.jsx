@@ -14,14 +14,18 @@ const ToggleGroupContext = React.createContext({
 })
 
 function ToggleGroup({
-  className,
-  variant,
-  size,
+  className = "",
+  variant = "default",
+  size = "default",
   spacing = 0,
   orientation = "horizontal",
   children,
   ...props
 }) {
+  const contextValue = React.useMemo(
+    () => ({ variant, size, spacing, orientation }),
+    [orientation, size, spacing, variant]
+  )
   return (
     <ToggleGroupPrimitive
       data-slot="toggle-group"
@@ -37,7 +41,7 @@ function ToggleGroup({
         className
       )}
       {...props}>
-      <ToggleGroupContext.Provider value={{ variant, size, spacing, orientation }}>
+      <ToggleGroupContext.Provider value={contextValue}>
         {children}
       </ToggleGroupContext.Provider>
     </ToggleGroupPrimitive>
@@ -45,7 +49,7 @@ function ToggleGroup({
 }
 
 function ToggleGroupItem({
-  className,
+  className = "",
   children,
   variant = "default",
   size = "default",

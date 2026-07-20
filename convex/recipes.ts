@@ -14,6 +14,12 @@ import {
 } from "../lib/recipe-admin-domain";
 import { resolveYieldLabel } from "../lib/recipe-yield";
 import { resolveReferenceServings } from "../lib/recipe-servings";
+import {
+  RECIPE_CATEGORIES,
+  resolveRecipeCategories,
+  toLegacyTags,
+  type RecipeCategory,
+} from "../lib/recipe-categories";
 
 declare const process: {
   env: {
@@ -22,6 +28,12 @@ declare const process: {
 };
 
 const localeValidator = v.union(v.literal("fr"), v.literal("en"));
+const recipeCategoryValidator = v.union(
+  v.literal("dessert"),
+  v.literal("plat"),
+  v.literal("sucre"),
+  v.literal("sale"),
+);
 
 type Locale = "fr" | "en";
 type RecipeDoc = Doc<"recipes">;
@@ -83,7 +95,19 @@ const editableLocalizedRecipeValidator = v.object({
   notes: v.array(v.string()),
 });
 
-const editableRecipeValidator = v.object({
+const canonicalEditableRecipeValidator = v.object({
+  defaultLocale: localeValidator,
+  referenceServings: v.optional(v.number()),
+  translations: v.object({
+    fr: editableLocalizedRecipeValidator,
+    en: editableLocalizedRecipeValidator,
+  }),
+  categories: v.array(recipeCategoryValidator),
+  legacyCategoryLabels: v.optional(v.array(v.string())),
+  status: v.union(v.literal("draft"), v.literal("published")),
+});
+
+const legacyEditableRecipeValidator = v.object({
   defaultLocale: localeValidator,
   referenceServings: v.optional(v.number()),
   translations: v.object({
@@ -94,7 +118,23 @@ const editableRecipeValidator = v.object({
   status: v.union(v.literal("draft"), v.literal("published")),
 });
 
-const draftContentValidator = v.object({
+const editableRecipeValidator = v.union(
+  canonicalEditableRecipeValidator,
+  legacyEditableRecipeValidator,
+);
+
+const canonicalDraftContentValidator = v.object({
+  defaultLocale: localeValidator,
+  referenceServings: v.optional(v.number()),
+  translations: v.object({
+    fr: editableLocalizedRecipeValidator,
+    en: editableLocalizedRecipeValidator,
+  }),
+  categories: v.array(recipeCategoryValidator),
+  legacyCategoryLabels: v.optional(v.array(v.string())),
+});
+
+const legacyDraftContentValidator = v.object({
   defaultLocale: localeValidator,
   referenceServings: v.optional(v.number()),
   translations: v.object({
@@ -103,6 +143,11 @@ const draftContentValidator = v.object({
   }),
   tags: v.array(v.string()),
 });
+
+const draftContentValidator = v.union(
+  canonicalDraftContentValidator,
+  legacyDraftContentValidator,
+);
 
 const openverseImageCreditValidator = v.object({
   title: v.string(),
@@ -191,7 +236,7 @@ export const listForEditing = query({
           title: source.translations[args.locale].title,
           heroImageUrl: storedHeroImageUrl ?? source.heroImageUrl,
           imageCredit: source.imageCredit,
-          tags: source.tags,
+          ...resolveRecipeCategories(source),
           status: recipe.status,
           revision,
           publishedRevision,
@@ -243,7 +288,7 @@ export const getForEditing = query({
       defaultLocale: source.defaultLocale,
       referenceServings: getReferenceServings(source),
       translations: toEditableTranslations(source.translations, recipe.slug),
-      tags: source.tags,
+      ...resolveRecipeCategories(source),
       status: recipe.status,
       revision,
       publishedRevision,
@@ -264,20 +309,21 @@ export const create = mutation({
   },
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
-    assertRecipeBounds(args.recipe);
+    const normalizedRecipe = normalizeCategoryPayload(args.recipe);
+    assertRecipeBounds(normalizedRecipe);
 
-    const title = args.recipe.translations.fr.title.trim();
+    const title = normalizedRecipe.translations.fr.title.trim();
     const baseSlug = slugify(title || "nouvelle-recette");
     const slug = await getAvailableSlug(ctx, baseSlug);
 
-    const storedTranslations = toStoredTranslations(args.recipe.translations);
+    const storedTranslations = toStoredTranslations(normalizedRecipe.translations);
     const recipeId = await ctx.db.insert("recipes", {
       slug,
       heroImageUrl: "",
-      defaultLocale: args.recipe.defaultLocale,
-      referenceServings: args.recipe.referenceServings,
+      defaultLocale: normalizedRecipe.defaultLocale,
+      referenceServings: normalizedRecipe.referenceServings,
       translations: storedTranslations,
-      tags: args.recipe.tags,
+      ...toStoredCategoryFields(normalizedRecipe),
       status: "draft",
     });
 
@@ -285,10 +331,10 @@ export const create = mutation({
     const initialDraft = {
       recipeId,
       heroImageUrl: "",
-      defaultLocale: args.recipe.defaultLocale,
-      referenceServings: args.recipe.referenceServings,
+      defaultLocale: normalizedRecipe.defaultLocale,
+      referenceServings: normalizedRecipe.referenceServings,
       translations: storedTranslations,
-      tags: args.recipe.tags,
+      ...toStoredCategoryFields(normalizedRecipe),
       revision: 0,
       publishedRevision: -1,
       updatedAt: now,
@@ -328,7 +374,8 @@ export const saveDraft = mutation({
   },
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
-    assertRecipeBounds(args.recipe);
+    const normalizedRecipe = normalizeCategoryPayload(args.recipe);
+    assertRecipeBounds(normalizedRecipe);
 
     const existing = await ctx.db
       .query("recipes")
@@ -350,14 +397,14 @@ export const saveDraft = mutation({
     const savedAt = Date.now();
 
     const storedTranslations = toStoredTranslations(
-      args.recipe.translations,
+      normalizedRecipe.translations,
       currentDraft?.translations ?? existing.translations,
     );
     const contentPatch = {
-        defaultLocale: args.recipe.defaultLocale,
-        referenceServings: args.recipe.referenceServings,
+        defaultLocale: normalizedRecipe.defaultLocale,
+        referenceServings: normalizedRecipe.referenceServings,
         translations: storedTranslations,
-        tags: args.recipe.tags,
+        ...toStoredCategoryFields(normalizedRecipe),
         revision,
         updatedAt: savedAt,
     };
@@ -370,10 +417,10 @@ export const saveDraft = mutation({
         heroImageStorageId: existing.heroImageStorageId,
         heroImageUrl: existing.heroImageUrl,
         imageCredit: existing.imageCredit,
-        defaultLocale: args.recipe.defaultLocale,
-        referenceServings: args.recipe.referenceServings,
+        defaultLocale: normalizedRecipe.defaultLocale,
+        referenceServings: normalizedRecipe.referenceServings,
         translations: storedTranslations,
-        tags: args.recipe.tags,
+        ...toStoredCategoryFields(normalizedRecipe),
         revision,
         publishedRevision: existing.status === "published" ? 0 : -1,
         updatedAt: savedAt,
@@ -417,7 +464,7 @@ export const publishDraft = mutation({
       defaultLocale: draft.defaultLocale,
       referenceServings: draft.referenceServings,
       translations: draft.translations,
-      tags: draft.tags,
+      ...toStoredCategoryFields(resolveRecipeCategories(draft)),
       status: "published",
     });
     const savedAt = Date.now();
@@ -459,7 +506,7 @@ export const discardDraft = mutation({
       defaultLocale: recipe.defaultLocale,
       referenceServings: recipe.referenceServings,
       translations: recipe.translations,
-      tags: recipe.tags,
+      ...toStoredCategoryFields(resolveRecipeCategories(recipe)),
       revision,
       publishedRevision: revision,
       updatedAt: savedAt,
@@ -476,7 +523,7 @@ export const discardDraft = mutation({
         defaultLocale: recipe.defaultLocale,
         referenceServings: getReferenceServings(recipe),
         translations: toEditableTranslations(recipe.translations, recipe.slug),
-        tags: recipe.tags,
+        ...resolveRecipeCategories(recipe),
       },
     };
   },
@@ -655,8 +702,18 @@ export const seed = mutation({
 
       if (existing) {
         const referenceServings = existing.referenceServings ?? recipe.referenceServings;
+        const categoryFields = resolveRecipeCategories({
+          categories: recipe.categories,
+          legacyCategoryLabels: [
+            ...recipe.legacyCategoryLabels,
+            ...(existing.legacyCategoryLabels ?? []),
+          ],
+          tags: existing.tags,
+        });
         const seededRecipe = {
           ...recipe,
+          ...categoryFields,
+          tags: toLegacyTags(categoryFields.categories, categoryFields.legacyCategoryLabels),
           ...(referenceServings !== undefined ? { referenceServings } : {}),
         };
         const nextRecipe = existing.imageCredit
@@ -709,7 +766,7 @@ async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
       : {}),
     defaultLocale: recipe.defaultLocale,
     referenceServings: getReferenceServings(recipe),
-    tags: recipe.tags,
+    ...resolveRecipeCategories(recipe),
     status: recipe.status,
     ...content,
     yieldLabel: resolveYieldLabel({
@@ -748,14 +805,14 @@ function toEditableTranslations(
 }
 
 function toEditableRecipeContent(
-  source: Pick<RecipeDoc | RecipeDraftDoc, "defaultLocale" | "referenceServings" | "translations" | "tags">,
+  source: Pick<RecipeDoc | RecipeDraftDoc, "defaultLocale" | "referenceServings" | "translations" | "tags" | "categories" | "legacyCategoryLabels">,
   slug: string,
 ): RecipeDraftContentLike {
   return {
     defaultLocale: source.defaultLocale,
     referenceServings: getReferenceServings(source),
     translations: toEditableTranslations(source.translations, slug),
-    tags: source.tags,
+    ...resolveRecipeCategories(source),
   };
 }
 
@@ -836,7 +893,7 @@ async function ensureRecipeDraft(ctx: MutationCtx, recipe: RecipeDoc) {
     defaultLocale: recipe.defaultLocale,
     referenceServings: recipe.referenceServings,
     translations: recipe.translations,
-    tags: recipe.tags,
+    ...toStoredCategoryFields(resolveRecipeCategories(recipe)),
     revision: 0,
     publishedRevision: recipe.status === "published" ? 0 : -1,
     updatedAt: Date.now(),
@@ -886,7 +943,9 @@ function assertImagePatchLimits(patch: DraftImagePatch) {
 
 function assertProspectiveDraft(draft: {
   defaultLocale: Locale;
-  tags: string[];
+  tags?: string[];
+  categories?: RecipeCategory[];
+  legacyCategoryLabels?: string[];
   translations: RecipeDoc["translations"];
   heroImageUrl?: string;
   imageCredit?: RecipeDraftDoc["imageCredit"];
@@ -894,6 +953,7 @@ function assertProspectiveDraft(draft: {
 }, slug: string) {
   assertRecipeBounds({
     ...draft,
+    ...resolveRecipeCategories(draft),
     translations: toEditableTranslations(draft.translations, slug),
   });
   assertImagePatchLimits({
@@ -924,7 +984,9 @@ function assertDraftReadyForPublication(draft: RecipeDraftDoc, slug: string) {
 
 function assertRecipeBounds(recipe: RecipeDraftContentLike) {
   assertRecipeDraftLimits(recipe);
-  if (recipe.tags.length > 50) throw new Error("RECIPE_LIMIT_EXCEEDED");
+  if (recipe.categories.length > RECIPE_CATEGORIES.length || (recipe.legacyCategoryLabels?.length ?? 0) > 50) {
+    throw new Error("RECIPE_LIMIT_EXCEEDED");
+  }
   for (const localized of Object.values(recipe.translations)) {
     if (
       localized.ingredients.length > 200 ||
@@ -938,6 +1000,23 @@ function assertRecipeBounds(recipe: RecipeDraftContentLike) {
     }
   }
   assertRecipeDraftBytes(recipe);
+}
+
+function toStoredCategoryFields(source: {
+  categories: readonly RecipeCategory[];
+  legacyCategoryLabels?: readonly string[];
+}) {
+  const categories = [...source.categories];
+  const legacyCategoryLabels = [...(source.legacyCategoryLabels ?? [])];
+  return {
+    categories,
+    legacyCategoryLabels,
+    tags: toLegacyTags(categories, legacyCategoryLabels),
+  };
+}
+
+function normalizeCategoryPayload<T extends { tags?: readonly string[]; categories?: readonly RecipeCategory[]; legacyCategoryLabels?: readonly string[] }>(source: T) {
+  return { ...source, ...resolveRecipeCategories(source) };
 }
 
 function assertRecipeAdminPassword(adminPassword: string) {

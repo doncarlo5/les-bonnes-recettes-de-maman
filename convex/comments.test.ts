@@ -42,7 +42,7 @@ async function insertRecipe(t: ReturnType<typeof convexTest>, status: "draft" | 
       heroImageUrl: "",
       defaultLocale: "fr",
       translations: { fr: localized, en: localized },
-      tags: ["dessert"],
+      categories: ["dessert"],
       status,
     });
   });

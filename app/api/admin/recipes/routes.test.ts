@@ -37,7 +37,7 @@ const localized = {
   subRecipes: [],
   notes: [],
 };
-const payload = { defaultLocale: "fr", referenceServings: 6, translations: { fr: localized, en: localized }, tags: [] };
+const payload = { defaultLocale: "fr", referenceServings: 6, translations: { fr: localized, en: localized }, categories: [] };
 
 function request(body: unknown) {
   return new Request("http://localhost/api/admin/recipes/test", {

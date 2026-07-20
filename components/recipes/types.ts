@@ -1,5 +1,6 @@
 import type { Id } from "@/convex/_generated/dataModel";
 import type { RecipeReadiness } from "@/lib/recipe-admin-domain";
+import type { RecipeCategory } from "@/lib/recipe-categories";
 
 export type Ingredient = {
   name: string;
@@ -47,7 +48,8 @@ export type Recipe = {
       };
   defaultLocale: "fr" | "en";
   referenceServings?: number;
-  tags: string[];
+  categories: RecipeCategory[];
+  legacyCategoryLabels?: string[];
   status: "draft" | "published";
   title: string;
   author: string;
@@ -77,7 +79,8 @@ export type EditableRecipeContent = {
       | "imageCredit"
       | "defaultLocale"
       | "referenceServings"
-      | "tags"
+      | "categories"
+      | "legacyCategoryLabels"
       | "status"
     >;
     en: Omit<
@@ -89,11 +92,13 @@ export type EditableRecipeContent = {
       | "imageCredit"
       | "defaultLocale"
       | "referenceServings"
-      | "tags"
+      | "categories"
+      | "legacyCategoryLabels"
       | "status"
     >;
   };
-  tags: string[];
+  categories: RecipeCategory[];
+  legacyCategoryLabels?: string[];
 };
 
 export type EditableRecipeSummary = {
@@ -103,7 +108,8 @@ export type EditableRecipeSummary = {
   title: string;
   heroImageUrl: string;
   imageCredit?: Recipe["imageCredit"];
-  tags: string[];
+  categories: RecipeCategory[];
+  legacyCategoryLabels?: string[];
   status: "draft" | "published";
   revision: number;
   publishedRevision: number;

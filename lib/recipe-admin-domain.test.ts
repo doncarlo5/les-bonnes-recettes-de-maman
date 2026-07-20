@@ -24,7 +24,7 @@ function recipe(title: string, cookTime = ""): RecipeDraftContentLike {
   return {
     defaultLocale: "fr",
     translations: { fr: localized, en: { ...localized, title: "Dough" } },
-    tags: [],
+    categories: [],
   };
 }
 

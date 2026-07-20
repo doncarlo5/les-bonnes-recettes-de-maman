@@ -1,5 +1,6 @@
 import { resolveYieldLabel } from "../lib/recipe-yield";
 import { resolveReferenceServings } from "../lib/recipe-servings";
+import { resolveRecipeCategories, toLegacyTags, type RecipeCategory } from "../lib/recipe-categories";
 
 type Locale = "fr" | "en";
 
@@ -62,6 +63,8 @@ export type SeedRecipe = {
   defaultLocale: Locale;
   referenceServings?: number;
   translations: Record<Locale, LocalizedRecipe>;
+  categories: RecipeCategory[];
+  legacyCategoryLabels: string[];
   tags: string[];
   status: "published";
 };
@@ -859,6 +862,7 @@ export function toSeedRecipe(recipe: SourceRecipe): SeedRecipe {
     recipe.referenceServings,
     recipe.servings,
   );
+  const categoryFields = resolveRecipeCategories({ tags: inferTags(recipe) });
   return {
     slug: recipe.slug,
     heroImageUrl:
@@ -871,7 +875,8 @@ export function toSeedRecipe(recipe: SourceRecipe): SeedRecipe {
       fr: localizeRecipe(recipe, "fr"),
       en: localizeRecipe(recipe, "en"),
     },
-    tags: inferTags(recipe),
+    ...categoryFields,
+    tags: toLegacyTags(categoryFields.categories, categoryFields.legacyCategoryLabels),
     status: "published",
   };
 }

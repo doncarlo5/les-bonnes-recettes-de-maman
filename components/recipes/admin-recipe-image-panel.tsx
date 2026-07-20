@@ -9,10 +9,20 @@ import {
   type ReactNode,
 } from "react";
 import { useRouter } from "next/navigation";
-import { Camera, Search, Upload } from "lucide-react";
+import { Camera, Search, Upload, X } from "lucide-react";
+import { toast } from "sonner";
 import type { Id } from "@/convex/_generated/dataModel";
 import type { Locale } from "@/i18n/config";
 import { Button } from "@/components/ui/button";
+import {
+  Attachment,
+  AttachmentAction,
+  AttachmentActions,
+  AttachmentContent,
+  AttachmentDescription,
+  AttachmentMedia,
+  AttachmentTitle,
+} from "@/components/ui/attachment";
 import {
   Dialog,
   DialogContent,
@@ -20,7 +30,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { EditableRecipe, Recipe } from "./types";
 
 type AdminRecipeImagePanelProps = {
@@ -140,6 +152,7 @@ export function AdminRecipeImagePanel({
     recipe?.imageCredit,
   );
   const [previewObjectUrl, setPreviewObjectUrl] = useState<string | null>(null);
+  const [selectedUpload, setSelectedUpload] = useState<File | null>(null);
   const isDisabled = !recipe || status.type === "loading";
 
   function imageMutationError(response: Response, data: ApiErrorResponse, fallback: string, retry?: (revision: number) => Promise<void>) {
@@ -206,6 +219,8 @@ export function AdminRecipeImagePanel({
       type: "success",
       message: "Image uploadée et associée.",
     });
+    toast.success("Image principale remplacée.");
+    setSelectedUpload(null);
     setIsSearchDialogOpen(false);
     router.refresh();
   }
@@ -219,6 +234,8 @@ export function AdminRecipeImagePanel({
       return;
     }
 
+    setSelectedUpload(file);
+    setStatus({ type: "loading", message: "Préparation de l'image..." });
     try {
       const preparedRevision = onBeforeChange
         ? await onBeforeChange()
@@ -268,6 +285,7 @@ export function AdminRecipeImagePanel({
             ? error.message
             : "Impossible d'associer cette image.",
       });
+      setSelectedUpload(null);
     }
   }
 
@@ -421,6 +439,7 @@ export function AdminRecipeImagePanel({
         type: "success",
         message: "Image Unsplash associée.",
       });
+      toast.success("Image principale remplacée.");
       setIsSearchDialogOpen(false);
       router.refresh();
     } catch (error) {
@@ -510,6 +529,7 @@ export function AdminRecipeImagePanel({
         type: "success",
         message: "Image Openverse importée et associée.",
       });
+      toast.success("Image principale remplacée.");
       setIsSearchDialogOpen(false);
       router.refresh();
     } catch (error) {
@@ -582,7 +602,6 @@ export function AdminRecipeImagePanel({
             <Upload data-icon="inline-start" />
             Remplacer l’image
           </Button>
-
           <p
             className={
               status.type === "error"
@@ -626,22 +645,32 @@ export function AdminRecipeImagePanel({
             <Upload data-icon="inline-start" />
             Choisir un fichier
           </Button>
+          {selectedUpload ? (
+            <Attachment className="w-full" state={status.type === "loading" ? "uploading" : "idle"}>
+              <AttachmentMedia><Upload /></AttachmentMedia>
+              <AttachmentContent><AttachmentTitle>{selectedUpload.name}</AttachmentTitle><AttachmentDescription>{Math.ceil(selectedUpload.size / 1024)} Ko</AttachmentDescription></AttachmentContent>
+              <AttachmentActions><AttachmentAction type="button" aria-label="Annuler la sélection" disabled={status.type === "loading"} onClick={() => setSelectedUpload(null)}><X /></AttachmentAction></AttachmentActions>
+            </Attachment>
+          ) : null}
 
           <div className="h-px bg-border" />
 
           <div className="flex flex-col gap-3 pr-8 sm:flex-row">
-            <Input
+            <InputGroup className="h-11 flex-1 bg-card">
+              <InputGroupAddon><Search aria-hidden /></InputGroupAddon>
+              <InputGroupInput
               type="search"
               aria-label="Mots-clés de recherche d'image"
               value={searchQuery}
               disabled={isDisabled}
-              onChange={(event) => setSearchQuery(event.target.value)}
-              onKeyDown={(event) =>
+              onChange={(event: ChangeEvent<HTMLInputElement>) => setSearchQuery(event.target.value)}
+              onKeyDown={(event: KeyboardEvent<HTMLInputElement>) =>
                 handleSearchKeyDown(event, handleInternetSearch)
               }
-              className="h-11 flex-1 bg-card font-semibold"
+              className="h-11 font-semibold"
               placeholder="cake citron, tarte fraise..."
-            />
+              />
+            </InputGroup>
             <Button
               type="button"
               size="lg"
@@ -739,14 +768,10 @@ function ImageResultsColumn({
       </h4>
       {hasResults ? (
         <div className="grid grid-cols-2 gap-3">{children}</div>
+      ) : isLoading ? (
+        <div className="grid grid-cols-2 gap-3" aria-label="Recherche en cours"><Skeleton className="aspect-[4/3] rounded-xl" /><Skeleton className="aspect-[4/3] rounded-xl" /><Skeleton className="aspect-[4/3] rounded-xl" /><Skeleton className="aspect-[4/3] rounded-xl" /></div>
       ) : (
-        <div className="grid min-h-40 place-items-center rounded-lg border border-dashed border-border bg-muted/40 p-4 text-center text-sm font-bold text-muted-foreground">
-          {isLoading
-            ? "Recherche en cours..."
-            : hasSearched
-              ? emptyMessage
-              : "Lance une recherche pour voir les images."}
-        </div>
+        <Empty className="min-h-40 bg-muted/40"><EmptyHeader><EmptyMedia variant="icon"><Search /></EmptyMedia><EmptyTitle>{hasSearched ? emptyMessage : "Lance une recherche"}</EmptyTitle><EmptyDescription>{hasSearched ? "Essaie avec d’autres mots-clés." : "Les résultats Unsplash et Openverse apparaîtront ici."}</EmptyDescription></EmptyHeader></Empty>
       )}
     </section>
   );

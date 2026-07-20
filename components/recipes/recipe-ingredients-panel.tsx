@@ -85,7 +85,7 @@ export function RecipeIngredientsPanel({
       </div>
 
       <div data-ingredients-layout="desktop" className="hidden rounded-2xl bg-card p-6 shadow-[var(--shadow-card)] lg:block lg:p-7">
-        <div className="flex items-baseline justify-between gap-4 border-b border-border pb-4">
+        <div className="grid justify-items-start gap-3 border-b border-border pb-4">
           <h2 className="type-content-title text-foreground">{dict.recipeDetail.ingredients}</h2>
           <YieldLabel value={recipe.yieldLabel} />
         </div>
@@ -147,20 +147,20 @@ function ServingsSelector({
 
   return (
     <div className={`grid gap-2 ${className ?? ""}`}>
-      <div className="flex items-center justify-between gap-3">
-        <div className="inline-flex items-center rounded-full bg-muted p-1">
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon-sm"
-            className="rounded-full"
-            aria-label={dict.recipeDetail.decreaseServings}
-            disabled={value <= MIN_REFERENCE_SERVINGS}
-            onClick={() => commit(value - 1)}
-          >
-            <Minus />
-          </Button>
-          <label className="flex items-baseline gap-1.5 px-2 font-bold tabular-nums">
+      <div data-servings-selector className="grid w-full grid-cols-[2.75rem_minmax(0,1fr)_2.75rem] items-stretch rounded-2xl bg-muted p-1 shadow-[var(--shadow-border)]">
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="size-11 rounded-xl transition-[scale,background-color] active:scale-[0.96]"
+          aria-label={dict.recipeDetail.decreaseServings}
+          disabled={value <= MIN_REFERENCE_SERVINGS}
+          onClick={() => commit(value - 1)}
+        >
+          <Minus />
+        </Button>
+        <label className="flex min-w-0 cursor-text flex-col items-center justify-center px-2 text-center font-bold tabular-nums">
+          <span className="flex min-w-0 items-baseline justify-center gap-1.5 whitespace-nowrap">
             <span className="sr-only">{dict.recipeDetail.servingsLabel}</span>
             <input
               aria-label={dict.recipeDetail.servingsLabel}
@@ -170,27 +170,27 @@ function ServingsSelector({
               max={MAX_REFERENCE_SERVINGS}
               value={value}
               onChange={(event) => applyDraft(event.currentTarget)}
-              className="w-8 bg-transparent text-center outline-none"
+              className="w-8 bg-transparent text-center text-base outline-none"
             />
-            <span className="text-sm text-muted-foreground">{unit}</span>
-          </label>
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon-sm"
-            className="rounded-full"
-            aria-label={dict.recipeDetail.increaseServings}
-            disabled={value >= MAX_REFERENCE_SERVINGS}
-            onClick={() => commit(value + 1)}
-          >
-            <Plus />
-          </Button>
-        </div>
-        {isDefault ? (
-          <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary">
-            {dict.recipeDetail.defaultServings}
+            <span className="truncate text-sm text-muted-foreground">{unit}</span>
           </span>
-        ) : null}
+          {isDefault ? (
+            <span className="whitespace-nowrap text-xs font-semibold text-primary">
+              {dict.recipeDetail.defaultServings}
+            </span>
+          ) : null}
+        </label>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="size-11 rounded-xl transition-[scale,background-color] active:scale-[0.96]"
+          aria-label={dict.recipeDetail.increaseServings}
+          disabled={value >= MAX_REFERENCE_SERVINGS}
+          onClick={() => commit(value + 1)}
+        >
+          <Plus />
+        </Button>
       </div>
     </div>
   );
@@ -198,7 +198,7 @@ function ServingsSelector({
 
 function YieldLabel({ value }: { value: string }) {
   return value ? (
-    <span className="shrink-0 rounded-full bg-secondary px-2.5 py-0.5 text-sm font-semibold text-secondary-foreground tabular-nums">
+    <span className="shrink-0 whitespace-nowrap rounded-full bg-secondary px-2.5 py-0.5 text-sm font-semibold text-secondary-foreground tabular-nums">
       {value}
     </span>
   ) : null;
