@@ -90,6 +90,7 @@ export function getRecipeReadiness(
   const hasTime = [fr.prepTime, fr.cookTime, fr.totalTime, fr.timeLabel].some(hasText);
   const hasIngredient = fr.ingredients.some((item) => hasText(item.name));
   const hasReferenceServings = isValidReferenceServings(recipe.referenceServings);
+  const allowsYieldOnly = isYieldOnlyBaseRecipe(fr);
   const hasPreparation = fr.sections.some(
     (section) => hasText(section.title) && section.steps.some(hasText),
   );
@@ -105,7 +106,7 @@ export function getRecipeReadiness(
     readinessItem(!hasText(fr.description), "fr-description", "Ajoute une description française.", "info", "fr", "translations.fr.description"),
     readinessItem(!hasTime, "fr-time", "Indique au moins un temps.", "details", "fr", "translations.fr.timeLabel"),
     readinessItem(!hasIngredient, "fr-ingredient", "Ajoute au moins un ingrédient.", "ingredients", "fr", "translations.fr.ingredients.0.name"),
-    readinessItem(!hasReferenceServings, "reference-servings", "Indique les portions de référence.", "ingredients", "fr", "referenceServings"),
+    readinessItem(!hasReferenceServings && !allowsYieldOnly, "reference-servings", "Indique les portions de référence.", "ingredients", "fr", "referenceServings"),
     readinessItem(!hasPreparation, "fr-preparation", "Ajoute une section avec une étape.", "preparation", "fr", "translations.fr.sections.0.title"),
   ].filter((item): item is ReadinessItem => item !== null);
 
@@ -118,7 +119,7 @@ export function getRecipeReadiness(
     sections: {
       info: essentials,
       details: hasTime,
-      ingredients: hasIngredient && hasReferenceServings,
+      ingredients: hasIngredient && (hasReferenceServings || allowsYieldOnly),
       preparation: hasPreparation,
       notes: true,
       translation: translationEn,
@@ -179,6 +180,10 @@ function assertLength(value: string, maximum: number) {
 
 function hasText(value: string) {
   return value.trim().length > 0;
+}
+
+function isYieldOnlyBaseRecipe(recipe: LocalizedRecipeContent) {
+  return /^pâte\b/i.test(recipe.title.trim()) && !hasText(recipe.cookTime);
 }
 
 function readinessItem(

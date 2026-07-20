@@ -27,6 +27,7 @@ export type SourceRecipe = {
   description: string;
   heroImageUrl: string;
   yieldLabel?: string;
+  referenceServings?: number;
   servings: { quantity: number; unit: string } | null;
   prepTime: string;
   cookTime: string;
@@ -792,6 +793,8 @@ const unitTranslations: Record<string, string> = {
 };
 
 const yieldLabelTranslations: Record<string, string> = {
+  "Environ 1,3 kg de pâte": "About 1.3 kg of dough",
+  "Environ 500 g de pâte": "About 500 g of dough",
   "Environ 20 gougères": "About 20 gougères",
 };
 
@@ -852,7 +855,10 @@ export function localizeRecipe(recipe: SourceRecipe, locale: Locale): LocalizedR
 }
 
 export function toSeedRecipe(recipe: SourceRecipe): SeedRecipe {
-  const referenceServings = resolveReferenceServings(undefined, recipe.servings);
+  const referenceServings = resolveReferenceServings(
+    recipe.referenceServings,
+    recipe.servings,
+  );
   return {
     slug: recipe.slug,
     heroImageUrl:
