@@ -20,10 +20,12 @@ _Avoid_: Recherche plein texte, recherche globale
 
 **Rendement de recette**:
 Libellé éditorial localisé qui décrit ce que produit une Recette en convives, pièces, contenants ou quantité approximative.
+Un Rendement de recette non vide suffit pour publier lorsque les Portions de référence ne sont pas pertinentes.
 _Avoid_: Portions, nombre de personnes, servings
 
 **Portions de référence**:
 Nombre entier de personnes pour lequel les quantités d’ingrédients d’une Recette ont été écrites et à partir duquel elles peuvent être redimensionnées.
+Elles sont facultatives : sans elles, la Recette reste publiable si elle possède un Rendement de recette, mais le redimensionnement des ingrédients est indisponible.
 _Avoid_: Rendement de recette, quantité obtenue
 
 **Mode cuisine**:

@@ -1,39 +1,40 @@
 import { fetchMutation } from "convex/nextjs";
 import { NextRequest } from "next/server";
 import { api } from "@/convex/_generated/api";
+import type { Id } from "@/convex/_generated/dataModel";
 import {
   adminUnauthorizedResponse,
   getRecipeAdminAccess,
 } from "@/lib/recipe-admin-auth";
-import { recipeMutationErrorResponse } from "@/lib/recipe-admin-route-errors";
 import {
-  discardRecipeSuccessSchema,
-  revisionedRecipeRequestSchema,
+  imageMutationSuccessSchema,
+  openverseImageRequestSchema,
 } from "@/lib/recipe-admin-contracts";
-import { parseJsonRequest } from "@/lib/recipe-admin-route-errors";
+import {
+  parseJsonRequest,
+  recipeMutationErrorResponse,
+} from "@/lib/recipe-admin-route-errors";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   const access = await getRecipeAdminAccess();
   if (!access.ok) return adminUnauthorizedResponse(access);
-  const parsed = await parseJsonRequest(request, revisionedRecipeRequestSchema);
+  const parsed = await parseJsonRequest(request, openverseImageRequestSchema);
   if (!parsed.ok) return parsed.response;
-  const { slug, expectedRevision } = parsed.data;
-
   try {
-    const result = await fetchMutation(api.recipes.discardDraft, {
-      slug,
-      expectedRevision,
+    const result = await fetchMutation(api.recipes.setOpenverseHeroImage, {
+      ...parsed.data,
+      storageId: parsed.data.storageId as Id<"_storage">,
       adminPassword: access.adminPassword,
     });
     return Response.json(
-      discardRecipeSuccessSchema.parse({ type: "success", ...result }),
+      imageMutationSuccessSchema.parse({ type: "success", ...result }),
     );
   } catch (error) {
     return recipeMutationErrorResponse(
       error,
-      "Impossible d'abandonner ces modifications.",
+      "Impossible d’associer cette image Openverse.",
     );
   }
 }

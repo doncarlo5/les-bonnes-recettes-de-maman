@@ -1,6 +1,11 @@
 import { v } from "convex/values";
 import { internal } from "./_generated/api";
-import { mutation, query, type MutationCtx, type QueryCtx } from "./_generated/server";
+import {
+  mutation,
+  query,
+  type MutationCtx,
+  type QueryCtx,
+} from "./_generated/server";
 import type { Doc, Id } from "./_generated/dataModel";
 import rawRecipes from "./recettes.json";
 import { toSeedRecipe, type SourceRecipe } from "./recipeTranslations";
@@ -94,34 +99,6 @@ const editableLocalizedRecipeValidator = v.object({
   subRecipes: v.array(subRecipeValidator),
   notes: v.array(v.string()),
 });
-
-const canonicalEditableRecipeValidator = v.object({
-  defaultLocale: localeValidator,
-  referenceServings: v.optional(v.number()),
-  translations: v.object({
-    fr: editableLocalizedRecipeValidator,
-    en: editableLocalizedRecipeValidator,
-  }),
-  categories: v.array(recipeCategoryValidator),
-  legacyCategoryLabels: v.optional(v.array(v.string())),
-  status: v.union(v.literal("draft"), v.literal("published")),
-});
-
-const legacyEditableRecipeValidator = v.object({
-  defaultLocale: localeValidator,
-  referenceServings: v.optional(v.number()),
-  translations: v.object({
-    fr: editableLocalizedRecipeValidator,
-    en: editableLocalizedRecipeValidator,
-  }),
-  tags: v.array(v.string()),
-  status: v.union(v.literal("draft"), v.literal("published")),
-});
-
-const editableRecipeValidator = v.union(
-  canonicalEditableRecipeValidator,
-  legacyEditableRecipeValidator,
-);
 
 const canonicalDraftContentValidator = v.object({
   defaultLocale: localeValidator,
@@ -226,7 +203,11 @@ export const listForEditing = query({
         const revision = draft?.revision ?? 0;
         const publishedRevision =
           draft?.publishedRevision ?? (recipe.status === "published" ? 0 : -1);
-        const publication = getPublicationState(recipe.status, revision, publishedRevision);
+        const publication = getPublicationState(
+          recipe.status,
+          revision,
+          publishedRevision,
+        );
         const hasImage = Boolean(storedHeroImageUrl ?? source.heroImageUrl);
 
         return {
@@ -276,7 +257,11 @@ export const getForEditing = query({
     const revision = draft?.revision ?? 0;
     const publishedRevision =
       draft?.publishedRevision ?? (recipe.status === "published" ? 0 : -1);
-    const publication = getPublicationState(recipe.status, revision, publishedRevision);
+    const publication = getPublicationState(
+      recipe.status,
+      revision,
+      publishedRevision,
+    );
 
     return {
       _id: recipe._id,
@@ -304,7 +289,7 @@ export const getForEditing = query({
 
 export const create = mutation({
   args: {
-    recipe: editableRecipeValidator,
+    recipe: draftContentValidator,
     adminPassword: v.string(),
   },
   handler: async (ctx, args) => {
@@ -316,8 +301,10 @@ export const create = mutation({
     const baseSlug = slugify(title || "nouvelle-recette");
     const slug = await getAvailableSlug(ctx, baseSlug);
 
-    const storedTranslations = toStoredTranslations(normalizedRecipe.translations);
-    const recipeId = await ctx.db.insert("recipes", {
+    const storedTranslations = toStoredTranslations(
+      normalizedRecipe.translations,
+    );
+    const initialRecipe = {
       slug,
       heroImageUrl: "",
       defaultLocale: normalizedRecipe.defaultLocale,
@@ -325,7 +312,9 @@ export const create = mutation({
       translations: storedTranslations,
       ...toStoredCategoryFields(normalizedRecipe),
       status: "draft",
-    });
+    } as const;
+    assertStoredRecipeBytes(initialRecipe);
+    const recipeId = await ctx.db.insert("recipes", initialRecipe);
 
     const now = Date.now();
     const initialDraft = {
@@ -401,15 +390,18 @@ export const saveDraft = mutation({
       currentDraft?.translations ?? existing.translations,
     );
     const contentPatch = {
-        defaultLocale: normalizedRecipe.defaultLocale,
-        referenceServings: normalizedRecipe.referenceServings,
-        translations: storedTranslations,
-        ...toStoredCategoryFields(normalizedRecipe),
-        revision,
-        updatedAt: savedAt,
+      defaultLocale: normalizedRecipe.defaultLocale,
+      referenceServings: normalizedRecipe.referenceServings,
+      translations: storedTranslations,
+      ...toStoredCategoryFields(normalizedRecipe),
+      revision,
+      updatedAt: savedAt,
     };
     if (currentDraft) {
-      assertProspectiveDraft({ ...currentDraft, ...contentPatch }, existing.slug);
+      assertProspectiveDraft(
+        { ...currentDraft, ...contentPatch },
+        existing.slug,
+      );
       await ctx.db.patch(currentDraft._id, contentPatch);
     } else {
       const initialDraft = {
@@ -457,7 +449,7 @@ export const publishDraft = mutation({
     assertRecipeBounds(toEditableRecipeContent(draft, recipe.slug));
     assertDraftReadyForPublication(draft, recipe.slug);
 
-    await ctx.db.patch(recipe._id, {
+    const publishedPatch = {
       heroImageStorageId: draft.heroImageStorageId,
       heroImageUrl: draft.heroImageUrl,
       imageCredit: draft.imageCredit,
@@ -466,7 +458,9 @@ export const publishDraft = mutation({
       translations: draft.translations,
       ...toStoredCategoryFields(resolveRecipeCategories(draft)),
       status: "published",
-    });
+    } as const;
+    assertStoredRecipeBytes({ ...recipe, ...publishedPatch });
+    await ctx.db.patch(recipe._id, publishedPatch);
     const savedAt = Date.now();
     assertProspectiveDraft(
       { ...draft, publishedRevision: draft.revision, updatedAt: savedAt },
@@ -476,8 +470,18 @@ export const publishDraft = mutation({
       publishedRevision: draft.revision,
       updatedAt: savedAt,
     });
+    await deleteStorageIfOrphaned(
+      ctx,
+      recipe.heroImageStorageId,
+      draft.heroImageStorageId,
+    );
 
-    return { slug: recipe.slug, revision: draft.revision, publishedRevision: draft.revision, savedAt };
+    return {
+      slug: recipe.slug,
+      revision: draft.revision,
+      publishedRevision: draft.revision,
+      savedAt,
+    };
   },
 });
 
@@ -496,7 +500,8 @@ export const discardDraft = mutation({
     if (draft.revision !== args.expectedRevision) {
       throw new Error(`RECIPE_DRAFT_CONFLICT:${draft.revision}`);
     }
-    if (draft.publishedRevision < 0) throw new Error("RECIPE_HAS_NO_PUBLISHED_VERSION");
+    if (draft.publishedRevision < 0)
+      throw new Error("RECIPE_HAS_NO_PUBLISHED_VERSION");
     const revision = draft.revision + 1;
     const savedAt = Date.now();
     const restoredPatch = {
@@ -513,6 +518,11 @@ export const discardDraft = mutation({
     };
     assertProspectiveDraft({ ...draft, ...restoredPatch }, recipe.slug);
     await ctx.db.patch(draft._id, restoredPatch);
+    await deleteStorageIfOrphaned(
+      ctx,
+      draft.heroImageStorageId,
+      recipe.heroImageStorageId,
+    );
 
     return {
       slug: recipe.slug,
@@ -535,6 +545,7 @@ export const unpublish = mutation({
     assertRecipeAdminPassword(args.adminPassword);
     const recipe = await getRecipeBySlug(ctx, args.slug);
     await ensureRecipeDraft(ctx, recipe);
+    assertStoredRecipeBytes({ ...recipe, status: "draft" });
     await ctx.db.patch(recipe._id, { status: "draft" });
     return { slug: recipe.slug };
   },
@@ -563,11 +574,9 @@ export const deleteRecipe = mutation({
     if (draft) await ctx.db.delete(draft._id);
     await ctx.db.delete(recipe._id);
     await Promise.all(
-      [...storageIds].map(async (storageId) => {
-        if (await ctx.db.system.get("_storage", storageId)) {
-          await ctx.storage.delete(storageId);
-        }
-      }),
+      [...storageIds].map((storageId) =>
+        deleteStorageIfOrphaned(ctx, storageId),
+      ),
     );
     await ctx.scheduler.runAfter(
       0,
@@ -604,12 +613,14 @@ export const setHeroImage = mutation({
       imageCredit: undefined,
     });
 
-    return {
-      recipeId: recipe._id,
-      slug: recipe.slug,
-      storageId: args.storageId,
-      ...saved,
-    };
+    return imageMutationSnapshot(
+      ctx,
+      recipe.slug,
+      args.storageId,
+      "",
+      undefined,
+      saved,
+    );
   },
 });
 
@@ -640,12 +651,20 @@ export const setUnsplashHeroImage = mutation({
       },
     });
 
-    return {
-      recipeId: recipe._id,
-      slug: recipe.slug,
-      heroImageUrl: args.imageUrl,
-      ...saved,
-    };
+    return imageMutationSnapshot(
+      ctx,
+      recipe.slug,
+      undefined,
+      args.imageUrl,
+      {
+        provider: "unsplash" as const,
+        photographerName: args.photographerName,
+        photographerUrl: args.photographerUrl,
+        photoUrl: args.photoUrl,
+        alt: args.alt,
+      },
+      saved,
+    );
   },
 });
 
@@ -678,12 +697,87 @@ export const setOpenverseHeroImage = mutation({
       },
     });
 
-    return {
-      recipeId: recipe._id,
-      slug: recipe.slug,
-      storageId: args.storageId,
-      ...saved,
-    };
+    return imageMutationSnapshot(
+      ctx,
+      recipe.slug,
+      args.storageId,
+      "",
+      {
+        provider: "openverse" as const,
+        ...args.imageCredit,
+      },
+      saved,
+    );
+  },
+});
+
+export const cleanupHeroImageUpload = mutation({
+  args: {
+    slug: v.string(),
+    storageId: v.id("_storage"),
+    adminPassword: v.string(),
+  },
+  handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
+    const recipe = await ctx.db
+      .query("recipes")
+      .withIndex("by_slug", (q) => q.eq("slug", args.slug))
+      .unique();
+    const draft = recipe ? await getRecipeDraft(ctx, recipe._id) : null;
+    const source =
+      draft?.heroImageStorageId === args.storageId
+        ? draft
+        : recipe?.heroImageStorageId === args.storageId
+          ? recipe
+          : null;
+    if (source) {
+      const heroImageUrl = await ctx.storage.getUrl(args.storageId);
+      return {
+        referenced: true,
+        slug: recipe?.slug ?? args.slug,
+        revision: draft?.revision ?? 0,
+        savedAt: draft?.updatedAt ?? recipe?._creationTime ?? Date.now(),
+        heroImageUrl: heroImageUrl ?? source.heroImageUrl,
+        imageCredit: source.imageCredit,
+      };
+    }
+    const [referencingRecipe, referencingDraft] = await Promise.all([
+      ctx.db
+        .query("recipes")
+        .withIndex("by_heroImageStorageId", (q) =>
+          q.eq("heroImageStorageId", args.storageId),
+        )
+        .first(),
+      ctx.db
+        .query("recipeDrafts")
+        .withIndex("by_heroImageStorageId", (q) =>
+          q.eq("heroImageStorageId", args.storageId),
+        )
+        .first(),
+    ]);
+    const globalSource = referencingDraft ?? referencingRecipe;
+    if (globalSource) {
+      const ownerRecipe = referencingDraft
+        ? await ctx.db.get(referencingDraft.recipeId)
+        : referencingRecipe;
+      const ownerDraft = referencingDraft
+        ? referencingDraft
+        : ownerRecipe
+          ? await getRecipeDraft(ctx, ownerRecipe._id)
+          : null;
+      const heroImageUrl = await ctx.storage.getUrl(args.storageId);
+      return {
+        referenced: true,
+        slug: ownerRecipe?.slug ?? args.slug,
+        revision: ownerDraft?.revision ?? 0,
+        savedAt:
+          ownerDraft?.updatedAt ?? ownerRecipe?._creationTime ?? Date.now(),
+        heroImageUrl: heroImageUrl ?? globalSource.heroImageUrl,
+        imageCredit: globalSource.imageCredit,
+      };
+    }
+    await deleteStorageIfOrphaned(ctx, args.storageId);
+    return { referenced: false, slug: args.slug };
   },
 });
 
@@ -694,47 +788,55 @@ export const seed = mutation({
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
 
-    const changes = await Promise.all(recipes.map(async (recipe) => {
-      const existing = await ctx.db
-        .query("recipes")
-        .withIndex("by_slug", (q) => q.eq("slug", recipe.slug))
-        .unique();
+    const changes = await Promise.all(
+      recipes.map(async (recipe) => {
+        const existing = await ctx.db
+          .query("recipes")
+          .withIndex("by_slug", (q) => q.eq("slug", recipe.slug))
+          .unique();
 
-      if (existing) {
-        const referenceServings = existing.referenceServings ?? recipe.referenceServings;
-        const categoryFields = resolveRecipeCategories({
-          categories: recipe.categories,
-          legacyCategoryLabels: [
-            ...recipe.legacyCategoryLabels,
-            ...(existing.legacyCategoryLabels ?? []),
-          ],
-          tags: existing.tags,
-        });
-        const seededRecipe = {
-          ...recipe,
-          ...categoryFields,
-          tags: toLegacyTags(categoryFields.categories, categoryFields.legacyCategoryLabels),
-          ...(referenceServings !== undefined ? { referenceServings } : {}),
-        };
-        const nextRecipe = existing.imageCredit
-          ? {
-              ...seededRecipe,
-              heroImageStorageId: existing.heroImageStorageId,
-              heroImageUrl: existing.heroImageUrl,
-              imageCredit: existing.imageCredit,
-            }
-          : {
-              ...seededRecipe,
-              heroImageStorageId: existing.heroImageStorageId,
-            };
+        if (existing) {
+          const referenceServings =
+            existing.referenceServings ?? recipe.referenceServings;
+          const categoryFields = resolveRecipeCategories({
+            categories: recipe.categories,
+            legacyCategoryLabels: [
+              ...recipe.legacyCategoryLabels,
+              ...(existing.legacyCategoryLabels ?? []),
+            ],
+            tags: existing.tags,
+          });
+          const seededRecipe = {
+            ...recipe,
+            ...categoryFields,
+            tags: toLegacyTags(
+              categoryFields.categories,
+              categoryFields.legacyCategoryLabels,
+            ),
+            ...(referenceServings !== undefined ? { referenceServings } : {}),
+          };
+          const nextRecipe = existing.imageCredit
+            ? {
+                ...seededRecipe,
+                heroImageStorageId: existing.heroImageStorageId,
+                heroImageUrl: existing.heroImageUrl,
+                imageCredit: existing.imageCredit,
+              }
+            : {
+                ...seededRecipe,
+                heroImageStorageId: existing.heroImageStorageId,
+              };
 
-        await ctx.db.replace(existing._id, nextRecipe);
-        return "updated" as const;
-      } else {
-        await ctx.db.insert("recipes", recipe);
-        return "inserted" as const;
-      }
-    }));
+          assertStoredRecipeBytes(nextRecipe);
+          await ctx.db.replace(existing._id, nextRecipe);
+          return "updated" as const;
+        } else {
+          assertStoredRecipeBytes(recipe);
+          await ctx.db.insert("recipes", recipe);
+          return "inserted" as const;
+        }
+      }),
+    );
 
     return {
       inserted: changes.filter((change) => change === "inserted").length,
@@ -779,7 +881,10 @@ async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
 }
 
 function getReferenceServings(
-  source: Pick<RecipeDoc | RecipeDraftDoc, "referenceServings" | "translations">,
+  source: Pick<
+    RecipeDoc | RecipeDraftDoc,
+    "referenceServings" | "translations"
+  >,
 ) {
   return resolveReferenceServings(
     source.referenceServings,
@@ -805,7 +910,15 @@ function toEditableTranslations(
 }
 
 function toEditableRecipeContent(
-  source: Pick<RecipeDoc | RecipeDraftDoc, "defaultLocale" | "referenceServings" | "translations" | "tags" | "categories" | "legacyCategoryLabels">,
+  source: Pick<
+    RecipeDoc | RecipeDraftDoc,
+    | "defaultLocale"
+    | "referenceServings"
+    | "translations"
+    | "tags"
+    | "categories"
+    | "legacyCategoryLabels"
+  >,
   slug: string,
 ): RecipeDraftContentLike {
   return {
@@ -923,8 +1036,57 @@ async function updateDraftImage(
   const revision = draft.revision + 1;
   const savedAt = Date.now();
   assertRecipeDraftBytes({ ...draft, ...patch, revision, updatedAt: savedAt });
+  const previousStorageId = draft.heroImageStorageId;
   await ctx.db.patch(draft._id, { ...patch, revision, updatedAt: savedAt });
+  await deleteStorageIfOrphaned(
+    ctx,
+    previousStorageId,
+    patch.heroImageStorageId,
+    recipe.heroImageStorageId,
+  );
   return { revision, savedAt };
+}
+
+async function imageMutationSnapshot(
+  ctx: MutationCtx,
+  slug: string,
+  storageId: Id<"_storage"> | undefined,
+  fallbackUrl: string,
+  imageCredit: RecipeDraftDoc["imageCredit"],
+  saved: { revision: number; savedAt: number },
+) {
+  const storedUrl = storageId ? await ctx.storage.getUrl(storageId) : null;
+  return {
+    slug,
+    ...saved,
+    heroImageUrl: storedUrl ?? fallbackUrl,
+    imageCredit,
+  };
+}
+
+async function deleteStorageIfOrphaned(
+  ctx: MutationCtx,
+  candidate: Id<"_storage"> | undefined,
+  ...references: Array<Id<"_storage"> | undefined>
+) {
+  if (!candidate || references.includes(candidate)) return;
+  const [recipeReference, draftReference] = await Promise.all([
+    ctx.db
+      .query("recipes")
+      .withIndex("by_heroImageStorageId", (q) =>
+        q.eq("heroImageStorageId", candidate),
+      )
+      .first(),
+    ctx.db
+      .query("recipeDrafts")
+      .withIndex("by_heroImageStorageId", (q) =>
+        q.eq("heroImageStorageId", candidate),
+      )
+      .first(),
+  ]);
+  if (recipeReference || draftReference) return;
+  if (await ctx.db.system.get("_storage", candidate))
+    await ctx.storage.delete(candidate);
 }
 
 function assertImagePatchLimits(patch: DraftImagePatch) {
@@ -941,16 +1103,19 @@ function assertImagePatchLimits(patch: DraftImagePatch) {
   }
 }
 
-function assertProspectiveDraft(draft: {
-  defaultLocale: Locale;
-  tags?: string[];
-  categories?: RecipeCategory[];
-  legacyCategoryLabels?: string[];
-  translations: RecipeDoc["translations"];
-  heroImageUrl?: string;
-  imageCredit?: RecipeDraftDoc["imageCredit"];
-  [key: string]: unknown;
-}, slug: string) {
+function assertProspectiveDraft(
+  draft: {
+    defaultLocale: Locale;
+    tags?: string[];
+    categories?: RecipeCategory[];
+    legacyCategoryLabels?: string[];
+    translations: RecipeDoc["translations"];
+    heroImageUrl?: string;
+    imageCredit?: RecipeDraftDoc["imageCredit"];
+    [key: string]: unknown;
+  },
+  slug: string,
+) {
   assertRecipeBounds({
     ...draft,
     ...resolveRecipeCategories(draft),
@@ -964,6 +1129,10 @@ function assertProspectiveDraft(draft: {
   assertRecipeDraftBytes(draft);
 }
 
+function assertStoredRecipeBytes(recipe: unknown) {
+  assertRecipeDraftBytes(recipe);
+}
+
 function assertExpectedRevision(
   draft: RecipeDraftDoc,
   expectedRevision: number,
@@ -974,17 +1143,22 @@ function assertExpectedRevision(
 }
 
 function assertDraftReadyForPublication(draft: RecipeDraftDoc, slug: string) {
-  if (getRecipeReadiness(
-    toEditableRecipeContent(draft, slug),
-    Boolean(draft.heroImageStorageId || draft.heroImageUrl),
-  ).blockers.length) {
+  if (
+    getRecipeReadiness(
+      toEditableRecipeContent(draft, slug),
+      Boolean(draft.heroImageStorageId || draft.heroImageUrl),
+    ).blockers.length
+  ) {
     throw new Error("RECIPE_NOT_READY");
   }
 }
 
 function assertRecipeBounds(recipe: RecipeDraftContentLike) {
   assertRecipeDraftLimits(recipe);
-  if (recipe.categories.length > RECIPE_CATEGORIES.length || (recipe.legacyCategoryLabels?.length ?? 0) > 50) {
+  if (
+    recipe.categories.length > RECIPE_CATEGORIES.length ||
+    (recipe.legacyCategoryLabels?.length ?? 0) > 50
+  ) {
     throw new Error("RECIPE_LIMIT_EXCEEDED");
   }
   for (const localized of Object.values(recipe.translations)) {
@@ -994,7 +1168,9 @@ function assertRecipeBounds(recipe: RecipeDraftContentLike) {
       localized.subRecipes.length > 25 ||
       localized.notes.length > 100 ||
       localized.sections.some((section) => section.steps.length > 100) ||
-      localized.subRecipes.some((subRecipe) => subRecipe.ingredients.length > 100)
+      localized.subRecipes.some(
+        (subRecipe) => subRecipe.ingredients.length > 100,
+      )
     ) {
       throw new Error("RECIPE_LIMIT_EXCEEDED");
     }
@@ -1015,7 +1191,13 @@ function toStoredCategoryFields(source: {
   };
 }
 
-function normalizeCategoryPayload<T extends { tags?: readonly string[]; categories?: readonly RecipeCategory[]; legacyCategoryLabels?: readonly string[] }>(source: T) {
+function normalizeCategoryPayload<
+  T extends {
+    tags?: readonly string[];
+    categories?: readonly RecipeCategory[];
+    legacyCategoryLabels?: readonly string[];
+  },
+>(source: T) {
   return { ...source, ...resolveRecipeCategories(source) };
 }
 

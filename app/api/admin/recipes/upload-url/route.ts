@@ -4,6 +4,8 @@ import {
   adminUnauthorizedResponse,
   getRecipeAdminAccess,
 } from "@/lib/recipe-admin-auth";
+import { uploadUrlSuccessSchema } from "@/lib/recipe-admin-contracts";
+import { recipeMutationErrorResponse } from "@/lib/recipe-admin-route-errors";
 
 export const dynamic = "force-dynamic";
 
@@ -14,9 +16,18 @@ export async function POST() {
     return adminUnauthorizedResponse(adminAccess);
   }
 
-  const uploadUrl = await fetchMutation(api.recipes.generateUploadUrl, {
-    adminPassword: adminAccess.adminPassword,
-  });
+  try {
+    const uploadUrl = await fetchMutation(api.recipes.generateUploadUrl, {
+      adminPassword: adminAccess.adminPassword,
+    });
 
-  return Response.json({ uploadUrl });
+    return Response.json(
+      uploadUrlSuccessSchema.parse({ type: "success", uploadUrl }),
+    );
+  } catch (error) {
+    return recipeMutationErrorResponse(
+      error,
+      "Impossible de préparer l’import de l’image.",
+    );
+  }
 }

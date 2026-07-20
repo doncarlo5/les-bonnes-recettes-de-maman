@@ -93,7 +93,8 @@ export default defineSchema({
     status: v.union(v.literal("draft"), v.literal("published")),
   })
     .index("by_slug", ["slug"])
-    .index("by_status", ["status"]),
+    .index("by_status", ["status"])
+    .index("by_heroImageStorageId", ["heroImageStorageId"]),
   recipeDrafts: defineTable({
     recipeId: v.id("recipes"),
     heroImageStorageId: v.optional(v.id("_storage")),
@@ -111,7 +112,9 @@ export default defineSchema({
     revision: v.number(),
     publishedRevision: v.number(),
     updatedAt: v.number(),
-  }).index("by_recipeId", ["recipeId"]),
+  })
+    .index("by_recipeId", ["recipeId"])
+    .index("by_heroImageStorageId", ["heroImageStorageId"]),
   recipeComments: defineTable({
     recipeId: v.id("recipes"),
     authorName: v.optional(v.string()),
@@ -129,7 +132,10 @@ export default defineSchema({
     updatedAt: v.number(),
   })
     .index("by_commentId", ["commentId"])
-    .index("by_commentId_and_participantDigest", ["commentId", "participantDigest"]),
+    .index("by_commentId_and_participantDigest", [
+      "commentId",
+      "participantDigest",
+    ]),
   commentReactionSummaries: defineTable({
     commentId: v.id("recipeComments"),
     thumbsUpCount: v.number(),
@@ -137,7 +143,11 @@ export default defineSchema({
   }).index("by_commentId", ["commentId"]),
   commentRateLimits: defineTable({
     participantDigest: v.string(),
-    action: v.union(v.literal("comment"), v.literal("photo"), v.literal("reaction")),
+    action: v.union(
+      v.literal("comment"),
+      v.literal("photo"),
+      v.literal("reaction"),
+    ),
     windowStartedAt: v.number(),
     count: v.number(),
   })

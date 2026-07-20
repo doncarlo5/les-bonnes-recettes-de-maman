@@ -4,6 +4,7 @@ import {
   editableRecipeDraftSchema,
   compatibleRecipeDraftSchema,
   parseOptionalNumberInput,
+  partitionRecipeServerErrors,
   type RecipeDraftFormInput,
 } from "./recipe-form-schema";
 
@@ -46,11 +47,13 @@ describe("editableRecipeDraftSchema", () => {
     const result = compatibleRecipeDraftSchema.safeParse({
       ...legacyDraft,
       tags: ["dessert", "recette de famille"],
+      status: "published",
     });
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.data.categories).toEqual(["dessert"]);
       expect(result.data.legacyCategoryLabels).toEqual(["recette de famille"]);
+      expect(result.data).not.toHaveProperty("status");
     }
   });
 
@@ -74,19 +77,56 @@ describe("editableRecipeDraftSchema", () => {
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.issues.map((issue) => issue.path.join("."))).toEqual(
-        expect.arrayContaining([
-          "referenceServings",
-          "translations.fr.title",
-        ]),
+        expect.arrayContaining(["referenceServings", "translations.fr.title"]),
       );
     }
   });
 
   it("accepts explicit legacy labels but rejects non-canonical categories", () => {
-    const legacyDraft = { ...blankDraft(), legacyCategoryLabels: ["repas de famille"] };
+    const legacyDraft = {
+      ...blankDraft(),
+      legacyCategoryLabels: ["repas de famille"],
+    };
     expect(editableRecipeDraftSchema.safeParse(legacyDraft).success).toBe(true);
 
     const invalidDraft = { ...blankDraft(), categories: ["brunch"] };
-    expect(editableRecipeDraftSchema.safeParse(invalidDraft).success).toBe(false);
+    expect(editableRecipeDraftSchema.safeParse(invalidDraft).success).toBe(
+      false,
+    );
+  });
+
+  it("rejects unknown keys at every structural boundary", () => {
+    expect(
+      editableRecipeDraftSchema.safeParse({ ...blankDraft(), status: "draft" })
+        .success,
+    ).toBe(false);
+    const draft = blankDraft();
+    const withUnknownIngredient = {
+      ...draft,
+      translations: {
+        ...draft.translations,
+        fr: {
+          ...draft.translations.fr,
+          ingredients: [
+            { ...draft.translations.fr.ingredients[0], unexpected: true },
+          ],
+        },
+      },
+    };
+    expect(
+      editableRecipeDraftSchema.safeParse(withUnknownIngredient).success,
+    ).toBe(false);
+  });
+
+  it("keeps unknown server paths at the root boundary", () => {
+    const result = partitionRecipeServerErrors({
+      "translations.fr.title": "Titre invalide",
+      "metadata.internal": "Erreur globale",
+    });
+
+    expect(result.fields).toEqual([
+      ["translations.fr.title", "Titre invalide"],
+    ]);
+    expect(result.hasUnmappedPath).toBe(true);
   });
 });

@@ -6,7 +6,15 @@ import {
   getRecipeAdminAccess,
 } from "@/lib/recipe-admin-auth";
 import { revalidateRecipePaths } from "@/lib/recipe-admin-revalidate";
-import { recipeMutationErrorResponse } from "@/lib/recipe-admin-route-errors";
+import {
+  recipeMutationErrorResponse,
+  validationResponse,
+} from "@/lib/recipe-admin-route-errors";
+import {
+  revisionedRecipeRequestSchema,
+  revisionMutationSuccessSchema,
+} from "@/lib/recipe-admin-contracts";
+import { parseJsonRequest } from "@/lib/recipe-admin-route-errors";
 
 export const dynamic = "force-dynamic";
 
@@ -14,28 +22,31 @@ export async function POST(request: NextRequest) {
   const access = await getRecipeAdminAccess();
   if (!access.ok) return adminUnauthorizedResponse(access);
 
-  const body = (await request.json()) as {
-    slug?: string;
-    expectedRevision?: number;
-  };
-  const slug = body.slug?.trim();
-  if (!slug || typeof body.expectedRevision !== "number") {
-    return Response.json({ error: "Requete de publication invalide." }, { status: 400 });
-  }
+  const parsed = await parseJsonRequest(request, revisionedRecipeRequestSchema);
+  if (!parsed.ok) return parsed.response;
+  const { slug, expectedRevision } = parsed.data;
 
   try {
     const result = await fetchMutation(api.recipes.publishDraft, {
       slug,
-      expectedRevision: body.expectedRevision,
+      expectedRevision,
       adminPassword: access.adminPassword,
     });
     revalidateRecipePaths(slug);
-    return Response.json({ type: "success", ...result });
+    return Response.json(
+      revisionMutationSuccessSchema.parse({ type: "success", ...result }),
+    );
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
     if (message.includes("RECIPE_NOT_READY")) {
-      return Response.json({ type: "error", message: "La recette francaise n'est pas encore prete a publier." }, { status: 400 });
+      return validationResponse(
+        {},
+        "La recette française n'est pas encore prête à publier.",
+      );
     }
-    return recipeMutationErrorResponse(error, "Impossible de publier cette recette.");
+    return recipeMutationErrorResponse(
+      error,
+      "Impossible de publier cette recette.",
+    );
   }
 }

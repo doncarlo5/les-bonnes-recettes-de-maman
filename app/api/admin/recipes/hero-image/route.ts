@@ -7,14 +7,13 @@ import {
   getRecipeAdminAccess,
 } from "@/lib/recipe-admin-auth";
 import { recipeMutationErrorResponse } from "@/lib/recipe-admin-route-errors";
+import {
+  heroImageRequestSchema,
+  imageMutationSuccessSchema,
+} from "@/lib/recipe-admin-contracts";
+import { parseJsonRequest } from "@/lib/recipe-admin-route-errors";
 
 export const dynamic = "force-dynamic";
-
-type HeroImageBody = {
-  slug?: string;
-  storageId?: string;
-  expectedRevision?: number;
-};
 
 export async function POST(request: NextRequest) {
   const adminAccess = await getRecipeAdminAccess();
@@ -23,26 +22,25 @@ export async function POST(request: NextRequest) {
     return adminUnauthorizedResponse(adminAccess);
   }
 
-  const body = (await request.json()) as HeroImageBody;
-  const slug = body.slug?.trim();
-  const storageId = body.storageId?.trim() as Id<"_storage"> | undefined;
-
-  if (!slug || !storageId || !Number.isFinite(body.expectedRevision)) {
-    return Response.json(
-      { error: "Missing slug or storageId" },
-      { status: 400 },
-    );
-  }
+  const parsed = await parseJsonRequest(request, heroImageRequestSchema);
+  if (!parsed.ok) return parsed.response;
+  const { slug, expectedRevision } = parsed.data;
+  const storageId = parsed.data.storageId as Id<"_storage">;
 
   try {
     const result = await fetchMutation(api.recipes.setHeroImage, {
       slug,
       storageId,
-      expectedRevision: body.expectedRevision!,
+      expectedRevision,
       adminPassword: adminAccess.adminPassword,
     });
-    return Response.json({ type: "success", slug: result.slug, storageId, revision: result.revision, savedAt: result.savedAt });
+    return Response.json(
+      imageMutationSuccessSchema.parse({ type: "success", ...result }),
+    );
   } catch (error) {
-    return recipeMutationErrorResponse(error, "Impossible d'associer cette image.");
+    return recipeMutationErrorResponse(
+      error,
+      "Impossible d'associer cette image.",
+    );
   }
 }

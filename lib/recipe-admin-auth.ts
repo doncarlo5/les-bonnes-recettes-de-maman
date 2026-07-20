@@ -2,6 +2,7 @@ import "server-only";
 
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
+import { mutationErrorSchema } from "@/lib/recipe-admin-contracts";
 
 const adminAccessCookieName = "recipe-admin-access";
 const cookieVersion = "v1";
@@ -79,8 +80,13 @@ export async function grantRecipeAdminAccess() {
   });
 }
 
-export function adminUnauthorizedResponse(access: Exclude<AdminAccessResult, { ok: true }>) {
-  return Response.json({ error: access.message }, { status: access.status });
+export function adminUnauthorizedResponse(
+  access: Exclude<AdminAccessResult, { ok: true }>,
+) {
+  return Response.json(
+    mutationErrorSchema.parse({ type: "error", message: access.message }),
+    { status: access.status },
+  );
 }
 
 function createAdminSession(adminPassword: string) {
@@ -103,11 +109,16 @@ function isValidAdminSession(cookieValue: string, adminPassword: string) {
   if (expiresAtMs < Date.now()) return false;
 
   const payload = `${version}.${issuedAt}`;
-  return timingSafeStringEqual(signature, signAdminSession(payload, adminPassword));
+  return timingSafeStringEqual(
+    signature,
+    signAdminSession(payload, adminPassword),
+  );
 }
 
 function signAdminSession(payload: string, adminPassword: string) {
-  return createHmac("sha256", adminPassword).update(payload).digest("base64url");
+  return createHmac("sha256", adminPassword)
+    .update(payload)
+    .digest("base64url");
 }
 
 function timingSafeStringEqual(left: string, right: string) {

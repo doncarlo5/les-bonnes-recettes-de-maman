@@ -6,25 +6,19 @@ import {
   adminUnauthorizedResponse,
   getRecipeAdminAccess,
 } from "@/lib/recipe-admin-auth";
-import { recipeMutationErrorResponse } from "@/lib/recipe-admin-route-errors";
+import {
+  openverseImportRequestSchema,
+  storageImportSuccessSchema,
+  storageUploadResponseSchema,
+} from "@/lib/recipe-admin-contracts";
+import {
+  errorResponse,
+  parseJsonRequest,
+  recipeMutationErrorResponse,
+  validationResponse,
+} from "@/lib/recipe-admin-route-errors";
 
 export const dynamic = "force-dynamic";
-
-type OpenverseImportBody = {
-  slug?: string;
-  imageUrl?: string;
-  title?: string;
-  creator?: string;
-  creatorUrl?: string;
-  landingUrl?: string;
-  license?: string;
-  licenseVersion?: string;
-  licenseUrl?: string;
-  source?: string;
-  attribution?: string;
-  alt?: string;
-  expectedRevision?: number;
-};
 
 export async function POST(request: NextRequest) {
   const adminAccess = await getRecipeAdminAccess();
@@ -34,46 +28,42 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const body = (await request.json()) as OpenverseImportBody;
-    const slug = body.slug?.trim();
-    const imageUrl = body.imageUrl?.trim();
-
-    if (!slug || !imageUrl || !Number.isFinite(body.expectedRevision)) {
-      return Response.json(
-        { error: "Missing slug or imageUrl" },
-        { status: 400 },
-      );
-    }
+    const parsed = await parseJsonRequest(
+      request,
+      openverseImportRequestSchema,
+    );
+    if (!parsed.ok) return parsed.response;
+    const { imageUrl } = parsed.data;
 
     let url: URL;
 
     try {
       url = new URL(imageUrl);
     } catch {
-      return Response.json({ error: "Invalid imageUrl" }, { status: 400 });
+      return validationResponse({
+        imageUrl: "Adresse d’image Openverse invalide.",
+      });
     }
 
     if (url.protocol !== "https:") {
-      return Response.json({ error: "Invalid imageUrl" }, { status: 400 });
+      return validationResponse({
+        imageUrl: "L’image Openverse doit utiliser HTTPS.",
+      });
     }
 
     const imageResponse = await fetch(url, { cache: "no-store" });
 
     if (!imageResponse.ok) {
-      return Response.json(
-        { error: "Openverse image download failed" },
-        { status: imageResponse.status },
-      );
+      return errorResponse("Impossible de télécharger l’image Openverse.", 502);
     }
 
     const contentType =
       imageResponse.headers.get("content-type") ?? "application/octet-stream";
 
     if (!contentType.startsWith("image/")) {
-      return Response.json(
-        { error: "Openverse URL did not return an image" },
-        { status: 400 },
-      );
+      return validationResponse({
+        imageUrl: "Le lien ne pointe pas vers une image.",
+      });
     }
 
     const uploadUrl = await fetchMutation(api.recipes.generateUploadUrl, {
@@ -88,43 +78,26 @@ export async function POST(request: NextRequest) {
     });
 
     if (!uploadResponse.ok) {
-      return Response.json(
-        { error: "Convex Storage upload failed" },
-        { status: uploadResponse.status },
+      return errorResponse(
+        "Impossible d’importer l’image dans le stockage.",
+        502,
       );
     }
 
-    const { storageId } = (await uploadResponse.json()) as {
-      storageId: Id<"_storage">;
-    };
+    const uploadResult = storageUploadResponseSchema.safeParse(
+      await uploadResponse.json(),
+    );
+    if (!uploadResult.success) {
+      return errorResponse("Le stockage a renvoyé une réponse invalide.", 502);
+    }
+    const storageId = uploadResult.data.storageId as Id<"_storage">;
 
-    const result = await fetchMutation(api.recipes.setOpenverseHeroImage, {
-      slug,
-      storageId,
-      adminPassword: adminAccess.adminPassword,
-      imageCredit: {
-        title: body.title ?? "Image Openverse",
-        creator: body.creator ?? "Createur inconnu",
-        creatorUrl: body.creatorUrl ?? body.landingUrl ?? imageUrl,
-        imageUrl,
-        landingUrl: body.landingUrl ?? imageUrl,
-        license: body.license ?? "",
-        licenseVersion: body.licenseVersion ?? "",
-        licenseUrl: body.licenseUrl ?? body.landingUrl ?? imageUrl,
-        source: body.source ?? "openverse",
-        attribution: body.attribution ?? "",
-        alt: body.alt ?? body.title ?? "",
-      },
-      expectedRevision: body.expectedRevision!,
-    });
-
-    return Response.json({
-      type: "success",
-      slug: result.slug,
-      storageId,
-      revision: result.revision,
-      savedAt: result.savedAt,
-    });
+    return Response.json(
+      storageImportSuccessSchema.parse({
+        type: "success",
+        storageId,
+      }),
+    );
   } catch (error) {
     console.error("Openverse import failed", error);
     return recipeMutationErrorResponse(error, "Openverse import failed");

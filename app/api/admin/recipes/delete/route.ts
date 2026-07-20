@@ -7,32 +7,31 @@ import {
 } from "@/lib/recipe-admin-auth";
 import { recipeMutationErrorResponse } from "@/lib/recipe-admin-route-errors";
 import { revalidateRecipePaths } from "@/lib/recipe-admin-revalidate";
+import {
+  revisionedRecipeRequestSchema,
+  slugMutationSuccessSchema,
+} from "@/lib/recipe-admin-contracts";
+import { parseJsonRequest } from "@/lib/recipe-admin-route-errors";
 
 export const dynamic = "force-dynamic";
 
 export async function DELETE(request: NextRequest) {
   const access = await getRecipeAdminAccess();
   if (!access.ok) return adminUnauthorizedResponse(access);
-  const body = (await request.json()) as {
-    slug?: string;
-    expectedRevision?: number;
-  };
-  const slug = body.slug?.trim();
-  if (!slug || typeof body.expectedRevision !== "number") {
-    return Response.json(
-      { type: "error", message: "Requête invalide." },
-      { status: 400 },
-    );
-  }
+  const parsed = await parseJsonRequest(request, revisionedRecipeRequestSchema);
+  if (!parsed.ok) return parsed.response;
+  const { slug, expectedRevision } = parsed.data;
 
   try {
     const result = await fetchMutation(api.recipes.deleteRecipe, {
       slug,
-      expectedRevision: body.expectedRevision,
+      expectedRevision,
       adminPassword: access.adminPassword,
     });
     revalidateRecipePaths(slug);
-    return Response.json({ type: "success", ...result });
+    return Response.json(
+      slugMutationSuccessSchema.parse({ type: "success", ...result }),
+    );
   } catch (error) {
     return recipeMutationErrorResponse(
       error,

@@ -1,14 +1,12 @@
 "use client";
 
 import {
-  useEffect,
   useRef,
   useState,
   type ChangeEvent,
   type KeyboardEvent,
   type ReactNode,
 } from "react";
-import { useRouter } from "next/navigation";
 import { Camera, Search, Upload, X } from "lucide-react";
 import { toast } from "sonner";
 import type { Id } from "@/convex/_generated/dataModel";
@@ -30,9 +28,23 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import { Skeleton } from "@/components/ui/skeleton";
+import type {
+  ImageMutationSuccess,
+  MutationError,
+} from "@/lib/recipe-admin-contracts";
 import type { EditableRecipe, Recipe } from "./types";
 
 type AdminRecipeImagePanelProps = {
@@ -45,7 +57,10 @@ type AdminRecipeImagePanelProps = {
   compact?: boolean;
   onBeforeChange?: () => Promise<number | null>;
   onRevisionChange?: (mutation: RecipeImageMutation) => void;
-  onConflict?: (latestRevision?: number, retry?: (revision: number) => Promise<void>) => void;
+  onConflict?: (
+    latestRevision?: number,
+    retry?: (revision: number) => Promise<void>,
+  ) => void;
 };
 
 export type RecipeImageMutation = {
@@ -89,7 +104,7 @@ type OpenversePhoto = {
 
 type ApiErrorResponse = {
   error?: string;
-  type?: "success" | "error" | "conflict";
+  type?: MutationError["type"];
   message?: string;
   revision?: number;
   latestRevision?: number;
@@ -106,20 +121,33 @@ const unavailableStatus: UploadStatus = {
 };
 
 async function searchUnsplash(query: string) {
-  const response = await fetch(`/api/admin/unsplash/search?query=${encodeURIComponent(query)}`);
-  const data = await readJsonResponse<{ results?: UnsplashPhoto[] } & ApiErrorResponse>(response);
-  if (!response.ok) throw new Error(data.error ?? "La recherche Unsplash a échoué.");
+  const response = await fetch(
+    `/api/admin/unsplash/search?query=${encodeURIComponent(query)}`,
+  );
+  const data = await readJsonResponse<
+    { results?: UnsplashPhoto[] } & ApiErrorResponse
+  >(response);
+  if (!response.ok)
+    throw new Error(data.error ?? "La recherche Unsplash a échoué.");
   return data.results ?? [];
 }
 
 async function searchOpenverse(query: string) {
-  const response = await fetch(`/api/admin/openverse/search?query=${encodeURIComponent(query)}`);
-  const data = await readJsonResponse<{ results?: OpenversePhoto[] } & ApiErrorResponse>(response);
-  if (!response.ok) throw new Error(data.error ?? "La recherche Openverse a échoué.");
+  const response = await fetch(
+    `/api/admin/openverse/search?query=${encodeURIComponent(query)}`,
+  );
+  const data = await readJsonResponse<
+    { results?: OpenversePhoto[] } & ApiErrorResponse
+  >(response);
+  if (!response.ok)
+    throw new Error(data.error ?? "La recherche Openverse a échoué.");
   return data.results ?? [];
 }
 
-function handleSearchKeyDown(event: KeyboardEvent<HTMLInputElement>, onSearch: () => void) {
+function handleSearchKeyDown(
+  event: KeyboardEvent<HTMLInputElement>,
+  onSearch: () => void,
+) {
   if (event.key !== "Enter") return;
   event.preventDefault();
   onSearch();
@@ -134,7 +162,6 @@ export function AdminRecipeImagePanel({
   onRevisionChange,
   onConflict,
 }: AdminRecipeImagePanelProps) {
-  const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [searchQuery, setSearchQuery] = useState(recipe?.title ?? "");
   const [unsplashResults, setUnsplashResults] = useState<UnsplashPhoto[]>([]);
@@ -145,84 +172,156 @@ export function AdminRecipeImagePanel({
   const [status, setStatus] = useState<UploadStatus>(
     recipe ? initialStatus : unavailableStatus,
   );
-  const [previewUrl, setPreviewUrl] = useState(
-    recipe?.heroImageUrl || "",
-  );
-  const [previewCredit, setPreviewCredit] = useState<Recipe["imageCredit"]>(
-    recipe?.imageCredit,
-  );
-  const [previewObjectUrl, setPreviewObjectUrl] = useState<string | null>(null);
+  const [previewOverride, setPreviewOverride] = useState<{
+    url: string;
+    credit?: Recipe["imageCredit"];
+  } | null>(null);
+  const previewUrl = previewOverride?.url ?? recipe?.heroImageUrl ?? "";
+  const previewCredit = previewOverride?.credit ?? recipe?.imageCredit;
   const [selectedUpload, setSelectedUpload] = useState<File | null>(null);
   const isDisabled = !recipe || status.type === "loading";
 
-  function imageMutationError(response: Response, data: ApiErrorResponse, fallback: string, retry?: (revision: number) => Promise<void>) {
+  function imageMutationError(
+    response: Response,
+    data: ApiErrorResponse,
+    fallback: string,
+    retry?: (revision: number) => Promise<void>,
+  ) {
     if (response.status === 409 || data.type === "conflict") {
       onConflict?.(data.latestRevision, retry);
     }
     return new Error(data.message ?? data.error ?? fallback);
   }
 
-  useEffect(() => {
-    return () => {
-      if (previewObjectUrl) {
-        URL.revokeObjectURL(previewObjectUrl);
-      }
-    };
-  }, [previewObjectUrl]);
+  function applySnapshot(snapshot: ImageMutationSuccess) {
+    setPreviewOverride({
+      url: snapshot.heroImageUrl,
+      credit: snapshot.imageCredit,
+    });
+    onRevisionChange?.(snapshot);
+    setStatus({ type: "success", message: "Image associée et enregistrée." });
+    setSelectedUpload(null);
+    setIsSearchDialogOpen(false);
+    toast.success("Image principale remplacée.");
+  }
+
+  async function cleanupUpload(storageId: Id<"_storage">) {
+    const response = await fetch("/api/admin/recipes/cleanup-image", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slug: recipe?.slug, storageId }),
+    });
+    const data = await readJsonResponse<
+      {
+        type?: "success";
+        referenced?: boolean;
+        slug?: string;
+        revision?: number;
+        savedAt?: number;
+        heroImageUrl?: string;
+        imageCredit?: Recipe["imageCredit"];
+      } & ApiErrorResponse
+    >(response);
+    if (
+      response.ok &&
+      data.referenced &&
+      typeof data.slug === "string" &&
+      data.slug === recipe?.slug &&
+      typeof data.revision === "number" &&
+      typeof data.savedAt === "number" &&
+      typeof data.heroImageUrl === "string"
+    ) {
+      const snapshot: ImageMutationSuccess = {
+        type: "success",
+        slug: data.slug,
+        revision: data.revision,
+        savedAt: data.savedAt,
+        heroImageUrl: data.heroImageUrl,
+        imageCredit: data.imageCredit,
+      };
+      applySnapshot(snapshot);
+      return snapshot;
+    }
+    return null;
+  }
 
   async function associateStoredImage(
     storageId: Id<"_storage">,
     expectedRevision = revision,
-    retry?: (revision: number) => Promise<void>,
   ) {
-    const response = await fetch("/api/admin/recipes/hero-image", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ slug: recipe?.slug, storageId, expectedRevision }),
-    });
-    const data = await readJsonResponse<ApiErrorResponse>(response);
+    let response: Response;
+    try {
+      response = await fetch("/api/admin/recipes/hero-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slug: recipe?.slug,
+          storageId,
+          expectedRevision,
+        }),
+      });
+    } catch (error) {
+      const recovered = await cleanupUpload(storageId);
+      if (recovered) return recovered;
+      throw error;
+    }
+    const data = await readJsonResponse<
+      ImageMutationSuccess | ApiErrorResponse
+    >(response);
     if (!response.ok) {
-      throw imageMutationError(
-        response,
-        data,
-        "Impossible d'associer cette image.",
-        retry ?? ((nextRevision) => associateStoredImage(storageId, nextRevision).then(() => undefined)),
+      const errorData = data as ApiErrorResponse;
+      const conflict = response.status === 409 || errorData.type === "conflict";
+      const latestRevision = errorData.latestRevision;
+      const recovered = await cleanupUpload(storageId);
+      if (recovered) return recovered;
+      if (conflict)
+        onConflict?.(latestRevision, (nextRevision) =>
+          uploadLocalImage(fileForRetry, nextRevision),
+        );
+      throw new Error(
+        errorData.message ??
+          errorData.error ??
+          "Impossible d'associer cette image.",
       );
     }
-    if (typeof data.revision !== "number") {
+    if (
+      data.type !== "success" ||
+      typeof data.revision !== "number" ||
+      !data.heroImageUrl
+    ) {
       throw new Error("La réponse d’image ne contient pas de révision.");
     }
-    return data.revision;
+    return data;
   }
 
-  async function commitStoredImage(
-    storageId: Id<"_storage">,
-    file: File,
-    expectedRevision: number,
-  ) {
-    const nextRevision = await associateStoredImage(
-      storageId,
-      expectedRevision,
-      (revisionAfterConflict) =>
-        commitStoredImage(storageId, file, revisionAfterConflict),
+  let fileForRetry: File;
+
+  async function uploadLocalImage(file: File, expectedRevision: number) {
+    fileForRetry = file;
+    setStatus({ type: "loading", message: "Upload de l’image…" });
+    const uploadUrlResponse = await fetch("/api/admin/recipes/upload-url", {
+      method: "POST",
+    });
+    const uploadUrlData = await readJsonResponse<
+      { uploadUrl?: string } & ApiErrorResponse
+    >(uploadUrlResponse);
+    if (!uploadUrlResponse.ok || !uploadUrlData.uploadUrl)
+      throw new Error(
+        uploadUrlData.error ??
+          uploadUrlData.message ??
+          "Impossible de préparer l’upload.",
+      );
+    const response = await fetch(uploadUrlData.uploadUrl, {
+      method: "POST",
+      headers: { "Content-Type": file.type },
+      body: file,
+    });
+    if (!response.ok) throw new Error("Convex Storage a refusé l’upload.");
+    const { storageId } = await readJsonResponse<{ storageId: Id<"_storage"> }>(
+      response,
     );
-    const objectUrl = URL.createObjectURL(file);
-    setPreviewObjectUrl(objectUrl);
-    setPreviewUrl(objectUrl);
-    setPreviewCredit(undefined);
-    onRevisionChange?.({
-      revision: nextRevision,
-      heroImageUrl: objectUrl,
-      imageCredit: undefined,
-    });
-    setStatus({
-      type: "success",
-      message: "Image uploadée et associée.",
-    });
-    toast.success("Image principale remplacée.");
-    setSelectedUpload(null);
-    setIsSearchDialogOpen(false);
-    router.refresh();
+    const snapshot = await associateStoredImage(storageId, expectedRevision);
+    applySnapshot(snapshot);
   }
 
   async function handleUploadImage(file: File | null) {
@@ -239,7 +338,7 @@ export function AdminRecipeImagePanel({
     try {
       const preparedRevision = onBeforeChange
         ? await onBeforeChange()
-        : revision ?? null;
+        : (revision ?? null);
       if (preparedRevision === null) {
         setStatus({
           type: "error",
@@ -247,36 +346,7 @@ export function AdminRecipeImagePanel({
         });
         return;
       }
-      setStatus({ type: "loading", message: "Upload de l’image…" });
-
-      const uploadUrlResponse = await fetch("/api/admin/recipes/upload-url", {
-        method: "POST",
-      });
-      const uploadUrlData = await readJsonResponse<
-        { uploadUrl?: string } & ApiErrorResponse
-      >(uploadUrlResponse);
-
-      if (!uploadUrlResponse.ok || !uploadUrlData.uploadUrl) {
-        throw new Error(
-          uploadUrlData.error ?? "Impossible de preparer l'upload.",
-        );
-      }
-
-      const response = await fetch(uploadUrlData.uploadUrl, {
-        method: "POST",
-        headers: { "Content-Type": file.type },
-        body: file,
-      });
-
-      if (!response.ok) {
-        throw new Error("Convex Storage a refuse l'upload.");
-      }
-
-      const { storageId } = await readJsonResponse<{
-        storageId: Id<"_storage">;
-      }>(response);
-
-      await commitStoredImage(storageId, file, preparedRevision);
+      await uploadLocalImage(file, preparedRevision);
     } catch (error) {
       setStatus({
         type: "error",
@@ -338,8 +408,12 @@ export function AdminRecipeImagePanel({
       );
 
     const resultCount =
-      (unsplashResult.status === "fulfilled" ? unsplashResult.value.length : 0) +
-      (openverseResult.status === "fulfilled" ? openverseResult.value.length : 0);
+      (unsplashResult.status === "fulfilled"
+        ? unsplashResult.value.length
+        : 0) +
+      (openverseResult.status === "fulfilled"
+        ? openverseResult.value.length
+        : 0);
 
     if (errors.length > 0) {
       setStatus({
@@ -366,9 +440,10 @@ export function AdminRecipeImagePanel({
     if (!recipe) return;
 
     try {
-      const preparedRevision = prepare && onBeforeChange
-        ? await onBeforeChange()
-        : expectedRevision ?? revision ?? null;
+      const preparedRevision =
+        prepare && onBeforeChange
+          ? await onBeforeChange()
+          : (expectedRevision ?? revision ?? null);
       if (preparedRevision === null) {
         setStatus({
           type: "error",
@@ -390,9 +465,7 @@ export function AdminRecipeImagePanel({
         await readJsonResponse<ApiErrorResponse>(trackingResponse);
 
       if (!trackingResponse.ok) {
-        throw new Error(
-          trackingData.error ?? "Le tracking Unsplash a échoué.",
-        );
+        throw new Error(trackingData.error ?? "Le tracking Unsplash a échoué.");
       }
 
       const imageResponse = await fetch(
@@ -411,37 +484,25 @@ export function AdminRecipeImagePanel({
           }),
         },
       );
-      const imageData =
-        await readJsonResponse<ApiErrorResponse>(imageResponse);
+      const imageData = await readJsonResponse<
+        ImageMutationSuccess | ApiErrorResponse
+      >(imageResponse);
 
       if (!imageResponse.ok) {
-        throw imageMutationError(imageResponse, imageData, "Impossible d'associer cette image Unsplash.", (nextRevision) => handleUseUnsplashImage(photo, nextRevision, false));
+        throw imageMutationError(
+          imageResponse,
+          imageData as ApiErrorResponse,
+          "Impossible d'associer cette image Unsplash.",
+          (nextRevision) => handleUseUnsplashImage(photo, nextRevision, false),
+        );
       }
-      const nextRevision = (imageData as ApiErrorResponse & { revision?: number }).revision;
-      if (typeof nextRevision !== "number") {
+      if (
+        imageData.type !== "success" ||
+        typeof imageData.revision !== "number"
+      ) {
         throw new Error("La réponse Unsplash ne contient pas de révision.");
       }
-      const imageCredit: Recipe["imageCredit"] = {
-        provider: "unsplash",
-        photographerName: photo.photographerName,
-        photographerUrl: photo.photographerUrl,
-        photoUrl: photo.photoUrl,
-        alt: photo.alt,
-      };
-      setPreviewUrl(photo.imageUrl);
-      setPreviewCredit(imageCredit);
-      onRevisionChange?.({
-        revision: nextRevision,
-        heroImageUrl: photo.imageUrl,
-        imageCredit,
-      });
-      setStatus({
-        type: "success",
-        message: "Image Unsplash associée.",
-      });
-      toast.success("Image principale remplacée.");
-      setIsSearchDialogOpen(false);
-      router.refresh();
+      applySnapshot(imageData);
     } catch (error) {
       setStatus({
         type: "error",
@@ -459,11 +520,13 @@ export function AdminRecipeImagePanel({
     prepare = true,
   ) {
     if (!recipe) return;
+    let importedStorageId: Id<"_storage"> | undefined;
 
     try {
-      const preparedRevision = prepare && onBeforeChange
-        ? await onBeforeChange()
-        : expectedRevision ?? revision ?? null;
+      const preparedRevision =
+        prepare && onBeforeChange
+          ? await onBeforeChange()
+          : (expectedRevision ?? revision ?? null);
       if (preparedRevision === null) {
         setStatus({
           type: "error",
@@ -476,63 +539,77 @@ export function AdminRecipeImagePanel({
         message: "Import de l’image Openverse dans Convex…",
       });
 
-      const response = await fetch("/api/admin/openverse/import", {
+      const importResponse = await fetch("/api/admin/openverse/import", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          slug: recipe.slug,
-          imageUrl: photo.imageUrl,
-          title: photo.title,
-          creator: photo.creator,
-          creatorUrl: photo.creatorUrl,
-          landingUrl: photo.landingUrl,
-          license: photo.license,
-          licenseVersion: photo.licenseVersion,
-          licenseUrl: photo.licenseUrl,
-          source: photo.source,
-          attribution: photo.attribution,
-          alt: photo.alt,
-          expectedRevision: preparedRevision,
-        }),
+        body: JSON.stringify({ imageUrl: photo.imageUrl }),
       });
-      const data = await readJsonResponse<ApiErrorResponse>(response);
-
-      if (!response.ok) {
-        throw imageMutationError(response, data, "L'import Openverse a échoué.", (nextRevision) => handleUseOpenverseImage(photo, nextRevision, false));
-      }
-      const nextRevision = (data as ApiErrorResponse & { revision?: number }).revision;
-      if (typeof nextRevision !== "number") {
-        throw new Error("La réponse Openverse ne contient pas de révision.");
-      }
       const imageCredit: Recipe["imageCredit"] = {
         provider: "openverse",
         title: photo.title,
         creator: photo.creator,
-        creatorUrl: photo.creatorUrl,
+        creatorUrl: photo.creatorUrl || photo.landingUrl,
         imageUrl: photo.imageUrl,
         landingUrl: photo.landingUrl,
         license: photo.license,
         licenseVersion: photo.licenseVersion,
-        licenseUrl: photo.licenseUrl,
+        licenseUrl: photo.licenseUrl || photo.landingUrl,
         source: photo.source,
         attribution: photo.attribution,
         alt: photo.alt,
       };
-      setPreviewUrl(photo.imageUrl);
-      setPreviewCredit(imageCredit);
-      onRevisionChange?.({
-        revision: nextRevision,
-        heroImageUrl: photo.imageUrl,
-        imageCredit,
-      });
-      setStatus({
-        type: "success",
-        message: "Image Openverse importée et associée.",
-      });
-      toast.success("Image principale remplacée.");
-      setIsSearchDialogOpen(false);
-      router.refresh();
+      const imported = await readJsonResponse<
+        { storageId?: Id<"_storage"> } & ApiErrorResponse
+      >(importResponse);
+      if (!importResponse.ok || !imported.storageId)
+        throw new Error(
+          imported.message ?? imported.error ?? "L’import Openverse a échoué.",
+        );
+      importedStorageId = imported.storageId;
+      const associationResponse = await fetch(
+        "/api/admin/recipes/openverse-hero-image",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            slug: recipe.slug,
+            storageId: imported.storageId,
+            imageCredit,
+            expectedRevision: preparedRevision,
+          }),
+        },
+      );
+      const data = await readJsonResponse<
+        ImageMutationSuccess | ApiErrorResponse
+      >(associationResponse);
+      if (!associationResponse.ok) {
+        const errorData = data as ApiErrorResponse;
+        const conflict =
+          associationResponse.status === 409 || errorData.type === "conflict";
+        const recovered = await cleanupUpload(imported.storageId);
+        if (recovered) return;
+        if (conflict)
+          onConflict?.(errorData.latestRevision, (nextRevision) =>
+            handleUseOpenverseImage(photo, nextRevision, false),
+          );
+        throw new Error(
+          errorData.message ??
+            errorData.error ??
+            "L’association Openverse a échoué.",
+        );
+      }
+      if (data.type !== "success")
+        throw new Error("La réponse Openverse est invalide.");
+      applySnapshot(data);
     } catch (error) {
+      if (importedStorageId) {
+        try {
+          const recovered = await cleanupUpload(importedStorageId);
+          if (recovered) return;
+        } catch {
+          // Keep the actionable association error visible; cleanup can be retried.
+        }
+      }
       setStatus({
         type: "error",
         message:
@@ -544,11 +621,11 @@ export function AdminRecipeImagePanel({
   }
 
   return (
-    <section className={`grid gap-4 rounded-2xl bg-muted/40 p-4 shadow-[var(--shadow-card)] md:rounded-lg md:border md:border-border md:shadow-none ${compact ? "lg:sticky lg:top-28" : ""}`}>
+    <section
+      className={`grid gap-4 rounded-2xl bg-muted/40 p-4 shadow-[var(--shadow-card)] md:rounded-lg md:border md:border-border md:shadow-none ${compact ? "lg:sticky lg:top-28" : ""}`}
+    >
       <div className="flex flex-col gap-1">
-        <h2 className="type-panel-title text-foreground">
-          Image principale
-        </h2>
+        <h2 className="type-panel-title text-foreground">Image principale</h2>
         <p className="text-sm font-semibold text-muted-foreground">
           Utilisée comme couverture de la recette.
         </p>
@@ -573,7 +650,9 @@ export function AdminRecipeImagePanel({
               )}
             </div>
           </div>
-          {previewCredit ? <ImageCreditLine imageCredit={previewCredit} /> : null}
+          {previewCredit ? (
+            <ImageCreditLine imageCredit={previewCredit} />
+          ) : null}
           {recipe ? (
             <a
               href={`/${locale}/recettes/${recipe.slug}`}
@@ -621,7 +700,8 @@ export function AdminRecipeImagePanel({
           <DialogHeader className="">
             <DialogTitle className="">Remplacer l’image principale</DialogTitle>
             <DialogDescription className="">
-              Choisis une image pour remplacer l&apos;image principale de recette.
+              Choisis une image pour remplacer l&apos;image principale de
+              recette.
             </DialogDescription>
           </DialogHeader>
 
@@ -646,10 +726,29 @@ export function AdminRecipeImagePanel({
             Choisir un fichier
           </Button>
           {selectedUpload ? (
-            <Attachment className="w-full" state={status.type === "loading" ? "uploading" : "idle"}>
-              <AttachmentMedia><Upload /></AttachmentMedia>
-              <AttachmentContent><AttachmentTitle>{selectedUpload.name}</AttachmentTitle><AttachmentDescription>{Math.ceil(selectedUpload.size / 1024)} Ko</AttachmentDescription></AttachmentContent>
-              <AttachmentActions><AttachmentAction type="button" aria-label="Annuler la sélection" disabled={status.type === "loading"} onClick={() => setSelectedUpload(null)}><X /></AttachmentAction></AttachmentActions>
+            <Attachment
+              className="w-full"
+              state={status.type === "loading" ? "uploading" : "idle"}
+            >
+              <AttachmentMedia>
+                <Upload />
+              </AttachmentMedia>
+              <AttachmentContent>
+                <AttachmentTitle>{selectedUpload.name}</AttachmentTitle>
+                <AttachmentDescription>
+                  {Math.ceil(selectedUpload.size / 1024)} Ko
+                </AttachmentDescription>
+              </AttachmentContent>
+              <AttachmentActions>
+                <AttachmentAction
+                  type="button"
+                  aria-label="Annuler la sélection"
+                  disabled={status.type === "loading"}
+                  onClick={() => setSelectedUpload(null)}
+                >
+                  <X />
+                </AttachmentAction>
+              </AttachmentActions>
             </Attachment>
           ) : null}
 
@@ -657,18 +756,22 @@ export function AdminRecipeImagePanel({
 
           <div className="flex flex-col gap-3 pr-8 sm:flex-row">
             <InputGroup className="h-11 flex-1 bg-card">
-              <InputGroupAddon><Search aria-hidden /></InputGroupAddon>
+              <InputGroupAddon>
+                <Search aria-hidden />
+              </InputGroupAddon>
               <InputGroupInput
-              type="search"
-              aria-label="Mots-clés de recherche d'image"
-              value={searchQuery}
-              disabled={isDisabled}
-              onChange={(event: ChangeEvent<HTMLInputElement>) => setSearchQuery(event.target.value)}
-              onKeyDown={(event: KeyboardEvent<HTMLInputElement>) =>
-                handleSearchKeyDown(event, handleInternetSearch)
-              }
-              className="h-11 font-semibold"
-              placeholder="cake citron, tarte fraise…"
+                type="search"
+                aria-label="Mots-clés de recherche d'image"
+                value={searchQuery}
+                disabled={isDisabled}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  setSearchQuery(event.target.value)
+                }
+                onKeyDown={(event: KeyboardEvent<HTMLInputElement>) =>
+                  handleSearchKeyDown(event, handleInternetSearch)
+                }
+                className="h-11 font-semibold"
+                placeholder="cake citron, tarte fraise…"
               />
             </InputGroup>
             <Button
@@ -763,15 +866,32 @@ function ImageResultsColumn({
 
   return (
     <section className="grid content-start gap-3">
-      <h3 className="type-panel-title text-foreground">
-        {title}
-      </h3>
+      <h3 className="type-panel-title text-foreground">{title}</h3>
       {hasResults ? (
         <div className="grid grid-cols-2 gap-3">{children}</div>
       ) : isLoading ? (
-        <div className="grid grid-cols-2 gap-3" aria-label="Recherche en cours"><Skeleton className="aspect-[4/3] rounded-xl" /><Skeleton className="aspect-[4/3] rounded-xl" /><Skeleton className="aspect-[4/3] rounded-xl" /><Skeleton className="aspect-[4/3] rounded-xl" /></div>
+        <div className="grid grid-cols-2 gap-3" aria-label="Recherche en cours">
+          <Skeleton className="aspect-[4/3] rounded-xl" />
+          <Skeleton className="aspect-[4/3] rounded-xl" />
+          <Skeleton className="aspect-[4/3] rounded-xl" />
+          <Skeleton className="aspect-[4/3] rounded-xl" />
+        </div>
       ) : (
-        <Empty className="min-h-40 bg-muted/40"><EmptyHeader><EmptyMedia variant="icon"><Search /></EmptyMedia><EmptyTitle>{hasSearched ? emptyMessage : "Lance une recherche"}</EmptyTitle><EmptyDescription>{hasSearched ? "Essaie avec d’autres mots-clés." : "Les résultats Unsplash et Openverse apparaîtront ici."}</EmptyDescription></EmptyHeader></Empty>
+        <Empty className="min-h-40 bg-muted/40">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <Search />
+            </EmptyMedia>
+            <EmptyTitle>
+              {hasSearched ? emptyMessage : "Lance une recherche"}
+            </EmptyTitle>
+            <EmptyDescription>
+              {hasSearched
+                ? "Essaie avec d’autres mots-clés."
+                : "Les résultats Unsplash et Openverse apparaîtront ici."}
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
       )}
     </section>
   );
@@ -806,7 +926,9 @@ function ImageChoiceCard({
         />
       </div>
       <div className="grid gap-0.5 p-2">
-        <p className="type-meta truncate text-foreground" title={title}>{title}</p>
+        <p className="type-meta truncate text-foreground" title={title}>
+          {title}
+        </p>
         <p className="type-meta truncate text-muted-foreground" title={detail}>
           {detail}
         </p>

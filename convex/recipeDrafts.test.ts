@@ -4,6 +4,7 @@ import { convexTest } from "convex-test";
 import { describe, expect, test, vi } from "vitest";
 import { api, internal } from "./_generated/api";
 import schema from "./schema";
+import type { Id } from "./_generated/dataModel";
 import type { RecipeCategory } from "../lib/recipe-categories";
 
 const modules = import.meta.glob("./**/*.ts");
@@ -31,13 +32,17 @@ function recipe(title = "Tarte mobile") {
     referenceServings: 6,
     translations: { fr: localized, en: { ...localized, title: "Mobile tart" } },
     categories: ["dessert"] as RecipeCategory[],
-    status: "draft" as const,
   };
 }
 
 function draft(value = recipe()) {
-  const { status: _status, ...content } = value;
-  return content;
+  return value;
+}
+
+async function uploadRecipeImage(t: ReturnType<typeof convexTest>) {
+  return t.run((ctx) =>
+    ctx.storage.store(new Blob(["recipe-image"], { type: "image/jpeg" })),
+  );
 }
 
 describe("recipe working drafts", () => {
@@ -60,19 +65,29 @@ describe("recipe working drafts", () => {
 
     await t.mutation(api.recipes.seed, { adminPassword: password });
 
-    await expect(t.query(api.recipes.getBySlug, { locale: "fr", slug: "amandin" }))
-      .resolves.toMatchObject({ referenceServings: 8 });
-    await expect(t.query(api.recipes.getBySlug, { locale: "fr", slug: "gateau-aux-pommes" }))
-      .resolves.toMatchObject({ referenceServings: 7 });
+    await expect(
+      t.query(api.recipes.getBySlug, { locale: "fr", slug: "amandin" }),
+    ).resolves.toMatchObject({ referenceServings: 8 });
+    await expect(
+      t.query(api.recipes.getBySlug, {
+        locale: "fr",
+        slug: "gateau-aux-pommes",
+      }),
+    ).resolves.toMatchObject({ referenceServings: 7 });
   });
 
   test("re-seeding preserves unknown legacy category labels", async () => {
     const t = convexTest(schema, modules);
     await t.mutation(api.recipes.seed, { adminPassword: password });
     await t.run(async (ctx) => {
-      const seeded = await ctx.db.query("recipes").withIndex("by_slug", (q) => q.eq("slug", "amandin")).unique();
+      const seeded = await ctx.db
+        .query("recipes")
+        .withIndex("by_slug", (q) => q.eq("slug", "amandin"))
+        .unique();
       if (!seeded) throw new Error("seed fixture missing");
-      await ctx.db.patch(seeded._id, { tags: [...(seeded.tags ?? []), "recette de famille"] });
+      await ctx.db.patch(seeded._id, {
+        tags: [...(seeded.tags ?? []), "recette de famille"],
+      });
     });
 
     await t.mutation(api.recipes.seed, { adminPassword: password });
@@ -112,40 +127,73 @@ describe("recipe working drafts", () => {
       });
     });
 
-    const migrationArgs = { cursor: null, oneBatchOnly: true, batchSize: 100 } as const;
-    const readMigratedCategoryFields = () => t.run(async (ctx) => {
-      const migratedRecipe = await ctx.db.query("recipes").withIndex("by_slug", (q) => q.eq("slug", "migration-categories")).unique();
-      if (!migratedRecipe) throw new Error("migration recipe missing");
-      const migratedDraft = await ctx.db.query("recipeDrafts").withIndex("by_recipeId", (q) => q.eq("recipeId", migratedRecipe._id)).unique();
-      if (!migratedDraft) throw new Error("migration draft missing");
-      return {
-        recipe: { categories: migratedRecipe.categories, legacyCategoryLabels: migratedRecipe.legacyCategoryLabels },
-        draft: { categories: migratedDraft.categories, legacyCategoryLabels: migratedDraft.legacyCategoryLabels },
-      };
-    });
-    await expect(t.mutation(internal.migrations.backfillRecipeCategories, {
-      ...migrationArgs,
-      dryRun: true,
-    })).rejects.toThrow();
+    const migrationArgs = {
+      cursor: null,
+      oneBatchOnly: true,
+      batchSize: 100,
+    } as const;
+    const readMigratedCategoryFields = () =>
+      t.run(async (ctx) => {
+        const migratedRecipe = await ctx.db
+          .query("recipes")
+          .withIndex("by_slug", (q) => q.eq("slug", "migration-categories"))
+          .unique();
+        if (!migratedRecipe) throw new Error("migration recipe missing");
+        const migratedDraft = await ctx.db
+          .query("recipeDrafts")
+          .withIndex("by_recipeId", (q) => q.eq("recipeId", migratedRecipe._id))
+          .unique();
+        if (!migratedDraft) throw new Error("migration draft missing");
+        return {
+          recipe: {
+            categories: migratedRecipe.categories,
+            legacyCategoryLabels: migratedRecipe.legacyCategoryLabels,
+          },
+          draft: {
+            categories: migratedDraft.categories,
+            legacyCategoryLabels: migratedDraft.legacyCategoryLabels,
+          },
+        };
+      });
+    await expect(
+      t.mutation(internal.migrations.backfillRecipeCategories, {
+        ...migrationArgs,
+        dryRun: true,
+      }),
+    ).rejects.toThrow();
 
-    await t.mutation(internal.migrations.backfillRecipeCategories, { ...migrationArgs, dryRun: false });
-    await t.mutation(internal.migrations.backfillDraftCategories, { ...migrationArgs, dryRun: false });
+    await t.mutation(internal.migrations.backfillRecipeCategories, {
+      ...migrationArgs,
+      dryRun: false,
+    });
+    await t.mutation(internal.migrations.backfillDraftCategories, {
+      ...migrationArgs,
+      dryRun: false,
+    });
     const first = await readMigratedCategoryFields();
     expect(first).toEqual({
       recipe: { categories: ["plat"], legacyCategoryLabels: ["héritage"] },
       draft: { categories: ["sale"], legacyCategoryLabels: ["cahier bleu"] },
     });
 
-    await t.mutation(internal.migrations.backfillRecipeCategories, { ...migrationArgs, dryRun: false });
-    await t.mutation(internal.migrations.backfillDraftCategories, { ...migrationArgs, dryRun: false });
+    await t.mutation(internal.migrations.backfillRecipeCategories, {
+      ...migrationArgs,
+      dryRun: false,
+    });
+    await t.mutation(internal.migrations.backfillDraftCategories, {
+      ...migrationArgs,
+      dryRun: false,
+    });
     await expect(readMigratedCategoryFields()).resolves.toEqual(first);
   });
 
   test("falls back to the public snapshot for legacy recipes without a draft", async () => {
     const t = convexTest(schema, modules);
     const content = recipe("Recette historique");
-    const { yieldLabel: _frYieldLabel, ...legacyFrench } = content.translations.fr;
-    const { yieldLabel: _enYieldLabel, ...legacyEnglish } = content.translations.en;
+    const { yieldLabel: _frYieldLabel, ...legacyFrench } =
+      content.translations.fr;
+    const { yieldLabel: _enYieldLabel, ...legacyEnglish } =
+      content.translations.en;
     const legacyTranslations = {
       fr: { ...legacyFrench, servings: { quantity: 20, unit: "environ" } },
       en: { ...legacyEnglish, servings: { quantity: 20, unit: "about" } },
@@ -165,7 +213,12 @@ describe("recipe working drafts", () => {
       locale: "fr",
       adminPassword: password,
     });
-    expect(editing).toMatchObject({ title: "Recette historique", revision: 0, publishedRevision: 0, hasUnpublishedChanges: false });
+    expect(editing).toMatchObject({
+      title: "Recette historique",
+      revision: 0,
+      publishedRevision: 0,
+      hasUnpublishedChanges: false,
+    });
     expect(editing?.translations.fr.yieldLabel).toBe("Environ 20 gougères");
     const publicRecipe = await t.query(api.recipes.getBySlug, {
       locale: "en",
@@ -228,8 +281,12 @@ describe("recipe working drafts", () => {
       expectedRevision: saved.revision,
       adminPassword: password,
     });
-    await expect(t.query(api.recipes.getBySlug, { locale: "fr", slug: "categories-historiques" }))
-      .resolves.toMatchObject({ categories: ["dessert"] });
+    await expect(
+      t.query(api.recipes.getBySlug, {
+        locale: "fr",
+        slug: "categories-historiques",
+      }),
+    ).resolves.toMatchObject({ categories: ["dessert"] });
   });
 
   test("creates a private draft with an initial revision", async () => {
@@ -241,7 +298,12 @@ describe("recipe working drafts", () => {
 
     expect(created.revision).toBe(0);
     expect(created.publishedRevision).toBe(-1);
-    expect(await t.query(api.recipes.getBySlug, { locale: "fr", slug: created.slug })).toBeNull();
+    expect(
+      await t.query(api.recipes.getBySlug, {
+        locale: "fr",
+        slug: created.slug,
+      }),
+    ).toBeNull();
 
     const editing = await t.query(api.recipes.listForEditing, {
       locale: "fr",
@@ -264,19 +326,23 @@ describe("recipe working drafts", () => {
       adminPassword: password,
     });
 
-    await expect(t.mutation(api.recipes.publishDraft, {
-      slug: created.slug,
-      expectedRevision: 0,
-      adminPassword: password,
-    })).rejects.toThrow("RECIPE_NOT_READY");
+    await expect(
+      t.mutation(api.recipes.publishDraft, {
+        slug: created.slug,
+        expectedRevision: 0,
+        adminPassword: password,
+      }),
+    ).rejects.toThrow("RECIPE_NOT_READY");
   });
 
   test("rejects reference servings outside the public selector bounds", async () => {
     const t = convexTest(schema, modules);
-    await expect(t.mutation(api.recipes.create, {
-      recipe: { ...recipe(), referenceServings: 51 },
-      adminPassword: password,
-    })).rejects.toThrow("RECIPE_LIMIT_EXCEEDED");
+    await expect(
+      t.mutation(api.recipes.create, {
+        recipe: { ...recipe(), referenceServings: 51 },
+        adminPassword: password,
+      }),
+    ).rejects.toThrow("RECIPE_LIMIT_EXCEEDED");
   });
 
   test("detects stale autosaves", async () => {
@@ -316,24 +382,41 @@ describe("recipe working drafts", () => {
 
   test("allows an explicit device replacement to advance the latest revision", async () => {
     const t = convexTest(schema, modules);
-    const created = await t.mutation(api.recipes.create, { recipe: recipe(), adminPassword: password });
+    const created = await t.mutation(api.recipes.create, {
+      recipe: recipe(),
+      adminPassword: password,
+    });
     const first = recipe("Premier appareil");
     await t.mutation(api.recipes.saveDraft, {
       slug: created.slug,
-      recipe: { defaultLocale: first.defaultLocale, referenceServings: first.referenceServings, translations: first.translations, categories: first.categories },
+      recipe: {
+        defaultLocale: first.defaultLocale,
+        referenceServings: first.referenceServings,
+        translations: first.translations,
+        categories: first.categories,
+      },
       expectedRevision: 0,
       adminPassword: password,
     });
     const replacement = recipe("Téléphone prioritaire");
     const saved = await t.mutation(api.recipes.saveDraft, {
       slug: created.slug,
-      recipe: { defaultLocale: replacement.defaultLocale, referenceServings: replacement.referenceServings, translations: replacement.translations, categories: replacement.categories },
+      recipe: {
+        defaultLocale: replacement.defaultLocale,
+        referenceServings: replacement.referenceServings,
+        translations: replacement.translations,
+        categories: replacement.categories,
+      },
       expectedRevision: 0,
       force: true,
       adminPassword: password,
     });
     expect(saved.revision).toBe(2);
-    const editing = await t.query(api.recipes.getForEditing, { locale: "fr", slug: created.slug, adminPassword: password });
+    const editing = await t.query(api.recipes.getForEditing, {
+      locale: "fr",
+      slug: created.slug,
+      adminPassword: password,
+    });
     expect(editing?.title).toBe("Téléphone prioritaire");
   });
 
@@ -400,7 +483,8 @@ describe("recipe working drafts", () => {
   test("publishes a complete piece-based recipe without reference servings", async () => {
     const t = convexTest(schema, modules);
     const pieceBasedRecipe = recipe("Cookies aux pépites de chocolat");
-    delete (pieceBasedRecipe as Partial<typeof pieceBasedRecipe>).referenceServings;
+    delete (pieceBasedRecipe as Partial<typeof pieceBasedRecipe>)
+      .referenceServings;
     pieceBasedRecipe.translations.fr.yieldLabel = "Environ 20 gros cookies";
     pieceBasedRecipe.translations.en.yieldLabel = "About 20 large cookies";
 
@@ -428,33 +512,98 @@ describe("recipe working drafts", () => {
   test("protects admin reads with the configured password", async () => {
     const t = convexTest(schema, modules);
     const reads = [
-      t.query(api.recipes.listForEditing, { locale: "fr", adminPassword: "wrong-password" }),
-      t.query(api.recipes.getForEditing, { slug: "missing", locale: "fr", adminPassword: "wrong-password" }),
+      t.query(api.recipes.listForEditing, {
+        locale: "fr",
+        adminPassword: "wrong-password",
+      }),
+      t.query(api.recipes.getForEditing, {
+        slug: "missing",
+        locale: "fr",
+        adminPassword: "wrong-password",
+      }),
     ];
     const results = await Promise.allSettled(reads);
-    expect(results.every((result) => result.status === "rejected" && String(result.reason).includes("RECIPE_ADMIN_REQUIRED"))).toBe(true);
+    expect(
+      results.every(
+        (result) =>
+          result.status === "rejected" &&
+          String(result.reason).includes("RECIPE_ADMIN_REQUIRED"),
+      ),
+    ).toBe(true);
   });
 
   test("protects every draft mutation with the configured password", async () => {
     const t = convexTest(schema, modules);
     const attempts = [
-      () => t.mutation(api.recipes.create, { recipe: recipe(), adminPassword: "wrong-password" }),
-      () => t.mutation(api.recipes.saveDraft, { slug: "missing", recipe: draft(), expectedRevision: 0, adminPassword: "wrong-password" }),
-      () => t.mutation(api.recipes.publishDraft, { slug: "missing", expectedRevision: 0, adminPassword: "wrong-password" }),
-      () => t.mutation(api.recipes.discardDraft, { slug: "missing", expectedRevision: 0, adminPassword: "wrong-password" }),
-      () => t.mutation(api.recipes.unpublish, { slug: "missing", adminPassword: "wrong-password" }),
-      () => t.mutation(api.recipes.generateUploadUrl, { adminPassword: "wrong-password" }),
+      () =>
+        t.mutation(api.recipes.create, {
+          recipe: recipe(),
+          adminPassword: "wrong-password",
+        }),
+      () =>
+        t.mutation(api.recipes.saveDraft, {
+          slug: "missing",
+          recipe: draft(),
+          expectedRevision: 0,
+          adminPassword: "wrong-password",
+        }),
+      () =>
+        t.mutation(api.recipes.publishDraft, {
+          slug: "missing",
+          expectedRevision: 0,
+          adminPassword: "wrong-password",
+        }),
+      () =>
+        t.mutation(api.recipes.discardDraft, {
+          slug: "missing",
+          expectedRevision: 0,
+          adminPassword: "wrong-password",
+        }),
+      () =>
+        t.mutation(api.recipes.unpublish, {
+          slug: "missing",
+          adminPassword: "wrong-password",
+        }),
+      () =>
+        t.mutation(api.recipes.generateUploadUrl, {
+          adminPassword: "wrong-password",
+        }),
       () => t.mutation(api.recipes.seed, { adminPassword: "wrong-password" }),
-      () => t.mutation(api.recipes.setUnsplashHeroImage, { slug: "missing", imageUrl: "https://example.com/image.jpg", alt: "", photographerName: "Maman", photographerUrl: "https://example.com", photoUrl: "https://example.com/photo", expectedRevision: 0, adminPassword: "wrong-password" }),
+      () =>
+        t.mutation(api.recipes.setUnsplashHeroImage, {
+          slug: "missing",
+          imageUrl: "https://example.com/image.jpg",
+          alt: "",
+          photographerName: "Maman",
+          photographerUrl: "https://example.com",
+          photoUrl: "https://example.com/photo",
+          expectedRevision: 0,
+          adminPassword: "wrong-password",
+        }),
     ];
-    const results = await Promise.allSettled(attempts.map((attempt) => attempt()));
-    expect(results.every((result) => result.status === "rejected" && String(result.reason).includes("RECIPE_ADMIN_REQUIRED"))).toBe(true);
+    const results = await Promise.allSettled(
+      attempts.map((attempt) => attempt()),
+    );
+    expect(
+      results.every(
+        (result) =>
+          result.status === "rejected" &&
+          String(result.reason).includes("RECIPE_ADMIN_REQUIRED"),
+      ),
+    ).toBe(true);
   });
 
   test("keeps internet image changes private until publication", async () => {
     const t = convexTest(schema, modules);
-    const created = await t.mutation(api.recipes.create, { recipe: recipe("Image privée"), adminPassword: password });
-    await t.mutation(api.recipes.publishDraft, { slug: created.slug, expectedRevision: 0, adminPassword: password });
+    const created = await t.mutation(api.recipes.create, {
+      recipe: recipe("Image privée"),
+      adminPassword: password,
+    });
+    await t.mutation(api.recipes.publishDraft, {
+      slug: created.slug,
+      expectedRevision: 0,
+      adminPassword: password,
+    });
     const image = await t.mutation(api.recipes.setUnsplashHeroImage, {
       slug: created.slug,
       imageUrl: "https://images.example/private.jpg",
@@ -465,11 +614,156 @@ describe("recipe working drafts", () => {
       expectedRevision: 0,
       adminPassword: password,
     });
-    const publicBefore = await t.query(api.recipes.getBySlug, { locale: "fr", slug: created.slug });
+    const publicBefore = await t.query(api.recipes.getBySlug, {
+      locale: "fr",
+      slug: created.slug,
+    });
     expect(publicBefore?.heroImageUrl).toBe("");
-    await t.mutation(api.recipes.publishDraft, { slug: created.slug, expectedRevision: image.revision, adminPassword: password });
-    const publicAfter = await t.query(api.recipes.getBySlug, { locale: "fr", slug: created.slug });
-    expect(publicAfter?.heroImageUrl).toBe("https://images.example/private.jpg");
+    await t.mutation(api.recipes.publishDraft, {
+      slug: created.slug,
+      expectedRevision: image.revision,
+      adminPassword: password,
+    });
+    const publicAfter = await t.query(api.recipes.getBySlug, {
+      locale: "fr",
+      slug: created.slug,
+    });
+    expect(publicAfter?.heroImageUrl).toBe(
+      "https://images.example/private.jpg",
+    );
+  });
+
+  test("cleans replaced and discarded images without deleting the published image", async () => {
+    const t = convexTest(schema, modules);
+    const created = await t.mutation(api.recipes.create, {
+      recipe: recipe("Images révisionnées"),
+      adminPassword: password,
+    });
+    const temporaryStorageId = await uploadRecipeImage(t);
+    const temporaryImage = await t.mutation(api.recipes.setHeroImage, {
+      slug: created.slug,
+      storageId: temporaryStorageId,
+      expectedRevision: 0,
+      adminPassword: password,
+    });
+    const firstStorageId = await uploadRecipeImage(t);
+    const firstImage = await t.mutation(api.recipes.setHeroImage, {
+      slug: created.slug,
+      storageId: firstStorageId,
+      expectedRevision: temporaryImage.revision,
+      adminPassword: password,
+    });
+    expect(
+      await t.run(async (ctx) =>
+        ctx.db.system.get("_storage", temporaryStorageId),
+      ),
+    ).toBeNull();
+    await t.mutation(api.recipes.publishDraft, {
+      slug: created.slug,
+      expectedRevision: firstImage.revision,
+      adminPassword: password,
+    });
+
+    const secondStorageId = await uploadRecipeImage(t);
+    const secondImage = await t.mutation(api.recipes.setHeroImage, {
+      slug: created.slug,
+      storageId: secondStorageId,
+      expectedRevision: firstImage.revision,
+      adminPassword: password,
+    });
+    expect(
+      await t.run(async (ctx) => ctx.db.system.get("_storage", firstStorageId)),
+    ).not.toBeNull();
+
+    await t.mutation(api.recipes.publishDraft, {
+      slug: created.slug,
+      expectedRevision: secondImage.revision,
+      adminPassword: password,
+    });
+    expect(
+      await t.run(async (ctx) => ctx.db.system.get("_storage", firstStorageId)),
+    ).toBeNull();
+
+    const thirdStorageId = await uploadRecipeImage(t);
+    const thirdImage = await t.mutation(api.recipes.setHeroImage, {
+      slug: created.slug,
+      storageId: thirdStorageId,
+      expectedRevision: secondImage.revision,
+      adminPassword: password,
+    });
+    await t.mutation(api.recipes.discardDraft, {
+      slug: created.slug,
+      expectedRevision: thirdImage.revision,
+      adminPassword: password,
+    });
+    expect(
+      await t.run(async (ctx) => ctx.db.system.get("_storage", thirdStorageId)),
+    ).toBeNull();
+    expect(
+      await t.run(async (ctx) =>
+        ctx.db.system.get("_storage", secondStorageId),
+      ),
+    ).not.toBeNull();
+  });
+
+  test("cleanup works after recipe deletion and preserves cross-recipe references", async () => {
+    const t = convexTest(schema, modules);
+    const orphanStorageId = await uploadRecipeImage(t);
+    await expect(
+      t.mutation(api.recipes.cleanupHeroImageUpload, {
+        slug: "already-deleted",
+        storageId: orphanStorageId,
+        adminPassword: password,
+      }),
+    ).resolves.toMatchObject({ referenced: false, slug: "already-deleted" });
+    expect(
+      await t.run(async (ctx) =>
+        ctx.db.system.get("_storage", orphanStorageId),
+      ),
+    ).toBeNull();
+
+    const sharedStorageId = await uploadRecipeImage(t);
+    const first = await t.mutation(api.recipes.create, {
+      recipe: recipe("Partage un"),
+      adminPassword: password,
+    });
+    const second = await t.mutation(api.recipes.create, {
+      recipe: recipe("Partage deux"),
+      adminPassword: password,
+    });
+    await t.run(async (ctx) => {
+      const recipes = await Promise.all(
+        [first.slug, second.slug].map((slug) =>
+          ctx.db
+            .query("recipes")
+            .withIndex("by_slug", (q) => q.eq("slug", slug))
+            .unique(),
+        ),
+      );
+      for (const storedRecipe of recipes) {
+        if (!storedRecipe) throw new Error("recipe fixture missing");
+        await ctx.db.patch(storedRecipe._id, {
+          heroImageStorageId: sharedStorageId,
+        });
+      }
+    });
+    await t.mutation(api.recipes.deleteRecipe, {
+      slug: first.slug,
+      expectedRevision: 0,
+      adminPassword: password,
+    });
+    expect(
+      await t.run(async (ctx) =>
+        ctx.db.system.get("_storage", sharedStorageId),
+      ),
+    ).not.toBeNull();
+    await expect(
+      t.mutation(api.recipes.cleanupHeroImageUpload, {
+        slug: first.slug,
+        storageId: sharedStorageId,
+        adminPassword: password,
+      }),
+    ).resolves.toMatchObject({ referenced: true, slug: second.slug });
   });
 
   test("discards unpublished edits back to the public snapshot", async () => {
@@ -534,7 +828,12 @@ describe("recipe working drafts", () => {
       hasUnpublishedChanges: true,
       canDiscard: false,
       readiness: {
-        sections: { info: true, details: true, ingredients: true, preparation: true },
+        sections: {
+          info: true,
+          details: true,
+          ingredients: true,
+          preparation: true,
+        },
         translation: { fr: true, en: true },
       },
     });
@@ -552,10 +851,13 @@ describe("recipe working drafts", () => {
     ).rejects.toThrow(/RECIPE_LIMIT_EXCEEDED/);
 
     const huge = recipe("Within the field limit");
-    huge.translations.fr.sections = Array.from({ length: 50 }, (_, sectionIndex) => ({
-      title: `Section ${sectionIndex}`,
-      steps: Array.from({ length: 6 }, () => "é".repeat(2_000)),
-    }));
+    huge.translations.fr.sections = Array.from(
+      { length: 50 },
+      (_, sectionIndex) => ({
+        title: `Section ${sectionIndex}`,
+        steps: Array.from({ length: 6 }, () => "é".repeat(2_000)),
+      }),
+    );
 
     await expect(
       t.mutation(api.recipes.create, {
@@ -563,6 +865,39 @@ describe("recipe working drafts", () => {
         adminPassword: password,
       }),
     ).rejects.toThrow(/RECIPE_DRAFT_TOO_LARGE/);
+  });
+
+  test("rejects a create whose normalized payload fits but dual-written stored document exceeds 500 kB", async () => {
+    const t = convexTest(schema, modules);
+    const content = recipe("Dual write");
+    const longLocalized = {
+      ...content.translations.fr,
+      notes: Array.from({ length: 100 }, () => "n".repeat(2_000)),
+      sections: [
+        {
+          title: "Préparation",
+          steps: Array.from({ length: 23 }, () => "x".repeat(2_000)),
+        },
+      ],
+    };
+    const legacyCategoryLabels = Array.from(
+      { length: 50 },
+      (_, index) => `${String(index).padStart(2, "0")}${"l".repeat(98)}`,
+    );
+    const boundedPayload = {
+      ...draft(content),
+      translations: { fr: longLocalized, en: longLocalized },
+      legacyCategoryLabels,
+    };
+    expect(
+      new TextEncoder().encode(JSON.stringify(boundedPayload)).byteLength,
+    ).toBeLessThan(500_000);
+    await expect(
+      t.mutation(api.recipes.create, {
+        recipe: boundedPayload,
+        adminPassword: password,
+      }),
+    ).rejects.toThrow("RECIPE_DRAFT_TOO_LARGE");
   });
 
   test("unpublishes without losing the synchronized working draft", async () => {
@@ -581,7 +916,12 @@ describe("recipe working drafts", () => {
       adminPassword: password,
     });
 
-    expect(await t.query(api.recipes.getBySlug, { locale: "fr", slug: created.slug })).toBeNull();
+    expect(
+      await t.query(api.recipes.getBySlug, {
+        locale: "fr",
+        slug: created.slug,
+      }),
+    ).toBeNull();
     const editing = await t.query(api.recipes.getForEditing, {
       locale: "fr",
       slug: created.slug,
@@ -593,8 +933,10 @@ describe("recipe working drafts", () => {
   test("retains an approved baseline when unpublishing a legacy recipe", async () => {
     const t = convexTest(schema, modules);
     const content = recipe("Archive approuvée");
-    const { yieldLabel: _frYieldLabel, ...legacyFrench } = content.translations.fr;
-    const { yieldLabel: _enYieldLabel, ...legacyEnglish } = content.translations.en;
+    const { yieldLabel: _frYieldLabel, ...legacyFrench } =
+      content.translations.fr;
+    const { yieldLabel: _enYieldLabel, ...legacyEnglish } =
+      content.translations.en;
     await t.run(async (ctx) => {
       await ctx.db.insert("recipes", {
         slug: "archive-approuvee",
@@ -609,15 +951,36 @@ describe("recipe working drafts", () => {
         status: "published",
       });
     });
-    await t.mutation(api.recipes.unpublish, { slug: "archive-approuvee", adminPassword: password });
-    const editing = await t.query(api.recipes.getForEditing, { slug: "archive-approuvee", locale: "fr", adminPassword: password });
-    expect(editing).toMatchObject({ hasPublishedVersion: true, publishedRevision: 0, hasUnpublishedChanges: false, isPublic: false });
+    await t.mutation(api.recipes.unpublish, {
+      slug: "archive-approuvee",
+      adminPassword: password,
+    });
+    const editing = await t.query(api.recipes.getForEditing, {
+      slug: "archive-approuvee",
+      locale: "fr",
+      adminPassword: password,
+    });
+    expect(editing).toMatchObject({
+      hasPublishedVersion: true,
+      publishedRevision: 0,
+      hasUnpublishedChanges: false,
+      isPublic: false,
+    });
   });
 
   test("refuses to discard a recipe that has never been published", async () => {
     const t = convexTest(schema, modules);
-    const created = await t.mutation(api.recipes.create, { recipe: recipe("Nouveau"), adminPassword: password });
-    await expect(t.mutation(api.recipes.discardDraft, { slug: created.slug, expectedRevision: 0, adminPassword: password })).rejects.toThrow(/RECIPE_HAS_NO_PUBLISHED_VERSION/);
+    const created = await t.mutation(api.recipes.create, {
+      recipe: recipe("Nouveau"),
+      adminPassword: password,
+    });
+    await expect(
+      t.mutation(api.recipes.discardDraft, {
+        slug: created.slug,
+        expectedRevision: 0,
+        adminPassword: password,
+      }),
+    ).rejects.toThrow(/RECIPE_HAS_NO_PUBLISHED_VERSION/);
   });
 
   test("deletes a recipe at the expected revision and cleans related records", async () => {
@@ -666,8 +1029,12 @@ describe("recipe working drafts", () => {
         expect(await ctx.db.get(created.recipeId)).toBeNull();
         expect(await ctx.db.query("recipeDrafts").collect()).toHaveLength(0);
         expect(await ctx.db.query("recipeComments").collect()).toHaveLength(0);
-        expect(await ctx.db.query("commentReactionSummaries").collect()).toHaveLength(0);
-        expect(await ctx.db.query("commentReactions").collect()).toHaveLength(0);
+        expect(
+          await ctx.db.query("commentReactionSummaries").collect(),
+        ).toHaveLength(0);
+        expect(await ctx.db.query("commentReactions").collect()).toHaveLength(
+          0,
+        );
       });
     } finally {
       vi.useRealTimers();

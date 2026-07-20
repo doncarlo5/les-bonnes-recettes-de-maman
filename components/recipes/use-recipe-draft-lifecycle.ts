@@ -1,8 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useEffectEvent, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useEffectEvent,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import type {
-  FieldPath,
   UseFormClearErrors,
   UseFormGetValues,
   UseFormReset,
@@ -13,11 +19,14 @@ import type {
   RecipeDraftFormInput,
   RecipeDraftPayload,
 } from "./recipe-form-schema";
-import { compatibleRecipeDraftSchema } from "./recipe-form-schema";
+import {
+  compatibleRecipeDraftSchema,
+  partitionRecipeServerErrors,
+} from "./recipe-form-schema";
 import type { EditableRecipe } from "./types";
 
 export type SaveRecipeState = {
-  type: "idle" | "success" | "error" | "conflict";
+  type: "idle" | "success" | "validation" | "error" | "conflict";
   message: string;
   slug?: string;
   revision?: number;
@@ -25,10 +34,17 @@ export type SaveRecipeState = {
   savedAt?: number;
   latestRevision?: number;
   fieldErrors?: Record<string, string>;
+  formError?: string;
   draft?: RecipeDraftPayload;
 };
 
-export type SyncState = "idle" | "saving" | "saved" | "offline" | "error" | "conflict";
+export type SyncState =
+  | "idle"
+  | "saving"
+  | "saved"
+  | "offline"
+  | "error"
+  | "conflict";
 export type RecipeFormMode = "create" | "update";
 type LocaleKey = "fr" | "en";
 
@@ -76,10 +92,12 @@ export function useRecipeDraftLifecycle({
   const [isPending, setIsPending] = useState(false);
   const [syncState, setSyncState] = useState<SyncState>("idle");
   const [revision, setRevision] = useState(initialRecipe?.revision ?? 0);
-  const [publishedRevision, setPublishedRevision] = useState(initialRecipe?.publishedRevision ?? -1);
-  const [publicationStatus, setPublicationStatus] = useState<"draft" | "published">(
-    initialRecipe?.status ?? "draft",
+  const [publishedRevision, setPublishedRevision] = useState(
+    initialRecipe?.publishedRevision ?? -1,
   );
+  const [publicationStatus, setPublicationStatus] = useState<
+    "draft" | "published"
+  >(initialRecipe?.status ?? "draft");
   const revisionRef = useRef(initialRecipe?.revision ?? 0);
   const saveInFlightRef = useRef(false);
   const queuedPayloadRef = useRef<RecipeDraftPayload | null>(null);
@@ -88,8 +106,12 @@ export function useRecipeDraftLifecycle({
   const saveIdleWaitersRef = useRef<Array<() => void>>([]);
   const autosaveTimerRef = useRef<number | null>(null);
   const destructiveOperationRef = useRef(false);
-  const conflictRetryRef = useRef<((revision: number) => Promise<void>) | null>(null);
-  const savePayloadRef = useRef<((payload: RecipeDraftPayload, force?: boolean) => Promise<boolean>) | null>(null);
+  const conflictRetryRef = useRef<((revision: number) => Promise<void>) | null>(
+    null,
+  );
+  const savePayloadRef = useRef<
+    ((payload: RecipeDraftPayload, force?: boolean) => Promise<boolean>) | null
+  >(null);
   const lastSavedPayloadRef = useRef<string | null>(null);
   if (lastSavedPayloadRef.current === null) {
     lastSavedPayloadRef.current = draftFingerprint(
@@ -97,105 +119,138 @@ export function useRecipeDraftLifecycle({
     );
   }
 
-  const savePayload = useCallback(async (payload: RecipeDraftPayload, force = false) => {
-    if (saveInFlightRef.current) {
-      queuedPayloadRef.current = payload;
-      queuedForceRef.current ||= force;
-      return new Promise<boolean>((resolve) => queuedSaveWaitersRef.current.push(resolve));
-    }
+  const savePayload = useCallback(
+    async (payload: RecipeDraftPayload, force = false) => {
+      if (saveInFlightRef.current) {
+        queuedPayloadRef.current = payload;
+        queuedForceRef.current ||= force;
+        return new Promise<boolean>((resolve) =>
+          queuedSaveWaitersRef.current.push(resolve),
+        );
+      }
 
-    const normalized = normalizePayload(payload);
-    const recipePayload = JSON.stringify(normalized);
-    const fingerprint = draftFingerprint(normalized);
-    if (!force && fingerprint === lastSavedPayloadRef.current) return true;
+      const normalized = normalizePayload(payload);
+      const recipePayload = JSON.stringify(normalized);
+      const fingerprint = draftFingerprint(normalized);
+      if (!force && fingerprint === lastSavedPayloadRef.current) return true;
 
-    if (typeof navigator !== "undefined" && !navigator.onLine) {
-      if (selectedSlug) persistRecovery(selectedSlug, normalized, revisionRef.current);
-      setSyncState("offline");
-      return false;
-    }
-
-    saveInFlightRef.current = true;
-    setIsPending(true);
-    setSyncState("saving");
-    let saved = false;
-    try {
-      const response = await fetch("/api/admin/recipes/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          locale,
-          mode,
-          slug: selectedSlug,
-          recipePayload,
-          expectedRevision: revisionRef.current,
-          force,
-        }),
-      });
-      const data = (await response.json()) as SaveRecipeState;
-      setState(data);
-      if (response.status === 409 || data.type === "conflict") {
-        conflictRetryRef.current = null;
-        setSyncState("conflict");
+      if (typeof navigator !== "undefined" && !navigator.onLine) {
+        if (selectedSlug)
+          persistRecovery(selectedSlug, normalized, revisionRef.current);
+        setSyncState("offline");
         return false;
       }
-      if (!response.ok || data.type !== "success" || !data.slug) {
-        if (data.fieldErrors) {
-          clearErrors();
-          const entries = Object.entries(data.fieldErrors);
-          for (const [path, message] of entries) {
-            setError(path as FieldPath<RecipeDraftFormInput>, {
-              type: "server",
-              message,
-            });
-          }
-          if (entries[0]) onFieldError(entries[0][0]);
-        } else {
-          setError("root.server", { type: "server", message: data.message });
+
+      saveInFlightRef.current = true;
+      setIsPending(true);
+      setSyncState("saving");
+      let saved = false;
+      try {
+        const response = await fetch("/api/admin/recipes/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            locale,
+            mode,
+            slug: selectedSlug,
+            recipePayload,
+            expectedRevision: revisionRef.current,
+            force,
+          }),
+        });
+        const data = (await response.json()) as SaveRecipeState;
+        setState(data);
+        if (response.status === 409 || data.type === "conflict") {
+          conflictRetryRef.current = null;
+          setSyncState("conflict");
+          return false;
         }
-        setSyncState("error");
-        return false;
-      }
+        if (!response.ok || data.type !== "success" || !data.slug) {
+          if (data.type === "validation") {
+            clearErrors();
+            const { fields, hasUnmappedPath } = partitionRecipeServerErrors(
+              data.fieldErrors ?? {},
+            );
+            for (const [fieldPath, message] of fields) {
+              setError(fieldPath, {
+                type: "server",
+                message,
+              });
+            }
+            if (data.formError || fields.length === 0 || hasUnmappedPath) {
+              setError("root.server", {
+                type: "server",
+                message: data.formError ?? data.message,
+              });
+            }
+            const firstField = fields[0]?.[0];
+            if (firstField) onFieldError(firstField);
+          } else {
+            setError("root.server", { type: "server", message: data.message });
+          }
+          setSyncState("error");
+          return false;
+        }
 
-      const nextRevision = data.revision ?? revisionRef.current;
-      revisionRef.current = nextRevision;
-      setRevision(nextRevision);
-      lastSavedPayloadRef.current = fingerprint;
-      clearErrors("root.server");
-      localStorage.removeItem(recoveryKey(data.slug));
-      setSyncState("saved");
-      if (mode === "create") onCreated(data.slug);
-      saved = true;
-    } catch {
-      if (selectedSlug) persistRecovery(selectedSlug, normalized, revisionRef.current);
-      setSyncState(typeof navigator !== "undefined" && !navigator.onLine ? "offline" : "error");
-      setState({ type: "error", message: "Impossible d'enregistrer cette recette." });
-    } finally {
-      saveInFlightRef.current = false;
-      setIsPending(false);
-      const queued = queuedPayloadRef.current;
-      const queuedForce = queuedForceRef.current;
-      const waiters = queuedSaveWaitersRef.current;
-      queuedPayloadRef.current = null;
-      queuedForceRef.current = false;
-      queuedSaveWaitersRef.current = [];
-      if (queued && savePayloadRef.current) {
-        const queuedSaved = await savePayloadRef.current(queued, queuedForce);
-        saved = saved && queuedSaved;
-        for (const resolve of waiters) resolve(queuedSaved);
-      } else {
-        for (const resolve of waiters) resolve(saved);
+        const nextRevision = data.revision ?? revisionRef.current;
+        revisionRef.current = nextRevision;
+        setRevision(nextRevision);
+        lastSavedPayloadRef.current = fingerprint;
+        clearErrors("root.server");
+        localStorage.removeItem(recoveryKey(data.slug));
+        setSyncState("saved");
+        if (mode === "create") onCreated(data.slug);
+        saved = true;
+      } catch {
+        if (selectedSlug)
+          persistRecovery(selectedSlug, normalized, revisionRef.current);
+        setSyncState(
+          typeof navigator !== "undefined" && !navigator.onLine
+            ? "offline"
+            : "error",
+        );
+        setState({
+          type: "error",
+          message: "Impossible d'enregistrer cette recette.",
+        });
+      } finally {
+        saveInFlightRef.current = false;
+        setIsPending(false);
+        const queued = queuedPayloadRef.current;
+        const queuedForce = queuedForceRef.current;
+        const waiters = queuedSaveWaitersRef.current;
+        queuedPayloadRef.current = null;
+        queuedForceRef.current = false;
+        queuedSaveWaitersRef.current = [];
+        if (queued && savePayloadRef.current) {
+          const queuedSaved = await savePayloadRef.current(queued, queuedForce);
+          saved = saved && queuedSaved;
+          for (const resolve of waiters) resolve(queuedSaved);
+        } else {
+          for (const resolve of waiters) resolve(saved);
+        }
+        if (!saveInFlightRef.current && !queuedPayloadRef.current) {
+          const idleWaiters = saveIdleWaitersRef.current;
+          saveIdleWaitersRef.current = [];
+          for (const resolve of idleWaiters) resolve();
+        }
       }
-      if (!saveInFlightRef.current && !queuedPayloadRef.current) {
-        const idleWaiters = saveIdleWaitersRef.current;
-        saveIdleWaitersRef.current = [];
-        for (const resolve of idleWaiters) resolve();
-      }
-    }
-    return saved;
-  }, [clearErrors, locale, mode, onCreated, onFieldError, selectedSlug, setError]);
+      return saved;
+    },
+    [
+      clearErrors,
+      locale,
+      mode,
+      onCreated,
+      onFieldError,
+      selectedSlug,
+      setError,
+    ],
+  );
 
-  useLayoutEffect(() => { savePayloadRef.current = savePayload; }, [savePayload]);
+  useLayoutEffect(() => {
+    savePayloadRef.current = savePayload;
+  }, [savePayload]);
 
   const autosaveLatestDraft = useEffectEvent(() => {
     if (!destructiveOperationRef.current) void saveCurrentDraft();
@@ -206,7 +261,8 @@ export function useRecipeDraftLifecycle({
       autosaveLatestDraft();
     }, 800);
     return () => {
-      if (autosaveTimerRef.current !== null) window.clearTimeout(autosaveTimerRef.current);
+      if (autosaveTimerRef.current !== null)
+        window.clearTimeout(autosaveTimerRef.current);
       autosaveTimerRef.current = null;
     };
   }, [mode, selectedSlug, watchedValues]);
@@ -216,15 +272,25 @@ export function useRecipeDraftLifecycle({
     const recovered = localStorage.getItem(recoveryKey(selectedSlug));
     if (!recovered) return;
     try {
-      const parsed = JSON.parse(recovered) as { payload?: unknown; revision?: number };
-      const recoveredPayload = compatibleRecipeDraftSchema.safeParse(parsed.payload);
+      const parsed = JSON.parse(recovered) as {
+        payload?: unknown;
+        revision?: number;
+      };
+      const recoveredPayload = compatibleRecipeDraftSchema.safeParse(
+        parsed.payload,
+      );
       if (recoveredPayload.success) {
         reset(recoveredPayload.data);
         queueMicrotask(() => {
           if (parsed.revision === revisionRef.current) {
             setSyncState("offline");
           } else {
-            setState({ type: "conflict", message: "Une récupération locale repose sur une révision plus ancienne.", latestRevision: revisionRef.current });
+            setState({
+              type: "conflict",
+              message:
+                "Une récupération locale repose sur une révision plus ancienne.",
+              latestRevision: revisionRef.current,
+            });
             setSyncState("conflict");
           }
         });
@@ -262,7 +328,9 @@ export function useRecipeDraftLifecycle({
 
   useEffect(() => {
     if (!selectedRecipe || selectedRecipe.slug !== selectedSlug) return;
-    queueMicrotask(() => setPublishedRevision(selectedRecipe.publishedRevision));
+    queueMicrotask(() =>
+      setPublishedRevision(selectedRecipe.publishedRevision),
+    );
     queueMicrotask(() => setPublicationStatus(selectedRecipe.status));
     if (selectedRecipe.revision !== revisionRef.current) {
       const values = toFormValues(selectedRecipe);
@@ -275,7 +343,9 @@ export function useRecipeDraftLifecycle({
 
   function waitForSaveIdle() {
     if (!saveInFlightRef.current) return Promise.resolve();
-    return new Promise<void>((resolve) => saveIdleWaitersRef.current.push(resolve));
+    return new Promise<void>((resolve) =>
+      saveIdleWaitersRef.current.push(resolve),
+    );
   }
 
   async function beginDestructiveOperation() {
@@ -293,7 +363,8 @@ export function useRecipeDraftLifecycle({
   async function saveCurrentDraft(force = false) {
     const payload = await validateDraft();
     if (!payload) {
-      if (selectedSlug) persistRecovery(selectedSlug, getValues(), revisionRef.current);
+      if (selectedSlug)
+        persistRecovery(selectedSlug, getValues(), revisionRef.current);
       setSyncState("error");
       return false;
     }
@@ -306,7 +377,13 @@ export function useRecipeDraftLifecycle({
       const saved = await saveCurrentDraft();
       if (!saved) return false;
       const latest = await validateDraft();
-      if (latest && draftFingerprint(latest) === lastSavedPayloadRef.current && !saveInFlightRef.current && !queuedPayloadRef.current) return true;
+      if (
+        latest &&
+        draftFingerprint(latest) === lastSavedPayloadRef.current &&
+        !saveInFlightRef.current &&
+        !queuedPayloadRef.current
+      )
+        return true;
     }
   }
 
@@ -321,7 +398,10 @@ export function useRecipeDraftLifecycle({
       const response = await fetch("/api/admin/recipes/publish", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug: selectedSlug, expectedRevision: revisionRef.current }),
+        body: JSON.stringify({
+          slug: selectedSlug,
+          expectedRevision: revisionRef.current,
+        }),
       });
       const data = (await response.json()) as SaveRecipeState;
       setState(data);
@@ -346,7 +426,10 @@ export function useRecipeDraftLifecycle({
       const response = await fetch("/api/admin/recipes/discard-draft", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug: selectedSlug, expectedRevision: revisionRef.current }),
+        body: JSON.stringify({
+          slug: selectedSlug,
+          expectedRevision: revisionRef.current,
+        }),
       });
       const data = (await response.json()) as SaveRecipeState;
       setState(data);
@@ -434,10 +517,12 @@ export function useRecipeDraftLifecycle({
     revisionRef.current = nextRevision;
     setRevision(nextRevision);
     setSyncState("saved");
-    onRefresh();
   }
 
-  function handleImageConflict(latestRevision?: number, retry?: (revision: number) => Promise<void>) {
+  function handleImageConflict(
+    latestRevision?: number,
+    retry?: (revision: number) => Promise<void>,
+  ) {
     conflictRetryRef.current = retry ?? null;
     setState({
       type: "conflict",
@@ -488,8 +573,15 @@ function recoveryKey(slug: string) {
   return `recipe-admin-draft:v1:${slug}`;
 }
 
-function persistRecovery(slug: string, payload: RecipeDraftFormInput, revision: number) {
-  localStorage.setItem(recoveryKey(slug), JSON.stringify({ payload, revision }));
+function persistRecovery(
+  slug: string,
+  payload: RecipeDraftFormInput,
+  revision: number,
+) {
+  localStorage.setItem(
+    recoveryKey(slug),
+    JSON.stringify({ payload, revision }),
+  );
 }
 
 export function toFormValues(recipe: EditableRecipe): RecipeDraftPayload {
@@ -502,11 +594,15 @@ export function toFormValues(recipe: EditableRecipe): RecipeDraftPayload {
   });
 }
 
-export function normalizePayload(value: RecipeDraftPayload): RecipeDraftPayload {
+export function normalizePayload(
+  value: RecipeDraftPayload,
+): RecipeDraftPayload {
   return {
     ...value,
     categories: [...new Set(value.categories ?? [])],
-    legacyCategoryLabels: (value.legacyCategoryLabels ?? []).flatMap((label) => label.trim() ? [label.trim()] : []),
+    legacyCategoryLabels: (value.legacyCategoryLabels ?? []).flatMap((label) =>
+      label.trim() ? [label.trim()] : [],
+    ),
     translations: {
       fr: normalizeLocalizedRecipe(value.translations.fr),
       en: normalizeLocalizedRecipe(value.translations.en),
@@ -525,7 +621,9 @@ function draftFingerprint(value: RecipeDraftPayload) {
   });
 }
 
-function normalizeLocalizedRecipe(recipe: RecipeDraftPayload["translations"][LocaleKey]) {
+function normalizeLocalizedRecipe(
+  recipe: RecipeDraftPayload["translations"][LocaleKey],
+) {
   return {
     ...recipe,
     yieldLabel: recipe.yieldLabel.trim(),
@@ -537,7 +635,9 @@ function normalizeLocalizedRecipe(recipe: RecipeDraftPayload["translations"][Loc
     })),
     sections: recipe.sections.map((section) => ({
       title: section.title.trim(),
-      steps: section.steps.flatMap((step) => step.trim() ? [step.trim()] : []),
+      steps: section.steps.flatMap((step) =>
+        step.trim() ? [step.trim()] : [],
+      ),
     })),
     subRecipes: recipe.subRecipes.map((subRecipe) => ({
       title: subRecipe.title.trim(),
@@ -548,7 +648,7 @@ function normalizeLocalizedRecipe(recipe: RecipeDraftPayload["translations"][Loc
         notes: ingredient.notes.trim(),
       })),
     })),
-    notes: recipe.notes.flatMap((note) => note.trim() ? [note.trim()] : []),
+    notes: recipe.notes.flatMap((note) => (note.trim() ? [note.trim()] : [])),
   };
 }
 

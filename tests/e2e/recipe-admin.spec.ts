@@ -13,6 +13,22 @@ async function mockRecipeApi(page: Page) {
       return route.fulfill({ json: { type: "success", slug: "tarte-de-demonstration", revision, publishedRevision: revision, savedAt: Date.now() } });
     }
     if (url.pathname.endsWith("/unpublish")) return route.fulfill({ json: { type: "success", slug: "tarte-de-demonstration" } });
+    if (url.pathname.endsWith("/unsplash-hero-image")) {
+      return route.fulfill({ json: {
+        type: "success",
+        slug: "tarte-de-demonstration",
+        revision,
+        savedAt: Date.now(),
+        heroImageUrl: "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea",
+        imageCredit: {
+          provider: "unsplash",
+          photographerName: "Photographe test",
+          photographerUrl: "https://example.com/photographe",
+          photoUrl: "https://example.com/photo",
+          alt: "Dessert de démonstration",
+        },
+      } });
+    }
     return route.fulfill({ json: { type: "success", message: "Enregistré", slug: "tarte-de-demonstration", revision, savedAt: Date.now() } });
   });
 }
@@ -119,7 +135,7 @@ test("server field errors return to the combined workspace", async ({ page }) =>
   await page.route("**/api/admin/recipes/save", (route) => route.fulfill({
     status: 400,
     json: {
-      type: "error",
+      type: "validation",
       message: "Corrige les champs indiqués avant d’enregistrer.",
       fieldErrors: {
         "translations.fr.title": "Ce titre est refusé par le serveur.",
@@ -235,7 +251,7 @@ test("desktop internet image search displays its result cards", async ({ page },
   );
   await page.getByLabel("Titre").fill("Tarte avec nouvelle image");
   await result.click();
-  await expect(page.getByRole("main").getByText("Image Unsplash associée.")).toBeVisible();
+  await expect(page.getByRole("main").getByText("Image associée et enregistrée.")).toBeVisible();
   await expect(page.getByRole("region", { name: /Notifications/ }).getByText("Image principale remplacée.")).toBeVisible();
   expect(mutationOrder).toEqual(["save", "image"]);
 });

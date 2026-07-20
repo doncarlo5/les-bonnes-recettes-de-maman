@@ -1,143 +1,74 @@
 import { fetchMutation } from "convex/nextjs";
 import { NextRequest } from "next/server";
-import { compatibleRecipeDraftSchema } from "@/components/recipes/recipe-form-schema";
 import { api } from "@/convex/_generated/api";
-import { hasLocale } from "@/i18n/config";
 import {
+  parseRecipePayload,
+  saveRecipeRequestSchema,
+  saveRecipeSuccessSchema,
+} from "@/lib/recipe-admin-contracts";
+import {
+  adminUnauthorizedResponse,
   getRecipeAdminAccess,
 } from "@/lib/recipe-admin-auth";
 import { revalidateRecipePaths } from "@/lib/recipe-admin-revalidate";
-import { recipeMutationErrorResponse } from "@/lib/recipe-admin-route-errors";
+import {
+  parseJsonRequest,
+  recipeMutationErrorResponse,
+  splitIssues,
+  validationResponse,
+} from "@/lib/recipe-admin-route-errors";
 
 export const dynamic = "force-dynamic";
-
-type SaveRecipeBody = {
-  locale?: string;
-  mode?: string;
-  slug?: string;
-  recipePayload?: string;
-  expectedRevision?: number;
-  force?: boolean;
-};
 
 const initialErrorMessage = "Impossible d'enregistrer cette recette.";
 
 export async function POST(request: NextRequest) {
-  const body = (await request.json()) as SaveRecipeBody;
-  const locale = body.locale ?? "";
-  const mode = body.mode ?? "";
-  const slug = body.slug?.trim() ?? "";
-  const payload = body.recipePayload ?? "";
-
-  if (!hasLocale(locale)) {
-    return Response.json(
-      {
-        type: "error",
-        message: "Locale invalide.",
-      },
-      { status: 400 },
-    );
-  }
-
-  if (mode !== "create" && mode !== "update") {
-    return Response.json(
-      {
-        type: "error",
-        message: "Mode d'enregistrement invalide.",
-      },
-      { status: 400 },
-    );
-  }
-
-  if (mode === "update" && !slug) {
-    return Response.json(
-      {
-        type: "error",
-        message: "Recette introuvable.",
-      },
-      { status: 400 },
-    );
-  }
+  const parsedBody = await parseJsonRequest(request, saveRecipeRequestSchema);
+  if (!parsedBody.ok) return parsedBody.response;
+  const body = parsedBody.data;
 
   const adminAccess = await getRecipeAdminAccess();
 
   if (!adminAccess.ok) {
-    return Response.json(
-      {
-        type: "error",
-        message: adminAccess.message,
-      },
-      { status: adminAccess.status },
-    );
+    return adminUnauthorizedResponse(adminAccess);
   }
 
-  let parsedPayload: unknown;
-
-  try {
-    parsedPayload = JSON.parse(payload);
-  } catch {
-    return Response.json(
-      {
-        type: "error",
-        message: "Donnees du formulaire invalides.",
-      },
-      { status: 400 },
-    );
-  }
-
-  const validation = compatibleRecipeDraftSchema.safeParse(parsedPayload);
-
+  const validation = parseRecipePayload(body.recipePayload);
   if (!validation.success) {
-    return Response.json(
-      {
-        type: "error",
-        message: "Corrige les champs indiques avant d'enregistrer.",
-        fieldErrors: flattenIssues(validation.error.issues),
-      },
-      { status: 400 },
-    );
+    if ("issues" in validation && validation.issues) {
+      const { fieldErrors, formError } = splitIssues(validation.issues);
+      return validationResponse(fieldErrors, formError);
+    }
+    return validationResponse({}, validation.error);
   }
 
   try {
     const result =
-      mode === "create"
+      body.mode === "create"
         ? await fetchMutation(api.recipes.create, {
-            recipe: {
-              ...validation.data,
-              status: "draft",
-            },
+            recipe: validation.data,
             adminPassword: adminAccess.adminPassword,
           })
         : await fetchMutation(api.recipes.saveDraft, {
-            slug,
+            slug: body.slug,
             recipe: validation.data,
-            expectedRevision: body.expectedRevision ?? 0,
+            expectedRevision: body.expectedRevision,
             force: body.force,
             adminPassword: adminAccess.adminPassword,
           });
 
     revalidateRecipePaths(result.slug);
 
-    return Response.json({
-      type: "success",
-      message: `Recette enregistree: ${result.title}`,
-      slug: result.slug,
-      revision: result.revision,
-      savedAt: result.savedAt,
-    });
+    return Response.json(
+      saveRecipeSuccessSchema.parse({
+        type: "success",
+        message: `Recette enregistree: ${result.title}`,
+        slug: result.slug,
+        revision: result.revision,
+        savedAt: result.savedAt,
+      }),
+    );
   } catch (error) {
     return recipeMutationErrorResponse(error, initialErrorMessage);
   }
-}
-
-function flattenIssues(issues: { path: PropertyKey[]; message: string }[]) {
-  return issues.reduce<Record<string, string>>((accumulator, issue) => {
-    const key = issue.path
-      .filter((part) => typeof part === "string" || typeof part === "number")
-      .join(".");
-    if (key && !accumulator[key]) {
-      accumulator[key] = issue.message;
-    }
-    return accumulator;
-  }, {});
 }
