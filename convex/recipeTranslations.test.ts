@@ -210,7 +210,11 @@ describe("recipe yield localization", () => {
       cookTime: "45 à 60 min",
       temperature: "175 °C",
     });
-    expect(seeded.translations.fr.ingredients).toEqual([
+    expect(
+      seeded.translations.fr.ingredients.map(
+        ({ id: _id, ...ingredient }) => ingredient,
+      ),
+    ).toEqual([
       { name: "sucre blanc", quantity: "200", unit: "g", notes: "" },
       { name: "beurre", quantity: "115", unit: "g", notes: "ramolli" },
       {
@@ -263,7 +267,11 @@ describe("recipe yield localization", () => {
       yieldLabel: "1 loaf",
       servings: null,
     });
-    expect(seeded.translations.en.ingredients).toEqual([
+    expect(
+      seeded.translations.en.ingredients.map(
+        ({ id: _id, ...ingredient }) => ingredient,
+      ),
+    ).toEqual([
       { name: "white sugar", quantity: "200", unit: "g", notes: "" },
       { name: "butter", quantity: "115", unit: "g", notes: "softened" },
       {
@@ -357,7 +365,11 @@ describe("recipe yield localization", () => {
       totalTime: "5 min",
       servings: null,
     });
-    expect(seeded.translations.fr.ingredients).toEqual([
+    expect(
+      seeded.translations.fr.ingredients.map(
+        ({ id: _id, ...ingredient }) => ingredient,
+      ),
+    ).toEqual([
       {
         name: "moutarde de Dijon",
         quantity: "2",
@@ -390,7 +402,11 @@ describe("recipe yield localization", () => {
       totalTime: "5 min",
       servings: null,
     });
-    expect(seeded.translations.en.ingredients).toEqual([
+    expect(
+      seeded.translations.en.ingredients.map(
+        ({ id: _id, ...ingredient }) => ingredient,
+      ),
+    ).toEqual([
       { name: "Dijon mustard", quantity: "2", unit: "tsp", notes: "" },
       { name: "egg yolk", quantity: "1", unit: "", notes: "" },
       { name: "sunflower oil", quantity: "10", unit: "cl", notes: "" },

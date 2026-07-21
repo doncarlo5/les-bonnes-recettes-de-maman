@@ -5,6 +5,7 @@ import {
   toLegacyTags,
   type RecipeCategory,
 } from "../lib/recipe-categories";
+import { enrichLocalizedStepIngredients } from "../lib/recipe-step-migration";
 
 type Locale = "fr" | "en";
 
@@ -18,6 +19,18 @@ type SourceIngredient = {
 type SourceSection = {
   title: string;
   steps: string[];
+};
+
+type LocalizedIngredient = SourceIngredient & { id?: string };
+type LocalizedSection = SourceSection & {
+  stepDetails?: Array<{
+    id: string;
+    text: string;
+    ingredientUses: Array<{
+      ingredientId: string;
+      amount?: { quantity: string; unit: string };
+    }>;
+  }>;
 };
 
 type SourceSubRecipe = {
@@ -60,9 +73,13 @@ export type LocalizedRecipe = {
   timeLabel: string;
   temperature: string;
   equipment: string[];
-  ingredients: SourceIngredient[];
-  sections: SourceSection[];
-  subRecipes: SourceSubRecipe[];
+  ingredients: LocalizedIngredient[];
+  sections: LocalizedSection[];
+  subRecipes: Array<
+    Omit<SourceSubRecipe, "ingredients"> & {
+      ingredients: LocalizedIngredient[];
+    }
+  >;
   notes: string[];
 };
 
@@ -1101,6 +1118,8 @@ export function toSeedRecipe(recipe: SourceRecipe): SeedRecipe {
     recipe.servings,
   );
   const categoryFields = resolveRecipeCategories({ tags: inferTags(recipe) });
+  const fr = enrichLocalizedStepIngredients(localizeRecipe(recipe, "fr"));
+  const en = enrichLocalizedStepIngredients(localizeRecipe(recipe, "en"));
   return {
     slug: recipe.slug,
     heroImageUrl:
@@ -1111,8 +1130,8 @@ export function toSeedRecipe(recipe: SourceRecipe): SeedRecipe {
     ...(referenceServings ? { referenceServings } : {}),
     relatedRecipeSlugs: recipe.relatedRecipeSlugs ?? [],
     translations: {
-      fr: localizeRecipe(recipe, "fr"),
-      en: localizeRecipe(recipe, "en"),
+      fr,
+      en,
     },
     ...categoryFields,
     tags: toLegacyTags(

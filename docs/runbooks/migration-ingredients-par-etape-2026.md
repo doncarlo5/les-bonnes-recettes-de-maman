@@ -23,4 +23,20 @@ Cette évolution suit deux déploiements afin que les recettes et brouillons exi
 
 Le backfill attribue des identifiants déterministes et crée `stepDetails` avec des associations vides. Il ne tente aucune détection d’ingrédients dans le texte.
 
+## Enrichissement initial du catalogue
+
+À la demande éditoriale du 21 juillet 2026, un second backfill associe les
+ingrédients explicitement nommés dans les instructions. Les associations déjà
+saisies restent prioritaires et ne sont jamais remplacées.
+
+```sh
+npx convex run migrations:runStepIngredientAssociationBackfill '{"dryRun":true}' --prod
+npx convex run migrations:runStepIngredientAssociationBackfill --prod
+npx convex run --component migrations lib:getStatus --watch --prod
+```
+
+Les étapes génériques qui ne nomment aucun ingrédient restent volontairement
+sans bloc. Le script `npx vite-node scripts/audit-step-ingredient-associations.ts`
+mesure la couverture du catalogue source avant déploiement.
+
 Après vérification sur les deux tables, un second déploiement pourra rendre les identifiants et `stepDetails` obligatoires. Le champ historique `steps` restera alors facultatif et déprécié pendant la période de retour arrière.

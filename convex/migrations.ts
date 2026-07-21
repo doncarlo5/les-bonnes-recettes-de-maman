@@ -4,7 +4,10 @@ import type { DataModel } from "./_generated/dataModel";
 import { backfillYieldLabels } from "../lib/recipe-yield";
 import { resolveReferenceServings } from "../lib/recipe-servings";
 import { resolveRecipeCategories } from "../lib/recipe-categories";
-import { backfillLocalizedStepIngredients } from "../lib/recipe-step-migration";
+import {
+  backfillLocalizedStepIngredients,
+  enrichLocalizedStepIngredients,
+} from "../lib/recipe-step-migration";
 import { changeRecipeCommentCount } from "./commentModel";
 
 export const migrations = new Migrations<DataModel>(components.migrations);
@@ -39,7 +42,8 @@ export const backfillRecipeReferenceServings = migrations.define({
       recipe.referenceServings,
       recipe.translations.fr.servings,
     );
-    return recipe.referenceServings === undefined && referenceServings !== undefined
+    return recipe.referenceServings === undefined &&
+      referenceServings !== undefined
       ? { referenceServings }
       : undefined;
   },
@@ -52,7 +56,8 @@ export const backfillDraftReferenceServings = migrations.define({
       draft.referenceServings,
       draft.translations.fr.servings,
     );
-    return draft.referenceServings === undefined && referenceServings !== undefined
+    return draft.referenceServings === undefined &&
+      referenceServings !== undefined
       ? { referenceServings }
       : undefined;
   },
@@ -111,6 +116,33 @@ export const runStepIngredientBackfill = migrations.runner([
   internal.migrations.backfillDraftStepIngredients,
 ]);
 
+export const associateRecipeStepIngredients = migrations.define({
+  table: "recipes",
+  migrateOne: (_ctx, recipe) => {
+    const fr = enrichLocalizedStepIngredients(recipe.translations.fr);
+    const en = enrichLocalizedStepIngredients(recipe.translations.en);
+    return fr === recipe.translations.fr && en === recipe.translations.en
+      ? undefined
+      : { translations: { fr, en } };
+  },
+});
+
+export const associateDraftStepIngredients = migrations.define({
+  table: "recipeDrafts",
+  migrateOne: (_ctx, draft) => {
+    const fr = enrichLocalizedStepIngredients(draft.translations.fr);
+    const en = enrichLocalizedStepIngredients(draft.translations.en);
+    return fr === draft.translations.fr && en === draft.translations.en
+      ? undefined
+      : { translations: { fr, en } };
+  },
+});
+
+export const runStepIngredientAssociationBackfill = migrations.runner([
+  internal.migrations.associateRecipeStepIngredients,
+  internal.migrations.associateDraftStepIngredients,
+]);
+
 export const backfillRecipeCommentCounts = migrations.define({
   table: "recipeComments",
   migrateOne: async (ctx, comment) => {
@@ -127,9 +159,19 @@ export const runRecipeCommentCountBackfill = migrations.runner(
 export const run = migrations.runner();
 
 function sameCategoryFields(
-  source: { categories?: readonly string[]; legacyCategoryLabels?: readonly string[] },
-  resolved: { categories: readonly string[]; legacyCategoryLabels: readonly string[] },
+  source: {
+    categories?: readonly string[];
+    legacyCategoryLabels?: readonly string[];
+  },
+  resolved: {
+    categories: readonly string[];
+    legacyCategoryLabels: readonly string[];
+  },
 ) {
-  return JSON.stringify(source.categories ?? []) === JSON.stringify(resolved.categories)
-    && JSON.stringify(source.legacyCategoryLabels ?? []) === JSON.stringify(resolved.legacyCategoryLabels);
+  return (
+    JSON.stringify(source.categories ?? []) ===
+      JSON.stringify(resolved.categories) &&
+    JSON.stringify(source.legacyCategoryLabels ?? []) ===
+      JSON.stringify(resolved.legacyCategoryLabels)
+  );
 }
