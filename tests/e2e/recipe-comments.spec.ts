@@ -3,17 +3,24 @@ import { expect, test } from "@playwright/test";
 test("recipe comments form is localized and keeps a browser participant key", async ({ page }) => {
   await page.goto("/fr/recettes/tarte-de-demonstration");
   await expect(page.getByRole("heading", { name: "Commentaires", exact: true })).toBeVisible();
-  const commentToggle = page.locator('[aria-controls="recipe-comment-form"]');
-  await expect(commentToggle).toHaveAccessibleName("Ajouter un commentaire");
-  await expect(commentToggle).toHaveAttribute("aria-expanded", "false");
+  await expect(page.getByText("Aucun commentaire pour le moment. Soyez la première personne à partager votre expérience.")).toBeVisible();
+  await expect(page.getByText("Partagez votre résultat, une astuce ou un souvenir autour de cette recette.")).toHaveCount(1);
+  const commentToggle = page.getByRole("button", { name: "Ajouter un commentaire" });
+  await expect(commentToggle).toHaveCount(1);
   await expect(page.getByLabel("Votre commentaire")).not.toBeVisible();
   await commentToggle.click();
-  await expect(commentToggle).toHaveAttribute("aria-expanded", "true");
-  await expect(commentToggle).toHaveAccessibleName("Masquer le formulaire");
+  await expect(page.getByText("Aucun commentaire pour le moment. Soyez la première personne à partager votre expérience.")).toHaveCount(0);
   await expect(page.getByLabel("Votre nom (facultatif)")).toHaveAttribute("maxlength", "60");
   await expect(page.getByLabel("Votre commentaire")).toHaveAttribute("maxlength", "1500");
   await expect(page.getByRole("switch", { name: "Ajouter une photo (facultatif)" })).toHaveCount(0);
   await expect(page.getByLabel("Choisir une photo")).toHaveAttribute("accept", "image/jpeg,image/png,image/webp");
+  await page.getByLabel("Votre nom (facultatif)").fill("Brouillon");
+  await page.getByLabel("Votre commentaire").fill("À effacer");
+  await page.getByRole("button", { name: "Annuler" }).click();
+  await expect(page.getByRole("button", { name: "Ajouter un commentaire" })).toBeVisible();
+  await page.getByRole("button", { name: "Ajouter un commentaire" }).click();
+  await expect(page.getByLabel("Votre nom (facultatif)")).toHaveValue("");
+  await expect(page.getByLabel("Votre commentaire")).toHaveValue("");
   const participantKey = await page.evaluate(() => localStorage.getItem("recipe-comment-participant-v1"));
   expect(participantKey).toMatch(/^[a-f0-9]{48}$/);
 
@@ -84,7 +91,7 @@ test("recipe editor exposes protected comment moderation", async ({ page }) => {
 test("visitor publishes, reacts, edits, reloads and deletes comments with and without a photo", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   const marker = `Commentaire E2E ${Date.now()}`;
-  await page.goto("/fr/recettes/amandin");
+  await page.goto("/fr/recettes/mayonnaise");
   await page.getByRole("button", { name: "Ajouter un commentaire" }).click();
   const commentInput = page.getByLabel("Votre commentaire");
   await expect(commentInput).toBeVisible();
@@ -96,7 +103,8 @@ test("visitor publishes, reacts, edits, reloads and deletes comments with and wi
   });
   await page.getByRole("button", { name: "Publier le commentaire" }).click();
   await expect(page.getByText("Votre commentaire est publié.")).toBeVisible();
-  await expect(page.getByLabel("Choisir une photo")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Ajouter un commentaire" })).toBeVisible();
+  await expect(page.getByText(marker, { exact: true })).toBeVisible();
 
   let article = page.locator("article").filter({ hasText: marker });
   await expect(article.getByRole("heading", { name: "Anonyme" })).toBeVisible();
@@ -144,11 +152,15 @@ test("visitor publishes, reacts, edits, reloads and deletes comments with and wi
   article = page.locator("article").filter({ hasText: editedMarker });
   await expect(article.getByRole("button", { name: "Ouvrir la photo de Anonyme" })).toBeVisible();
 
+  await article.getByRole("button", { name: "Modifier" }).click();
+  await expect(page.getByLabel("Votre commentaire")).toBeFocused();
   await article.getByRole("button", { name: "Supprimer" }).click();
   await confirmDestructiveAction(page, "Supprimer");
   await expect(article).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Ajouter un commentaire" })).toBeVisible();
 
   const namedMarker = `${marker} nommé`;
+  await page.getByRole("button", { name: "Ajouter un commentaire" }).click();
   await page.getByLabel("Votre nom (facultatif)").fill("Julien E2E");
   await page.getByLabel("Votre commentaire").fill(namedMarker);
   await page.getByRole("button", { name: "Publier le commentaire" }).click();
@@ -159,7 +171,7 @@ test("visitor publishes, reacts, edits, reloads and deletes comments with and wi
   await expect(namedArticle).toHaveCount(0);
 
   const englishMarker = `${marker} English`;
-  await page.goto("/en/recettes/amandin");
+  await page.goto("/en/recettes/mayonnaise");
   await page.getByRole("button", { name: "Add a comment" }).click();
   await page.getByLabel("Your comment").fill(englishMarker);
   await page.getByRole("button", { name: "Publish comment" }).click();
@@ -201,11 +213,17 @@ test("visitor loads comments beyond the first batch of ten", async ({ page }, te
   const participantKeySeed = Date.now().toString(16);
   const participantKeys = Array.from({ length: 11 }, (_, index) => `${participantKeySeed}${index.toString(16).padStart(2, "0")}`.padEnd(48, "0"));
   await page.goto("/fr/recettes/amandin");
-  await page.getByRole("button", { name: "Ajouter un commentaire" }).click();
 
   for (let index = 0; index < participantKeys.length; index += 1) {
     await switchParticipant(page, participantKeys[index]);
-    await page.getByLabel("Votre commentaire").fill(`${marker} ${index + 1}`);
+    const addComment = page.getByRole("button", { name: "Ajouter un commentaire" });
+    const commentInput = page.getByLabel("Votre commentaire");
+    await expect.poll(async () =>
+      (await addComment.isVisible()) || (await commentInput.isVisible()),
+    ).toBe(true);
+    if (await addComment.isVisible()) await addComment.click();
+    await expect(commentInput).toBeVisible();
+    await commentInput.fill(`${marker} ${index + 1}`);
     await page.getByRole("button", { name: "Publier le commentaire" }).click();
     await expect(commentArticle(page, `${marker} ${index + 1}`)).toBeVisible();
   }

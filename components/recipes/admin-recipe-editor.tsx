@@ -513,6 +513,13 @@ export function AdminRecipeEditor({
     window.scrollTo({ top: 0, behavior: "auto" });
   }
 
+  function selectEditorLanguage(language: LocaleKey) {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("mode");
+    params.set("lang", language);
+    router.push(`/${locale}/admin/recettes?${params.toString()}`);
+  }
+
   function openPreview() {
     if (!selectedSlug) return;
     const params = new URLSearchParams(searchParams.toString());
@@ -535,15 +542,8 @@ export function AdminRecipeEditor({
     router.push(`/${locale}/admin/recettes?${params.toString()}`);
   }
 
-  function selectEditorLanguage(language: LocaleKey) {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("mode");
-    params.set("lang", language);
-    router.push(`/${locale}/admin/recettes?${params.toString()}`);
-  }
-
   function returnFromPreview(
-    section: Exclude<MobileSection, "overview" | "publish">,
+    section: Exclude<MobileSection, "overview" | "comments" | "publish">,
   ) {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("mode");
@@ -558,7 +558,7 @@ export function AdminRecipeEditor({
         <AdminDraftPreview
           dictionaries={dictionaries}
           recipe={selectedRecipe}
-          values={getValues()}
+          values={getValues() as RecipeDraftPayload}
           previewLocale={requestedLanguage}
           onClose={closePreview}
           onPreviewLanguage={selectPreviewLanguage}
@@ -831,9 +831,7 @@ function MobileRecipeAdmin({
                   </Button>
                 }
               />
-              <TooltipContent className="">
-                Prévisualiser le brouillon
-              </TooltipContent>
+              <TooltipContent className="">Prévisualiser le brouillon</TooltipContent>
             </Tooltip>
             {publication.isPublic && selectedRecipe ? (
               <Tooltip>

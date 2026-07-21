@@ -310,13 +310,12 @@ test("editor toolbar keeps context and language controls together", async ({
   expect(box?.height).toBeLessThanOrEqual(maximumHeight);
 });
 
-test("guided editor omits draft preview and keeps the public recipe link", async ({
+test("guided editor previews the draft and keeps the public recipe link", async ({
   page,
 }) => {
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
-  await expect(
-    page.getByRole("button", { name: "Prévisualiser le brouillon" }),
-  ).toHaveCount(0);
+  const preview = page.getByRole("button", { name: "Prévisualiser le brouillon" });
+  await expect(preview).toBeVisible();
   const publicRecipeLink = page
     .locator("main header")
     .getByRole("link", { name: "Voir la recette publique" });
@@ -330,18 +329,14 @@ test("guided editor omits draft preview and keeps the public recipe link", async
     "href",
     "/en/recettes/tarte-de-demonstration",
   );
-
-  await page.goto(
-    "/fr/admin/recettes?slug=tarte-de-demonstration&section=info&lang=en&mode=preview",
-  );
+  await preview.click();
   await expect(page).toHaveURL(/mode=preview/);
-  await expect(
-    page.locator("form[data-recipe-admin-hydrated=true]"),
-  ).toBeAttached();
-  await expect(page.getByText("Aperçu du brouillon")).toHaveCount(0);
-  await expect(
-    page.getByRole("group", { name: "Langue du contenu" }),
-  ).toBeVisible();
+  await expect(page.getByText("Aperçu du brouillon")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Demo tart" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Comments" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Retour à l’édition" }).click();
+  await expect(page).not.toHaveURL(/mode=preview/);
+  await expect(page.getByRole("group", { name: "Langue du contenu" })).toBeVisible();
 });
 
 test("yield is edited as one independent localized field", async ({ page }) => {
@@ -620,6 +615,8 @@ test("mobile sorting supports keyboard handles and discard restores the approved
   page,
 }, testInfo) => {
   test.skip(!testInfo.project.name.startsWith("mobile-"));
+  const pageErrors: Error[] = [];
+  page.on("pageerror", (error) => pageErrors.push(error));
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
   await page
     .getByRole("navigation", { name: "Actions de la recette" })
@@ -644,6 +641,7 @@ test("mobile sorting supports keyboard handles and discard restores the approved
     .getByRole("button", { name: "Abandonner", exact: true })
     .click();
   await expect(page.getByText("Modifications non publiées")).toHaveCount(0);
+  expect(pageErrors).toEqual([]);
 });
 
 test("mobile section editor remains usable above the software keyboard", async ({

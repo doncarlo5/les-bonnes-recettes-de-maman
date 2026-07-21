@@ -16,7 +16,7 @@ type PublicSection = {
 
 export type PublicRecipeWire = Omit<
   Recipe,
-  "ingredients" | "sections" | "subRecipes" | "equipment" | "restTime"
+  "ingredients" | "sections" | "subRecipes" | "equipment" | "restTime" | "relatedRecipes"
 > & {
   ingredients: PublicIngredient[];
   sections: PublicSection[];
@@ -25,6 +25,7 @@ export type PublicRecipeWire = Omit<
   >;
   equipment?: string[];
   restTime?: string;
+  relatedRecipes?: Recipe["relatedRecipes"];
 };
 
 /**
@@ -36,6 +37,7 @@ export function normalizeRecipeForDisplay(recipe: PublicRecipeWire): Recipe {
     ...recipe,
     restTime: recipe.restTime ?? "",
     equipment: recipe.equipment ?? [],
+    relatedRecipes: recipe.relatedRecipes ?? [],
     ingredients: recipe.ingredients.map((ingredient, index) => ({
       ...ingredient,
       id: ingredient.id ?? legacyIngredientId("main", index),

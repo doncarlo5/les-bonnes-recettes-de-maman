@@ -444,19 +444,20 @@ function CompactStepsEditor({
       />
       {editingIndex !== null ? (
         <div
-          data-drawer-scroll-target
           className="grid gap-2 rounded-xl bg-card p-3 shadow-[var(--shadow-card)]"
         >
-          <Textarea
-            autoFocus
-            placeholder={`Étape ${editingIndex + 1}`}
-            {...register(`${name}.${editingIndex}.text` as FieldPath<RecipeDraftFormInput>)}
-          />
+          <div data-drawer-scroll-target>
+            <Textarea
+              autoFocus
+              placeholder={`Étape ${editingIndex + 1}`}
+              {...register(`${name}.${editingIndex}.text` as FieldPath<RecipeDraftFormInput>)}
+            />
+          </div>
           <StepIngredientUsesEditor
             localeKey={localeKey}
             stepPath={`${name}.${editingIndex}` as `translations.${"fr" | "en"}.sections.${number}.steps.${number}`}
           />
-          <div className="recipe-compact-action-bar gap-2">
+          <div className="recipe-compact-action-bar sticky bottom-0 z-10 -mx-3 -mb-3 gap-2 rounded-b-xl bg-card p-3 pt-2">
             <DestructiveConfirmButton
               label="Supprimer cette étape"
               description="Supprimer cette étape ?"

@@ -119,7 +119,7 @@ test("public typography holds across locales, themes, and widths", async ({ page
       expect((await instructionColumn.boundingBox())?.width ?? 0).toBeLessThanOrEqual(720);
     }
     if (testInfo.project.name === "desktop") {
-      const recipeOgUrl = await page.locator('meta[property="og:image"]').getAttribute("content");
+      const recipeOgUrl = await page.locator('meta[property="og:image"]').last().getAttribute("content");
       expect(recipeOgUrl).toBeTruthy();
       const recipeOgResponse = await request.get(recipeOgUrl!);
       expect(recipeOgResponse.ok()).toBe(true);
@@ -202,6 +202,29 @@ test("ingredient names start with a capital letter without changing their conten
   expect(await ingredientName.evaluate((element) =>
     getComputedStyle(element, "::first-letter").textTransform,
   )).toBe("uppercase");
+});
+
+test("mobile ingredient summary aligns its title, yield, and chevron", async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith("mobile-"));
+  await page.goto("/fr/recettes/tarte-de-demonstration");
+
+  const summary = page.locator('[data-ingredients-layout="mobile"]');
+  const title = summary.getByRole("heading", { name: "Ingrédients" });
+  const yieldLabel = summary.locator("[data-yield-label]");
+  const chevron = summary.locator('[data-slot="accordion-trigger-icon"]:visible');
+  const [titleBox, yieldBox, chevronBox] = await Promise.all([
+    title.boundingBox(),
+    yieldLabel.boundingBox(),
+    chevron.boundingBox(),
+  ]);
+  const centerY = (box: { y: number; height: number } | null) =>
+    (box?.y ?? 0) + (box?.height ?? 0) / 2;
+
+  expect(titleBox).not.toBeNull();
+  expect(yieldBox).not.toBeNull();
+  expect(chevronBox).not.toBeNull();
+  expect(centerY(yieldBox)).toBeCloseTo(centerY(titleBox), 0);
+  expect(centerY(chevronBox)).toBeCloseTo(centerY(titleBox), 0);
 });
 
 test("recipe content orders equipment, ingredients, then preparation", async ({ page }) => {

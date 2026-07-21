@@ -2,6 +2,7 @@ import { z } from "zod";
 import type { FieldPath } from "react-hook-form";
 import {
   assertRecipeDraftBytes,
+  getRecipeStepReferenceIssues,
   RECIPE_FIELD_LIMITS,
 } from "@/lib/recipe-admin-domain";
 import {
@@ -94,65 +95,17 @@ const editableRecipeDraftObject = z.strictObject({
 
 export const editableRecipeDraftSchema = editableRecipeDraftObject.superRefine(
   (recipe, ctx) => {
-    for (const locale of ["fr", "en"] as const) {
-      const localized = recipe.translations[locale];
-      const ingredients = [
-        ...localized.ingredients,
-        ...localized.subRecipes.flatMap((subRecipe) => subRecipe.ingredients),
-      ];
-      const ids = new Set<string>();
-      const stepIds = new Set<string>();
-      for (const ingredient of ingredients) {
-        if (ids.has(ingredient.id)) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "Chaque ingrédient doit avoir un identifiant unique.",
-            path: ["translations", locale, "ingredients"],
-          });
-        }
-        ids.add(ingredient.id);
-      }
-      for (const [sectionIndex, section] of localized.sections.entries()) {
-        for (const [stepIndex, step] of section.steps.entries()) {
-          if (stepIds.has(step.id)) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: "Chaque étape doit avoir un identifiant unique.",
-              path: [
-                "translations",
-                locale,
-                "sections",
-                sectionIndex,
-                "steps",
-                stepIndex,
-                "id",
-              ],
-            });
-          }
-          stepIds.add(step.id);
-          const used = new Set<string>();
-          for (const use of step.ingredientUses) {
-            if (!ids.has(use.ingredientId) || used.has(use.ingredientId)) {
-              ctx.addIssue({
-                code: z.ZodIssueCode.custom,
-                message: !ids.has(use.ingredientId)
-                  ? "Cet ingrédient n’existe plus."
-                  : "Un ingrédient ne peut apparaître qu’une fois par étape.",
-                path: [
-                  "translations",
-                  locale,
-                  "sections",
-                  sectionIndex,
-                  "steps",
-                  stepIndex,
-                  "ingredientUses",
-                ],
-              });
-            }
-            used.add(use.ingredientId);
-          }
-        }
-      }
+    for (const issue of getRecipeStepReferenceIssues(recipe)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: {
+          "duplicate-ingredient-id": "Chaque ingrédient doit avoir un identifiant unique.",
+          "duplicate-step-id": "Chaque étape doit avoir un identifiant unique.",
+          "missing-ingredient": "Cet ingrédient n’existe plus.",
+          "duplicate-ingredient-use": "Un ingrédient ne peut apparaître qu’une fois par étape.",
+        }[issue.kind],
+        path: issue.path,
+      });
     }
     try {
       assertRecipeDraftBytes(recipe);

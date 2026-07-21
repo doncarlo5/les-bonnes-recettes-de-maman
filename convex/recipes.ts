@@ -425,7 +425,10 @@ export const saveDraft = mutation({
     recipe: draftContentValidator,
     expectedRevision: v.number(),
     force: v.optional(v.boolean()),
-    preserveStepIngredientUses: v.optional(v.boolean()),
+    preserveStepIngredientUses: v.optional(v.union(
+      v.boolean(),
+      v.object({ fr: v.boolean(), en: v.boolean() }),
+    )),
     adminPassword: v.string(),
   },
   handler: async (ctx, args) => {
@@ -454,7 +457,10 @@ export const saveDraft = mutation({
 
     const revision = currentRevision + 1;
     const savedAt = Date.now();
-    const effectiveRecipe = args.preserveStepIngredientUses
+    const legacyStepLocales = typeof args.preserveStepIngredientUses === "boolean"
+      ? { fr: args.preserveStepIngredientUses, en: args.preserveStepIngredientUses }
+      : args.preserveStepIngredientUses ?? { fr: false, en: false };
+    const effectiveRecipe = legacyStepLocales.fr || legacyStepLocales.en
       ? {
           ...normalizedRecipe,
           translations: mergeLegacyStepMetadata(
@@ -463,6 +469,7 @@ export const saveDraft = mutation({
               (currentDraft ?? existing).translations,
               existing.slug,
             ),
+            legacyStepLocales,
           ),
         }
       : normalizedRecipe;
@@ -1385,10 +1392,15 @@ function toStoredLocalizedRecipe(
 function mergeLegacyStepMetadata(
   incoming: EditableTranslations,
   current: EditableTranslations,
+  locales: { fr: boolean; en: boolean },
 ): EditableTranslations {
   return {
-    fr: mergeLegacyLocalizedStepMetadata(incoming.fr, current.fr),
-    en: mergeLegacyLocalizedStepMetadata(incoming.en, current.en),
+    fr: locales.fr
+      ? mergeLegacyLocalizedStepMetadata(incoming.fr, current.fr)
+      : incoming.fr,
+    en: locales.en
+      ? mergeLegacyLocalizedStepMetadata(incoming.en, current.en)
+      : incoming.en,
   };
 }
 
@@ -1400,19 +1412,34 @@ function mergeLegacyLocalizedStepMetadata(
     incoming.ingredients,
     current.ingredients,
   );
-  const subRecipes = incoming.subRecipes.map((subRecipe, subRecipeIndex) => ({
-    ...subRecipe,
-    ingredients: reconcileIngredientIds(
-      subRecipe.ingredients,
-      current.subRecipes[subRecipeIndex]?.ingredients ?? [],
-    ),
-  }));
+  const subRecipeMatches = matchCurrentIndices(
+    incoming.subRecipes,
+    current.subRecipes,
+    (subRecipe, candidate) => candidate.title === subRecipe.title,
+  );
+  const subRecipes = incoming.subRecipes.map((subRecipe, subRecipeIndex) => {
+    const currentIndex = subRecipeMatches[subRecipeIndex];
+    return {
+      ...subRecipe,
+      ingredients: reconcileIngredientIds(
+        subRecipe.ingredients,
+        currentIndex !== undefined
+          ? current.subRecipes[currentIndex].ingredients
+          : [],
+      ),
+    };
+  });
   const validIngredientIds = new Set([
     ...mainIngredients.map((ingredient) => ingredient.id),
     ...subRecipes.flatMap((subRecipe) =>
       subRecipe.ingredients.map((ingredient) => ingredient.id),
     ),
   ]);
+  const sectionMatches = matchCurrentIndices(
+    incoming.sections,
+    current.sections,
+    (section, candidate) => candidate.title === section.title,
+  );
   return {
     ...incoming,
     ingredients: mainIngredients,
@@ -1420,19 +1447,19 @@ function mergeLegacyLocalizedStepMetadata(
     sections: incoming.sections.map((section, sectionIndex) => ({
       ...section,
       steps: (() => {
-        const currentSteps = current.sections[sectionIndex]?.steps ?? [];
-        const available = new Set(currentSteps.map((_, index) => index));
+        const currentIndex = sectionMatches[sectionIndex];
+        const currentSteps = currentIndex !== undefined
+          ? current.sections[currentIndex].steps
+          : [];
+        const matches = matchCurrentIndices(
+          section.steps,
+          currentSteps,
+          (step, candidate) => candidate.text === step.text,
+        );
         return section.steps.map((step, stepIndex) => {
-          const matchingIndex = currentSteps.findIndex(
-            (candidate, index) =>
-              available.has(index) && candidate.text === step.text,
-          );
-          const fallbackIndex = available.has(stepIndex) ? stepIndex : -1;
-          const previousIndex =
-            matchingIndex >= 0 ? matchingIndex : fallbackIndex;
+          const previousIndex = matches[stepIndex];
           const previous =
-            previousIndex >= 0 ? currentSteps[previousIndex] : undefined;
-          if (previousIndex >= 0) available.delete(previousIndex);
+            previousIndex !== undefined ? currentSteps[previousIndex] : undefined;
           return previous
             ? {
                 ...step,
@@ -1452,23 +1479,48 @@ function reconcileIngredientIds(
   incoming: EditableLocalizedRecipe["ingredients"],
   current: EditableLocalizedRecipe["ingredients"],
 ) {
-  const available = new Set(current.map((_, index) => index));
+  const matches = matchCurrentIndices(
+    incoming,
+    current,
+    (ingredient, candidate) =>
+      candidate.name === ingredient.name &&
+      candidate.quantity === ingredient.quantity &&
+      candidate.unit === ingredient.unit,
+  );
   return incoming.map((ingredient, index) => {
-    const matchingIndex = current.findIndex(
-      (candidate, candidateIndex) =>
-        available.has(candidateIndex) &&
-        candidate.name === ingredient.name &&
-        candidate.quantity === ingredient.quantity &&
-        candidate.unit === ingredient.unit,
-    );
-    const fallbackIndex = available.has(index) ? index : -1;
-    const currentIndex = matchingIndex >= 0 ? matchingIndex : fallbackIndex;
-    if (currentIndex >= 0) available.delete(currentIndex);
+    const currentIndex = matches[index];
     return {
       ...ingredient,
-      id: currentIndex >= 0 ? current[currentIndex].id : ingredient.id,
+      id: currentIndex !== undefined ? current[currentIndex].id : ingredient.id,
     };
   });
+}
+
+function matchCurrentIndices<Incoming, Current>(
+  incoming: Incoming[],
+  current: Current[],
+  isExactMatch: (incoming: Incoming, current: Current) => boolean,
+) {
+  const available = new Set(current.map((_, index) => index));
+  const matches = incoming.map((): number | undefined => undefined);
+
+  for (const [incomingIndex, item] of incoming.entries()) {
+    const exactIndex = current.findIndex(
+      (candidate, currentIndex) =>
+        available.has(currentIndex) && isExactMatch(item, candidate),
+    );
+    if (exactIndex < 0) continue;
+    matches[incomingIndex] = exactIndex;
+    available.delete(exactIndex);
+  }
+
+  for (const incomingIndex of incoming.keys()) {
+    if (matches[incomingIndex] !== undefined || !available.has(incomingIndex)) continue;
+    matches[incomingIndex] = incomingIndex;
+    available.delete(incomingIndex);
+  }
+
+  return matches;
 }
 
 async function getAvailableSlug(ctx: MutationCtx, baseSlug: string) {

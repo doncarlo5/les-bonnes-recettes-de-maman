@@ -35,7 +35,7 @@ import {
   AttachmentTitle,
 } from "@/components/ui/attachment";
 import { Bubble, BubbleContent } from "@/components/ui/bubble";
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { Empty, EmptyContent, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -130,7 +130,7 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
   const removeOwn = useMutation(api.comments.removeOwn);
   const setReaction = useMutation(api.comments.setReaction);
   const discardPhoto = useMutation(api.comments.discardPhoto);
-  const photoPreviewUrl = useMemo(() => (photo ? URL.createObjectURL(photo) : null), [photo]);
+  const [photoPreviewUrl, setPhotoPreviewUrl] = useState<string | null>(null);
   const dateFormatter = useMemo(
     () => new Intl.DateTimeFormat(locale, { dateStyle: "long", timeZone: "Europe/Paris" }),
     [locale],
@@ -141,10 +141,18 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
   }, [photoPreviewUrl]);
 
   function resetForm() {
+    setPhotoPreviewUrl(null);
     dispatchForm({ type: "reset" });
   }
 
+  function cancelEmptyComment() {
+    resetForm();
+    setMessage(null);
+    setComposerOpen(false);
+  }
+
   function startEditing(comment: CommentItem) {
+    setPhotoPreviewUrl(null);
     dispatchForm({ type: "edit", comment });
     setComposerOpen(true);
     setMessage(null);
@@ -157,18 +165,22 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
   function selectPhoto(file: File | null) {
     setMessage(null);
     if (!file) {
+      setPhotoPreviewUrl(null);
       dispatchForm({ type: "patch", value: { photo: null } });
       return;
     }
     if (!(RECIPE_COMMENT_PHOTO_MIME_TYPES as readonly string[]).includes(file.type) || file.size > RECIPE_COMMENT_MAX_PHOTO_BYTES) {
+      setPhotoPreviewUrl(null);
       dispatchForm({ type: "patch", value: { photo: null, photoInputRevision: photoInputRevision + 1 } });
       setMessage({ type: "error", text: labels.photoInvalid });
       return;
     }
+    setPhotoPreviewUrl(URL.createObjectURL(file));
     dispatchForm({ type: "patch", value: { photo: file, photoRemoved: false } });
   }
 
   function removePhoto() {
+    setPhotoPreviewUrl(null);
     dispatchForm({
       type: "patch",
       value: {
@@ -207,6 +219,7 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
         });
         toast.success(labels.updated);
       } else {
+        const shouldCloseComposer = isEmptyState;
         await createComment({
           slug,
           participantKey,
@@ -216,6 +229,7 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
           ...(uploadedStorageId ? { photoStorageId: uploadedStorageId } : {}),
         });
         toast.success(labels.success);
+        if (shouldCloseComposer) setComposerOpen(false);
       }
       resetForm();
     } catch (error) {
@@ -231,7 +245,10 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
     setMessage(null);
     try {
       await removeOwn({ commentId, participantKey });
-      if (editingId === commentId) resetForm();
+      if (editingId === commentId) {
+        resetForm();
+        if (query.results.length === 1) setComposerOpen(false);
+      }
       setDeleteTarget(null);
     } catch {
       setMessage({ type: "error", text: labels.error });
@@ -257,6 +274,58 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
 
   const displayedPhoto = photoPreviewUrl ?? (!photoRemoved ? existingPhotoUrl : null);
   const formattedDate = (timestamp: number) => dateFormatter.format(timestamp);
+  const isLoadingFirstPage = !participantKey || query.status === "LoadingFirstPage";
+  const isEmptyState = !isLoadingFirstPage && query.results.length === 0;
+  const hasComments = query.results.length > 0;
+
+  const commentForm = (
+    <form id="recipe-comment-form" ref={formRef} onSubmit={submit} hidden={!composerOpen} className="grid gap-4 rounded-2xl bg-card p-5 shadow-[var(--shadow-card)]" aria-busy={pending}>
+      <div className="grid gap-2">
+        <label htmlFor="comment-author" className="type-label text-foreground">{labels.authorLabel}</label>
+        <Input id="comment-author" value={authorName} maxLength={60} placeholder={labels.authorPlaceholder} onChange={(event) => dispatchForm({ type: "patch", value: { authorName: event.target.value } })} />
+      </div>
+      <div className="grid gap-2">
+        <label htmlFor="comment-text" className="type-label text-foreground">{labels.textLabel}</label>
+        <Textarea id="comment-text" value={text} maxLength={1500} rows={5} placeholder={labels.textPlaceholder} onChange={(event) => dispatchForm({ type: "patch", value: { text: event.target.value } })} />
+        <span className="type-meta justify-self-end text-muted-foreground tabular-nums">{text.length}/1500</span>
+      </div>
+      <div className="absolute -left-[10000px] top-auto size-px overflow-hidden" aria-hidden="true">
+        <label htmlFor="comment-website">Website</label>
+        <input id="comment-website" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(event) => dispatchForm({ type: "patch", value: { honeypot: event.target.value } })} />
+      </div>
+      <div id="comment-photo-picker">
+        <input key={photoInputRevision} id="comment-photo" className="peer sr-only" type="file" accept={RECIPE_COMMENT_PHOTO_MIME_TYPES.join(",")} aria-label={labels.choosePhoto} onChange={(event) => selectPhoto(event.target.files?.[0] ?? null)} />
+        <label htmlFor="comment-photo" className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg bg-background px-4 text-sm font-semibold text-foreground shadow-[var(--shadow-border)] transition-[scale,box-shadow] duration-150 active:scale-[0.96] peer-focus-visible:ring-3 peer-focus-visible:ring-ring/80">
+          <ImagePlus className="size-4" />
+          {labels.choosePhoto}
+        </label>
+      </div>
+      {photo && photoPreviewUrl ? (
+        <Attachment className="w-full" state={pending ? "uploading" : "idle"}>
+          <AttachmentMedia variant="image">
+            <Image src={photoPreviewUrl} alt="" fill unoptimized sizes="3rem" className="image-outline object-cover" />
+          </AttachmentMedia>
+          <AttachmentContent>
+            <AttachmentTitle>{photo.name}</AttachmentTitle>
+            <AttachmentDescription>{Math.ceil(photo.size / 1024)} Ko</AttachmentDescription>
+          </AttachmentContent>
+          <AttachmentActions>
+            <AttachmentAction type="button" aria-label={labels.removePhoto} onClick={removePhoto}><X /></AttachmentAction>
+          </AttachmentActions>
+        </Attachment>
+      ) : displayedPhoto ? (
+        <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-muted">
+          <Image src={displayedPhoto} alt="" fill sizes="20rem" className="image-outline object-cover" />
+          <Button type="button" size="icon-sm" variant="secondary" className="absolute right-2 top-2" aria-label={labels.removePhoto} onClick={removePhoto}><X /></Button>
+        </div>
+      ) : null}
+      {message ? <p role="status" className={`text-sm font-semibold ${message.type === "error" ? "text-destructive" : "text-primary"}`}>{message.text}</p> : null}
+      <div className="flex flex-wrap gap-2">
+        <Button type="submit" disabled={pending || !participantKey}>{pending ? labels.loading : editingId ? labels.save : labels.publish}</Button>
+        {isEmptyState ? <Button type="button" variant="outline" onClick={cancelEmptyComment}>{labels.cancel}</Button> : editingId ? <Button type="button" variant="outline" onClick={resetForm}>{labels.cancel}</Button> : null}
+      </div>
+    </form>
+  );
 
   return (
     <section className="border-t border-border px-5 py-16 lg:px-10 lg:py-24" aria-labelledby="recipe-comments-title">
@@ -265,62 +334,24 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
           <p className="type-label text-primary">{labels.title}</p>
           <h2 id="recipe-comments-title" className="type-section-title mt-3">{labels.title}</h2>
           <p className="type-body mt-4 max-w-[42ch] text-muted-foreground">{labels.description}</p>
-          <Button type="button" variant="secondary" className="mt-8 min-h-12 w-full justify-start rounded-xl px-4" aria-expanded={composerOpen} aria-controls="recipe-comment-form" onClick={() => setComposerOpen((open) => !open)}>
-            <MessageSquarePlus />
-            {composerOpen ? labels.hideCommentForm : editingId ? labels.resumeEditing : labels.addComment}
-            <ChevronDown className={`ml-auto transition-transform duration-200 ${composerOpen ? "rotate-180" : "rotate-0"}`} />
-          </Button>
-          <form id="recipe-comment-form" ref={formRef} onSubmit={submit} hidden={!composerOpen} className="mt-4 grid gap-4 rounded-2xl bg-card p-5 shadow-[var(--shadow-card)]" aria-busy={pending}>
-            <div className="grid gap-2">
-              <label htmlFor="comment-author" className="type-label text-foreground">{labels.authorLabel}</label>
-              <Input id="comment-author" value={authorName} maxLength={60} placeholder={labels.authorPlaceholder} onChange={(event) => dispatchForm({ type: "patch", value: { authorName: event.target.value } })} />
-            </div>
-            <div className="grid gap-2">
-              <label htmlFor="comment-text" className="type-label text-foreground">{labels.textLabel}</label>
-              <Textarea id="comment-text" value={text} maxLength={1500} rows={5} placeholder={labels.textPlaceholder} onChange={(event) => dispatchForm({ type: "patch", value: { text: event.target.value } })} />
-              <span className="type-meta justify-self-end text-muted-foreground tabular-nums">{text.length}/1500</span>
-            </div>
-            <div className="absolute -left-[10000px] top-auto size-px overflow-hidden" aria-hidden="true">
-              <label htmlFor="comment-website">Website</label>
-              <input id="comment-website" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(event) => dispatchForm({ type: "patch", value: { honeypot: event.target.value } })} />
-            </div>
-            <div id="comment-photo-picker">
-              <input key={photoInputRevision} id="comment-photo" className="peer sr-only" type="file" accept={RECIPE_COMMENT_PHOTO_MIME_TYPES.join(",")} aria-label={labels.choosePhoto} onChange={(event) => selectPhoto(event.target.files?.[0] ?? null)} />
-              <label htmlFor="comment-photo" className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg bg-background px-4 text-sm font-semibold text-foreground shadow-[var(--shadow-border)] transition-[scale,box-shadow] duration-150 active:scale-[0.96] peer-focus-visible:ring-3 peer-focus-visible:ring-ring/80">
-                <ImagePlus className="size-4" />
-                {labels.choosePhoto}
-              </label>
-            </div>
-            {photo && photoPreviewUrl ? (
-              <Attachment className="w-full" state={pending ? "uploading" : "idle"}>
-                <AttachmentMedia variant="image">
-                  <Image src={photoPreviewUrl} alt="" fill unoptimized sizes="3rem" className="image-outline object-cover" />
-                </AttachmentMedia>
-                <AttachmentContent>
-                  <AttachmentTitle>{photo.name}</AttachmentTitle>
-                  <AttachmentDescription>{Math.ceil(photo.size / 1024)} Ko</AttachmentDescription>
-                </AttachmentContent>
-                <AttachmentActions>
-                  <AttachmentAction type="button" aria-label={labels.removePhoto} onClick={removePhoto}><X /></AttachmentAction>
-                </AttachmentActions>
-              </Attachment>
-            ) : displayedPhoto ? (
-              <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-muted">
-                <Image src={displayedPhoto} alt="" fill sizes="20rem" className="image-outline object-cover" />
-                <Button type="button" size="icon-sm" variant="secondary" className="absolute right-2 top-2" aria-label={labels.removePhoto} onClick={removePhoto}><X /></Button>
-              </div>
-            ) : null}
-            {message ? <p role="status" className={`text-sm font-semibold ${message.type === "error" ? "text-destructive" : "text-primary"}`}>{message.text}</p> : null}
-            <div className="flex flex-wrap gap-2">
-              <Button type="submit" disabled={pending || !participantKey}>{pending ? labels.loading : editingId ? labels.save : labels.publish}</Button>
-              {editingId ? <Button type="button" variant="outline" onClick={resetForm}>{labels.cancel}</Button> : null}
-            </div>
-          </form>
+          {hasComments ? <>
+            <Button type="button" variant="secondary" className="mt-8 min-h-12 w-full justify-start rounded-xl px-4" aria-expanded={composerOpen} aria-controls="recipe-comment-form" onClick={() => setComposerOpen((open) => !open)}>
+              <MessageSquarePlus />
+              {composerOpen ? labels.hideCommentForm : editingId ? labels.resumeEditing : labels.addComment}
+              <ChevronDown className={`ml-auto transition-transform duration-200 ${composerOpen ? "rotate-180" : "rotate-0"}`} />
+            </Button>
+            <div className={composerOpen ? "mt-4" : undefined}>{commentForm}</div>
+          </> : null}
         </div>
 
         <div className="min-w-0" aria-live="polite">
-          {!participantKey || query.status === "LoadingFirstPage" ? <div className="grid gap-4" aria-label={labels.loading}><Skeleton className="h-32 rounded-2xl" /><Skeleton className="h-32 rounded-2xl" /></div> : null}
-          {query.status !== "LoadingFirstPage" && query.results.length === 0 ? <Empty className="bg-muted"><EmptyHeader><EmptyMedia variant="icon"><MessageSquarePlus /></EmptyMedia><EmptyTitle>{labels.empty}</EmptyTitle><EmptyDescription>{labels.description}</EmptyDescription></EmptyHeader></Empty> : null}
+          {isLoadingFirstPage ? <div className="grid gap-4" aria-label={labels.loading}><Skeleton className="h-32 rounded-2xl" /><Skeleton className="h-32 rounded-2xl" /></div> : null}
+          {isEmptyState ? composerOpen ? commentForm : (
+            <Empty className="bg-muted">
+              <EmptyHeader><EmptyMedia variant="icon"><MessageSquarePlus /></EmptyMedia><EmptyTitle>{labels.empty}</EmptyTitle></EmptyHeader>
+              <EmptyContent><Button type="button" aria-controls="recipe-comment-form" onClick={() => setComposerOpen(true)}><MessageSquarePlus />{labels.addComment}</Button></EmptyContent>
+            </Empty>
+          ) : null}
           <div className="grid gap-5">
             {(query.results as CommentItem[]).map((comment) => {
               const author = comment.authorName ?? labels.anonymous;

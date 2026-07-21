@@ -58,9 +58,9 @@ export function RecipePresentation({
   locale,
   dict,
   recipe,
-  mode,
+  mode = "public",
   initialServings,
-}: RecipeDetailPageProps & { mode: "public" | "preview" }) {
+}: RecipeDetailPageProps) {
   const [selectedServings, setSelectedServings] = useState(() =>
     resolveSelectedServings(recipe.referenceServings, initialServings),
   );

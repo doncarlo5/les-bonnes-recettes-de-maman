@@ -59,7 +59,7 @@ export function RecipeIngredientsPanel({
         <div className="rounded-2xl bg-card px-4 shadow-[var(--shadow-card)]">
           <Accordion defaultValue="ingredients">
             <AccordionItem value="ingredients">
-              <AccordionTrigger className="py-3 hover:no-underline">
+              <AccordionTrigger className="items-center py-3 hover:no-underline">
                 <span className="flex flex-1 items-center justify-between gap-3 pr-2">
                   <span className="type-content-title text-foreground">{dict.recipeDetail.ingredients}</span>
                   <YieldLabel value={recipe.yieldLabel} />
@@ -203,7 +203,7 @@ function ServingsSelector({
 
 function YieldLabel({ value }: { value: string }) {
   return value ? (
-    <span className="shrink-0 whitespace-nowrap rounded-full bg-secondary px-2.5 py-0.5 text-sm font-semibold text-secondary-foreground tabular-nums">
+    <span data-yield-label className="shrink-0 whitespace-nowrap rounded-full bg-secondary px-2.5 py-0.5 text-sm font-semibold text-secondary-foreground tabular-nums">
       {value}
     </span>
   ) : null;

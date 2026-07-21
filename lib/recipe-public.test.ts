@@ -23,7 +23,6 @@ function legacyRecipe(): PublicRecipeWire {
     totalTime: "",
     timeLabel: "",
     temperature: "",
-    relatedRecipes: [],
     ingredients: [{ name: "Farine", quantity: "200", unit: "g", notes: "" }],
     sections: [{ title: "Préparation", steps: ["Mélanger"] }],
     subRecipes: [],
@@ -36,6 +35,7 @@ describe("normalizeRecipeForDisplay", () => {
     const normalized = normalizeRecipeForDisplay(legacyRecipe());
 
     expect(normalized.equipment).toEqual([]);
+    expect(normalized.relatedRecipes).toEqual([]);
     expect(normalized.sections[0].steps[0]).toEqual({
       id: "step-0-0",
       text: "Mélanger",

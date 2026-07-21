@@ -434,7 +434,16 @@ export function useRecipeDraftLifecycle({
       const data = (await response.json()) as SaveRecipeState;
       setState(data);
       if (response.ok && typeof data.revision === "number" && data.draft) {
-        const restored = cloneRecipe(data.draft);
+        const compatibleDraft = compatibleRecipeDraftSchema.safeParse(data.draft);
+        if (!compatibleDraft.success) {
+          setState({
+            type: "error",
+            message: "Le brouillon restauré utilise un format incompatible.",
+          });
+          setSyncState("error");
+          return;
+        }
+        const restored = cloneRecipe(compatibleDraft.data);
         reset(restored);
         revisionRef.current = data.revision;
         setRevision(data.revision);

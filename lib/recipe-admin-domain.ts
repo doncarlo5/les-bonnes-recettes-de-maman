@@ -38,6 +38,17 @@ type IngredientContent = {
   notes: string;
 };
 
+type StepIngredientUseContent = {
+  ingredientId: string;
+  amount?: { quantity: string; unit: string };
+};
+
+type StructuredRecipeStepContent = {
+  id: string;
+  text: string;
+  ingredientUses: StepIngredientUseContent[];
+};
+
 type LocalizedRecipeContent = {
   title: string;
   author: string;
@@ -53,7 +64,7 @@ type LocalizedRecipeContent = {
   ingredients: IngredientContent[];
   sections: Array<{
     title: string;
-    steps: Array<string | { id: string; text: string; ingredientUses: unknown[] }>;
+    steps: Array<string | StructuredRecipeStepContent>;
   }>;
   subRecipes: Array<{ title: string; ingredients: IngredientContent[] }>;
   notes: string[];
@@ -73,6 +84,12 @@ export type RecipeReadiness = {
   translation: { fr: boolean; en: boolean };
   blockers: ReadinessItem[];
   warnings: ReadinessItem[];
+};
+
+export type RecipeStepReferenceIssue = {
+  kind: "duplicate-ingredient-id" | "duplicate-step-id" | "missing-ingredient" | "duplicate-ingredient-use";
+  locale: "fr" | "en";
+  path: Array<string | number>;
 };
 
 export function getPublicationState(
@@ -247,6 +264,18 @@ export function assertRecipeDraftLimits(value: RecipeDraftContentLike) {
       assertLength(section.title, title);
       for (const step of section.steps) {
         assertLength(typeof step === "string" ? step : step.text, longText);
+        if (typeof step !== "string") {
+          assertNonEmptyIdentifier(step.id);
+          assertLength(step.id, shortValue);
+          for (const use of step.ingredientUses) {
+            assertNonEmptyIdentifier(use.ingredientId);
+            assertLength(use.ingredientId, shortValue);
+            if (use.amount) {
+              assertLength(use.amount.quantity, shortValue);
+              assertLength(use.amount.unit, shortValue);
+            }
+          }
+        }
       }
     }
     for (const subRecipe of localized.subRecipes) {
@@ -260,14 +289,98 @@ export function assertRecipeDraftLimits(value: RecipeDraftContentLike) {
   for (const label of value.legacyCategoryLabels ?? [])
     assertLength(label, shortValue);
   for (const slug of value.relatedRecipeSlugs) assertLength(slug, shortValue);
+  if (getRecipeStepReferenceIssues(value).length > 0) {
+    throw new Error("RECIPE_INVALID_STEP_REFERENCES");
+  }
   assertRecipeDraftBytes(value);
 
   function assertIngredient(ingredient: IngredientContent) {
+    if (ingredient.id !== undefined) {
+      assertNonEmptyIdentifier(ingredient.id);
+      assertLength(ingredient.id, shortValue);
+    }
     assertLength(ingredient.name, ingredientName);
     assertLength(ingredient.quantity, shortValue);
     assertLength(ingredient.unit, shortValue);
     assertLength(ingredient.notes, longText);
   }
+}
+
+function assertNonEmptyIdentifier(value: string) {
+  if (value.length === 0) throw new Error("RECIPE_INVALID_STEP_REFERENCES");
+}
+
+export function getRecipeStepReferenceIssues(
+  value: RecipeDraftContentLike,
+): RecipeStepReferenceIssue[] {
+  const issues: RecipeStepReferenceIssue[] = [];
+  for (const locale of ["fr", "en"] as const) {
+    const localized = value.translations[locale];
+    const ingredientIds = new Set<string>();
+    const ingredientEntries = [
+      ...localized.ingredients.map((ingredient, index) => ({
+        ingredient,
+        path: ["translations", locale, "ingredients", index, "id"] as Array<string | number>,
+      })),
+      ...localized.subRecipes.flatMap((subRecipe, subRecipeIndex) =>
+        subRecipe.ingredients.map((ingredient, ingredientIndex) => ({
+          ingredient,
+          path: [
+            "translations",
+            locale,
+            "subRecipes",
+            subRecipeIndex,
+            "ingredients",
+            ingredientIndex,
+            "id",
+          ] as Array<string | number>,
+        })),
+      ),
+    ];
+    for (const { ingredient, path } of ingredientEntries) {
+      if (ingredient.id === undefined) continue;
+      if (ingredientIds.has(ingredient.id)) {
+        issues.push({ kind: "duplicate-ingredient-id", locale, path });
+      }
+      ingredientIds.add(ingredient.id);
+    }
+
+    const stepIds = new Set<string>();
+    for (const [sectionIndex, section] of localized.sections.entries()) {
+      for (const [stepIndex, step] of section.steps.entries()) {
+        if (typeof step === "string") continue;
+        const stepPath = [
+          "translations",
+          locale,
+          "sections",
+          sectionIndex,
+          "steps",
+          stepIndex,
+        ] as Array<string | number>;
+        if (stepIds.has(step.id)) {
+          issues.push({
+            kind: "duplicate-step-id",
+            locale,
+            path: [...stepPath, "id"],
+          });
+        }
+        stepIds.add(step.id);
+
+        const usedIngredientIds = new Set<string>();
+        for (const [useIndex, use] of step.ingredientUses.entries()) {
+          const path = [...stepPath, "ingredientUses", useIndex, "ingredientId"];
+          if (!ingredientIds.has(use.ingredientId)) {
+            issues.push({ kind: "missing-ingredient", locale, path });
+          }
+          if (usedIngredientIds.has(use.ingredientId)) {
+            issues.push({ kind: "duplicate-ingredient-use", locale, path });
+          }
+          usedIngredientIds.add(use.ingredientId);
+        }
+      }
+    }
+  }
+  return issues;
 }
 
 export function assertRecipeDraftBytes(value: unknown) {

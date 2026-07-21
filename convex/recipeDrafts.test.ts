@@ -45,7 +45,16 @@ function recipe(title = "Tarte mobile") {
         ],
       },
     ],
-    subRecipes: [],
+    subRecipes: [] as Array<{
+      title: string;
+      ingredients: Array<{
+        id: string;
+        name: string;
+        quantity: string;
+        unit: string;
+        notes: string;
+      }>;
+    }>,
     notes: [],
   };
 
@@ -162,6 +171,164 @@ describe("recipe working drafts", () => {
     expect(
       editing?.translations.fr.sections[0].steps[1].ingredientUses,
     ).toEqual([{ ingredientId: "ingredient-flour-2" }]);
+  });
+
+  test("legacy reconciliation does not move metadata when rows or outer collections are inserted", async () => {
+    const t = convexTest(schema, modules);
+    const content = recipe("Insertions préservées");
+    content.translations.fr.subRecipes.push({
+      title: "Crème",
+      ingredients: [{
+        id: "ingredient-cream",
+        name: "Crème",
+        quantity: "20",
+        unit: "cl",
+        notes: "",
+      }],
+    });
+    content.translations.fr.sections[0].steps[0].ingredientUses = [
+      { ingredientId: "ingredient-cream" },
+    ];
+    const created = await t.mutation(api.recipes.create, {
+      recipe: content,
+      adminPassword: password,
+    });
+    const legacyNormalized = structuredClone(content);
+    legacyNormalized.translations.fr.ingredients.unshift({
+      id: "legacy-new-ingredient",
+      name: "Sucre",
+      quantity: "50",
+      unit: "g",
+      notes: "",
+    });
+    legacyNormalized.translations.fr.subRecipes.unshift({
+      title: "Coulis",
+      ingredients: [{
+        id: "legacy-new-sub-ingredient",
+        name: "Fraises",
+        quantity: "100",
+        unit: "g",
+        notes: "",
+      }],
+    });
+    legacyNormalized.translations.fr.sections.unshift({
+      title: "Décor",
+      steps: [{
+        id: "legacy-new-section-step",
+        text: "Décorer le gâteau.",
+        ingredientUses: [],
+      }],
+    });
+    legacyNormalized.translations.fr.sections[1].steps.unshift({
+      id: "legacy-new-step",
+      text: "Peser le sucre.",
+      ingredientUses: [],
+    });
+    legacyNormalized.translations.fr.sections[1].steps[1].ingredientUses = [];
+
+    await t.mutation(api.recipes.saveDraft, {
+      slug: created.slug,
+      recipe: legacyNormalized,
+      expectedRevision: created.revision,
+      preserveStepIngredientUses: { fr: true, en: false },
+      adminPassword: password,
+    });
+
+    const editing = await t.query(api.recipes.getForEditing, {
+      slug: created.slug,
+      locale: "fr",
+      adminPassword: password,
+    });
+    expect(editing?.translations.fr.ingredients.map(({ id }) => id)).toEqual([
+      "legacy-new-ingredient",
+      "ingredient-flour",
+    ]);
+    expect(editing?.translations.fr.subRecipes.flatMap(({ ingredients }) =>
+      ingredients.map(({ id }) => id),
+    )).toEqual([
+      "legacy-new-sub-ingredient",
+      "ingredient-cream",
+    ]);
+    expect(editing?.translations.fr.sections.map(({ steps }) =>
+      steps.map(({ id }) => id),
+    )).toEqual([
+      ["legacy-new-section-step"],
+      ["legacy-new-step", "step-mix"],
+    ]);
+    expect(editing?.translations.fr.sections[1].steps[1].ingredientUses).toEqual([
+      { ingredientId: "ingredient-cream" },
+    ]);
+  });
+
+  test("legacy reconciliation is limited to the affected locale", async () => {
+    const t = convexTest(schema, modules);
+    const content = recipe("Locale ciblée");
+    content.translations.fr.sections[0].steps[0].ingredientUses = [
+      { ingredientId: "ingredient-flour" },
+    ];
+    content.translations.en = structuredClone(content.translations.fr);
+    content.translations.en.title = "Targeted locale";
+    content.translations.en.sections[0].steps[0].ingredientUses = [
+      { ingredientId: "ingredient-flour" },
+    ];
+    const created = await t.mutation(api.recipes.create, {
+      recipe: content,
+      adminPassword: password,
+    });
+    const incoming = structuredClone(content);
+    incoming.translations.fr.sections[0].steps[0].ingredientUses = [];
+    incoming.translations.en.sections[0].steps[0].ingredientUses = [];
+
+    await t.mutation(api.recipes.saveDraft, {
+      slug: created.slug,
+      recipe: incoming,
+      expectedRevision: created.revision,
+      preserveStepIngredientUses: { fr: true, en: false },
+      adminPassword: password,
+    });
+
+    const editing = await t.query(api.recipes.getForEditing, {
+      slug: created.slug,
+      locale: "fr",
+      adminPassword: password,
+    });
+    expect(editing?.translations.fr.sections[0].steps[0].ingredientUses).toEqual([
+      { ingredientId: "ingredient-flour" },
+    ]);
+    expect(editing?.translations.en.sections[0].steps[0].ingredientUses).toEqual([]);
+  });
+
+  test("direct mutations reject invalid structured step references and oversized ids", async () => {
+    const t = convexTest(schema, modules);
+    const invalidReference = recipe("Référence invalide");
+    invalidReference.translations.fr.sections[0].steps[0].ingredientUses = [
+      { ingredientId: "missing" },
+    ];
+    await expect(t.mutation(api.recipes.create, {
+      recipe: invalidReference,
+      adminPassword: password,
+    })).rejects.toThrow("RECIPE_INVALID_STEP_REFERENCES");
+
+    const oversizedId = recipe("Identifiant trop long");
+    oversizedId.translations.fr.ingredients[0].id = "x".repeat(101);
+    await expect(t.mutation(api.recipes.create, {
+      recipe: oversizedId,
+      adminPassword: password,
+    })).rejects.toThrow("RECIPE_LIMIT_EXCEEDED");
+
+    const emptyIngredientId = recipe("Identifiant ingrédient vide");
+    emptyIngredientId.translations.fr.ingredients[0].id = "";
+    await expect(t.mutation(api.recipes.create, {
+      recipe: emptyIngredientId,
+      adminPassword: password,
+    })).rejects.toThrow("RECIPE_INVALID_STEP_REFERENCES");
+
+    const emptyStepId = recipe("Identifiant étape vide");
+    emptyStepId.translations.fr.sections[0].steps[0].id = "";
+    await expect(t.mutation(api.recipes.create, {
+      recipe: emptyStepId,
+      adminPassword: password,
+    })).rejects.toThrow("RECIPE_INVALID_STEP_REFERENCES");
   });
 
   test("targeted seeding inserts only the requested recipe", async () => {

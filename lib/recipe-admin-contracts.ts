@@ -176,26 +176,41 @@ export function parseRecipePayload(payload: string) {
     ? {
         success: true as const,
         data: parsed.data,
-        isLegacyStepPayload: hasLegacyStepShape(raw),
+        legacyStepLocales: getLegacyStepLocales(raw),
       }
     : { success: false as const, issues: parsed.error.issues };
 }
 
-function hasLegacyStepShape(raw: unknown) {
-  if (!raw || typeof raw !== "object" || !("translations" in raw)) return false;
+function getLegacyStepLocales(raw: unknown) {
+  const modern = { fr: false, en: false };
+  if (!raw || typeof raw !== "object" || !("translations" in raw)) return modern;
   const translations = (raw as { translations?: unknown }).translations;
-  if (!translations || typeof translations !== "object") return false;
-  return Object.values(translations).some((localized) => {
+  if (!translations || typeof translations !== "object") return modern;
+  return {
+    fr: hasLegacyLocalizedStepShape((translations as { fr?: unknown }).fr),
+    en: hasLegacyLocalizedStepShape((translations as { en?: unknown }).en),
+  };
+}
+
+function hasLegacyLocalizedStepShape(localized: unknown) {
     if (!localized || typeof localized !== "object") return false;
-    const value = localized as { ingredients?: unknown; sections?: unknown };
+    const value = localized as { ingredients?: unknown; sections?: unknown; subRecipes?: unknown };
     const ingredients = Array.isArray(value.ingredients) ? value.ingredients : [];
     const sections = Array.isArray(value.sections) ? value.sections : [];
+    const subRecipeIngredients = Array.isArray(value.subRecipes)
+      ? value.subRecipes.flatMap((subRecipe) =>
+          subRecipe && typeof subRecipe === "object" && "ingredients" in subRecipe && Array.isArray(subRecipe.ingredients)
+            ? subRecipe.ingredients
+            : [],
+        )
+      : [];
     return ingredients.some(
+      (ingredient) => !ingredient || typeof ingredient !== "object" || !("id" in ingredient),
+    ) || subRecipeIngredients.some(
       (ingredient) => !ingredient || typeof ingredient !== "object" || !("id" in ingredient),
     ) || sections.some((section) => {
       if (!section || typeof section !== "object" || !("steps" in section)) return false;
       const steps = (section as { steps?: unknown }).steps;
       return Array.isArray(steps) && steps.some((step) => typeof step === "string");
     });
-  });
 }
