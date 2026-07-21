@@ -178,6 +178,175 @@ test("admin home links back to the public cookbook", async ({ page }) => {
   await expect(page).toHaveURL(/\/fr$/);
 });
 
+test("admin creation chooser and idea conversion preserve the private source context", async ({
+  page,
+}) => {
+  await page.getByRole("button", { name: "Nouvelle" }).click();
+  const chooser = page.getByRole("dialog");
+  await expect(
+    chooser.getByRole("link", { name: /Écrire la recette complète/ }),
+  ).toHaveAttribute("href", "/fr/admin/recettes?new=1");
+  await expect(
+    chooser.getByRole("link", { name: /Laisser une idée/ }),
+  ).toHaveAttribute("href", "/fr/admin/recettes?view=ideas&newIdea=1");
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("button", { name: "Nouvelle" })).toBeFocused();
+
+  const ideas = [
+    {
+      _id: "e2e-recipe-idea",
+      _creationTime: 1,
+      text: "La tarte aux mirabelles de mamie",
+      authorName: "Jeanne",
+      state: "outstanding",
+      updatedAt: 1,
+      edited: false,
+      creatorKind: "participant",
+      canEdit: false,
+      canDelete: false,
+      linkedRecipe: null,
+    },
+  ];
+  const completedIdeas = [
+    {
+      ...ideas[0],
+      _id: "e2e-completed-idea",
+      text: "Le gâteau déjà publié",
+      state: "completed",
+      linkedRecipe: {
+        slug: "tarte-de-demonstration",
+        title: "Tarte de démonstration",
+        isPublic: true,
+      },
+    },
+  ];
+  let createdFromCompleted = false;
+  await page.route("**/api/admin/recipe-ideas**", async (route) => {
+    if (route.request().method() === "POST") {
+      createdFromCompleted = true;
+      ideas.unshift({
+        ...ideas[0],
+        _id: "e2e-admin-idea",
+        text: "Les bugnes du mercredi",
+        authorName: "Maman",
+        creatorKind: "admin",
+      });
+      return route.fulfill({ json: { ideaId: "e2e-admin-idea" } });
+    }
+    const state = new URL(route.request().url()).searchParams.get("state");
+    if (state === "completed") {
+      if (createdFromCompleted) {
+        await new Promise((resolve) => setTimeout(resolve, 250));
+      }
+      return route.fulfill({
+        json: { page: completedIdeas, isDone: true, continueCursor: "" },
+      });
+    }
+    return route.fulfill({
+      json: { page: ideas, isDone: true, continueCursor: "" },
+    });
+  });
+  await page.goto("/fr/admin/recettes?view=ideas");
+  await expect(
+    page.getByRole("heading", { name: "Idées de recettes", level: 1 }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Ajoutées au carnet" }).click();
+  await expect(page.getByText("Le gâteau déjà publié")).toBeVisible();
+  await page.getByRole("button", { name: "Ajouter une idée rapide" }).click();
+  await page.getByLabel("Votre nom (facultatif)").fill("Maman");
+  await page.getByLabel("Votre idée").fill("Les bugnes du mercredi");
+  await page.getByRole("button", { name: "Publier l’idée" }).click();
+  await expect(page.getByText("Les bugnes du mercredi")).toBeVisible();
+  await page.waitForTimeout(300);
+  await expect(page.getByText("Le gâteau déjà publié")).toHaveCount(0);
+
+  const sourceCard = page.locator("article").filter({
+    hasText: "La tarte aux mirabelles de mamie",
+  });
+  await sourceCard.getByRole("link", { name: "Créer la recette" }).click();
+  await expect(page).toHaveURL(/new=1&idea=e2e-recipe-idea/);
+  await expect(
+    page.getByText("La tarte aux mirabelles de mamie"),
+  ).toBeVisible();
+  await expect(page.getByText("Jeanne", { exact: true })).toBeVisible();
+  await expect(page.getByLabel("Titre français")).toHaveValue("");
+});
+
+test("unpublishing a linked recipe reopens its idea in the admin backlog", async ({
+  page,
+}, testInfo) => {
+  test.skip(testInfo.project.name !== "mobile-390");
+  let ideaState: "outstanding" | "completed" = "completed";
+  const linkedIdea = {
+    _id: "e2e-linked-idea",
+    _creationTime: 1,
+    text: "Le gâteau lié à la recette publiée",
+    authorName: "Jeanne",
+    state: ideaState,
+    updatedAt: 1,
+    edited: false,
+    creatorKind: "participant",
+    canEdit: false,
+    canDelete: false,
+    linkedRecipe: {
+      slug: "tarte-de-demonstration",
+      title: "Tarte de démonstration",
+      isPublic: true,
+    },
+  };
+  await page.route("**/api/admin/recipe-ideas**", async (route) => {
+    const requestedState = new URL(route.request().url()).searchParams.get("state");
+    return route.fulfill({
+      json: {
+        page: requestedState === ideaState
+          ? [{ ...linkedIdea, state: ideaState }]
+          : [],
+        isDone: true,
+        continueCursor: "",
+      },
+    });
+  });
+  await page.route("**/api/admin/recipes/unpublish", async (route) => {
+    ideaState = "outstanding";
+    return route.fulfill({
+      json: { type: "success", slug: "tarte-de-demonstration" },
+    });
+  });
+
+  await page.goto("/fr/admin/recettes?view=ideas");
+  await page.getByRole("button", { name: "Ajoutées au carnet" }).click();
+  const completedCard = page.locator("article").filter({
+    hasText: linkedIdea.text,
+  });
+  await expect(completedCard).toBeVisible();
+  await expect(
+    completedCard.getByRole("link", { name: "Brouillon en cours" }),
+  ).toBeVisible();
+  await expect(
+    completedCard.getByRole("link", { name: "Créer la recette" }),
+  ).toHaveCount(0);
+
+  await completedCard.getByRole("link", { name: "Brouillon en cours" }).click();
+  await page
+    .getByRole("navigation", { name: "Actions de la recette" })
+    .getByRole("button", { name: /Publier,/ })
+    .click();
+  await page.getByRole("button", { name: /Retirer du site public/ }).click();
+  await page
+    .getByRole("alertdialog")
+    .getByRole("button", { name: "Retirer du site", exact: true })
+    .click();
+
+  await page.goto("/fr/admin/recettes?view=ideas");
+  const reopenedCard = page.locator("article").filter({
+    hasText: linkedIdea.text,
+  });
+  await expect(reopenedCard).toBeVisible();
+  await expect(
+    reopenedCard.getByRole("link", { name: "Brouillon en cours" }),
+  ).toBeVisible();
+});
+
 test("editor action dock stays compact at every supported width", async ({
   page,
 }) => {
@@ -766,6 +935,7 @@ test("mobile creation and every focused workspace remain navigable", async ({
 }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile-390");
   await page.getByRole("button", { name: /Nouvelle/ }).click();
+  await page.getByRole("link", { name: /Écrire la recette complète/ }).click();
   await expect(
     page.locator("form[data-recipe-admin-mode=create]"),
   ).toBeAttached();

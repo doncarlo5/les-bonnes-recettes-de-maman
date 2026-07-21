@@ -4,7 +4,12 @@ import {
   getRecipeReadiness,
 } from "@/lib/recipe-admin-domain";
 import type { RecipeCategory } from "@/lib/recipe-categories";
-import type { EditableRecipe, EditableRecipeSummary, Recipe } from "./types";
+import type {
+  EditableRecipe,
+  EditableRecipeSummary,
+  Recipe,
+  RecipeIdea,
+} from "./types";
 
 const localized = {
   title: "Tarte de démonstration",
@@ -114,7 +119,20 @@ export function getRecipeAdminE2EFixtures() {
     hasUnpublishedChanges: recipe.hasUnpublishedChanges,
     canDiscard: recipe.canDiscard,
   };
-  return { recipes: [summary], recipe };
+  const idea: RecipeIdea = {
+    _id: "e2e-recipe-idea" as Id<"recipeIdeas">,
+    _creationTime: 1,
+    text: "La tarte aux mirabelles de mamie",
+    authorName: "Jeanne",
+    state: "outstanding",
+    updatedAt: 1,
+    edited: false,
+    creatorKind: "participant",
+    canEdit: false,
+    canDelete: false,
+    linkedRecipe: null,
+  };
+  return { recipes: [summary], recipe, idea };
 }
 
 export function getPublicRecipeE2EFixture(locale: "fr" | "en", slug?: string) {

@@ -11,6 +11,15 @@ export const adminAccessRequestSchema = z.strictObject({
   redirectTo: z.string().max(2_048).optional(),
 });
 
+export const adminRecipeIdeaCreateRequestSchema = z.strictObject({
+  authorName: z.string().max(60).optional(),
+  text: z.string().min(1).max(1_500),
+});
+
+export const adminRecipeIdeaDeleteRequestSchema = z.strictObject({
+  ideaId: z.string().trim().min(1).max(200),
+});
+
 export const revisionedRecipeRequestSchema = z.strictObject({
   slug,
   expectedRevision: revision,
@@ -25,6 +34,7 @@ export const saveRecipeRequestSchema = z
     slug: z.string().trim().max(200).default(""),
     recipePayload: z.string().min(1),
     expectedRevision: revision.default(0),
+    sourceIdeaId: z.string().trim().min(1).max(200).optional(),
     force: z.boolean().optional(),
   })
   .superRefine((value, ctx) => {

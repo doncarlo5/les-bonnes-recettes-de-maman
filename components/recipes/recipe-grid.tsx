@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Clock3, MessageCircle, Plus } from "lucide-react";
+import { Clock3, MessageCircle } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import type { RecipeSummary } from "./types";
+import { RecipeCreationChooser } from "./recipe-creation-chooser";
 
 const defaultRecipeImageUrl =
   "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=1400&q=85";
@@ -103,25 +104,7 @@ export function RecipeGrid({
       })}
       {showAddRecipeCard ? (
         <li>
-          <Link
-            href={`/${locale}/admin/recettes?new=1`}
-            className="surface-elevated group flex min-h-48 w-full flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl text-center transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background md:min-h-80 md:gap-5 md:rounded-3xl"
-          >
-            <span
-              aria-hidden
-              className="flex size-12 items-center justify-center rounded-full bg-primary/10 text-primary transition-[scale,background-color,color] duration-300 group-hover:scale-105 group-hover:bg-primary group-hover:text-primary-foreground md:size-20"
-            >
-              <Plus className="size-6 stroke-[1.8] md:size-10" />
-            </span>
-            <span className="grid gap-2 px-3 md:px-8">
-              <span className="type-card-title type-card-title-compact text-foreground">
-                {dict.recipeList.addRecipeTitle}
-              </span>
-              <span className="type-body-sm hidden font-bold text-muted-foreground md:block">
-                {dict.recipeList.addRecipeDescription}
-              </span>
-            </span>
-          </Link>
+          <RecipeCreationChooser locale={locale} dict={dict} trigger="card" />
         </li>
       ) : null}
     </ul>

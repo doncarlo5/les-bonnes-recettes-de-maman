@@ -27,6 +27,12 @@ import {
   type RecipeCategory,
 } from "../lib/recipe-categories";
 import { legacyIngredientId, legacyStepId } from "../lib/recipe-item-ids";
+import {
+  completeLinkedIdea,
+  detachLinkedIdea,
+  linkIdeaToRecipe,
+  reopenLinkedIdea,
+} from "./recipeIdeas";
 
 declare const process: {
   env: {
@@ -353,6 +359,7 @@ export const getForEditing = query({
 export const create = mutation({
   args: {
     recipe: draftContentValidator,
+    sourceIdeaId: v.optional(v.id("recipeIdeas")),
     adminPassword: v.string(),
   },
   handler: async (ctx, args) => {
@@ -396,6 +403,9 @@ export const create = mutation({
     };
     assertProspectiveDraft(initialDraft, slug);
     await ctx.db.insert("recipeDrafts", initialDraft);
+    if (args.sourceIdeaId) {
+      await linkIdeaToRecipe(ctx, args.sourceIdeaId, recipeId);
+    }
 
     return {
       recipeId,
@@ -573,6 +583,7 @@ export const publishDraft = mutation({
       recipe.heroImageStorageId,
       draft.heroImageStorageId,
     );
+    await completeLinkedIdea(ctx, recipe._id);
 
     return {
       slug: recipe.slug,
@@ -647,6 +658,7 @@ export const unpublish = mutation({
     await ensureRecipeDraft(ctx, recipe);
     assertStoredRecipeBytes({ ...recipe, status: "draft" });
     await ctx.db.patch(recipe._id, { status: "draft" });
+    await reopenLinkedIdea(ctx, recipe._id);
     return { slug: recipe.slug };
   },
 });
@@ -1129,6 +1141,7 @@ async function removeRecipeBySlugIfPresent(ctx: MutationCtx, slug: string) {
     .unique();
   if (!recipe) return false;
 
+  await detachLinkedIdea(ctx, recipe._id);
   const draft = await getRecipeDraft(ctx, recipe._id);
   const storageIds = new Set(
     [recipe.heroImageStorageId, draft?.heroImageStorageId].filter(

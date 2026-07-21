@@ -26,6 +26,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     fr: `${siteUrl}/fr/recettes`,
     en: `${siteUrl}/en/recettes`,
   };
+  const ideaLanguages = {
+    fr: `${siteUrl}/fr/idees`,
+    en: `${siteUrl}/en/idees`,
+  };
 
   const entries: MetadataRoute.Sitemap = locales.map((locale) => ({
     url: `${siteUrl}/${locale}`,
@@ -40,6 +44,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.9,
       alternates: { languages: recipeListLanguages },
+    });
+    entries.push({
+      url: `${siteUrl}/${locale}/idees`,
+      changeFrequency: "weekly",
+      priority: 0.7,
+      alternates: { languages: ideaLanguages },
     });
   }
 

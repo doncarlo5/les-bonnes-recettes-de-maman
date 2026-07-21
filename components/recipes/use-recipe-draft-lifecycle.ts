@@ -24,6 +24,7 @@ import {
   partitionRecipeServerErrors,
 } from "./recipe-form-schema";
 import type { EditableRecipe } from "./types";
+import type { Id } from "@/convex/_generated/dataModel";
 
 export type SaveRecipeState = {
   type: "idle" | "success" | "validation" | "error" | "conflict";
@@ -59,6 +60,7 @@ type LifecycleOptions = {
   selectedSlug: string;
   selectedRecipe: EditableRecipe | null;
   initialRecipe: EditableRecipe | null;
+  sourceIdeaId?: Id<"recipeIdeas">;
   watchedValues: unknown;
   getValues: UseFormGetValues<RecipeDraftFormInput>;
   reset: UseFormReset<RecipeDraftFormInput>;
@@ -77,6 +79,7 @@ export function useRecipeDraftLifecycle({
   selectedSlug,
   selectedRecipe,
   initialRecipe,
+  sourceIdeaId,
   watchedValues,
   getValues,
   reset,
@@ -155,6 +158,7 @@ export function useRecipeDraftLifecycle({
             slug: selectedSlug,
             recipePayload,
             expectedRevision: revisionRef.current,
+            ...(mode === "create" && sourceIdeaId ? { sourceIdeaId } : {}),
             force,
           }),
         });
@@ -244,6 +248,7 @@ export function useRecipeDraftLifecycle({
       onCreated,
       onFieldError,
       selectedSlug,
+      sourceIdeaId,
       setError,
     ],
   );

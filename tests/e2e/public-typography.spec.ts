@@ -178,16 +178,21 @@ test("mobile cookbook exposes an aligned create shortcut beside search", async (
   test.skip(!testInfo.project.name.startsWith("mobile-"));
   await page.goto("/fr");
 
-  const createLink = page.getByRole("link", { name: "Ajouter une recette" });
+  const controls = page.getByRole("region", { name: "Recherche et filtres des recettes" });
+  const createButton = controls.getByRole("button", { name: "Ajouter une recette" });
   const searchButton = page.getByRole("button", { name: "Rechercher une recette" });
-  await expect(createLink).toHaveAttribute("href", "/fr/admin/recettes?new=1");
 
-  const createBox = await createLink.boundingBox();
+  const createBox = await createButton.boundingBox();
   const searchBox = await searchButton.boundingBox();
   expect(createBox?.width).toBe(44);
   expect(createBox?.height).toBe(44);
   expect(searchBox?.y).toBeCloseTo(createBox?.y ?? 0, 0);
   expect((searchBox?.x ?? 0) - ((createBox?.x ?? 0) + (createBox?.width ?? 0))).toBe(8);
+
+  await createButton.click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await expect(page.getByRole("link", { name: /Écrire la recette complète/ })).toHaveAttribute("href", "/fr/admin/recettes?new=1");
+  await expect(page.getByRole("link", { name: /Laisser une idée/ })).toHaveAttribute("href", "/fr/idees#nouvelle-idee");
 });
 
 test("public recipe photos do not display source credits", async ({ page }) => {

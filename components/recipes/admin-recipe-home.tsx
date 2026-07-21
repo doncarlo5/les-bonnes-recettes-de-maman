@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Camera, ChevronRight, CirclePlus, House, Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Camera, ChevronRight, House, Lightbulb, Search } from "lucide-react";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Empty,
   EmptyDescription,
@@ -23,17 +23,21 @@ import {
 } from "@/components/ui/item";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import type { Locale } from "@/i18n/config";
+import type { Dictionary } from "@/i18n/get-dictionary";
 import type { EditableRecipeSummary } from "./types";
+import { RecipeCreationChooser } from "./recipe-creation-chooser";
 
 export function AdminRecipeHome({
   locale,
+  dict,
   recipes,
-  onCreate,
+  ideaCount,
   onSelect,
 }: {
   locale: Locale;
+  dict: Dictionary;
   recipes: EditableRecipeSummary[];
-  onCreate: () => void;
+  ideaCount: number;
   onSelect: (slug: string) => void;
 }) {
   const [query, setQuery] = useState("");
@@ -68,13 +72,13 @@ export function AdminRecipeHome({
             >
               <House data-icon="inline-start" /> Site public
             </Link>
-            <Button
-              type="button"
-              onClick={onCreate}
-              className="min-h-11 rounded-xl px-4"
+            <Link
+              href={`/${locale}/admin/recettes?view=ideas`}
+              className={buttonVariants({ variant: "outline", className: "min-h-11 rounded-xl px-4" })}
             >
-              <CirclePlus data-icon="inline-start" /> Nouvelle
-            </Button>
+              <Lightbulb data-icon="inline-start" /> Idées · {ideaCount}
+            </Link>
+            <RecipeCreationChooser locale={locale} dict={dict} trigger="admin" context="admin" />
           </div>
         </div>
 

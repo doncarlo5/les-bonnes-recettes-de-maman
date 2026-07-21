@@ -133,6 +133,33 @@ export default defineSchema({
   })
     .index("by_recipeId", ["recipeId"])
     .index("by_heroImageStorageId", ["heroImageStorageId"]),
+  recipeIdeas: defineTable({
+    text: v.string(),
+    authorName: v.optional(v.string()),
+    creator: v.union(
+      v.object({
+        kind: v.literal("participant"),
+        ownerDigest: v.string(),
+      }),
+      v.object({ kind: v.literal("admin") }),
+    ),
+    state: v.union(v.literal("outstanding"), v.literal("completed")),
+    linkedRecipeId: v.optional(v.id("recipes")),
+    updatedAt: v.number(),
+  })
+    .index("by_state", ["state"])
+    .index("by_linkedRecipeId", ["linkedRecipeId"]),
+  recipeIdeaRateLimits: defineTable({
+    participantDigest: v.string(),
+    windowStartedAt: v.number(),
+    count: v.number(),
+  })
+    .index("by_participantDigest", ["participantDigest"])
+    .index("by_windowStartedAt", ["windowStartedAt"]),
+  recipeIdeaSummaries: defineTable({
+    key: v.literal("global"),
+    outstandingCount: v.number(),
+  }).index("by_key", ["key"]),
   recipeComments: defineTable({
     recipeId: v.id("recipes"),
     authorName: v.optional(v.string()),

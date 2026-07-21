@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { AdminAccessForm } from "@/components/recipes/admin-access-form";
 import { AdminRecipeEditor } from "@/components/recipes/admin-recipe-editor";
+import { AdminRecipeIdeas } from "@/components/recipes/admin-recipe-ideas";
 import { getRecipeAdminE2EFixtures } from "@/components/recipes/admin-recipe-e2e-fixtures";
 import { api } from "@/convex/_generated/api";
 import type { Locale } from "@/i18n/config";
@@ -10,6 +11,10 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { getRecipeAdminAccess } from "@/lib/recipe-admin-auth";
 import type { EditableRecipeSummary } from "@/components/recipes/types";
 import { collectPaginated } from "@/lib/convex-pagination";
+import {
+  getAdminRecipeIdea,
+  getAdminRecipeIdeaCount,
+} from "@/lib/recipe-idea-admin-client";
 
 type PageProps = {
   params: Promise<{
@@ -22,13 +27,18 @@ type PageProps = {
     lang?: string | string[];
     field?: string | string[];
     mode?: string | string[];
+    view?: string | string[];
+    newIdea?: string | string[];
+    idea?: string | string[];
   }>;
 };
 
 export default async function Page({ params, searchParams }: PageProps) {
   const { locale } = await params;
   const resolvedSearchParams = await searchParams;
-  const { new: newRecipe, slug, section } = resolvedSearchParams;
+  const { new: newRecipe, slug, section, view, newIdea, idea } = resolvedSearchParams;
+  const requestedView = Array.isArray(view) ? view[0] : view;
+  const sourceIdeaId = (Array.isArray(idea) ? idea[0] : idea)?.trim() || undefined;
   const requestedSection = Array.isArray(section) ? section[0] : section;
   if (requestedSection === "photo" || requestedSection === "essentials") {
     const canonicalParams = new URLSearchParams();
@@ -49,8 +59,10 @@ export default async function Page({ params, searchParams }: PageProps) {
     : Array.isArray(slug)
       ? slug[0]
       : slug;
-  const redirectTo = shouldCreateNew
-    ? `/${locale}/admin/recettes?new=1`
+  const redirectTo = requestedView === "ideas"
+    ? `/${locale}/admin/recettes?view=ideas${(Array.isArray(newIdea) ? newIdea.includes("1") : newIdea === "1") ? "&newIdea=1" : ""}`
+    : shouldCreateNew
+    ? `/${locale}/admin/recettes?new=1${sourceIdeaId ? `&idea=${encodeURIComponent(sourceIdeaId)}` : ""}`
     : initialSlug
       ? `/${locale}/admin/recettes?slug=${encodeURIComponent(initialSlug)}`
       : `/${locale}/admin/recettes`;
@@ -61,8 +73,21 @@ export default async function Page({ params, searchParams }: PageProps) {
   ]);
   const dictionaries = { fr: frDictionary, en: enDictionary };
   if (e2eFixtures) {
+    if (requestedView === "ideas") {
+      return (
+        <AdminRecipeIdeas
+          locale={locale}
+          dict={dictionaries[locale]}
+          initialCount={1}
+          startWithComposer={Array.isArray(newIdea) ? newIdea.includes("1") : newIdea === "1"}
+        />
+      );
+    }
     const initialRecipe = initialSlug === e2eFixtures.recipe.slug ? e2eFixtures.recipe : undefined;
-    return <Suspense fallback={null}><AdminRecipeEditor key={shouldCreateNew ? "new" : initialSlug ?? "home"} locale={locale} dictionaries={dictionaries} recipes={e2eFixtures.recipes} initialRecipe={initialRecipe} initialSlug={initialSlug} startInCreateMode={shouldCreateNew} /></Suspense>;
+    const sourceIdea = sourceIdeaId === e2eFixtures.idea._id
+      ? e2eFixtures.idea
+      : undefined;
+    return <Suspense fallback={null}><AdminRecipeEditor key={shouldCreateNew ? "new" : initialSlug ?? "home"} locale={locale} dictionaries={dictionaries} recipes={e2eFixtures.recipes} initialRecipe={initialRecipe} initialSlug={initialSlug} startInCreateMode={shouldCreateNew} ideaCount={0} sourceIdea={sourceIdea} /></Suspense>;
   }
   const adminAccess = await getRecipeAdminAccess();
 
@@ -70,7 +95,19 @@ export default async function Page({ params, searchParams }: PageProps) {
     return <AdminAccessForm locale={locale} redirectTo={redirectTo} />;
   }
 
-  const [recipes, initialRecipe] = await Promise.all([
+  if (requestedView === "ideas") {
+    const ideaCount = await getAdminRecipeIdeaCount(adminAccess.adminPassword);
+    return (
+      <AdminRecipeIdeas
+        locale={locale}
+        dict={dictionaries[locale]}
+        initialCount={ideaCount}
+        startWithComposer={Array.isArray(newIdea) ? newIdea.includes("1") : newIdea === "1"}
+      />
+    );
+  }
+
+  const [recipes, initialRecipe, ideaCount, sourceIdea] = await Promise.all([
     listAllRecipesForEditing(locale, adminAccess.adminPassword),
     initialSlug
       ? fetchQuery(api.recipes.getForEditing, {
@@ -78,6 +115,10 @@ export default async function Page({ params, searchParams }: PageProps) {
           slug: initialSlug,
           adminPassword: adminAccess.adminPassword,
         })
+      : Promise.resolve(null),
+    getAdminRecipeIdeaCount(adminAccess.adminPassword),
+    sourceIdeaId
+      ? getAdminRecipeIdea(adminAccess.adminPassword, sourceIdeaId, locale)
       : Promise.resolve(null),
   ]);
 
@@ -91,6 +132,8 @@ export default async function Page({ params, searchParams }: PageProps) {
       initialRecipe={initialRecipe ?? undefined}
       initialSlug={initialSlug}
       startInCreateMode={shouldCreateNew}
+      ideaCount={ideaCount}
+      sourceIdea={sourceIdea ?? undefined}
     />
     </Suspense>
   );

@@ -46,14 +46,28 @@ export async function POST(request: NextRequest) {
 
 function getSafeAdminRedirect(locale: string, redirectTo?: string) {
   const fallback = `/${locale}/admin/recettes`;
-
-  if (
-    redirectTo === fallback ||
-    redirectTo === `${fallback}?new=1` ||
-    redirectTo?.startsWith(`${fallback}?slug=`)
-  ) {
-    return redirectTo;
+  if (!redirectTo) return fallback;
+  try {
+    const url = new URL(redirectTo, "https://admin.local");
+    if (url.origin !== "https://admin.local" || url.pathname !== fallback) {
+      return fallback;
+    }
+    const allowed = new Set([
+      "new",
+      "idea",
+      "view",
+      "newIdea",
+      "slug",
+      "section",
+      "lang",
+      "field",
+      "mode",
+    ]);
+    if ([...url.searchParams.keys()].some((key) => !allowed.has(key))) {
+      return fallback;
+    }
+    return `${url.pathname}${url.search}`;
+  } catch {
+    return fallback;
   }
-
-  return fallback;
 }

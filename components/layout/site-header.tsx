@@ -8,6 +8,7 @@ import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils";
 import { LocaleSwitcher } from "./locale-switcher";
 import { ThemeToggle } from "./theme-toggle";
+import { RecipeCreationChooser } from "@/components/recipes/recipe-creation-chooser";
 
 type SiteHeaderProps = {
   locale: Locale;
@@ -71,11 +72,12 @@ export function SiteHeader({ locale, dict }: SiteHeaderProps) {
             {dict.nav.recipes}
           </Link>
           <Link
-            href={`/${locale}/admin/recettes?new=1`}
+            href={`/${locale}/idees`}
             className="inline-flex min-h-10 items-center transition-colors duration-150 hover:text-primary"
           >
-            {dict.nav.newRecipe}
+            {dict.nav.ideas}
           </Link>
+          <RecipeCreationChooser locale={locale} dict={dict} trigger="header" />
         </nav>
 
         <div className="flex items-center gap-3">

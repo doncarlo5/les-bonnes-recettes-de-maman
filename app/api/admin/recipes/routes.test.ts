@@ -2,29 +2,47 @@ import { beforeEach, describe, expect, test, vi } from "vitest";
 
 const {
   fetchMutation,
+  fetchQuery,
   revalidateRecipePaths,
   grantRecipeAdminAccess,
   verifyRecipeAdminPassword,
+  getAdminRecipeIdea,
+  createAdminRecipeIdea,
+  removeAdminRecipeIdea,
+  getRecipeAdminAccess,
+  adminUnauthorizedResponse,
 } = vi.hoisted(() => ({
   fetchMutation: vi.fn(),
+  fetchQuery: vi.fn(),
   revalidateRecipePaths: vi.fn(),
   grantRecipeAdminAccess: vi.fn(),
   verifyRecipeAdminPassword: vi.fn(() => true),
+  getAdminRecipeIdea: vi.fn(),
+  createAdminRecipeIdea: vi.fn(),
+  removeAdminRecipeIdea: vi.fn(),
+  getRecipeAdminAccess: vi.fn(),
+  adminUnauthorizedResponse: vi.fn(() =>
+    Response.json({ error: "Accès admin requis." }, { status: 401 }),
+  ),
 }));
 
-vi.mock("convex/nextjs", () => ({ fetchMutation }));
+vi.mock("convex/nextjs", () => ({ fetchMutation, fetchQuery }));
 vi.mock("server-only", () => ({}));
 vi.mock("@/lib/recipe-admin-auth", () => ({
-  getRecipeAdminAccess: vi.fn(async () => ({
-    ok: true,
-    adminPassword: "test-password",
-  })),
-  adminUnauthorizedResponse: vi.fn(),
+  getRecipeAdminAccess,
+  adminUnauthorizedResponse,
   getRecipeAdminPassword: vi.fn(() => "test-password"),
   grantRecipeAdminAccess,
   verifyRecipeAdminPassword,
 }));
 vi.mock("@/lib/recipe-admin-revalidate", () => ({ revalidateRecipePaths }));
+vi.mock("@/lib/recipe-idea-admin-client", () => ({
+  getAdminRecipeIdea,
+  createAdminRecipeIdea,
+  removeAdminRecipeIdea,
+  listAdminRecipeIdeas: vi.fn(),
+  getAdminRecipeIdeaCount: vi.fn(),
+}));
 
 import { POST as saveRecipe } from "./save/route";
 import { POST as discardRecipe } from "./discard-draft/route";
@@ -36,6 +54,10 @@ import { POST as unpublishRecipe } from "./unpublish/route";
 import { DELETE as deleteRecipe } from "./delete/route";
 import { POST as cleanupImage } from "./cleanup-image/route";
 import { POST as accessAdmin } from "./access/route";
+import {
+  POST as createIdea,
+  DELETE as deleteIdea,
+} from "../recipe-ideas/route";
 
 const localized = {
   title: "Tarte mobile",
@@ -81,7 +103,19 @@ function malformedRequest() {
 describe("recipe admin route contracts", () => {
   beforeEach(() => {
     fetchMutation.mockReset();
+    fetchQuery.mockReset();
     revalidateRecipePaths.mockReset();
+    getAdminRecipeIdea.mockReset();
+    getAdminRecipeIdea.mockResolvedValue({ _id: "idea-123" });
+    createAdminRecipeIdea.mockReset();
+    createAdminRecipeIdea.mockResolvedValue({ ideaId: "idea-123" });
+    removeAdminRecipeIdea.mockReset();
+    removeAdminRecipeIdea.mockResolvedValue({ ideaId: "idea-123" });
+    getRecipeAdminAccess.mockReset();
+    getRecipeAdminAccess.mockResolvedValue({
+      ok: true,
+      adminPassword: "test-password",
+    });
   });
 
   test("all JSON mutation routes reject malformed bodies with a typed validation response", async () => {
@@ -96,6 +130,8 @@ describe("recipe admin route contracts", () => {
       unpublishRecipe(malformedRequest() as never),
       deleteRecipe(malformedRequest() as never),
       accessAdmin(malformedRequest() as never),
+      createIdea(malformedRequest() as never),
+      deleteIdea(malformedRequest() as never),
     ]);
     for (const response of responses) {
       expect(response.status).toBe(400);
@@ -129,6 +165,112 @@ describe("recipe admin route contracts", () => {
       revision: 4,
       savedAt: 1234,
     });
+  });
+
+  test("recipe creation forwards an optional source idea without changing ordinary creates", async () => {
+    fetchMutation.mockResolvedValue({
+      slug: "tarte-mobile",
+      title: "Tarte mobile",
+      revision: 0,
+      savedAt: 1234,
+    });
+    await saveRecipe(
+      request({
+        locale: "fr",
+        mode: "create",
+        slug: "",
+        sourceIdeaId: "idea-123",
+        recipePayload: JSON.stringify(payload),
+      }) as never,
+    );
+    expect(fetchMutation.mock.calls[0]?.[1]).toMatchObject({
+      sourceIdeaId: "idea-123",
+      adminPassword: "test-password",
+    });
+
+    await saveRecipe(
+      request({
+        locale: "fr",
+        mode: "create",
+        slug: "",
+        recipePayload: JSON.stringify(payload),
+      }) as never,
+    );
+    expect(fetchMutation.mock.calls[1]?.[1]).not.toHaveProperty("sourceIdeaId");
+  });
+
+  test("recipe creation rejects a malformed or unavailable source idea", async () => {
+    getAdminRecipeIdea.mockResolvedValue(null);
+    const response = await saveRecipe(
+      request({
+        locale: "fr",
+        mode: "create",
+        slug: "",
+        sourceIdeaId: "not-a-convex-id",
+        recipePayload: JSON.stringify(payload),
+      }) as never,
+    );
+    expect(response.status).toBe(400);
+    expect(await response.json()).toMatchObject({
+      type: "validation",
+      fieldErrors: { sourceIdeaId: "Cette idée de recette est introuvable." },
+    });
+    expect(fetchMutation).not.toHaveBeenCalled();
+  });
+
+  test("admin login preserves safe idea destinations and rejects external redirects", async () => {
+    const safe = await accessAdmin(
+      request({
+        locale: "fr",
+        password: "secret",
+        redirectTo: "/fr/admin/recettes?new=1&idea=idea-123",
+      }) as never,
+    );
+    expect(await safe.json()).toMatchObject({
+      redirectTo: "/fr/admin/recettes?new=1&idea=idea-123",
+    });
+    const unsafe = await accessAdmin(
+      request({
+        locale: "fr",
+        password: "secret",
+        redirectTo: "https://evil.example/fr/admin/recettes?new=1",
+      }) as never,
+    );
+    expect(await unsafe.json()).toMatchObject({
+      redirectTo: "/fr/admin/recettes",
+    });
+  });
+
+  test("admin idea routes validate and forward create and delete requests", async () => {
+    const created = await createIdea(
+      request({ authorName: "Maman", text: "Des bugnes" }) as never,
+    );
+    expect(created.status).toBe(200);
+    expect(createAdminRecipeIdea).toHaveBeenCalledWith("test-password", {
+      authorName: "Maman",
+      text: "Des bugnes",
+    });
+    const removed = await deleteIdea(
+      request({ ideaId: "idea-123" }) as never,
+    );
+    expect(removed.status).toBe(200);
+    expect(removeAdminRecipeIdea).toHaveBeenCalledWith(
+      "test-password",
+      "idea-123",
+    );
+  });
+
+  test("admin idea routes require the existing cookie-protected session", async () => {
+    getRecipeAdminAccess.mockResolvedValue({
+      ok: false,
+      status: 401,
+      message: "Accès admin requis.",
+    });
+    const response = await createIdea(
+      request({ authorName: "Maman", text: "Des bugnes" }) as never,
+    );
+    expect(response.status).toBe(401);
+    expect(createAdminRecipeIdea).not.toHaveBeenCalled();
   });
 
   test("save rejects reference servings outside the public selector bounds", async () => {

@@ -43,6 +43,104 @@ http.route({
 });
 
 http.route({
+  path: "/internal/admin/recipe-ideas",
+  method: "GET",
+  handler: httpAction(async (ctx, request) => {
+    if (!hasAdminAuthorization(request)) return adminJson({ error: "RECIPE_ADMIN_REQUIRED" }, 401);
+    const url = new URL(request.url);
+    const state = url.searchParams.get("state");
+    const locale = url.searchParams.get("locale");
+    const cursor = url.searchParams.get("cursor") || null;
+    if (state !== "outstanding" && state !== "completed") {
+      return adminJson({ error: "RECIPE_IDEA_STATE_INVALID" }, 400);
+    }
+    if (locale !== "fr" && locale !== "en") {
+      return adminJson({ error: "RECIPE_IDEA_LOCALE_INVALID" }, 400);
+    }
+    try {
+      const result = await ctx.runQuery(internal.recipeIdeaAdmin.list, {
+        state,
+        locale,
+        paginationOpts: { numItems: 20, cursor },
+      });
+      return adminJson(result, 200);
+    } catch {
+      return adminJson({ error: "RECIPE_IDEA_LIST_FAILED" }, 400);
+    }
+  }),
+});
+
+http.route({
+  path: "/internal/admin/recipe-ideas/item",
+  method: "GET",
+  handler: httpAction(async (ctx, request) => {
+    if (!hasAdminAuthorization(request)) return adminJson({ error: "RECIPE_ADMIN_REQUIRED" }, 401);
+    const url = new URL(request.url);
+    const ideaId = url.searchParams.get("ideaId")?.trim();
+    const locale = url.searchParams.get("locale");
+    if (!ideaId || (locale !== "fr" && locale !== "en")) {
+      return adminJson({ error: "RECIPE_IDEA_NOT_FOUND" }, 400);
+    }
+    const idea = await ctx.runQuery(internal.recipeIdeaAdmin.get, { ideaId, locale });
+    return adminJson(idea, 200);
+  }),
+});
+
+http.route({
+  path: "/internal/admin/recipe-ideas/count",
+  method: "GET",
+  handler: httpAction(async (ctx, request) => {
+    if (!hasAdminAuthorization(request)) return adminJson({ error: "RECIPE_ADMIN_REQUIRED" }, 401);
+    const count = await ctx.runQuery(internal.recipeIdeaAdmin.getOutstandingCount, {});
+    return adminJson({ count }, 200);
+  }),
+});
+
+http.route({
+  path: "/internal/admin/recipe-ideas",
+  method: "POST",
+  handler: httpAction(async (ctx, request) => {
+    if (!hasAdminAuthorization(request)) return adminJson({ error: "RECIPE_ADMIN_REQUIRED" }, 401);
+    const body: unknown = await request.json().catch(() => null);
+    if (
+      !isRecord(body) ||
+      typeof body.text !== "string" ||
+      (body.authorName !== undefined && typeof body.authorName !== "string")
+    ) {
+      return adminJson({ error: "RECIPE_IDEA_CONTENT_INVALID" }, 400);
+    }
+    try {
+      const result = await ctx.runMutation(internal.recipeIdeaAdmin.create, {
+        text: body.text,
+        ...(typeof body.authorName === "string" ? { authorName: body.authorName } : {}),
+      });
+      return adminJson(result, 200);
+    } catch {
+      return adminJson({ error: "RECIPE_IDEA_CONTENT_INVALID" }, 400);
+    }
+  }),
+});
+
+http.route({
+  path: "/internal/admin/recipe-ideas",
+  method: "DELETE",
+  handler: httpAction(async (ctx, request) => {
+    if (!hasAdminAuthorization(request)) return adminJson({ error: "RECIPE_ADMIN_REQUIRED" }, 401);
+    const body: unknown = await request.json().catch(() => null);
+    const ideaId = isRecord(body) && typeof body.ideaId === "string"
+      ? body.ideaId.trim()
+      : "";
+    if (!ideaId) return adminJson({ error: "RECIPE_IDEA_NOT_FOUND" }, 400);
+    try {
+      const result = await ctx.runMutation(internal.recipeIdeaAdmin.remove, { ideaId });
+      return adminJson(result, 200);
+    } catch {
+      return adminJson({ error: "RECIPE_IDEA_NOT_FOUND" }, 404);
+    }
+  }),
+});
+
+http.route({
   path: "/internal/admin/recipe-comments",
   method: "DELETE",
   handler: httpAction(async (ctx, request) => {

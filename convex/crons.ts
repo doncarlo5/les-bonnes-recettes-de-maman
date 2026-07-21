@@ -17,4 +17,11 @@ crons.cron(
   {},
 );
 
+crons.cron(
+  "remove expired recipe idea rate limits",
+  "45 3 * * *",
+  internal.recipeIdeaMaintenance.cleanupExpiredRateLimits,
+  {},
+);
+
 export default crons;

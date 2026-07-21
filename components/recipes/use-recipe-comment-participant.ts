@@ -5,9 +5,11 @@ import { useSyncExternalStore } from "react";
 const participantStorageKey = "recipe-comment-participant-v1";
 let participantKeySnapshot: string | null = null;
 
-export function useRecipeCommentParticipantKey() {
+export function usePublicParticipantKey() {
   return useSyncExternalStore(subscribe, getSnapshot, () => null);
 }
+
+export const useRecipeCommentParticipantKey = usePublicParticipantKey;
 
 function subscribe(onStoreChange: () => void) {
   participantKeySnapshot = readOrCreateParticipantKey();

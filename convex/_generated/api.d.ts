@@ -15,6 +15,9 @@ import type * as comments from "../comments.js";
 import type * as crons from "../crons.js";
 import type * as http from "../http.js";
 import type * as migrations from "../migrations.js";
+import type * as recipeIdeaAdmin from "../recipeIdeaAdmin.js";
+import type * as recipeIdeaMaintenance from "../recipeIdeaMaintenance.js";
+import type * as recipeIdeas from "../recipeIdeas.js";
 import type * as recipeTranslations from "../recipeTranslations.js";
 import type * as recipes from "../recipes.js";
 
@@ -32,6 +35,9 @@ declare const fullApi: ApiFromModules<{
   crons: typeof crons;
   http: typeof http;
   migrations: typeof migrations;
+  recipeIdeaAdmin: typeof recipeIdeaAdmin;
+  recipeIdeaMaintenance: typeof recipeIdeaMaintenance;
+  recipeIdeas: typeof recipeIdeas;
   recipeTranslations: typeof recipeTranslations;
   recipes: typeof recipes;
 }>;

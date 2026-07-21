@@ -8,6 +8,14 @@ This context defines the editorial language for recipes managed and published by
 Objet editorial complet, brouillon ou publie, identifie par un slug public et compose de contenus localises en francais et en anglais.
 _Avoid_: Article, fiche, page
 
+**Idée de recette**:
+Contribution publique légère qui conserve un texte libre en vue d'une future Recette, sans constituer elle-même un contenu éditorial structuré.
+_Avoid_: Note, Brouillon de travail, Recette incomplète
+
+**Idée ajoutée**:
+Idée de recette reliée à une Recette dont la Version publiée est actuellement visible dans le carnet public.
+_Avoid_: Idée traitée, Brouillon lié, Recette en cours
+
 **Categorie de recette**:
 Facette publique qui aide a parcourir le carnet selon le moment de service ou le gout dominant.
 Une Recette peut appartenir a plusieurs categories.

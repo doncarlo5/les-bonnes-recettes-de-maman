@@ -11,6 +11,7 @@ import {
   getRecipeAdminAccess,
 } from "@/lib/recipe-admin-auth";
 import { revalidateRecipePaths } from "@/lib/recipe-admin-revalidate";
+import { getAdminRecipeIdea } from "@/lib/recipe-idea-admin-client";
 import {
   parseJsonRequest,
   recipeMutationErrorResponse,
@@ -42,11 +43,27 @@ export async function POST(request: NextRequest) {
     return validationResponse({}, validation.error);
   }
 
+  const sourceIdea = body.sourceIdeaId
+    ? await getAdminRecipeIdea(
+        adminAccess.adminPassword,
+        body.sourceIdeaId,
+        body.locale,
+      ).catch(() => null)
+    : null;
+  if (body.sourceIdeaId && !sourceIdea) {
+    return validationResponse(
+      { sourceIdeaId: "Cette idée de recette est introuvable." },
+    );
+  }
+
   try {
     const result =
       body.mode === "create"
         ? await fetchMutation(api.recipes.create, {
             recipe: validation.data,
+            ...(sourceIdea
+              ? { sourceIdeaId: sourceIdea._id }
+              : {}),
             adminPassword: adminAccess.adminPassword,
           })
         : await fetchMutation(api.recipes.saveDraft, {

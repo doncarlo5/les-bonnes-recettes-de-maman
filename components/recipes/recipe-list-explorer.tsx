@@ -1,7 +1,6 @@
 "use client";
 
 import { type ChangeEvent, type FormEvent, useMemo, useState } from "react";
-import Link from "next/link";
 import {
   ArrowDownAZ,
   ArrowUpAZ,
@@ -9,7 +8,6 @@ import {
   CalendarArrowUp,
   LayoutGrid,
   List,
-  Plus,
   Search,
   X,
 } from "lucide-react";
@@ -25,6 +23,7 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/u
 import type { RecipeSummary } from "./types";
 import { RecipeGrid } from "./recipe-grid";
 import { RecipeListRows } from "./recipe-list-rows";
+import { RecipeCreationChooser } from "./recipe-creation-chooser";
 
 const categoryValues = RECIPE_CATEGORIES;
 const viewValues = ["cards", "list"] as const;
@@ -123,13 +122,7 @@ export function RecipeListExplorer({
         className="grid gap-3 md:gap-0"
       >
         <div className="flex justify-self-end gap-2 md:hidden">
-          <Link
-            href={`/${locale}/admin/recettes?new=1`}
-            aria-label={dict.recipeList.addRecipeTitle}
-            className="surface-elevated inline-flex size-11 items-center justify-center rounded-full bg-primary text-primary-foreground transition-[scale,background-color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.96]"
-          >
-            <Plus aria-hidden className="size-5 stroke-[1.8]" />
-          </Link>
+          <RecipeCreationChooser locale={locale} dict={dict} trigger="icon" />
           <button
             type="button"
             aria-expanded={mobileSearchOpen}
@@ -282,6 +275,7 @@ export function RecipeListExplorer({
                 dict={dict}
                 recipes={filteredRecipes}
                 priorityFirstImage={false}
+                showAddRecipeCard={!hasActiveFilters}
               />
             </div>
             <div className="hidden md:block">
@@ -289,6 +283,7 @@ export function RecipeListExplorer({
                 locale={locale}
                 dict={dict}
                 recipes={filteredRecipes}
+                showAddRecipeRow={!hasActiveFilters}
               />
             </div>
           </>
@@ -297,6 +292,7 @@ export function RecipeListExplorer({
             locale={locale}
             dict={dict}
             recipes={filteredRecipes}
+            showAddRecipeCard={!hasActiveFilters}
           />
         )
       ) : (

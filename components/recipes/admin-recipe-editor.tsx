@@ -146,7 +146,7 @@ import {
   type SaveRecipeState,
   type SyncState,
 } from "./use-recipe-draft-lifecycle";
-import type { EditableRecipe, EditableRecipeSummary } from "./types";
+import type { EditableRecipe, EditableRecipeSummary, RecipeIdea } from "./types";
 import { AdminRecipeComments } from "./admin-recipe-comments";
 import { AdminDraftPreview } from "./admin-draft-preview";
 import { PublishWorkspace } from "./admin-publish-workspace";
@@ -159,6 +159,8 @@ type AdminRecipeEditorProps = {
   initialRecipe?: EditableRecipe;
   initialSlug?: string;
   startInCreateMode?: boolean;
+  ideaCount?: number;
+  sourceIdea?: RecipeIdea;
 };
 
 type MobileSection =
@@ -287,6 +289,8 @@ export function AdminRecipeEditor({
   initialRecipe: initialRecipeProp,
   initialSlug,
   startInCreateMode = false,
+  ideaCount = 0,
+  sourceIdea,
 }: AdminRecipeEditorProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -427,7 +431,6 @@ export function AdminRecipeEditor({
     handleImageConflict,
     replaceConflict,
     reloadLatest,
-    resetForCreate,
     resetSyncState,
   } = useRecipeDraftLifecycle({
     locale,
@@ -435,6 +438,7 @@ export function AdminRecipeEditor({
     selectedSlug,
     selectedRecipe,
     initialRecipe,
+    sourceIdeaId: sourceIdea?._id,
     watchedValues,
     getValues,
     reset,
@@ -481,15 +485,6 @@ export function AdminRecipeEditor({
     if (!(await flushLatestDraft())) return;
     router.push(`/${locale}/admin/recettes?slug=${slug}&section=info`);
     window.scrollTo({ top: 0, behavior: "auto" });
-  }
-
-  async function createRecipe() {
-    if (!(await flushLatestDraft())) return;
-    setMode("create");
-    setSelectedSlug("");
-    reset(cloneRecipe(blankRecipe));
-    resetForCreate(blankRecipe);
-    router.replace(`/${locale}/admin/recettes?new=1`);
   }
 
   async function showMobileHome() {
@@ -593,8 +588,10 @@ export function AdminRecipeEditor({
           categoryValues={categoryValues ?? []}
           defaultLocale={defaultLocale}
           requestedLanguage={requestedLanguage}
+          dict={dictionaries[locale]}
+          ideaCount={ideaCount}
+          sourceIdea={sourceIdea}
           onLanguage={selectEditorLanguage}
-          onCreate={createRecipe}
           onHome={showMobileHome}
           onSelect={selectRecipe}
           onOpenSection={openMobileSection}
@@ -631,8 +628,10 @@ function MobileRecipeAdmin({
   categoryValues,
   defaultLocale,
   requestedLanguage,
+  dict,
+  ideaCount,
+  sourceIdea,
   onLanguage,
-  onCreate,
   onHome,
   onSelect,
   onOpenSection,
@@ -663,8 +662,10 @@ function MobileRecipeAdmin({
   categoryValues: RecipeCategory[];
   defaultLocale: LocaleKey;
   requestedLanguage: LocaleKey;
+  dict: Dictionary;
+  ideaCount: number;
+  sourceIdea?: RecipeIdea;
   onLanguage: (locale: LocaleKey) => void;
-  onCreate: () => void;
   onHome: () => void;
   onSelect: (slug: string) => void;
   onOpenSection: (section: MobileSection) => void;
@@ -697,8 +698,9 @@ function MobileRecipeAdmin({
     return (
       <AdminRecipeHome
         locale={locale}
+        dict={dict}
         recipes={recipes}
-        onCreate={onCreate}
+        ideaCount={ideaCount}
         onSelect={onSelect}
       />
     );
@@ -725,6 +727,15 @@ function MobileRecipeAdmin({
               compléter ensuite.
             </p>
           </div>
+          {sourceIdea ? (
+            <aside className="grid gap-2 rounded-2xl bg-primary/10 p-4" aria-label={dict.ideas.title}>
+              <p className="type-label text-primary">{dict.ideas.title}</p>
+              <p className="whitespace-pre-wrap type-body-sm font-semibold">{sourceIdea.text}</p>
+              <p className="type-meta text-muted-foreground">
+                {sourceIdea.authorName ?? dict.ideas.anonymous}
+              </p>
+            </aside>
+          ) : null}
           <div className="rounded-2xl bg-card p-4 shadow-[var(--shadow-card)]">
             <TextField
               label="Titre français"

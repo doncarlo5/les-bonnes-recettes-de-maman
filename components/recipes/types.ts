@@ -159,3 +159,21 @@ export type EditableRecipeSummary = {
 };
 
 export type EditableRecipe = EditableRecipeSummary & EditableRecipeContent;
+
+export type RecipeIdea = {
+  _id: Id<"recipeIdeas">;
+  _creationTime: number;
+  text: string;
+  authorName: string | null;
+  state: "outstanding" | "completed";
+  updatedAt: number;
+  edited: boolean;
+  creatorKind: "participant" | "admin";
+  canEdit: boolean;
+  canDelete: boolean;
+  linkedRecipe: {
+    slug: string;
+    title: string;
+    isPublic: boolean;
+  } | null;
+};
