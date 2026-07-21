@@ -29,16 +29,16 @@ export default async function OpengraphImage({
           alignItems: "center",
           justifyContent: "center",
           background: brand.cream,
-          padding: 96,
+          padding: 72,
           textAlign: "center",
         }}
       >
         <img
-          width={104}
-          height={104}
+          width={88}
+          height={88}
           src={svgDataUri(chefHatSvg(brand.terracotta))}
           alt=""
-          style={{ marginBottom: 40 }}
+          style={{ flexShrink: 0, marginBottom: 30 }}
         />
         <div
           style={{
@@ -47,7 +47,8 @@ export default async function OpengraphImage({
             letterSpacing: 8,
             textTransform: "uppercase",
             color: brand.terracotta,
-            marginBottom: 28,
+            flexShrink: 0,
+            marginBottom: 20,
           }}
         >
           {dict.site.tagline}
@@ -55,10 +56,11 @@ export default async function OpengraphImage({
         <div
           style={{
             fontFamily: "Newsreader",
-            fontSize: 96,
+            fontSize: 90,
             lineHeight: 1.05,
             color: brand.ink,
-            maxWidth: 900,
+            flexShrink: 0,
+            maxWidth: 800,
           }}
         >
           {dict.site.wordmark}
@@ -69,7 +71,8 @@ export default async function OpengraphImage({
             height: 6,
             borderRadius: 3,
             background: brand.honey,
-            marginTop: 44,
+            flexShrink: 0,
+            marginTop: 24,
           }}
         />
       </div>
