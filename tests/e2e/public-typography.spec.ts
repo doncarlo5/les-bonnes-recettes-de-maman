@@ -204,6 +204,30 @@ test("ingredient names start with a capital letter without changing their conten
   )).toBe("uppercase");
 });
 
+test("recipe content starts with ingredients, followed by equipment", async ({ page }, testInfo) => {
+  await page.goto("/fr/recettes/tarte-de-demonstration");
+
+  const ingredients = page.getByRole("heading", { name: "Ingrédients" });
+  const equipment = page.getByRole("heading", { name: "Ustensiles" });
+  const preparation = page.getByRole("heading", { name: "Préparation" });
+
+  await expect(ingredients).toBeVisible();
+  await expect(equipment).toBeVisible();
+  await expect(preparation).toBeVisible();
+  const headingOrder = await page.locator("main h2:visible").allTextContents();
+  expect(headingOrder.indexOf("Ingrédients")).toBeLessThan(
+    headingOrder.indexOf("Ustensiles"),
+  );
+
+  if (testInfo.project.name.startsWith("mobile-")) {
+    const ingredientsBox = await ingredients.boundingBox();
+    const equipmentBox = await equipment.boundingBox();
+    const preparationBox = await preparation.boundingBox();
+    expect(ingredientsBox?.y).toBeLessThan(equipmentBox?.y ?? 0);
+    expect(equipmentBox?.y).toBeLessThan(preparationBox?.y ?? 0);
+  }
+});
+
 test("mobile recipe back link sits above the hero image", async ({ page }, testInfo) => {
   test.skip(!testInfo.project.name.startsWith("mobile-"));
   await page.goto("/fr/recettes/tarte-de-demonstration");
@@ -217,16 +241,16 @@ test("mobile recipe back link sits above the hero image", async ({ page }, testI
   expect((backBox?.y ?? 0) + (backBox?.height ?? 0)).toBeLessThanOrEqual(imageBox?.y ?? 0);
 });
 
-test("desktop recipe body aligns preparation with a compact ingredient panel", async ({ page }, testInfo) => {
+test("desktop recipe body aligns equipment with a compact ingredient panel", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop");
   await page.goto("/fr/recettes/tarte-de-demonstration");
 
-  const preparation = page.getByRole("heading", { name: "Préparation" });
+  const equipment = page.getByRole("heading", { name: "Ustensiles" });
   const ingredients = page.getByRole("heading", { name: "Ingrédients" });
   const ingredientPanel = ingredients.locator("xpath=ancestor::aside");
-  const preparationBox = await preparation.boundingBox();
+  const equipmentBox = await equipment.boundingBox();
   const panelBox = await ingredientPanel.boundingBox();
-  expect(panelBox?.y).toBeCloseTo(preparationBox?.y ?? 0, 0);
+  expect(panelBox?.y).toBeCloseTo(equipmentBox?.y ?? 0, 0);
 
   const temperature = page.getByText("four moyen", { exact: true });
   await expect(page.getByText("Température", { exact: true })).toBeVisible();

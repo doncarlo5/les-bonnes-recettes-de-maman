@@ -135,7 +135,15 @@ export function RecipePresentation({
           <RecipeMeta dict={dict} recipe={recipe} />
 
           <div className="mt-8 grid gap-8 lg:mt-12 lg:grid-cols-[minmax(0,65ch)_20rem] lg:justify-between lg:gap-14">
-            <div className="min-w-0">
+            <RecipeIngredientsPanel
+              locale={locale}
+              dict={dict}
+              recipe={recipe}
+              selectedServings={selectedServings}
+              onSelectedServingsChange={setSelectedServings}
+            />
+
+            <div className="min-w-0 lg:col-start-1 lg:row-start-1">
               <div className="space-y-8 lg:space-y-12">
                 {recipe.equipment.length > 0 ? (
                   <div>
@@ -326,13 +334,6 @@ export function RecipePresentation({
               ) : null}
             </div>
 
-            <RecipeIngredientsPanel
-              locale={locale}
-              dict={dict}
-              recipe={recipe}
-              selectedServings={selectedServings}
-              onSelectedServingsChange={setSelectedServings}
-            />
           </div>
         </div>
       </section>
