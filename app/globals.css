@@ -355,6 +355,39 @@
 }
 
 @layer components {
+  .recipe-compact-action-bar {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+  }
+
+  [data-slot="drawer-content"]:has(input:focus, textarea:focus)
+    [data-drawer-editing-description] {
+    display: none;
+  }
+
+  [data-slot="drawer-content"]:has(input:focus, textarea:focus)
+    .recipe-drawer-footer {
+    padding-top: 0.5rem;
+  }
+
+  [data-slot="drawer-content"]:has(input:focus, textarea:focus)
+    [data-drawer-destructive-action],
+  [data-drawer-scroll-target] [data-drawer-destructive-action] {
+    min-width: 3rem;
+    padding-inline: 0;
+  }
+
+  [data-slot="drawer-content"]:has(input:focus, textarea:focus)
+    [data-drawer-action-label],
+  [data-drawer-scroll-target] [data-drawer-action-label] {
+    display: none;
+  }
+
+  form[data-recipe-admin-hydrated="true"] input,
+  form[data-recipe-admin-hydrated="true"] textarea {
+    scroll-margin-block: 5rem;
+  }
+
   /* Animated underline for inline links. */
   .link-underline {
     position: relative;

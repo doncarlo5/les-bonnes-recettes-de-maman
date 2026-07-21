@@ -39,6 +39,7 @@ import {
   Cloud,
   CloudOff,
   Eye,
+  ExternalLink,
   House,
   Languages,
   ListChecks,
@@ -56,7 +57,7 @@ import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import {
   Empty,
@@ -829,6 +830,30 @@ function MobileRecipeAdmin({
                 Prévisualiser le brouillon
               </TooltipContent>
             </Tooltip>
+            {publication.isPublic && selectedRecipe ? (
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <Link
+                      href={`/${requestedLanguage}/recettes/${selectedRecipe.slug}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={buttonVariants({
+                        variant: "ghost",
+                        size: "icon",
+                        className: "rounded-xl",
+                      })}
+                      aria-label="Voir la recette publique"
+                    >
+                      <ExternalLink />
+                    </Link>
+                  }
+                />
+                <TooltipContent className="">
+                  Voir la recette publique
+                </TooltipContent>
+              </Tooltip>
+            ) : null}
             <SyncPill state={syncState} revision={revision} />
           </div>
         </header>

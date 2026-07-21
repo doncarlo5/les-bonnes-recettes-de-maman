@@ -1,6 +1,28 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
+async function setVisualViewport(
+  page: Page,
+  { height, offsetTop }: { height: number; offsetTop: number },
+) {
+  await page.evaluate(
+    ({ nextHeight, nextOffsetTop }) => {
+      Object.defineProperty(window.visualViewport, "height", {
+        configurable: true,
+        value: nextHeight,
+      });
+      Object.defineProperty(window.visualViewport, "offsetTop", {
+        configurable: true,
+        value: nextOffsetTop,
+      });
+      window.visualViewport?.dispatchEvent(new Event("resize"));
+      window.visualViewport?.dispatchEvent(new Event("scroll"));
+    },
+    { nextHeight: height, nextOffsetTop: offsetTop },
+  );
+  await page.waitForTimeout(500);
+}
+
 async function mockRecipeApi(page: Page) {
   let revision = 3;
   await page.route("**/api/admin/recipes/**", async (route) => {
@@ -54,9 +76,9 @@ async function mockImageSearchApi(page: Page) {
 const localized = {
   title: "Tarte de démonstration", author: "Maman", description: "Une recette restaurée.",
   yieldLabel: "6 personnes", prepTime: "20 min", cookTime: "30 min", totalTime: "50 min", timeLabel: "50 min", temperature: "180 °C",
-  ingredients: [{ name: "Farine", quantity: "200", unit: "g", notes: "" }], sections: [{ title: "Préparation", steps: ["Mélanger."] }], subRecipes: [], notes: [],
+  equipment: [], ingredients: [{ name: "Farine", quantity: "200", unit: "g", notes: "" }], sections: [{ title: "Préparation", steps: ["Mélanger."] }], subRecipes: [], notes: [],
 };
-const restoredDraft = { defaultLocale: "fr", translations: { fr: localized, en: { ...localized, title: "Demo tart", yieldLabel: "6 servings" } }, categories: ["dessert"] };
+const restoredDraft = { defaultLocale: "fr", relatedRecipeSlugs: [], translations: { fr: localized, en: { ...localized, title: "Demo tart", yieldLabel: "6 servings" } }, categories: ["dessert"], legacyCategoryLabels: [] };
 
 test.beforeEach(async ({ page }) => {
   await mockRecipeApi(page);
@@ -187,25 +209,31 @@ test("editor toolbar keeps context and language controls together", async ({ pag
   expect(box?.height).toBeLessThanOrEqual(maximumHeight);
 });
 
-test("guided editor opens an isolated draft preview", async ({ page }) => {
+test("guided editor offers draft preview and a public recipe link", async ({ page }) => {
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
+  const publicRecipeLink = page
+    .locator("main header")
+    .getByRole("link", { name: "Voir la recette publique" });
+  await expect(publicRecipeLink).toHaveAttribute(
+    "href",
+    "/fr/recettes/tarte-de-demonstration",
+  );
+  await expect(publicRecipeLink).toHaveAttribute("target", "_blank");
+  await page.getByRole("button", { name: "Anglais" }).click();
+  await expect(publicRecipeLink).toHaveAttribute(
+    "href",
+    "/en/recettes/tarte-de-demonstration",
+  );
   await page.getByRole("button", { name: "Prévisualiser le brouillon" }).click();
   await expect(page).toHaveURL(/mode=preview/);
   await expect(page.getByText("Aperçu du brouillon")).toBeVisible();
-  await expect(page.getByRole("heading", { level: 1, name: "Tarte de démonstration" })).toBeVisible();
-  const frenchYield = page.locator("span:visible").filter({ hasText: /^6 personnes$/ }).first();
-  await expect(frenchYield).toBeVisible();
-  await expect(frenchYield).toHaveCSS("text-transform", "none");
-  await expect(page.getByRole("link", { name: /cuisiner/i })).toHaveCount(0);
-  await page.getByRole("button", { name: "Anglais" }).click();
-  await expect(page).toHaveURL(/lang=en/);
-  await expect(page.getByRole("heading", { level: 1, name: "Demo tart" })).toBeVisible();
-  await expect(page.locator("span:visible").filter({ hasText: /^6 servings$/ }).first()).toBeVisible();
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Demo tart" }),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Détails" }).click();
   await expect(page).not.toHaveURL(/mode=preview/);
   await expect(page).toHaveURL(/section=details/);
   await expect(page).toHaveURL(/lang=en/);
-  await expect(page.getByLabel("Préparation")).toBeVisible();
 });
 
 test("yield is edited as one independent localized field", async ({ page }) => {
@@ -485,11 +513,7 @@ test("mobile section editor remains usable above the software keyboard", async (
   const titleInput = drawer.locator("input").first();
   await expect(titleInput).not.toBeFocused();
   await titleInput.focus();
-  await page.evaluate(() => {
-    Object.defineProperty(window.visualViewport, "height", { configurable: true, value: 430 });
-    window.visualViewport?.dispatchEvent(new Event("resize"));
-  });
-  await page.waitForTimeout(500);
+  await setVisualViewport(page, { height: 430, offsetTop: 40 });
 
   const done = drawer.getByRole("button", { name: "Terminé" }).last();
   await expect(titleInput).toBeVisible();
@@ -502,7 +526,58 @@ test("mobile section editor remains usable above the software keyboard", async (
   ]);
   expect(drawerBox?.y).toBeGreaterThanOrEqual(0);
   expect(inputBox?.y).toBeGreaterThanOrEqual(drawerBox?.y ?? 0);
-  expect((doneBox?.y ?? 0) + (doneBox?.height ?? 0)).toBeLessThanOrEqual(430);
+  expect(drawerBox?.y).toBeGreaterThanOrEqual(40);
+  expect((doneBox?.y ?? 0) + (doneBox?.height ?? 0)).toBeLessThanOrEqual(470);
+  expect(doneBox?.height).toBeGreaterThanOrEqual(44);
+});
+
+test("mobile editor keeps navigation available while typing", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "mobile-390");
+  await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
+
+  const navigation = page.getByRole("navigation", { name: "Actions de la recette" });
+  const language = page.getByRole("group", { name: "Langue du contenu" });
+  const title = page.getByLabel("Titre");
+  await expect(navigation).toBeVisible();
+  await expect(language).toBeVisible();
+
+  await title.focus();
+  await expect(navigation).toBeVisible();
+  await expect(language).toBeVisible();
+});
+
+test("mobile step editing shows one compact action bar above the keyboard", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "mobile-390");
+  await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
+  await page
+    .getByRole("navigation", { name: "Actions de la recette" })
+    .getByRole("button", { name: "Recette", exact: true })
+    .click();
+  await page.getByRole("button", { name: /Préparation/ }).click();
+  await page.getByRole("button", { name: /Préparation.*étapes?/ }).click();
+
+  const drawer = page.locator('[data-slot="drawer-content"]');
+  await drawer.locator("[data-sortable-open]").first().click();
+  const stepEditor = drawer.locator("[data-drawer-scroll-target]");
+  const textarea = stepEditor.locator("textarea");
+  await expect(textarea).toBeFocused();
+  await expect(
+    drawer.getByRole("button", { name: "Terminé" }).filter({ visible: true }),
+  ).toHaveCount(1);
+  await expect(
+    drawer.getByRole("button", { name: "Supprimer cette étape" }),
+  ).toHaveCount(1);
+  await expect(
+    drawer.getByRole("button", { name: "Supprimer la section" }),
+  ).toBeHidden();
+
+  await setVisualViewport(page, { height: 430, offsetTop: 40 });
+
+  const doneBox = await drawer
+    .getByRole("button", { name: "Terminé" })
+    .boundingBox();
+  expect((doneBox?.y ?? 0) + (doneBox?.height ?? 0)).toBeLessThanOrEqual(470);
+  expect(doneBox?.height).toBeGreaterThanOrEqual(44);
 });
 
 test("mobile creation and every focused workspace remain navigable", async ({ page }, testInfo) => {

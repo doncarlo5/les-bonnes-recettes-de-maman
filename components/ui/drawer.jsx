@@ -15,18 +15,36 @@ function useDrawer() {
 
 function Drawer({ modal = true, showSwipeHandle = false, snapPoints = null, swipeDirection = "down", ...props }) {
   const hasSnapPoints = snapPoints != null && snapPoints.length > 0
-  const [viewportHeight, setViewportHeight] = React.useState(/** @type {number | null} */ (null))
+  const [visualViewport, setVisualViewport] = React.useState(
+    /** @type {{ height: number, width: number, offsetTop: number, offsetLeft: number } | null} */ (null)
+  )
   React.useEffect(() => {
     const viewport = window.visualViewport
     if (!viewport) return
-    const updateHeight = () => setViewportHeight(viewport.height)
-    updateHeight()
-    viewport.addEventListener("resize", updateHeight)
-    return () => viewport.removeEventListener("resize", updateHeight)
+    let frame = 0
+    const updateViewport = () => {
+      window.cancelAnimationFrame(frame)
+      frame = window.requestAnimationFrame(() => {
+        setVisualViewport({
+          height: viewport.height,
+          width: viewport.width,
+          offsetTop: viewport.offsetTop,
+          offsetLeft: viewport.offsetLeft,
+        })
+      })
+    }
+    updateViewport()
+    viewport.addEventListener("resize", updateViewport)
+    viewport.addEventListener("scroll", updateViewport)
+    return () => {
+      window.cancelAnimationFrame(frame)
+      viewport.removeEventListener("resize", updateViewport)
+      viewport.removeEventListener("scroll", updateViewport)
+    }
   }, [])
   const contextValue = React.useMemo(
-    () => ({ hasSnapPoints, modal, showSwipeHandle, swipeDirection, viewportHeight }),
-    [hasSnapPoints, modal, showSwipeHandle, swipeDirection, viewportHeight]
+    () => ({ hasSnapPoints, modal, showSwipeHandle, swipeDirection, visualViewport }),
+    [hasSnapPoints, modal, showSwipeHandle, swipeDirection, visualViewport]
   )
 
   return (
@@ -76,18 +94,36 @@ function DrawerSwipeHandle({ className = "", ...props }) {
 }
 
 function DrawerContent({ className = "", children, style = {}, ...props }) {
-  const { hasSnapPoints, modal, showSwipeHandle, swipeDirection, viewportHeight } = useDrawer()
+  const { hasSnapPoints, modal, showSwipeHandle, swipeDirection, visualViewport } = useDrawer()
   const swipeAxis = swipeDirection === "down" || swipeDirection === "up" ? "y" : "x"
+  const viewportStyle = visualViewport
+    ? {
+        height: `${visualViewport.height}px`,
+        width: `${visualViewport.width}px`,
+        top: `${visualViewport.offsetTop}px`,
+        left: `${visualViewport.offsetLeft}px`,
+      }
+    : undefined
+
+  React.useLayoutEffect(() => {
+    if (!visualViewport) return
+    const activeElement = document.activeElement
+    if (!(activeElement instanceof HTMLElement)) return
+    if (!activeElement.closest('[data-slot="drawer-content"]')) return
+    const declaredScrollTarget = activeElement.closest('[data-drawer-scroll-target]')
+    const scrollTarget = declaredScrollTarget ?? activeElement
+    scrollTarget.scrollIntoView({ block: "nearest" })
+  }, [visualViewport])
 
   return (
     <DrawerPortal data-slot="drawer-portal">
       {modal === true && <DrawerOverlay data-snap-points={hasSnapPoints ? "" : undefined} />}
-      <DrawerPrimitive.Viewport data-slot="drawer-viewport" data-modal={modal} style={viewportHeight ? { height: `${viewportHeight}px` } : undefined} className="pointer-events-none fixed inset-x-0 top-0 z-50 select-none data-[modal=true]:pointer-events-auto">
+      <DrawerPrimitive.Viewport data-slot="drawer-viewport" data-modal={modal} style={viewportStyle} className="pointer-events-none fixed top-0 left-0 z-50 w-full select-none data-[modal=true]:pointer-events-auto">
         <DrawerPrimitive.Popup
           data-slot="drawer-popup"
           data-swipe-axis={swipeAxis}
           data-snap-points={hasSnapPoints ? "" : undefined}
-          style={{ ...style, maxHeight: viewportHeight ? `${Math.max(viewportHeight - 24, 0)}px` : style.maxHeight }}
+          style={{ ...style, maxHeight: visualViewport ? `${Math.max(visualViewport.height - 24, 0)}px` : style.maxHeight }}
           className={cn(
             "group/drawer-popup pointer-events-auto absolute z-50 m-(--drawer-inset,0px) flex h-(--drawer-content-height) max-h-(--drawer-content-max-height,none) min-h-0 w-(--drawer-content-width,auto) transform-[translate3d(var(--translate-x,0px),var(--translate-y,0px),0)_scale(var(--stack-scale))] flex-col bg-popover text-sm text-popover-foreground transition-[transform,height,opacity,filter] duration-450 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform outline-none select-none [interpolate-size:allow-keywords] data-[swipe-direction=down]:rounded-t-xl data-[swipe-direction=down]:border-t data-[swipe-direction=left]:rounded-r-xl data-[swipe-direction=left]:border-r data-[swipe-direction=right]:rounded-l-xl data-[swipe-direction=right]:border-l data-[swipe-direction=up]:rounded-b-xl data-[swipe-direction=up]:border-b",
             "data-nested-drawer-open:overflow-hidden data-nested-drawer-open:brightness-95",

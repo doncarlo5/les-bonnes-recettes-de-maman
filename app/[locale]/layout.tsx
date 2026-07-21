@@ -73,6 +73,7 @@ export async function generateMetadata({
 }
 
 export const viewport: Viewport = {
+  interactiveWidget: "resizes-content",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#F4F0E8" },
     { media: "(prefers-color-scheme: dark)", color: "#171615" },

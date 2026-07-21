@@ -27,26 +27,35 @@ declare module "@/components/ui/badge" {
 declare module "@/components/ui/button" {
   import type { ComponentPropsWithoutRef } from "react";
 
+  type ButtonVariant =
+    | "default"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "destructive"
+    | "link";
+  type ButtonSize =
+    | "default"
+    | "xs"
+    | "sm"
+    | "lg"
+    | "icon"
+    | "icon-xs"
+    | "icon-sm"
+    | "icon-lg";
+
   export function Button(
     props: ComponentPropsWithoutRef<"button"> & {
-      variant?:
-        | "default"
-        | "outline"
-        | "secondary"
-        | "ghost"
-        | "destructive"
-        | "link";
-      size?:
-        | "default"
-        | "xs"
-        | "sm"
-        | "lg"
-        | "icon"
-        | "icon-xs"
-        | "icon-sm"
-        | "icon-lg";
+      variant?: ButtonVariant;
+      size?: ButtonSize;
     },
   ): React.ReactElement;
+
+  export function buttonVariants(props?: {
+    variant?: ButtonVariant;
+    size?: ButtonSize;
+    className?: string;
+  }): string;
 }
 
 declare module "@/components/ui/button-group" {

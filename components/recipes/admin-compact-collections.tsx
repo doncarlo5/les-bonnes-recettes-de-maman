@@ -156,7 +156,7 @@ export function CompactIngredientsEditor({
                 <DrawerTitle className="type-panel-title">
                   Ingrédient {editingIndex + 1}
                 </DrawerTitle>
-                <DrawerDescription className="">
+                <DrawerDescription data-drawer-editing-description>
                   Renseigne seulement les détails utiles à la recette.
                 </DrawerDescription>
               </DrawerHeader>
@@ -196,7 +196,7 @@ export function CompactIngredientsEditor({
                   />
                 </Field>
               </div>
-              <DrawerFooter className="shrink-0 pb-[max(1rem,env(safe-area-inset-bottom))]">
+              <DrawerFooter className="recipe-drawer-footer recipe-compact-action-bar shrink-0 pb-[max(1rem,env(safe-area-inset-bottom))]">
                 <DestructiveConfirmButton
                   label="Supprimer cet ingrédient"
                   description="Supprimer cet ingrédient ?"
@@ -233,6 +233,7 @@ export function CompactSectionsEditor({
   const { append, fields, move, remove } = useFieldArray({ control, name });
   const values = (useWatch({ control, name }) ?? []) as RecipeSection[];
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [isEditingStep, setIsEditingStep] = useState(false);
   useDeepLinkedIndex(name, fields.length, setEditingIndex);
   const closeEditor = useFocusRestoringClose(
     editingIndex,
@@ -295,7 +296,7 @@ export function CompactSectionsEditor({
                 <DrawerTitle className="type-panel-title">
                   Section {editingIndex + 1}
                 </DrawerTitle>
-                <DrawerDescription className="">
+                <DrawerDescription data-drawer-editing-description>
                   Organise les étapes dans leur ordre de préparation.
                 </DrawerDescription>
               </DrawerHeader>
@@ -311,25 +312,28 @@ export function CompactSectionsEditor({
                   name={stepsArrayPath(name, editingIndex)}
                   control={control}
                   register={register}
+                  onEditingChange={setIsEditingStep}
                 />
               </div>
-              <DrawerFooter className="shrink-0 pb-[max(1rem,env(safe-area-inset-bottom))]">
-                <DestructiveConfirmButton
-                  label="Supprimer la section"
-                  description="Supprimer cette section ?"
-                  onConfirm={() => {
-                    remove(editingIndex);
-                    setEditingIndex(null);
-                  }}
-                />
-                <Button
-                  type="button"
-                  className="min-h-12 rounded-xl"
-                  onClick={closeEditor}
-                >
-                  Terminé
-                </Button>
-              </DrawerFooter>
+              {!isEditingStep ? (
+                <DrawerFooter className="recipe-drawer-footer recipe-compact-action-bar shrink-0 pb-[max(1rem,env(safe-area-inset-bottom))]">
+                  <DestructiveConfirmButton
+                    label="Supprimer la section"
+                    description="Supprimer cette section ?"
+                    onConfirm={() => {
+                      remove(editingIndex);
+                      setEditingIndex(null);
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    className="min-h-12 rounded-xl"
+                    onClick={closeEditor}
+                  >
+                    Terminé
+                  </Button>
+                </DrawerFooter>
+              ) : null}
             </>
           ) : null}
         </DrawerContent>
@@ -342,15 +346,26 @@ function CompactStepsEditor({
   name,
   control,
   register,
+  onEditingChange,
 }: {
   name: StepsArrayPath;
   control: RecipeControl;
   register: RecipeRegister;
+  onEditingChange: (isEditing: boolean) => void;
 }) {
   const { append, fields, move, remove } = useFieldArray({ control, name });
   const values = (useWatch({ control, name }) ?? []) as string[];
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   useDeepLinkedIndex(name, fields.length, setEditingIndex);
+  useEffect(() => {
+    onEditingChange(editingIndex !== null);
+  }, [editingIndex, onEditingChange]);
+  useEffect(
+    () => () => {
+      onEditingChange(false);
+    },
+    [onEditingChange],
+  );
   return (
     <div className="grid gap-2">
       <div className="flex items-center justify-between gap-3">
@@ -395,27 +410,32 @@ function CompactStepsEditor({
         )}
       />
       {editingIndex !== null ? (
-        <div className="grid gap-2 rounded-xl bg-card p-3 shadow-[var(--shadow-card)]">
+        <div
+          data-drawer-scroll-target
+          className="grid gap-2 rounded-xl bg-card p-3 shadow-[var(--shadow-card)]"
+        >
           <Textarea
             autoFocus
             placeholder={`Étape ${editingIndex + 1}`}
             {...register(childFieldPath(name, `${editingIndex}`))}
           />
-          <DestructiveConfirmButton
-            label="Supprimer cette étape"
-            description="Supprimer cette étape ?"
-            onConfirm={() => {
-              remove(editingIndex);
-              setEditingIndex(null);
-            }}
-          />
-          <Button
-            type="button"
-            className="min-h-11"
-            onClick={() => setEditingIndex(null)}
-          >
-            Terminé
-          </Button>
+          <div className="recipe-compact-action-bar gap-2">
+            <DestructiveConfirmButton
+              label="Supprimer cette étape"
+              description="Supprimer cette étape ?"
+              onConfirm={() => {
+                remove(editingIndex);
+                setEditingIndex(null);
+              }}
+            />
+            <Button
+              type="button"
+              className="min-h-12 rounded-xl transition-transform active:scale-[0.96]"
+              onClick={() => setEditingIndex(null)}
+            >
+              Terminé
+            </Button>
+          </div>
         </div>
       ) : null}
     </div>
@@ -437,10 +457,12 @@ function DestructiveConfirmButton({
       <Button
         type="button"
         variant="destructive"
-        className="min-h-11"
+        data-drawer-destructive-action
+        aria-label={label}
+        className="min-h-11 transition-transform active:scale-[0.96]"
         onClick={() => setOpen(true)}
       >
-        <Trash2 /> {label}
+        <Trash2 /> <span data-drawer-action-label>{label}</span>
       </Button>
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>
