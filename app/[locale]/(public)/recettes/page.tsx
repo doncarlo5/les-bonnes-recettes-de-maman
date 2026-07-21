@@ -14,7 +14,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   const [{ locale }, values] = await Promise.all([params, searchParams]);
   const query = new URLSearchParams();
 
-  for (const key of ["q", "cat", "view", "sort"] as const) {
+  for (const key of ["q", "cat", "view", "sort", "order"] as const) {
     const value = values[key];
     if (Array.isArray(value)) value.forEach((item) => query.append(key, item));
     else if (value) query.set(key, value);

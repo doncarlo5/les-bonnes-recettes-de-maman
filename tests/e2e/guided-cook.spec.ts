@@ -438,10 +438,10 @@ test("the legacy collection URL preserves discovery state", async ({
 test("locale switching preserves discovery and anchor state", async ({
   page,
 }) => {
-  await page.goto("/fr?q=tarte&cat=dessert&view=list&sort=date#recettes");
+  await page.goto("/fr?q=tarte&cat=dessert&view=list&sort=date&order=asc#recettes");
   await page.getByRole("link", { name: "en", exact: true }).click();
   await expect(page).toHaveURL(
-    /\/en\?q=tarte&cat=dessert&view=list&sort=date#recettes$/,
+    /\/en\?q=tarte&cat=dessert&view=list&sort=date&order=asc#recettes$/,
   );
 });
 
@@ -476,6 +476,28 @@ test("homepage discovery state remains URL-backed", async ({
   }
   await expect(page).toHaveURL(/view=list/);
   await revealFilters("Date d’ajout");
-  await page.getByRole("button", { name: "Date d’ajout" }).click();
-  await expect(page).toHaveURL(/sort=date/);
+  const dateSort = page.getByRole("button", { name: "Date d’ajout" });
+  const recipeLinks = page.locator('main a[href^="/fr/recettes/"]');
+  await dateSort.click();
+  await expect(page).toHaveURL(/sort=date&order=desc/);
+  const dateDescending = await recipeLinks.evaluateAll((links) =>
+    links.map((link) => link.getAttribute("href")),
+  );
+  await dateSort.click();
+  await expect(page).toHaveURL(/sort=date&order=asc/);
+  await expect.poll(() => recipeLinks.evaluateAll((links) =>
+    links.map((link) => link.getAttribute("href")),
+  )).toEqual([...dateDescending].reverse());
+
+  const alphabeticalSort = page.getByRole("button", { name: "Alphabétique" });
+  await alphabeticalSort.click();
+  await expect(page).toHaveURL(/sort=alpha&order=asc/);
+  const alphabeticalAscending = await recipeLinks.evaluateAll((links) =>
+    links.map((link) => link.getAttribute("href")),
+  );
+  await alphabeticalSort.click();
+  await expect(page).toHaveURL(/sort=alpha&order=desc/);
+  await expect.poll(() => recipeLinks.evaluateAll((links) =>
+    links.map((link) => link.getAttribute("href")),
+  )).toEqual([...alphabeticalAscending].reverse());
 });

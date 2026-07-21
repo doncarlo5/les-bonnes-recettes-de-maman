@@ -2,7 +2,17 @@
 
 import { type ChangeEvent, type FormEvent, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowDownAZ, CalendarDays, LayoutGrid, List, Plus, Search, X } from "lucide-react";
+import {
+  ArrowDownAZ,
+  ArrowUpAZ,
+  CalendarArrowDown,
+  CalendarArrowUp,
+  LayoutGrid,
+  List,
+  Plus,
+  Search,
+  X,
+} from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
@@ -19,9 +29,11 @@ import { RecipeListRows } from "./recipe-list-rows";
 const categoryValues = RECIPE_CATEGORIES;
 const viewValues = ["cards", "list"] as const;
 const sortValues = ["alpha", "date"] as const;
+const sortDirectionValues = ["asc", "desc"] as const;
 
 type RecipeView = (typeof viewValues)[number];
 type RecipeSort = (typeof sortValues)[number];
+type RecipeSortDirection = (typeof sortDirectionValues)[number];
 
 type RecipeListExplorerProps = {
   locale: Locale;
@@ -39,13 +51,19 @@ export function RecipeListExplorer({
   const activeCategories = getActiveCategories(searchParams);
   const activeView = getActiveView(searchParams);
   const activeSort = getActiveSort(searchParams);
+  const activeSortDirection = getActiveSortDirection(searchParams, activeSort);
   const [draftState, setDraftState] = useState({ query, value: query });
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const draftQuery = draftState.query === query ? draftState.value : query;
 
   const filteredRecipes = useMemo(
-    () => sortRecipes(filterRecipes(recipes, query, activeCategories), activeSort, locale),
-    [activeCategories, activeSort, locale, query, recipes],
+    () => sortRecipes(
+      filterRecipes(recipes, query, activeCategories),
+      activeSort,
+      activeSortDirection,
+      locale,
+    ),
+    [activeCategories, activeSort, activeSortDirection, locale, query, recipes],
   );
   const hasActiveFilters = query.length > 0 || activeCategories.length > 0;
 
@@ -56,6 +74,7 @@ export function RecipeListExplorer({
       categories: activeCategories,
       view: activeView,
       sort: activeSort,
+      direction: activeSortDirection,
       mode: "push",
     });
   }
@@ -67,6 +86,7 @@ export function RecipeListExplorer({
       categories: [],
       view: activeView,
       sort: activeSort,
+      direction: activeSortDirection,
       mode: "push",
     });
   }
@@ -77,16 +97,21 @@ export function RecipeListExplorer({
       categories: activeCategories,
       view,
       sort: activeSort,
+      direction: activeSortDirection,
       mode: "push",
     });
   }
 
   function setSort(sort: RecipeSort) {
+    const direction = sort === activeSort
+      ? activeSortDirection === "asc" ? "desc" : "asc"
+      : getDefaultSortDirection(sort);
     updateUrl({
       query,
       categories: activeCategories,
       view: activeView,
       sort,
+      direction,
       mode: "push",
     });
   }
@@ -166,7 +191,7 @@ export function RecipeListExplorer({
             <ToggleGroup
               multiple
               value={activeCategories}
-              onValueChange={(values: string[]) => updateUrl({ query, categories: values as RecipeCategory[], view: activeView, sort: activeSort, mode: "push" })}
+              onValueChange={(values: string[]) => updateUrl({ query, categories: values as RecipeCategory[], view: activeView, sort: activeSort, direction: activeSortDirection, mode: "push" })}
               spacing={2}
               className="flex w-full flex-wrap"
               aria-label={dict.recipeList.categoriesLabel}
@@ -217,17 +242,29 @@ export function RecipeListExplorer({
 
             <ToggleGroup
               value={[activeSort]}
-              onValueChange={(values: string[]) => values[0] && setSort(values[0] as RecipeSort)}
+              onValueChange={(values: string[]) => setSort((values[0] as RecipeSort | undefined) ?? activeSort)}
               spacing={2}
               className="flex flex-wrap"
               aria-label={dict.recipeList.sortLabel}
             >
               {sortValues.map((sort) => {
-                const Icon = sort === "alpha" ? ArrowDownAZ : CalendarDays;
+                const direction = sort === activeSort
+                  ? activeSortDirection
+                  : getDefaultSortDirection(sort);
+                const Icon = sort === "alpha"
+                  ? direction === "asc" ? ArrowDownAZ : ArrowUpAZ
+                  : direction === "asc" ? CalendarArrowUp : CalendarArrowDown;
                 return (
                   <ToggleGroupItem key={sort} value={sort} className="min-h-11 rounded-full px-4 font-bold md:min-h-10">
                     <Icon data-icon="inline-start" />
                     {dict.recipeList.sorts[sort]}
+                    {sort === activeSort ? (
+                      <span className="sr-only">
+                        {locale === "fr"
+                          ? direction === "asc" ? "ordre croissant" : "ordre décroissant"
+                          : direction === "asc" ? "ascending" : "descending"}
+                      </span>
+                    ) : null}
                   </ToggleGroupItem>
                 );
               })}
@@ -298,13 +335,18 @@ function filterRecipes(
   });
 }
 
-function sortRecipes(recipes: RecipeSummary[], sort: RecipeSort, locale: Locale) {
+function sortRecipes(
+  recipes: RecipeSummary[],
+  sort: RecipeSort,
+  direction: RecipeSortDirection,
+  locale: Locale,
+) {
   return [...recipes].sort((recipeA, recipeB) => {
-    if (sort === "date") {
-      return recipeB._creationTime - recipeA._creationTime;
-    }
+    const comparison = sort === "date"
+      ? recipeA._creationTime - recipeB._creationTime
+      : recipeA.title.localeCompare(recipeB.title, locale);
 
-    return recipeA.title.localeCompare(recipeB.title, locale);
+    return direction === "asc" ? comparison : -comparison;
   });
 }
 
@@ -342,17 +384,33 @@ function getActiveSort(searchParams: { get: (name: string) => string | null }) {
   return sortValues.includes(value as RecipeSort) ? (value as RecipeSort) : "alpha";
 }
 
+function getActiveSortDirection(
+  searchParams: { get: (name: string) => string | null },
+  sort: RecipeSort,
+) {
+  const value = searchParams.get("order");
+  return sortDirectionValues.includes(value as RecipeSortDirection)
+    ? value as RecipeSortDirection
+    : getDefaultSortDirection(sort);
+}
+
+function getDefaultSortDirection(sort: RecipeSort): RecipeSortDirection {
+  return sort === "date" ? "desc" : "asc";
+}
+
 function updateUrl({
   query,
   categories,
   view,
   sort,
+  direction,
   mode,
 }: {
   query: string;
   categories: RecipeCategory[];
   view: RecipeView;
   sort: RecipeSort;
+  direction: RecipeSortDirection;
   mode: "push" | "replace";
 }) {
   const params = new URLSearchParams(window.location.search);
@@ -360,6 +418,7 @@ function updateUrl({
   params.delete("cat");
   params.delete("view");
   params.delete("sort");
+  params.delete("order");
 
   if (query) {
     params.set("q", query);
@@ -371,6 +430,7 @@ function updateUrl({
 
   params.set("view", view);
   params.set("sort", sort);
+  params.set("order", direction);
 
   const nextUrl = params.toString()
     ? `${window.location.pathname}?${params.toString()}`
