@@ -173,6 +173,29 @@ export function parseRecipePayload(payload: string) {
   }
   const parsed = compatibleRecipeDraftSchema.safeParse(raw);
   return parsed.success
-    ? { success: true as const, data: parsed.data }
+    ? {
+        success: true as const,
+        data: parsed.data,
+        isLegacyStepPayload: hasLegacyStepShape(raw),
+      }
     : { success: false as const, issues: parsed.error.issues };
+}
+
+function hasLegacyStepShape(raw: unknown) {
+  if (!raw || typeof raw !== "object" || !("translations" in raw)) return false;
+  const translations = (raw as { translations?: unknown }).translations;
+  if (!translations || typeof translations !== "object") return false;
+  return Object.values(translations).some((localized) => {
+    if (!localized || typeof localized !== "object") return false;
+    const value = localized as { ingredients?: unknown; sections?: unknown };
+    const ingredients = Array.isArray(value.ingredients) ? value.ingredients : [];
+    const sections = Array.isArray(value.sections) ? value.sections : [];
+    return ingredients.some(
+      (ingredient) => !ingredient || typeof ingredient !== "object" || !("id" in ingredient),
+    ) || sections.some((section) => {
+      if (!section || typeof section !== "object" || !("steps" in section)) return false;
+      const steps = (section as { steps?: unknown }).steps;
+      return Array.isArray(steps) && steps.some((step) => typeof step === "string");
+    });
+  });
 }

@@ -59,6 +59,7 @@
     "backToList": "Retour à la liste des recettes",
     "recipeBy": "Recette de",
     "ingredients": "Ingrédients",
+    "forThisStep": "Pour cette étape",
     "servingsLabel": "Nombre de personnes",
     "servingSingular": "personne",
     "servingPlural": "personnes",
@@ -124,6 +125,7 @@
   "cookMode": {
     "eyebrow": "Mode cuisine",
     "ingredients": "Ingrédients",
+    "forThisStep": "Pour cette étape",
     "previous": "Précédent",
     "next": "Étape suivante",
     "finish": "Terminer",

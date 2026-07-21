@@ -20,21 +20,31 @@ const localized = {
   temperature: "four moyen",
   equipment: ["1 moule à tarte"],
   ingredients: [
-    { name: "Farine", quantity: "200", unit: "g", notes: "tamisée" },
-    { name: "Œufs", quantity: "3", unit: "", notes: "" },
+    { id: "ingredient-flour", name: "Farine", quantity: "200", unit: "g", notes: "tamisée" },
+    { id: "ingredient-eggs", name: "Œufs", quantity: "3", unit: "", notes: "" },
   ],
   sections: [
     {
       title: "Préparation",
-      steps: ["Mélanger les ingrédients.", "Cuire au four."],
+      steps: [
+        {
+          id: "step-mix",
+          text: "Mélanger les ingrédients.",
+          ingredientUses: [
+            { ingredientId: "ingredient-flour" },
+            { ingredientId: "ingredient-eggs", amount: { quantity: "2", unit: "" } },
+          ],
+        },
+        { id: "step-bake", text: "Cuire au four.", ingredientUses: [] },
+      ],
     },
   ],
   subRecipes: [
     {
       title: "Crème",
       ingredients: [
-        { name: "Lait", quantity: "100", unit: "ml", notes: "" },
-        { name: "Vanille", quantity: "un peu", unit: "", notes: "" },
+        { id: "ingredient-milk", name: "Lait", quantity: "100", unit: "ml", notes: "" },
+        { id: "ingredient-vanilla", name: "Vanille", quantity: "un peu", unit: "", notes: "" },
       ],
     },
   ],

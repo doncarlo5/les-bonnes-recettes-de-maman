@@ -31,6 +31,7 @@ export type ReadinessItem = {
 };
 
 type IngredientContent = {
+  id?: string;
   name: string;
   quantity: string;
   unit: string;
@@ -50,7 +51,10 @@ type LocalizedRecipeContent = {
   temperature: string;
   equipment: string[];
   ingredients: IngredientContent[];
-  sections: Array<{ title: string; steps: string[] }>;
+  sections: Array<{
+    title: string;
+    steps: Array<string | { id: string; text: string; ingredientUses: unknown[] }>;
+  }>;
   subRecipes: Array<{ title: string; ingredients: IngredientContent[] }>;
   notes: string[];
 };
@@ -105,7 +109,9 @@ export function getRecipeReadiness(
   );
   const allowsYieldOnly = hasEditorialYield(fr);
   const hasPreparation = fr.sections.some(
-    (section) => hasText(section.title) && section.steps.some(hasText),
+    (section) =>
+      hasText(section.title) &&
+      section.steps.some((step) => hasText(typeof step === "string" ? step : step.text)),
   );
   const essentials =
     hasText(fr.title) && hasText(fr.author) && hasText(fr.description);
@@ -239,7 +245,9 @@ export function assertRecipeDraftLimits(value: RecipeDraftContentLike) {
       assertIngredient(ingredient);
     for (const section of localized.sections) {
       assertLength(section.title, title);
-      for (const step of section.steps) assertLength(step, longText);
+      for (const step of section.steps) {
+        assertLength(typeof step === "string" ? step : step.text, longText);
+      }
     }
     for (const subRecipe of localized.subRecipes) {
       assertLength(subRecipe.title, title);

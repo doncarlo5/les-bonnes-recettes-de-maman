@@ -68,9 +68,15 @@ export function removeCookProgress(
 
 export function createCookContentSignature(content: CookableContent) {
   const serialized = JSON.stringify({
-    ingredients: content.ingredients,
-    sections: content.sections,
-    subRecipes: content.subRecipes,
+    ingredients: content.ingredients.map(withoutIngredientId),
+    sections: content.sections.map((section) => ({
+      title: section.title,
+      steps: section.steps.map((step) => step.text),
+    })),
+    subRecipes: content.subRecipes.map((subRecipe) => ({
+      title: subRecipe.title,
+      ingredients: subRecipe.ingredients.map(withoutIngredientId),
+    })),
   });
   let hash = 2166136261;
   for (let index = 0; index < serialized.length; index += 1) {
@@ -78,6 +84,15 @@ export function createCookContentSignature(content: CookableContent) {
     hash = Math.imul(hash, 16777619);
   }
   return `fnv1a-${(hash >>> 0).toString(16).padStart(8, "0")}`;
+}
+
+function withoutIngredientId(ingredient: Ingredient) {
+  return {
+    name: ingredient.name,
+    quantity: ingredient.quantity,
+    unit: ingredient.unit,
+    notes: ingredient.notes,
+  };
 }
 
 export function parseCookProgress(

@@ -21,8 +21,30 @@ function recipe(title = "Tarte mobile") {
     totalTime: "50 min",
     timeLabel: "50 min",
     temperature: "180 °C",
-    ingredients: [{ name: "Farine", quantity: "200", unit: "g", notes: "" }],
-    sections: [{ title: "Préparation", steps: ["Mélanger puis cuire."] }],
+    ingredients: [
+      {
+        id: "ingredient-flour",
+        name: "Farine",
+        quantity: "200",
+        unit: "g",
+        notes: "",
+      },
+    ],
+    sections: [
+      {
+        title: "Préparation",
+        steps: [
+          {
+            id: "step-mix",
+            text: "Mélanger puis cuire.",
+            ingredientUses: [] as Array<{
+              ingredientId: string;
+              amount?: { quantity: string; unit: string };
+            }>,
+          },
+        ],
+      },
+    ],
     subRecipes: [],
     notes: [],
   };
@@ -39,6 +61,21 @@ function draft(value = recipe()) {
   return value;
 }
 
+function storedLocalized(
+  localized: ReturnType<typeof recipe>["translations"]["fr"],
+  servings: { quantity: number; unit: string } | null = null,
+) {
+  return {
+    ...localized,
+    sections: localized.sections.map((section) => ({
+      title: section.title,
+      steps: section.steps.map((step) => step.text),
+      stepDetails: section.steps,
+    })),
+    servings,
+  };
+}
+
 async function uploadRecipeImage(t: ReturnType<typeof convexTest>) {
   return t.run((ctx) =>
     ctx.storage.store(new Blob(["recipe-image"], { type: "image/jpeg" })),
@@ -46,6 +83,87 @@ async function uploadRecipeImage(t: ReturnType<typeof convexTest>) {
 }
 
 describe("recipe working drafts", () => {
+  test("legacy saves preserve existing step ingredient metadata", async () => {
+    const t = convexTest(schema, modules);
+    const content = recipe("Associations préservées");
+    content.translations.fr.sections[0].steps[0].ingredientUses = [
+      { ingredientId: "ingredient-flour" },
+    ];
+    const created = await t.mutation(api.recipes.create, {
+      recipe: content,
+      adminPassword: password,
+    });
+    const legacyNormalized = recipe("Titre modifié par un ancien onglet");
+    await t.mutation(api.recipes.saveDraft, {
+      slug: created.slug,
+      recipe: legacyNormalized,
+      expectedRevision: created.revision,
+      preserveStepIngredientUses: true,
+      adminPassword: password,
+    });
+
+    const editing = await t.query(api.recipes.getForEditing, {
+      slug: created.slug,
+      locale: "fr",
+      adminPassword: password,
+    });
+    expect(
+      editing?.translations.fr.sections[0].steps[0].ingredientUses,
+    ).toEqual([{ ingredientId: "ingredient-flour" }]);
+  });
+
+  test("legacy saves reconcile duplicate ingredients and steps one-to-one", async () => {
+    const t = convexTest(schema, modules);
+    const content = recipe("Doublons préservés");
+    content.translations.fr.ingredients.push({
+      id: "ingredient-flour-2",
+      name: "Farine",
+      quantity: "200",
+      unit: "g",
+      notes: "",
+    });
+    content.translations.fr.sections[0].steps.push({
+      id: "step-mix-2",
+      text: "Mélanger puis cuire.",
+      ingredientUses: [{ ingredientId: "ingredient-flour-2" }],
+    });
+    const created = await t.mutation(api.recipes.create, {
+      recipe: content,
+      adminPassword: password,
+    });
+    const legacyNormalized = structuredClone(content);
+    legacyNormalized.translations.fr.ingredients[0].id = "legacy-main-0";
+    legacyNormalized.translations.fr.ingredients[1].id = "legacy-main-1";
+    legacyNormalized.translations.fr.sections[0].steps[0].id = "legacy-step-0";
+    legacyNormalized.translations.fr.sections[0].steps[1].id = "legacy-step-1";
+    legacyNormalized.translations.fr.sections[0].steps.forEach((step) => {
+      step.ingredientUses = [];
+    });
+
+    await t.mutation(api.recipes.saveDraft, {
+      slug: created.slug,
+      recipe: legacyNormalized,
+      expectedRevision: created.revision,
+      preserveStepIngredientUses: true,
+      adminPassword: password,
+    });
+
+    const editing = await t.query(api.recipes.getForEditing, {
+      slug: created.slug,
+      locale: "fr",
+      adminPassword: password,
+    });
+    expect(
+      editing?.translations.fr.ingredients.map((ingredient) => ingredient.id),
+    ).toEqual(["ingredient-flour", "ingredient-flour-2"]);
+    expect(
+      editing?.translations.fr.sections[0].steps.map((step) => step.id),
+    ).toEqual(["step-mix", "step-mix-2"]);
+    expect(
+      editing?.translations.fr.sections[0].steps[1].ingredientUses,
+    ).toEqual([{ ingredientId: "ingredient-flour-2" }]);
+  });
+
   test("targeted seeding inserts only the requested recipe", async () => {
     const t = convexTest(schema, modules);
 
@@ -453,8 +571,8 @@ describe("recipe working drafts", () => {
     const t = convexTest(schema, modules);
     const content = recipe("Migration des catégories");
     const storedTranslations = {
-      fr: { ...content.translations.fr, servings: null },
-      en: { ...content.translations.en, servings: null },
+      fr: storedLocalized(content.translations.fr),
+      en: storedLocalized(content.translations.en),
     };
     await t.run(async (ctx) => {
       const recipeId = await ctx.db.insert("recipes", {
@@ -545,8 +663,14 @@ describe("recipe working drafts", () => {
     const { yieldLabel: _enYieldLabel, ...legacyEnglish } =
       content.translations.en;
     const legacyTranslations = {
-      fr: { ...legacyFrench, servings: { quantity: 20, unit: "environ" } },
-      en: { ...legacyEnglish, servings: { quantity: 20, unit: "about" } },
+      fr: storedLocalized(
+        legacyFrench as ReturnType<typeof recipe>["translations"]["fr"],
+        { quantity: 20, unit: "environ" },
+      ),
+      en: storedLocalized(
+        legacyEnglish as ReturnType<typeof recipe>["translations"]["fr"],
+        { quantity: 20, unit: "about" },
+      ),
     };
     await t.run(async (ctx) => {
       await ctx.db.insert("recipes", {
@@ -587,8 +711,8 @@ describe("recipe working drafts", () => {
         defaultLocale: content.defaultLocale,
         referenceServings: content.referenceServings,
         translations: {
-          fr: { ...content.translations.fr, servings: null },
-          en: { ...content.translations.en, servings: null },
+          fr: storedLocalized(content.translations.fr),
+          en: storedLocalized(content.translations.en),
         },
         tags: ["dessert", "famille"],
         status: "published",
@@ -1208,7 +1332,11 @@ describe("recipe working drafts", () => {
       { length: 50 },
       (_, sectionIndex) => ({
         title: `Section ${sectionIndex}`,
-        steps: Array.from({ length: 6 }, () => "é".repeat(2_000)),
+        steps: Array.from({ length: 6 }, (_, stepIndex) => ({
+          id: `step-${sectionIndex}-${stepIndex}`,
+          text: "é".repeat(2_000),
+          ingredientUses: [],
+        })),
       }),
     );
 
@@ -1229,7 +1357,11 @@ describe("recipe working drafts", () => {
       sections: [
         {
           title: "Préparation",
-          steps: Array.from({ length: 23 }, () => "x".repeat(2_000)),
+          steps: Array.from({ length: 22 }, (_, stepIndex) => ({
+            id: `step-long-${stepIndex}`,
+            text: "x".repeat(2_000),
+            ingredientUses: [],
+          })),
         },
       ],
     };
@@ -1297,8 +1429,14 @@ describe("recipe working drafts", () => {
         defaultLocale: content.defaultLocale,
         referenceServings: content.referenceServings,
         translations: {
-          fr: { ...legacyFrench, servings: { quantity: 6, unit: "personnes" } },
-          en: { ...legacyEnglish, servings: { quantity: 6, unit: "people" } },
+          fr: storedLocalized(
+            legacyFrench as ReturnType<typeof recipe>["translations"]["fr"],
+            { quantity: 6, unit: "personnes" },
+          ),
+          en: storedLocalized(
+            legacyEnglish as ReturnType<typeof recipe>["translations"]["fr"],
+            { quantity: 6, unit: "people" },
+          ),
         },
         categories: content.categories,
         status: "published",

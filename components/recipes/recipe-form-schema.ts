@@ -12,6 +12,7 @@ import {
   RECIPE_CATEGORIES,
   resolveRecipeCategories,
 } from "@/lib/recipe-categories";
+import { legacyIngredientId, legacyStepId } from "@/lib/recipe-item-ids";
 
 const limits = RECIPE_FIELD_LIMITS;
 const recipeSlugSchema = z
@@ -20,15 +21,32 @@ const recipeSlugSchema = z
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Utilise le slug exact de la recette.");
 
 const ingredientSchema = z.strictObject({
+  id: z.string().min(1).max(limits.shortValue),
   name: z.string().max(limits.ingredientName),
   quantity: z.string().max(limits.shortValue),
   unit: z.string().max(limits.shortValue),
   notes: z.string().max(limits.longText),
 });
 
+const stepIngredientUseSchema = z.strictObject({
+  ingredientId: z.string().min(1).max(limits.shortValue),
+  amount: z
+    .strictObject({
+      quantity: z.string().max(limits.shortValue),
+      unit: z.string().max(limits.shortValue),
+    })
+    .optional(),
+});
+
+const recipeStepSchema = z.strictObject({
+  id: z.string().min(1).max(limits.shortValue),
+  text: z.string().max(limits.longText),
+  ingredientUses: z.array(stepIngredientUseSchema).max(200),
+});
+
 const sectionSchema = z.strictObject({
   title: z.string().max(limits.title),
-  steps: z.array(z.string().max(limits.longText)).max(100),
+  steps: z.array(recipeStepSchema).max(100),
 });
 
 const subRecipeSchema = z.strictObject({
@@ -76,6 +94,66 @@ const editableRecipeDraftObject = z.strictObject({
 
 export const editableRecipeDraftSchema = editableRecipeDraftObject.superRefine(
   (recipe, ctx) => {
+    for (const locale of ["fr", "en"] as const) {
+      const localized = recipe.translations[locale];
+      const ingredients = [
+        ...localized.ingredients,
+        ...localized.subRecipes.flatMap((subRecipe) => subRecipe.ingredients),
+      ];
+      const ids = new Set<string>();
+      const stepIds = new Set<string>();
+      for (const ingredient of ingredients) {
+        if (ids.has(ingredient.id)) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Chaque ingrédient doit avoir un identifiant unique.",
+            path: ["translations", locale, "ingredients"],
+          });
+        }
+        ids.add(ingredient.id);
+      }
+      for (const [sectionIndex, section] of localized.sections.entries()) {
+        for (const [stepIndex, step] of section.steps.entries()) {
+          if (stepIds.has(step.id)) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: "Chaque étape doit avoir un identifiant unique.",
+              path: [
+                "translations",
+                locale,
+                "sections",
+                sectionIndex,
+                "steps",
+                stepIndex,
+                "id",
+              ],
+            });
+          }
+          stepIds.add(step.id);
+          const used = new Set<string>();
+          for (const use of step.ingredientUses) {
+            if (!ids.has(use.ingredientId) || used.has(use.ingredientId)) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: !ids.has(use.ingredientId)
+                  ? "Cet ingrédient n’existe plus."
+                  : "Un ingrédient ne peut apparaître qu’une fois par étape.",
+                path: [
+                  "translations",
+                  locale,
+                  "sections",
+                  sectionIndex,
+                  "steps",
+                  stepIndex,
+                  "ingredientUses",
+                ],
+              });
+            }
+            used.add(use.ingredientId);
+          }
+        }
+      }
+    }
     try {
       assertRecipeDraftBytes(recipe);
     } catch {
@@ -97,6 +175,21 @@ const legacyLocalizedRecipeSchema = localizedRecipeSchema.extend({
     .default([]),
 });
 
+const legacyIngredientSchema = ingredientSchema.omit({ id: true });
+const legacySectionSchema = z.strictObject({
+  title: z.string().max(limits.title),
+  steps: z.array(z.string().max(limits.longText)).max(100),
+});
+const legacySubRecipeSchema = z.strictObject({
+  title: z.string().max(limits.title),
+  ingredients: z.array(legacyIngredientSchema).max(100),
+});
+const trulyLegacyLocalizedRecipeSchema = legacyLocalizedRecipeSchema.extend({
+  ingredients: z.array(legacyIngredientSchema).max(200),
+  sections: z.array(legacySectionSchema).max(50),
+  subRecipes: z.array(legacySubRecipeSchema).max(25),
+});
+
 const preMarmitonRecipeDraftSchema = editableRecipeDraftObject
   .omit({
     relatedRecipeSlugs: true,
@@ -109,8 +202,14 @@ const preMarmitonRecipeDraftSchema = editableRecipeDraftObject
       .optional()
       .default([]),
     translations: z.strictObject({
-      fr: legacyLocalizedRecipeSchema,
-      en: legacyLocalizedRecipeSchema,
+      fr: z.union([
+        legacyLocalizedRecipeSchema,
+        trulyLegacyLocalizedRecipeSchema,
+      ]),
+      en: z.union([
+        legacyLocalizedRecipeSchema,
+        trulyLegacyLocalizedRecipeSchema,
+      ]),
     }),
   });
 
@@ -131,9 +230,20 @@ export const compatibleRecipeDraftSchema = z
     legacyRecipeDraftSchema,
   ])
   .transform((recipe) => {
-    if (!("tags" in recipe)) return recipe;
-    const { tags, status: _status, ...content } = recipe;
-    return { ...content, ...resolveRecipeCategories({ tags }) };
+    const content =
+      "tags" in recipe
+        ? (() => {
+            const { tags, status: _status, ...rest } = recipe;
+            return { ...rest, ...resolveRecipeCategories({ tags }) };
+          })()
+        : recipe;
+    return {
+      ...content,
+      translations: {
+        fr: normalizeLegacyLocalizedRecipe(content.translations.fr),
+        en: normalizeLegacyLocalizedRecipe(content.translations.en),
+      },
+    };
   })
   .pipe(editableRecipeDraftSchema);
 
@@ -141,7 +251,44 @@ export type RecipeDraftFormInput = z.input<typeof editableRecipeDraftSchema>;
 export type RecipeDraftPayload = z.output<typeof editableRecipeDraftSchema>;
 
 const recipeFieldPathPattern =
-  /^(defaultLocale|referenceServings|relatedRecipeSlugs(?:\.\d+)?|categories(?:\.\d+)?|legacyCategoryLabels(?:\.\d+)?|translations\.(fr|en)\.(title|author|description|yieldLabel|prepTime|cookTime|restTime|totalTime|timeLabel|temperature|equipment\.\d+|ingredients\.\d+\.(name|quantity|unit|notes)|sections\.\d+\.(title|steps\.\d+)|subRecipes\.\d+\.(title|ingredients\.\d+\.(name|quantity|unit|notes))|notes\.\d+))$/;
+  /^(defaultLocale|referenceServings|relatedRecipeSlugs(?:\.\d+)?|categories(?:\.\d+)?|legacyCategoryLabels(?:\.\d+)?|translations\.(fr|en)\.(title|author|description|yieldLabel|prepTime|cookTime|restTime|totalTime|timeLabel|temperature|equipment\.\d+|ingredients\.\d+\.(id|name|quantity|unit|notes)|sections\.\d+\.(title|steps\.\d+\.(id|text|ingredientUses(?:\.\d+\.(ingredientId|amount\.(quantity|unit)))?))|subRecipes\.\d+\.(title|ingredients\.\d+\.(id|name|quantity|unit|notes))|notes\.\d+))$/;
+
+function normalizeLegacyLocalizedRecipe(
+  localized:
+    | z.infer<typeof legacyLocalizedRecipeSchema>
+    | z.infer<typeof trulyLegacyLocalizedRecipeSchema>,
+) {
+  return {
+    ...localized,
+    ingredients: localized.ingredients.map((ingredient, index) => ({
+      ...ingredient,
+      id:
+        "id" in ingredient ? ingredient.id : legacyIngredientId("main", index),
+    })),
+    sections: localized.sections.map((section, sectionIndex) => ({
+      ...section,
+      steps: section.steps.map((step, stepIndex) =>
+        typeof step === "string"
+          ? {
+              id: legacyStepId(sectionIndex, stepIndex),
+              text: step,
+              ingredientUses: [],
+            }
+          : step,
+      ),
+    })),
+    subRecipes: localized.subRecipes.map((subRecipe, subRecipeIndex) => ({
+      ...subRecipe,
+      ingredients: subRecipe.ingredients.map((ingredient, index) => ({
+        ...ingredient,
+        id:
+          "id" in ingredient
+            ? ingredient.id
+            : legacyIngredientId(`sub-${subRecipeIndex}`, index),
+      })),
+    })),
+  };
+}
 
 /** The only runtime boundary allowed to turn a server issue path into an RHF path. */
 export function toRecipeFieldPath(

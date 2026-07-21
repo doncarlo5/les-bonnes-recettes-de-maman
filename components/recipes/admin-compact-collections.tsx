@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   useFieldArray,
+  useFormContext,
   useWatch,
   type Control,
   type FieldArrayPath,
@@ -33,16 +34,25 @@ import {
 import { Field, FieldLabel, FieldSet, FieldTitle } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { createRecipeItemId } from "@/lib/recipe-item-ids";
+import { countIngredientReferences, removeIngredientReferences } from "@/lib/recipe-step-references";
 import {
   SortableCollection,
   SortableEditorRow,
 } from "./admin-sortable-collection";
 import type { RecipeDraftFormInput } from "./recipe-form-schema";
-import type { Ingredient, RecipeSection } from "./types";
+import type { Ingredient, RecipeSection, RecipeStep } from "./types";
+import { StepIngredientUsesEditor } from "./step-ingredient-uses-editor";
 
 type RecipeControl = Control<RecipeDraftFormInput>;
 type RecipeRegister = UseFormRegister<RecipeDraftFormInput>;
-const blankIngredient = { name: "", quantity: "", unit: "", notes: "" };
+const newIngredient = () => ({
+  id: createRecipeItemId("ingredient"),
+  name: "",
+  quantity: "",
+  unit: "",
+  notes: "",
+});
 
 type IngredientArrayPath = Extract<
   FieldArrayPath<RecipeDraftFormInput>,
@@ -82,6 +92,9 @@ export function CompactIngredientsEditor({
   register: RecipeRegister;
 }) {
   const { append, fields, move, remove } = useFieldArray({ control, name });
+  const form = useFormContext<RecipeDraftFormInput>();
+  const localeKey = name.includes(".en.") ? "en" : "fr";
+  const sections = useWatch({ control, name: `translations.${localeKey}.sections` });
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const values = (useWatch({ control, name }) ?? []) as Ingredient[];
   useDeepLinkedIndex(name, fields.length, setEditingIndex);
@@ -97,7 +110,7 @@ export function CompactIngredientsEditor({
         title="Ingrédients"
         label="Ajouter un ingrédient"
         onAdd={() => {
-          append({ ...blankIngredient });
+          append(newIngredient());
           setEditingIndex(fields.length);
         }}
       />
@@ -107,7 +120,7 @@ export function CompactIngredientsEditor({
         getLabel={(index) => values[index]?.name || `Ingrédient ${index + 1}`}
         onMove={move}
         renderItem={(id, index) => {
-          const ingredient = values[index] ?? blankIngredient;
+          const ingredient = values[index] ?? newIngredient();
           const summary = [
             ingredient.quantity,
             ingredient.unit,
@@ -199,8 +212,24 @@ export function CompactIngredientsEditor({
               <DrawerFooter className="recipe-drawer-footer recipe-compact-action-bar shrink-0 pb-[max(1rem,env(safe-area-inset-bottom))]">
                 <DestructiveConfirmButton
                   label="Supprimer cet ingrédient"
-                  description="Supprimer cet ingrédient ?"
+                  description={(() => {
+                    const count = countIngredientReferences(
+                      sections ?? [],
+                      [values[editingIndex]?.id].filter(Boolean) as string[],
+                    );
+                    return count
+                      ? `Cet ingrédient est affiché dans ${count} étape${count > 1 ? "s" : ""}. Il sera également retiré de ces étapes.`
+                      : "Supprimer cet ingrédient ?";
+                  })()}
                   onConfirm={() => {
+                    const ingredientId = values[editingIndex]?.id;
+                    if (ingredientId) {
+                      form.setValue(
+                        `translations.${localeKey}.sections`,
+                        removeIngredientReferences(sections ?? [], [ingredientId]),
+                        { shouldDirty: true, shouldValidate: true },
+                      );
+                    }
                     remove(editingIndex);
                     setEditingIndex(null);
                   }}
@@ -247,7 +276,10 @@ export function CompactSectionsEditor({
         title="Sections"
         label="Ajouter une section"
         onAdd={() => {
-          append({ title: "", steps: [""] });
+          append({
+            title: "",
+            steps: [{ id: createRecipeItemId("step"), text: "", ingredientUses: [] }],
+          });
           setEditingIndex(fields.length);
         }}
       />
@@ -274,7 +306,7 @@ export function CompactSectionsEditor({
                     {section.title || `Section ${index + 1}`}
                   </span>
                   <span className="type-meta block text-muted-foreground">
-                    {section.steps?.filter((step: string) => step.trim())
+                    {section.steps?.filter((step) => step.text.trim())
                       .length ?? 0}{" "}
                     étapes
                   </span>
@@ -354,7 +386,8 @@ function CompactStepsEditor({
   onEditingChange: (isEditing: boolean) => void;
 }) {
   const { append, fields, move, remove } = useFieldArray({ control, name });
-  const values = (useWatch({ control, name }) ?? []) as string[];
+  const values = (useWatch({ control, name }) ?? []) as RecipeStep[];
+  const localeKey = name.includes(".en.") ? "en" : "fr";
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   useDeepLinkedIndex(name, fields.length, setEditingIndex);
   useEffect(() => {
@@ -375,7 +408,7 @@ function CompactStepsEditor({
           variant="outline"
           className="min-h-11"
           onClick={() => {
-            append("" as never);
+            append({ id: createRecipeItemId("step"), text: "", ingredientUses: [] });
             setEditingIndex(fields.length);
           }}
         >
@@ -400,9 +433,9 @@ function CompactStepsEditor({
               </span>
               <span
                 className="line-clamp-2 flex-1 text-sm font-semibold"
-                title={values[index] || `Étape ${index + 1}`}
+                title={values[index]?.text || `Étape ${index + 1}`}
               >
-                {values[index] || `Étape ${index + 1}`}
+                {values[index]?.text || `Étape ${index + 1}`}
               </span>
               <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
             </span>
@@ -417,7 +450,11 @@ function CompactStepsEditor({
           <Textarea
             autoFocus
             placeholder={`Étape ${editingIndex + 1}`}
-            {...register(childFieldPath(name, `${editingIndex}`))}
+            {...register(`${name}.${editingIndex}.text` as FieldPath<RecipeDraftFormInput>)}
+          />
+          <StepIngredientUsesEditor
+            localeKey={localeKey}
+            stepPath={`${name}.${editingIndex}` as `translations.${"fr" | "en"}.sections.${number}.steps.${number}`}
           />
           <div className="recipe-compact-action-bar gap-2">
             <DestructiveConfirmButton

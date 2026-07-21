@@ -9,6 +9,7 @@ import {
   FormProvider,
   useFieldArray,
   useForm,
+  useFormContext,
   useWatch,
   type Control,
   type FieldErrors,
@@ -116,12 +117,15 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Textarea } from "@/components/ui/textarea";
+import { createRecipeItemId } from "@/lib/recipe-item-ids";
+import { countIngredientReferences, removeIngredientReferences } from "@/lib/recipe-step-references";
 import {
   editableRecipeDraftSchema,
   parseOptionalNumberInput,
   type RecipeDraftFormInput,
   type RecipeDraftPayload,
 } from "./recipe-form-schema";
+import { StepIngredientUsesEditor } from "./step-ingredient-uses-editor";
 import {
   AdminRecipeImagePanel,
   type RecipeImageMutation,
@@ -234,6 +238,7 @@ function primitiveChildFieldPath(
 }
 
 const blankIngredient = {
+  id: "ingredient-initial",
   name: "",
   quantity: "",
   unit: "",
@@ -256,7 +261,7 @@ const blankLocalizedRecipe = {
   sections: [
     {
       title: "",
-      steps: [""],
+      steps: [{ id: "step-initial", text: "", ingredientUses: [] }],
     },
   ],
   subRecipes: [],
@@ -1849,12 +1854,37 @@ function IngredientsArray({
     control,
     name: recipeFieldArrayPath(name),
   });
+  const form = useFormContext<RecipeDraftFormInput>();
+  const localeKey = name.includes(".en.") ? "en" : "fr";
+  const values = (useWatch({ control, name: recipeFieldArrayPath(name) }) ?? []) as Array<{ id: string }>;
+  const sections = useWatch({ control, name: `translations.${localeKey}.sections` });
+
+  function removeIngredient(index: number) {
+    const ingredientId = values[index]?.id;
+    const count = ingredientId
+      ? countIngredientReferences(sections ?? [], [ingredientId])
+      : 0;
+    if (count && !window.confirm(
+      `Cet ingrédient est affiché dans ${count} étape${count > 1 ? "s" : ""}. Le supprimer et le retirer de ces étapes ?`,
+    )) return;
+    if (ingredientId) {
+      form.setValue(
+        `translations.${localeKey}.sections`,
+        removeIngredientReferences(sections ?? [], [ingredientId]),
+        { shouldDirty: true, shouldValidate: true },
+      );
+    }
+    remove(index);
+  }
 
   return (
     <FieldSet>
       <ArrayHeader
         title={title}
-        onAdd={() => append({ ...blankIngredient })}
+        onAdd={() => append({
+          ...blankIngredient,
+          id: createRecipeItemId("ingredient"),
+        })}
         addLabel="Ajouter un ingredient"
       />
       <SortableCollection
@@ -1889,7 +1919,7 @@ function IngredientsArray({
                 index={index}
                 length={fields.length}
                 onMove={move}
-                onRemove={remove}
+                onRemove={removeIngredient}
               />
             </div>
           </SortableInlineRow>
@@ -1917,7 +1947,10 @@ function SectionsArray({
     <FieldSet>
       <ArrayHeader
         title="Sections"
-        onAdd={() => append({ title: "", steps: [""] })}
+        onAdd={() => append({
+          title: "",
+          steps: [{ id: createRecipeItemId("step"), text: "", ingredientUses: [] }],
+        })}
         addLabel="Ajouter une section"
       />
       <SortableCollection
@@ -1970,6 +2003,7 @@ function StepsArray({
     control,
     name: primitiveArrayPath(name),
   });
+  const localeKey = name.includes(".en.") ? "en" : "fr";
 
   return (
     <div className="flex flex-col gap-2">
@@ -1979,7 +2013,11 @@ function StepsArray({
           type="button"
           variant="outline"
           size="sm"
-          onClick={() => append("" as never)}
+          onClick={() => append({
+            id: createRecipeItemId("step"),
+            text: "",
+            ingredientUses: [],
+          } as never)}
         >
           <ListPlus data-icon="inline-start" />
           Ajouter
@@ -1999,7 +2037,11 @@ function StepsArray({
             <div className="grid gap-2 md:grid-cols-[1fr_auto]">
               <Textarea
                 placeholder={`Etape ${index + 1}`}
-                {...register(primitiveChildFieldPath(name, index))}
+                {...register(`${name}.${index}.text` as RecipeFieldName)}
+              />
+              <StepIngredientUsesEditor
+                localeKey={localeKey}
+                stepPath={`${name}.${index}` as `translations.${"fr" | "en"}.sections.${number}.steps.${number}`}
               />
               <ArrayControls
                 index={index}
@@ -2028,13 +2070,39 @@ function SubRecipesArray({
     control,
     name: recipeFieldArrayPath(name),
   });
+  const form = useFormContext<RecipeDraftFormInput>();
+  const localeKey = name.includes(".en.") ? "en" : "fr";
+  const subRecipes = useWatch({ control, name: recipeFieldArrayPath(name) }) as Array<{
+    ingredients: Array<{ id: string }>;
+  }> | undefined;
+  const sections = useWatch({ control, name: `translations.${localeKey}.sections` });
+
+  function removeSubRecipe(index: number) {
+    const ingredientIds = subRecipes?.[index]?.ingredients.map((ingredient) => ingredient.id) ?? [];
+    const count = countIngredientReferences(sections ?? [], ingredientIds);
+    if (count && !window.confirm(
+      `Les ingrédients de cette sous-recette sont affichés dans ${count} étape${count > 1 ? "s" : ""}. Supprimer la sous-recette et ces références ?`,
+    )) return;
+    form.setValue(
+      `translations.${localeKey}.sections`,
+      removeIngredientReferences(sections ?? [], ingredientIds),
+      { shouldDirty: true, shouldValidate: true },
+    );
+    remove(index);
+  }
 
   return (
     <FieldSet>
       <ArrayHeader
         title="Sous-recettes"
         onAdd={() =>
-          append({ title: "", ingredients: [{ ...blankIngredient }] })
+          append({
+            title: "",
+            ingredients: [{
+              ...blankIngredient,
+              id: createRecipeItemId("ingredient"),
+            }],
+          })
         }
         addLabel="Ajouter une sous-recette"
       />
@@ -2053,7 +2121,7 @@ function SubRecipesArray({
                 index={index}
                 length={fields.length}
                 onMove={move}
-                onRemove={remove}
+                onRemove={removeSubRecipe}
               />
             </div>
             <IngredientsArray

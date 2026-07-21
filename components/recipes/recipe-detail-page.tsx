@@ -22,6 +22,7 @@ import { CookModeEntry } from "./cook-mode-entry";
 import { RecipeIngredientsPanel } from "./recipe-ingredients-panel";
 import { RecipeComments } from "./recipe-comments";
 import type { Recipe } from "./types";
+import { StepIngredients } from "./step-ingredients";
 
 const defaultRecipeImageUrl =
   "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=1400&q=85";
@@ -164,13 +165,22 @@ export function RecipePresentation({
                     <ol className="space-y-4 lg:space-y-6">
                       {section.steps.map((step, index) => (
                         <li
-                          key={step}
+                          key={step.id}
                           className="type-body-spacious grid grid-cols-[2rem_1fr] gap-3 text-foreground/90 lg:grid-cols-[2.5rem_1fr] lg:gap-5"
                         >
                           <span className="type-meta mt-0.5 flex size-7 items-center justify-center rounded-full bg-primary/10 text-primary lg:mt-1 lg:size-9">
                             {index + 1}
                           </span>
-                          <span>{step}</span>
+                          <div>
+                            <span>{step.text}</span>
+                            <StepIngredients
+                              locale={locale}
+                              label={dict.recipeDetail.forThisStep}
+                              recipe={recipe}
+                              step={step}
+                              factor={servingsFactor}
+                            />
+                          </div>
                         </li>
                       ))}
                     </ol>

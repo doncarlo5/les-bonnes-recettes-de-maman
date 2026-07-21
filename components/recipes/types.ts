@@ -3,15 +3,27 @@ import type { RecipeReadiness } from "@/lib/recipe-admin-domain";
 import type { RecipeCategory } from "@/lib/recipe-categories";
 
 export type Ingredient = {
+  id: string;
   name: string;
   quantity: string;
   unit: string;
   notes: string;
 };
 
+export type StepIngredientUse = {
+  ingredientId: string;
+  amount?: { quantity: string; unit: string };
+};
+
+export type RecipeStep = {
+  id: string;
+  text: string;
+  ingredientUses: StepIngredientUse[];
+};
+
 export type RecipeSection = {
   title: string;
-  steps: string[];
+  steps: RecipeStep[];
 };
 
 export type SubRecipe = {

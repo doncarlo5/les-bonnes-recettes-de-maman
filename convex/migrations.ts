@@ -4,6 +4,7 @@ import type { DataModel } from "./_generated/dataModel";
 import { backfillYieldLabels } from "../lib/recipe-yield";
 import { resolveReferenceServings } from "../lib/recipe-servings";
 import { resolveRecipeCategories } from "../lib/recipe-categories";
+import { backfillLocalizedStepIngredients } from "../lib/recipe-step-migration";
 
 export const migrations = new Migrations<DataModel>(components.migrations);
 
@@ -80,6 +81,33 @@ export const backfillDraftCategories = migrations.define({
 export const runCategoryBackfill = migrations.runner([
   internal.migrations.backfillRecipeCategories,
   internal.migrations.backfillDraftCategories,
+]);
+
+export const backfillRecipeStepIngredients = migrations.define({
+  table: "recipes",
+  migrateOne: (_ctx, recipe) => {
+    const fr = backfillLocalizedStepIngredients(recipe.translations.fr);
+    const en = backfillLocalizedStepIngredients(recipe.translations.en);
+    return fr === recipe.translations.fr && en === recipe.translations.en
+      ? undefined
+      : { translations: { fr, en } };
+  },
+});
+
+export const backfillDraftStepIngredients = migrations.define({
+  table: "recipeDrafts",
+  migrateOne: (_ctx, draft) => {
+    const fr = backfillLocalizedStepIngredients(draft.translations.fr);
+    const en = backfillLocalizedStepIngredients(draft.translations.en);
+    return fr === draft.translations.fr && en === draft.translations.en
+      ? undefined
+      : { translations: { fr, en } };
+  },
+});
+
+export const runStepIngredientBackfill = migrations.runner([
+  internal.migrations.backfillRecipeStepIngredients,
+  internal.migrations.backfillDraftStepIngredients,
 ]);
 
 export const run = migrations.runner();

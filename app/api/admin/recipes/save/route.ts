@@ -54,6 +54,7 @@ export async function POST(request: NextRequest) {
             recipe: validation.data,
             expectedRevision: body.expectedRevision,
             force: body.force,
+            preserveStepIngredientUses: validation.isLegacyStepPayload,
             adminPassword: adminAccess.adminPassword,
           });
 

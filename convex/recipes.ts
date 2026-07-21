@@ -26,6 +26,7 @@ import {
   toLegacyTags,
   type RecipeCategory,
 } from "../lib/recipe-categories";
+import { legacyIngredientId, legacyStepId } from "../lib/recipe-item-ids";
 
 declare const process: {
   env: {
@@ -47,15 +48,27 @@ type RecipeDoc = Doc<"recipes">;
 type RecipeDraftDoc = Doc<"recipeDrafts">;
 
 const ingredientValidator = v.object({
+  id: v.string(),
   name: v.string(),
   quantity: v.string(),
   unit: v.string(),
   notes: v.string(),
 });
 
+const stepIngredientUseValidator = v.object({
+  ingredientId: v.string(),
+  amount: v.optional(v.object({ quantity: v.string(), unit: v.string() })),
+});
+
+const recipeStepValidator = v.object({
+  id: v.string(),
+  text: v.string(),
+  ingredientUses: v.array(stepIngredientUseValidator),
+});
+
 const sectionValidator = v.object({
   title: v.string(),
-  steps: v.array(v.string()),
+  steps: v.array(recipeStepValidator),
 });
 
 const subRecipeValidator = v.object({
@@ -412,12 +425,12 @@ export const saveDraft = mutation({
     recipe: draftContentValidator,
     expectedRevision: v.number(),
     force: v.optional(v.boolean()),
+    preserveStepIngredientUses: v.optional(v.boolean()),
     adminPassword: v.string(),
   },
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
     const normalizedRecipe = normalizeCategoryPayload(args.recipe);
-    assertRecipeBounds(normalizedRecipe);
 
     const existing = await ctx.db
       .query("recipes")
@@ -441,17 +454,30 @@ export const saveDraft = mutation({
 
     const revision = currentRevision + 1;
     const savedAt = Date.now();
+    const effectiveRecipe = args.preserveStepIngredientUses
+      ? {
+          ...normalizedRecipe,
+          translations: mergeLegacyStepMetadata(
+            normalizedRecipe.translations,
+            toEditableTranslations(
+              (currentDraft ?? existing).translations,
+              existing.slug,
+            ),
+          ),
+        }
+      : normalizedRecipe;
+    assertRecipeBounds(effectiveRecipe);
 
     const storedTranslations = toStoredTranslations(
-      normalizedRecipe.translations,
+      effectiveRecipe.translations,
       currentDraft?.translations ?? existing.translations,
     );
     const contentPatch = {
-      defaultLocale: normalizedRecipe.defaultLocale,
-      referenceServings: normalizedRecipe.referenceServings,
-      relatedRecipeSlugs: normalizedRecipe.relatedRecipeSlugs,
+      defaultLocale: effectiveRecipe.defaultLocale,
+      referenceServings: effectiveRecipe.referenceServings,
+      relatedRecipeSlugs: effectiveRecipe.relatedRecipeSlugs,
       translations: storedTranslations,
-      ...toStoredCategoryFields(normalizedRecipe),
+      ...toStoredCategoryFields(effectiveRecipe),
       revision,
       updatedAt: savedAt,
     };
@@ -1122,6 +1148,11 @@ async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
 
   const translation = recipe.translations[locale];
   const { servings, yieldLabel, ...content } = translation;
+  const publicContent = toEditableLocalizedRecipe(
+    translation,
+    locale,
+    recipe.slug,
+  );
   const storedHeroImageUrl = recipe.heroImageStorageId
     ? await ctx.storage.getUrl(recipe.heroImageStorageId)
     : null;
@@ -1158,7 +1189,14 @@ async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
     relatedRecipes,
     ...resolveRecipeCategories(recipe),
     status: recipe.status,
-    ...content,
+    ...publicContent,
+    // Rollout 1 remains additive: old clients keep reading string steps while
+    // new clients prefer stepDetails. Rollout 2 can make stepDetails canonical.
+    sections: content.sections.map((section, sectionIndex) => ({
+      title: section.title,
+      steps: section.steps,
+      stepDetails: publicContent.sections[sectionIndex]?.steps ?? [],
+    })),
     restTime: content.restTime ?? "",
     equipment: content.equipment ?? [],
     yieldLabel: resolveYieldLabel({
@@ -1210,8 +1248,38 @@ function getReferenceServings(
 type StoredLocalizedRecipe = RecipeDoc["translations"][Locale];
 type EditableLocalizedRecipe = Omit<
   StoredLocalizedRecipe,
-  "servings" | "yieldLabel" | "restTime" | "equipment"
-> & { yieldLabel: string; restTime: string; equipment: string[] };
+  | "servings"
+  | "yieldLabel"
+  | "restTime"
+  | "equipment"
+  | "ingredients"
+  | "sections"
+  | "subRecipes"
+> & {
+  yieldLabel: string;
+  restTime: string;
+  equipment: string[];
+  ingredients: Array<
+    StoredLocalizedRecipe["ingredients"][number] & { id: string }
+  >;
+  sections: Array<{
+    title: string;
+    steps: Array<{
+      id: string;
+      text: string;
+      ingredientUses: Array<{
+        ingredientId: string;
+        amount?: { quantity: string; unit: string };
+      }>;
+    }>;
+  }>;
+  subRecipes: Array<{
+    title: string;
+    ingredients: Array<
+      StoredLocalizedRecipe["ingredients"][number] & { id: string }
+    >;
+  }>;
+};
 type EditableTranslations = Record<Locale, EditableLocalizedRecipe>;
 
 function toEditableTranslations(
@@ -1254,6 +1322,27 @@ function toEditableLocalizedRecipe(
   const { servings, yieldLabel, ...content } = localized;
   return {
     ...content,
+    ingredients: content.ingredients.map((ingredient, index) => ({
+      ...ingredient,
+      id: ingredient.id ?? legacyIngredientId("main", index),
+    })),
+    sections: content.sections.map((section, sectionIndex) => ({
+      title: section.title,
+      steps:
+        section.stepDetails ??
+        section.steps.map((text, stepIndex) => ({
+          id: legacyStepId(sectionIndex, stepIndex),
+          text,
+          ingredientUses: [],
+        })),
+    })),
+    subRecipes: content.subRecipes.map((subRecipe, subRecipeIndex) => ({
+      ...subRecipe,
+      ingredients: subRecipe.ingredients.map((ingredient, index) => ({
+        ...ingredient,
+        id: ingredient.id ?? legacyIngredientId(`sub-${subRecipeIndex}`, index),
+      })),
+    })),
     restTime: content.restTime ?? "",
     equipment: content.equipment ?? [],
     yieldLabel: resolveYieldLabel({ locale, slug, yieldLabel, servings }),
@@ -1265,19 +1354,121 @@ function toStoredTranslations(
   legacyTranslations?: RecipeDoc["translations"],
 ): RecipeDoc["translations"] {
   return {
-    fr: {
-      ...translations.fr,
-      restTime: translations.fr.restTime ?? "",
-      equipment: translations.fr.equipment ?? [],
-      servings: legacyTranslations?.fr.servings ?? null,
-    },
-    en: {
-      ...translations.en,
-      restTime: translations.en.restTime ?? "",
-      equipment: translations.en.equipment ?? [],
-      servings: legacyTranslations?.en.servings ?? null,
-    },
+    fr: toStoredLocalizedRecipe(
+      translations.fr,
+      legacyTranslations?.fr.servings,
+    ),
+    en: toStoredLocalizedRecipe(
+      translations.en,
+      legacyTranslations?.en.servings,
+    ),
   };
+}
+
+function toStoredLocalizedRecipe(
+  localized: EditableLocalizedRecipe,
+  servings: StoredLocalizedRecipe["servings"] | undefined,
+): StoredLocalizedRecipe {
+  return {
+    ...localized,
+    sections: localized.sections.map((section) => ({
+      title: section.title,
+      steps: section.steps.map((step) => step.text),
+      stepDetails: section.steps,
+    })),
+    restTime: localized.restTime ?? "",
+    equipment: localized.equipment ?? [],
+    servings: servings ?? null,
+  };
+}
+
+function mergeLegacyStepMetadata(
+  incoming: EditableTranslations,
+  current: EditableTranslations,
+): EditableTranslations {
+  return {
+    fr: mergeLegacyLocalizedStepMetadata(incoming.fr, current.fr),
+    en: mergeLegacyLocalizedStepMetadata(incoming.en, current.en),
+  };
+}
+
+function mergeLegacyLocalizedStepMetadata(
+  incoming: EditableLocalizedRecipe,
+  current: EditableLocalizedRecipe,
+): EditableLocalizedRecipe {
+  const mainIngredients = reconcileIngredientIds(
+    incoming.ingredients,
+    current.ingredients,
+  );
+  const subRecipes = incoming.subRecipes.map((subRecipe, subRecipeIndex) => ({
+    ...subRecipe,
+    ingredients: reconcileIngredientIds(
+      subRecipe.ingredients,
+      current.subRecipes[subRecipeIndex]?.ingredients ?? [],
+    ),
+  }));
+  const validIngredientIds = new Set([
+    ...mainIngredients.map((ingredient) => ingredient.id),
+    ...subRecipes.flatMap((subRecipe) =>
+      subRecipe.ingredients.map((ingredient) => ingredient.id),
+    ),
+  ]);
+  return {
+    ...incoming,
+    ingredients: mainIngredients,
+    subRecipes,
+    sections: incoming.sections.map((section, sectionIndex) => ({
+      ...section,
+      steps: (() => {
+        const currentSteps = current.sections[sectionIndex]?.steps ?? [];
+        const available = new Set(currentSteps.map((_, index) => index));
+        return section.steps.map((step, stepIndex) => {
+          const matchingIndex = currentSteps.findIndex(
+            (candidate, index) =>
+              available.has(index) && candidate.text === step.text,
+          );
+          const fallbackIndex = available.has(stepIndex) ? stepIndex : -1;
+          const previousIndex =
+            matchingIndex >= 0 ? matchingIndex : fallbackIndex;
+          const previous =
+            previousIndex >= 0 ? currentSteps[previousIndex] : undefined;
+          if (previousIndex >= 0) available.delete(previousIndex);
+          return previous
+            ? {
+                ...step,
+                id: previous.id,
+                ingredientUses: previous.ingredientUses.filter((use) =>
+                  validIngredientIds.has(use.ingredientId),
+                ),
+              }
+            : step;
+        });
+      })(),
+    })),
+  };
+}
+
+function reconcileIngredientIds(
+  incoming: EditableLocalizedRecipe["ingredients"],
+  current: EditableLocalizedRecipe["ingredients"],
+) {
+  const available = new Set(current.map((_, index) => index));
+  return incoming.map((ingredient, index) => {
+    const matchingIndex = current.findIndex(
+      (candidate, candidateIndex) =>
+        available.has(candidateIndex) &&
+        candidate.name === ingredient.name &&
+        candidate.quantity === ingredient.quantity &&
+        candidate.unit === ingredient.unit,
+    );
+    const fallbackIndex = available.has(index) ? index : -1;
+    const currentIndex = matchingIndex >= 0 ? matchingIndex : fallbackIndex;
+    if (currentIndex >= 0) available.delete(currentIndex);
+    return {
+      ...ingredient,
+      id: currentIndex >= 0 ? current[currentIndex].id : ingredient.id,
+    };
+  });
 }
 
 async function getAvailableSlug(ctx: MutationCtx, baseSlug: string) {
@@ -1495,6 +1686,12 @@ function assertRecipeBounds(recipe: RecipeDraftContentLike) {
       localized.subRecipes.length > 25 ||
       localized.notes.length > 100 ||
       localized.sections.some((section) => section.steps.length > 100) ||
+      localized.sections.some((section) =>
+        section.steps.some(
+          (step) =>
+            typeof step !== "string" && step.ingredientUses.length > 200,
+        ),
+      ) ||
       localized.subRecipes.some(
         (subRecipe) => subRecipe.ingredients.length > 100,
       )

@@ -36,6 +36,18 @@ _Avoid_: Tutoriel, assistant de recette, lecteur pas-à-pas
 Position et ingrédients cochés conservés localement sur l’appareil pendant l’utilisation du Mode cuisine.
 _Avoid_: Avancement de recette, statut de préparation, historique de cuisson
 
+**Ingrédient**:
+Élément alimentaire d’une Recette, principal ou rattaché à une sous-recette, défini par un nom et éventuellement une quantité, une unité et une note.
+_Avoid_: Produit, composant technique
+
+**Étape de préparation**:
+Instruction ordonnée qui décrit une action à accomplir pendant la préparation d’une Recette.
+_Avoid_: Tâche, instruction libre
+
+**Ingrédient de l’étape**:
+Référence explicite depuis une Étape de préparation vers un Ingrédient utilisé à ce moment, avec une quantité d’usage facultative qui remplace la quantité globale pour cette étape.
+_Avoid_: Ingrédient détecté, mention d’ingrédient, quantité dupliquée
+
 **Image principale de recette**:
 Image unique associee a une Recette, utilisee comme couverture dans la liste, le detail et les apercus de partage.
 _Avoid_: Galerie, illustration, image admin

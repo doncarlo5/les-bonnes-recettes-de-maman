@@ -10,8 +10,14 @@ import {
 } from "./cook-progress";
 
 const content = {
-  ingredients: [{ name: "Farine", quantity: "100", unit: "g", notes: "" }],
-  sections: [{ title: "Pâte", steps: ["Mélanger", "Cuire"] }],
+  ingredients: [{ id: "flour", name: "Farine", quantity: "100", unit: "g", notes: "" }],
+  sections: [{
+    title: "Pâte",
+    steps: [
+      { id: "mix", text: "Mélanger", ingredientUses: [] },
+      { id: "bake", text: "Cuire", ingredientUses: [] },
+    ],
+  }],
   subRecipes: [],
 };
 
@@ -71,7 +77,10 @@ describe("recipe cooking progress", () => {
     };
     const changed = {
       ...content,
-      sections: [{ title: "Pâte", steps: ["Mélanger"] }],
+      sections: [{
+        title: "Pâte",
+        steps: [{ id: "mix", text: "Mélanger", ingredientUses: [] }],
+      }],
     };
 
     expect(parseCookProgress(JSON.stringify(saved), changed)).toBeNull();

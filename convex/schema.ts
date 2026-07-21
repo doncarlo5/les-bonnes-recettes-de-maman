@@ -2,15 +2,29 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 const ingredient = v.object({
+  id: v.optional(v.string()),
   name: v.string(),
   quantity: v.string(),
   unit: v.string(),
   notes: v.string(),
 });
 
+const stepIngredientUse = v.object({
+  ingredientId: v.string(),
+  amount: v.optional(v.object({ quantity: v.string(), unit: v.string() })),
+});
+
+const recipeStep = v.object({
+  id: v.string(),
+  text: v.string(),
+  ingredientUses: v.array(stepIngredientUse),
+});
+
 const section = v.object({
   title: v.string(),
+  // Deprecated after the structured-step migration; retained for rollback safety.
   steps: v.array(v.string()),
+  stepDetails: v.optional(v.array(recipeStep)),
 });
 
 const subRecipe = v.object({

@@ -30,6 +30,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import type { Ingredient, Recipe } from "./types";
+import { StepIngredients } from "./step-ingredients";
 
 type WakeLockSentinelLike = {
   release: () => Promise<void>;
@@ -138,7 +139,7 @@ export function GuidedCookMode({
   }, [keepAwake, releaseWakeLock, requestWakeLock]);
 
   const section = recipe.sections[progress.sectionIndex];
-  const step = section?.steps[progress.stepIndex] ?? "";
+  const step = section?.steps[progress.stepIndex];
   const flattened = flattenSteps(recipe);
   const currentFlatIndex = flattened.findIndex(
     (item) =>
@@ -232,7 +233,16 @@ export function GuidedCookMode({
                 })}
               </ProgressValue>
             </Progress>
-            <h1 className="type-page-title max-w-[22ch] text-pretty">{step}</h1>
+            <h1 className="type-page-title max-w-[22ch] text-pretty">{step?.text ?? ""}</h1>
+            {step ? (
+              <StepIngredients
+                locale={locale}
+                label={dict.cookMode.forThisStep}
+                recipe={recipe}
+                step={step}
+                factor={servingsFactor}
+              />
+            ) : null}
             <div className="mt-10 flex flex-wrap gap-3">
               <Button
                 variant="outline"

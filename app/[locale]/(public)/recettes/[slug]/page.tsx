@@ -8,6 +8,10 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import { getPublicRecipeE2EFixture } from "@/components/recipes/admin-recipe-e2e-fixtures";
 import { parseSelectedServings } from "@/lib/recipe-servings";
+import {
+  normalizeRecipeForDisplay,
+  type PublicRecipeWire,
+} from "@/lib/recipe-public";
 
 type PageProps = {
   params: Promise<{
@@ -20,7 +24,12 @@ type PageProps = {
 // Deduped across generateMetadata + the page render within one request.
 const getRecipe = cache((locale: Locale, slug: string) => {
   const fixture = getPublicRecipeE2EFixture(locale, slug);
-  return fixture ? Promise.resolve(fixture) : fetchQuery(api.recipes.getBySlug, { locale, slug });
+  const result = fixture
+    ? Promise.resolve(fixture)
+    : fetchQuery(api.recipes.getBySlug, { locale, slug });
+  return result.then((recipe) =>
+    recipe ? normalizeRecipeForDisplay(recipe as PublicRecipeWire) : null,
+  );
 });
 
 export async function generateMetadata({
@@ -62,7 +71,9 @@ export async function generateMetadata({
 
 export default async function Page({ params, searchParams }: PageProps) {
   const { locale, slug } = await params;
-  const selectedServings = parseSelectedServings((await searchParams).personnes);
+  const selectedServings = parseSelectedServings(
+    (await searchParams).personnes,
+  );
   const [dict, recipe] = await Promise.all([
     getDictionary(locale),
     getRecipe(locale, slug),

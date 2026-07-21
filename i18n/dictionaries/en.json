@@ -59,6 +59,7 @@
     "backToList": "Back to the recipe list",
     "recipeBy": "Recipe by",
     "ingredients": "Ingredients",
+    "forThisStep": "For this step",
     "servingsLabel": "Number of servings",
     "servingSingular": "serving",
     "servingPlural": "servings",
@@ -124,6 +125,7 @@
   "cookMode": {
     "eyebrow": "Cook mode",
     "ingredients": "Ingredients",
+    "forThisStep": "For this step",
     "previous": "Previous",
     "next": "Next step",
     "finish": "Finish",

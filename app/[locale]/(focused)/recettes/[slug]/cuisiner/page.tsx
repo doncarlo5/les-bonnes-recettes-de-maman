@@ -7,10 +7,19 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { hasLocale } from "@/i18n/config";
 import { getPublicRecipeE2EFixture } from "@/components/recipes/admin-recipe-e2e-fixtures";
 import { parseSelectedServings } from "@/lib/recipe-servings";
+import {
+  normalizeRecipeForDisplay,
+  type PublicRecipeWire,
+} from "@/lib/recipe-public";
 
 const getRecipe = cache((locale: "fr" | "en", slug: string) => {
   const fixture = getPublicRecipeE2EFixture(locale, slug);
-  return fixture ? Promise.resolve(fixture) : fetchQuery(api.recipes.getBySlug, { locale, slug });
+  const result = fixture
+    ? Promise.resolve(fixture)
+    : fetchQuery(api.recipes.getBySlug, { locale, slug });
+  return result.then((recipe) =>
+    recipe ? normalizeRecipeForDisplay(recipe as PublicRecipeWire) : null,
+  );
 });
 
 export default async function CookPage({
@@ -21,7 +30,9 @@ export default async function CookPage({
   searchParams: Promise<{ personnes?: string | string[] }>;
 }) {
   const { locale, slug } = await params;
-  const selectedServings = parseSelectedServings((await searchParams).personnes);
+  const selectedServings = parseSelectedServings(
+    (await searchParams).personnes,
+  );
   if (!hasLocale(locale)) notFound();
 
   const [dict, recipe] = await Promise.all([
@@ -30,5 +41,12 @@ export default async function CookPage({
   ]);
   if (!recipe) notFound();
 
-  return <GuidedCookMode locale={locale} dict={dict} recipe={recipe} selectedServings={selectedServings ?? undefined} />;
+  return (
+    <GuidedCookMode
+      locale={locale}
+      dict={dict}
+      recipe={recipe}
+      selectedServings={selectedServings ?? undefined}
+    />
+  );
 }

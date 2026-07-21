@@ -20,8 +20,12 @@ const blankLocalizedRecipe = {
   timeLabel: "",
   temperature: "",
   equipment: [],
-  ingredients: [{ name: "", quantity: "", unit: "", notes: "" }],
-  sections: [{ title: "", steps: [""] }],
+  ingredients: [
+    { id: "ingredient-main-0", name: "", quantity: "", unit: "", notes: "" },
+  ],
+  sections: [
+    { title: "", steps: [{ id: "step-0-0", text: "", ingredientUses: [] }] },
+  ],
   subRecipes: [],
   notes: [],
 };
@@ -60,6 +64,30 @@ describe("editableRecipeDraftSchema", () => {
     }
   });
 
+  it("normalizes ingredients and string steps from legacy recovery records", () => {
+    const localized = {
+      ...structuredClone(blankLocalizedRecipe),
+      ingredients: [{ name: "Farine", quantity: "200", unit: "g", notes: "" }],
+      sections: [{ title: "Préparation", steps: ["Mélanger"] }],
+    };
+    const result = compatibleRecipeDraftSchema.safeParse({
+      ...blankDraft(),
+      translations: { fr: localized, en: localized },
+    });
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.translations.fr.ingredients[0].id).toBe(
+        "ingredient-main-0",
+      );
+      expect(result.data.translations.fr.sections[0].steps[0]).toEqual({
+        id: "step-0-0",
+        text: "Mélanger",
+        ingredientUses: [],
+      });
+    }
+  });
+
   it("restores recovery records created before Marmiton metadata existed", () => {
     const { relatedRecipeSlugs: _related, ...legacyDraft } = blankDraft();
     for (const localized of Object.values(legacyDraft.translations)) {
@@ -88,6 +116,31 @@ describe("editableRecipeDraftSchema", () => {
       expect(result.data.referenceServings).toBeUndefined();
       expect(result.data.relatedRecipeSlugs).toEqual([]);
     }
+  });
+
+  it("rejects missing and duplicate ingredient references", () => {
+    const missing = blankDraft();
+    missing.translations.fr.sections[0].steps[0].ingredientUses = [
+      { ingredientId: "missing" },
+    ];
+    expect(editableRecipeDraftSchema.safeParse(missing).success).toBe(false);
+
+    const duplicate = blankDraft();
+    duplicate.translations.fr.sections[0].steps[0].ingredientUses = [
+      { ingredientId: "ingredient-main-0" },
+      { ingredientId: "ingredient-main-0" },
+    ];
+    expect(editableRecipeDraftSchema.safeParse(duplicate).success).toBe(false);
+  });
+
+  it("rejects duplicate step identifiers within one language", () => {
+    const draft = blankDraft();
+    draft.translations.fr.sections.push({
+      title: "Suite",
+      steps: [{ id: "step-0-0", text: "Cuire", ingredientUses: [] }],
+    });
+
+    expect(editableRecipeDraftSchema.safeParse(draft).success).toBe(false);
   });
 
   it("accepts Marmiton-style resting time, utensils and related recipes", () => {

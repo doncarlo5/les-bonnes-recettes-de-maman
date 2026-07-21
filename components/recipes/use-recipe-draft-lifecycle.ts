@@ -640,6 +640,7 @@ function normalizeLocalizedRecipe(
       item.trim() ? [item.trim()] : [],
     ),
     ingredients: recipe.ingredients.map((ingredient) => ({
+      id: ingredient.id,
       name: ingredient.name.trim(),
       quantity: ingredient.quantity.trim(),
       unit: ingredient.unit.trim(),
@@ -648,12 +649,26 @@ function normalizeLocalizedRecipe(
     sections: recipe.sections.map((section) => ({
       title: section.title.trim(),
       steps: section.steps.flatMap((step) =>
-        step.trim() ? [step.trim()] : [],
+        step.text.trim()
+          ? [{
+              ...step,
+              text: step.text.trim(),
+              ingredientUses: step.ingredientUses.map((use) => {
+                const quantity = use.amount?.quantity.trim() ?? "";
+                const unit = use.amount?.unit.trim() ?? "";
+                return {
+                  ingredientId: use.ingredientId,
+                  ...(quantity || unit ? { amount: { quantity, unit } } : {}),
+                };
+              }),
+            }]
+          : [],
       ),
     })),
     subRecipes: recipe.subRecipes.map((subRecipe) => ({
       title: subRecipe.title.trim(),
       ingredients: subRecipe.ingredients.map((ingredient) => ({
+        id: ingredient.id,
         name: ingredient.name.trim(),
         quantity: ingredient.quantity.trim(),
         unit: ingredient.unit.trim(),
