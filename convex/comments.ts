@@ -8,7 +8,11 @@ import {
   type QueryCtx,
 } from "./_generated/server";
 import type { Id } from "./_generated/dataModel";
-import { presentComment, removeComment } from "./commentModel";
+import {
+  changeRecipeCommentCount,
+  presentComment,
+  removeComment,
+} from "./commentModel";
 
 declare const process: { env: { RECIPE_ADMIN_PASSWORD?: string } };
 
@@ -69,10 +73,12 @@ export const create = mutation({
     const photoClaim = args.photoStorageId
       ? await requirePhotoClaim(ctx, args.photoStorageId, participantDigest)
       : null;
+    const countedAt = Date.now();
     const commentId = await ctx.db.insert("recipeComments", {
       recipeId: recipe._id,
       ownerDigest: participantDigest,
       text: content.text,
+      countedAt,
       ...(content.authorName ? { authorName: content.authorName } : {}),
       ...(args.photoStorageId ? { photoStorageId: args.photoStorageId } : {}),
     });
@@ -81,6 +87,7 @@ export const create = mutation({
       thumbsUpCount: 0,
       thumbsDownCount: 0,
     });
+    await changeRecipeCommentCount(ctx, recipe._id, 1);
     if (photoClaim) await ctx.db.delete(photoClaim._id);
     return { commentId };
   },

@@ -139,10 +139,16 @@ export default defineSchema({
     text: v.string(),
     photoStorageId: v.optional(v.id("_storage")),
     ownerDigest: v.string(),
+    // Transitional marker used by the comment-count backfill.
+    countedAt: v.optional(v.number()),
     updatedAt: v.optional(v.number()),
   })
     .index("by_recipeId", ["recipeId"])
     .index("by_photoStorageId", ["photoStorageId"]),
+  recipeCommentSummaries: defineTable({
+    recipeId: v.id("recipes"),
+    commentCount: v.number(),
+  }).index("by_recipeId", ["recipeId"]),
   commentReactions: defineTable({
     commentId: v.id("recipeComments"),
     participantDigest: v.string(),

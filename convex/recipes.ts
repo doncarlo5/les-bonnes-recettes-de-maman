@@ -1221,9 +1221,15 @@ async function localizeSummary(
   locale: Locale,
 ) {
   const translation = recipe.translations[locale];
-  const storedHeroImageUrl = recipe.heroImageStorageId
-    ? await ctx.storage.getUrl(recipe.heroImageStorageId)
-    : null;
+  const [storedHeroImageUrl, commentSummary] = await Promise.all([
+    recipe.heroImageStorageId
+      ? ctx.storage.getUrl(recipe.heroImageStorageId)
+      : Promise.resolve(null),
+    ctx.db
+      .query("recipeCommentSummaries")
+      .withIndex("by_recipeId", (q) => q.eq("recipeId", recipe._id))
+      .unique(),
+  ]);
   return {
     _id: recipe._id,
     _creationTime: recipe._creationTime,
@@ -1236,6 +1242,7 @@ async function localizeSummary(
     prepTime: translation.prepTime,
     cookTime: translation.cookTime,
     timeLabel: translation.timeLabel,
+    commentCount: commentSummary?.commentCount ?? 0,
     ingredients: translation.ingredients.map(({ name }) => ({ name })),
   };
 }

@@ -12,7 +12,9 @@ export const cleanupRecipeComments = internalMutation({
       .query("recipeComments")
       .withIndex("by_recipeId", (q) => q.eq("recipeId", args.recipeId))
       .take(25);
-    await Promise.all(comments.map((comment) => removeComment(ctx, comment)));
+    for (const comment of comments) {
+      await removeComment(ctx, comment);
+    }
     if (comments.length === 25) {
       await ctx.scheduler.runAfter(
         0,

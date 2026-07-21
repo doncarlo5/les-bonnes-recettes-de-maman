@@ -49,6 +49,8 @@
     "resultCount": "{count} {label} of {total}",
     "resultsSingular": "recipe",
     "resultsPlural": "recipes",
+    "commentSingular": "{count} comment",
+    "commentPlural": "{count} comments",
     "reset": "Reset",
     "addRecipeTitle": "Add a recipe",
     "addRecipeDescription": "Create a new draft",

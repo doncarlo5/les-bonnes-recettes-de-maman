@@ -49,6 +49,106 @@ async function insertRecipe(t: ReturnType<typeof convexTest>, status: "draft" | 
 }
 
 describe("recipe comments", () => {
+  test("maintains the public recipe comment count through creation and deletion", async () => {
+    const t = convexTest(schema, modules);
+    await insertRecipe(t);
+    const listSummaries = () => t.query(api.recipes.list, {
+      locale: "fr",
+      paginationOpts: { numItems: 10, cursor: null },
+    });
+
+    await expect(listSummaries()).resolves.toMatchObject({
+      page: [{ commentCount: 0 }],
+    });
+    const first = await t.mutation(commentsApi.create, {
+      slug: "tarte-aux-pommes",
+      participantKey: ownerKey,
+      text: "Premier commentaire.",
+      honeypot: "",
+    });
+    await t.mutation(commentsApi.create, {
+      slug: "tarte-aux-pommes",
+      participantKey: otherKey,
+      text: "Deuxième commentaire.",
+      honeypot: "",
+    });
+    await expect(listSummaries()).resolves.toMatchObject({
+      page: [{ commentCount: 2 }],
+    });
+
+    await t.mutation(commentsApi.removeOwn, {
+      commentId: first.commentId,
+      participantKey: ownerKey,
+    });
+    await expect(listSummaries()).resolves.toMatchObject({
+      page: [{ commentCount: 1 }],
+    });
+  });
+
+  test("backfills legacy comments exactly once", async () => {
+    const t = convexTest(schema, modules);
+    const recipeId = await insertRecipe(t);
+    const commentId = await t.run((ctx) =>
+      ctx.db.insert("recipeComments", {
+        recipeId,
+        ownerDigest: "legacy-owner",
+        text: "Commentaire existant.",
+      }),
+    );
+    const listSummaries = () => t.query(api.recipes.list, {
+      locale: "fr",
+      paginationOpts: { numItems: 10, cursor: null },
+    });
+    const runBackfill = () => t.mutation(
+      internal.migrations.backfillRecipeCommentCounts,
+      { cursor: null, oneBatchOnly: true, batchSize: 100, dryRun: false },
+    );
+
+    await expect(listSummaries()).resolves.toMatchObject({
+      page: [{ commentCount: 0 }],
+    });
+    await runBackfill();
+    await expect(listSummaries()).resolves.toMatchObject({
+      page: [{ commentCount: 1 }],
+    });
+    await expect(t.run((ctx) => ctx.db.get(commentId))).resolves.toMatchObject({
+      countedAt: expect.any(Number),
+    });
+
+    await runBackfill();
+    await expect(listSummaries()).resolves.toMatchObject({
+      page: [{ commentCount: 1 }],
+    });
+  });
+
+  test("clears the summary when recipe comment cleanup removes a batch", async () => {
+    const t = convexTest(schema, modules);
+    const recipeId = await insertRecipe(t);
+    await t.run(async (ctx) => {
+      for (const text of ["Premier", "Deuxième"]) {
+        await ctx.db.insert("recipeComments", {
+          recipeId,
+          ownerDigest: "cleanup-owner",
+          text,
+          countedAt: Date.now(),
+        });
+      }
+      await ctx.db.insert("recipeCommentSummaries", {
+        recipeId,
+        commentCount: 2,
+      });
+    });
+
+    await t.mutation(commentMaintenanceApi.cleanupRecipeComments, { recipeId });
+
+    await expect(t.run((ctx) =>
+      ctx.db
+        .query("recipeCommentSummaries")
+        .withIndex("by_recipeId", (q) => q.eq("recipeId", recipeId))
+        .unique(),
+    )).resolves.toBeNull();
+  });
+
   test("publishes a normalized anonymous comment and lists it for both locales", async () => {
     const t = convexTest(schema, modules);
     await insertRecipe(t);

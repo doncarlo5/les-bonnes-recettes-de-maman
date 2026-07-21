@@ -17,7 +17,9 @@ export default async function Page({ params }: PageProps) {
   const { locale } = await params;
   const dict = await getDictionary(locale);
   const fixture = getPublicRecipeE2EFixture(locale);
-  const recipes = fixture ? [fixture] : await listPublishedRecipes(locale);
+  const recipes = fixture
+    ? [{ ...fixture, commentCount: 3 }]
+    : await listPublishedRecipes(locale);
 
   return <HomePage locale={locale} dict={dict} recipes={recipes} />;
 }

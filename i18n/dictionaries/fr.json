@@ -49,6 +49,8 @@
     "resultCount": "{count} {label} sur {total}",
     "resultsSingular": "recette",
     "resultsPlural": "recettes",
+    "commentSingular": "{count} commentaire",
+    "commentPlural": "{count} commentaires",
     "reset": "Réinitialiser",
     "addRecipeTitle": "Ajouter une recette",
     "addRecipeDescription": "Créer un nouveau brouillon",

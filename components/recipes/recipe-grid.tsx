@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Clock3, Plus } from "lucide-react";
+import { Clock3, MessageCircle, Plus } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import type { RecipeSummary } from "./types";
@@ -32,6 +32,11 @@ export function RecipeGrid({
         const mobileTimeLabel = recipe.prepTime
           ? dict.recipeDetail.prepTime
           : dict.recipeDetail.cookTime;
+        const commentLabel = (
+          recipe.commentCount === 1
+            ? dict.recipeList.commentSingular
+            : dict.recipeList.commentPlural
+        ).replace("{count}", String(recipe.commentCount));
 
         return (
           <li key={recipe._id} className="h-full">
@@ -50,9 +55,17 @@ export function RecipeGrid({
                 />
               </span>
               <span className="flex min-h-24 flex-1 flex-col p-3 md:block md:min-h-0 md:p-7">
-                <span className="type-label mb-4 hidden items-center gap-2 text-primary tabular-nums md:inline-flex">
-                  <Clock3 className="size-4 stroke-[1.8]" />
-                  {recipe.timeLabel}
+                <span className="type-label mb-4 hidden items-center gap-4 text-primary tabular-nums md:flex">
+                  <span className="inline-flex items-center gap-2">
+                    <Clock3 aria-hidden className="size-4 stroke-[1.8]" />
+                    {recipe.timeLabel}
+                  </span>
+                  <CommentCount
+                    count={recipe.commentCount}
+                    label={commentLabel}
+                    className="text-muted-foreground"
+                    iconClassName="size-4 stroke-[1.8]"
+                  />
                 </span>
                 <span
                   className="type-card-title type-card-title-compact line-clamp-2 block min-h-[2.1em] max-w-[18ch] text-foreground md:min-h-0"
@@ -60,13 +73,24 @@ export function RecipeGrid({
                 >
                   {recipe.title}
                 </span>
-                {mobileTime ? (
+                {mobileTime || recipe.commentCount > 0 ? (
                   <span
-                    className="mt-auto inline-flex items-center gap-1.5 pt-3 text-xs font-bold text-muted-foreground tabular-nums md:hidden"
-                    aria-label={`${mobileTimeLabel}: ${mobileTime}`}
+                    className="mt-auto inline-flex items-center gap-3 pt-3 text-xs font-bold text-muted-foreground tabular-nums md:hidden"
                   >
-                    <Clock3 aria-hidden className="size-3.5 stroke-[1.8]" />
-                    {mobileTimeLabel} · {mobileTime}
+                    {mobileTime ? (
+                      <span
+                        className="inline-flex items-center gap-1.5"
+                        aria-label={`${mobileTimeLabel}: ${mobileTime}`}
+                      >
+                        <Clock3 aria-hidden className="size-3.5 stroke-[1.8]" />
+                        {mobileTimeLabel} · {mobileTime}
+                      </span>
+                    ) : null}
+                    <CommentCount
+                      count={recipe.commentCount}
+                      label={commentLabel}
+                      iconClassName="size-3.5 stroke-[1.8]"
+                    />
                   </span>
                 ) : null}
                 <span className="type-byline mt-3 hidden text-muted-foreground md:block">
@@ -101,5 +125,29 @@ export function RecipeGrid({
         </li>
       ) : null}
     </ul>
+  );
+}
+
+function CommentCount({
+  count,
+  label,
+  className = "",
+  iconClassName,
+}: {
+  count: number;
+  label: string;
+  className?: string;
+  iconClassName: string;
+}) {
+  if (count <= 0) return null;
+
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 ${className}`}
+      aria-label={label}
+    >
+      <MessageCircle aria-hidden className={iconClassName} />
+      {count}
+    </span>
   );
 }

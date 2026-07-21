@@ -5,6 +5,7 @@ import { backfillYieldLabels } from "../lib/recipe-yield";
 import { resolveReferenceServings } from "../lib/recipe-servings";
 import { resolveRecipeCategories } from "../lib/recipe-categories";
 import { backfillLocalizedStepIngredients } from "../lib/recipe-step-migration";
+import { changeRecipeCommentCount } from "./commentModel";
 
 export const migrations = new Migrations<DataModel>(components.migrations);
 
@@ -109,6 +110,19 @@ export const runStepIngredientBackfill = migrations.runner([
   internal.migrations.backfillRecipeStepIngredients,
   internal.migrations.backfillDraftStepIngredients,
 ]);
+
+export const backfillRecipeCommentCounts = migrations.define({
+  table: "recipeComments",
+  migrateOne: async (ctx, comment) => {
+    if (comment.countedAt !== undefined) return;
+    await changeRecipeCommentCount(ctx, comment.recipeId, 1);
+    return { countedAt: Date.now() };
+  },
+});
+
+export const runRecipeCommentCountBackfill = migrations.runner(
+  internal.migrations.backfillRecipeCommentCounts,
+);
 
 export const run = migrations.runner();
 

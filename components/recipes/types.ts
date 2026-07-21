@@ -97,6 +97,7 @@ export type RecipeSummary = Pick<
   | "timeLabel"
 > & {
   ingredients: Array<Pick<Ingredient, "name">>;
+  commentCount: number;
 };
 
 export type EditableRecipeContent = {

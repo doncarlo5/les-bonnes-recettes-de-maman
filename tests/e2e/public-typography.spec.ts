@@ -31,6 +31,10 @@ test("public typography holds across locales, themes, and widths", async ({ page
     await expect(page.locator("html")).toHaveAttribute("lang", locale);
     await expect(page.locator("main h1")).toHaveCount(1);
     await expect(page.locator("main h2")).toHaveCount(1);
+    const commentLabel = locale === "fr" ? "3 commentaires" : "3 comments";
+    await expect(
+      page.locator(`[aria-label="${commentLabel}"]:visible`).first(),
+    ).toHaveText("3");
 
     const pageTitles = page.locator("main h1:visible");
     await expect(pageTitles).toHaveCount(1);

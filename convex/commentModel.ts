@@ -1,5 +1,5 @@
 import { internal } from "./_generated/api";
-import type { Doc } from "./_generated/dataModel";
+import type { Doc, Id } from "./_generated/dataModel";
 import type { MutationCtx, QueryCtx } from "./_generated/server";
 
 export async function presentComment(
@@ -33,6 +33,37 @@ export async function removeComment(ctx: MutationCtx, comment: Doc<"recipeCommen
   if (comment.photoStorageId) await ctx.storage.delete(comment.photoStorageId);
   const summary = await ctx.db.query("commentReactionSummaries").withIndex("by_commentId", (q) => q.eq("commentId", comment._id)).unique();
   if (summary) await ctx.db.delete(summary._id);
+  if (comment.countedAt !== undefined) {
+    await changeRecipeCommentCount(ctx, comment.recipeId, -1);
+  }
   await ctx.db.delete(comment._id);
   await ctx.scheduler.runAfter(0, internal.commentMaintenance.cleanupReactions, { commentId: comment._id });
+}
+
+export async function changeRecipeCommentCount(
+  ctx: MutationCtx,
+  recipeId: Id<"recipes">,
+  delta: 1 | -1,
+) {
+  const summary = await ctx.db
+    .query("recipeCommentSummaries")
+    .withIndex("by_recipeId", (q) => q.eq("recipeId", recipeId))
+    .unique();
+
+  if (!summary) {
+    if (delta > 0) {
+      await ctx.db.insert("recipeCommentSummaries", {
+        recipeId,
+        commentCount: delta,
+      });
+    }
+    return;
+  }
+
+  const commentCount = summary.commentCount + delta;
+  if (commentCount <= 0) {
+    await ctx.db.delete(summary._id);
+  } else {
+    await ctx.db.patch(summary._id, { commentCount });
+  }
 }
