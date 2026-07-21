@@ -129,20 +129,12 @@ export function RecipePresentation({
         </div>
       </header>
 
-      {/* Body: ingredients, equipment, then instructions */}
+      {/* Body: equipment, ingredients, then instructions */}
       <section className="border-t border-border px-5 pb-16 lg:px-10 lg:pb-32">
         <div className="mx-auto max-w-7xl">
           <RecipeMeta dict={dict} recipe={recipe} />
 
-          <div className="mt-8 space-y-8 lg:mt-12 lg:space-y-12">
-            <RecipeIngredientsPanel
-              locale={locale}
-              dict={dict}
-              recipe={recipe}
-              selectedServings={selectedServings}
-              onSelectedServingsChange={setSelectedServings}
-            />
-
+          <div className="mt-8 lg:mt-12">
             <div className="min-w-0 lg:max-w-[65ch]">
               <div className="space-y-8 lg:space-y-12">
                 {recipe.equipment.length > 0 ? (
@@ -157,6 +149,13 @@ export function RecipePresentation({
                     </ul>
                   </div>
                 ) : null}
+                <RecipeIngredientsPanel
+                  locale={locale}
+                  dict={dict}
+                  recipe={recipe}
+                  selectedServings={selectedServings}
+                  onSelectedServingsChange={setSelectedServings}
+                />
                 {recipe.sections.map((section) => (
                   <div key={section.title}>
                     <h2 className="type-content-title mb-4 text-foreground lg:mb-6">

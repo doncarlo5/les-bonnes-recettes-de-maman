@@ -204,7 +204,7 @@ test("ingredient names start with a capital letter without changing their conten
   )).toBe("uppercase");
 });
 
-test("recipe content starts with ingredients, followed by equipment", async ({ page }) => {
+test("recipe content orders equipment, ingredients, then preparation", async ({ page }) => {
   await page.goto("/fr/recettes/tarte-de-demonstration");
 
   const ingredients = page.getByRole("heading", { name: "Ingrédients" });
@@ -214,16 +214,12 @@ test("recipe content starts with ingredients, followed by equipment", async ({ p
   await expect(ingredients).toBeVisible();
   await expect(equipment).toBeVisible();
   await expect(preparation).toBeVisible();
-  const headingOrder = await page.locator("main h2:visible").allTextContents();
-  expect(headingOrder.indexOf("Ingrédients")).toBeLessThan(
-    headingOrder.indexOf("Ustensiles"),
-  );
 
   const ingredientsBox = await ingredients.boundingBox();
   const equipmentBox = await equipment.boundingBox();
   const preparationBox = await preparation.boundingBox();
-  expect(ingredientsBox?.y).toBeLessThan(equipmentBox?.y ?? 0);
-  expect(equipmentBox?.y).toBeLessThan(preparationBox?.y ?? 0);
+  expect(equipmentBox?.y).toBeLessThan(ingredientsBox?.y ?? 0);
+  expect(ingredientsBox?.y).toBeLessThan(preparationBox?.y ?? 0);
 });
 
 test("mobile recipe back link sits above the hero image", async ({ page }, testInfo) => {
