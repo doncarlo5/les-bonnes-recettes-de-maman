@@ -455,6 +455,10 @@ test("homepage discovery state remains URL-backed", async ({
   });
   if (await revealSearch.count()) await revealSearch.click();
   await expect(searchbox).toBeVisible();
+  const resultCount = page.getByText(/^\d+ recettes? sur \d+$/);
+  await expect(resultCount).toBeVisible();
+  expect(await resultCount.evaluate((element) => getComputedStyle(element).whiteSpace))
+    .toBe("nowrap");
   await searchbox.fill("tarte");
   await page.getByRole("button", { name: "Rechercher" }).click();
   await expect(page).toHaveURL(/q=tarte/);
@@ -468,6 +472,15 @@ test("homepage discovery state remains URL-backed", async ({
   await revealFilters("Dessert");
   await page.getByRole("button", { name: "Dessert" }).click();
   await expect(page).toHaveURL(/cat=dessert/);
+  const resetFilters = page.getByRole("button", { name: "Réinitialiser" });
+  const [resultBox, resetBox] = await Promise.all([
+    resultCount.boundingBox(),
+    resetFilters.boundingBox(),
+  ]);
+  expect(resultBox).not.toBeNull();
+  expect(resetBox).not.toBeNull();
+  expect((resultBox?.y ?? 0) + (resultBox?.height ?? 0) / 2)
+    .toBeCloseTo((resetBox?.y ?? 0) + (resetBox?.height ?? 0) / 2, 0);
   if (testInfo.project.name.startsWith("mobile-")) {
     await page.goto("/fr?q=tarte&cat=dessert&view=list");
   } else {

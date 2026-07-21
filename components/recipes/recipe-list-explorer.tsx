@@ -193,7 +193,7 @@ export function RecipeListExplorer({
               value={activeCategories}
               onValueChange={(values: string[]) => updateUrl({ query, categories: values as RecipeCategory[], view: activeView, sort: activeSort, direction: activeSortDirection, mode: "push" })}
               spacing={2}
-              className="flex w-full flex-wrap"
+              className="flex w-full flex-wrap lg:w-auto lg:min-w-0 lg:flex-1"
               aria-label={dict.recipeList.categoriesLabel}
             >
               {categoryValues.map((category) => (
@@ -203,7 +203,7 @@ export function RecipeListExplorer({
               ))}
             </ToggleGroup>
 
-            <div className="flex flex-wrap items-center gap-3 text-sm font-bold text-muted-foreground">
+            <div className="flex shrink-0 flex-nowrap items-center gap-3 self-end whitespace-nowrap text-sm font-bold text-muted-foreground lg:self-auto">
               <span aria-live="polite" className="tabular-nums">
                 {formatResultCount(dict, filteredRecipes.length, recipes.length)}
               </span>
