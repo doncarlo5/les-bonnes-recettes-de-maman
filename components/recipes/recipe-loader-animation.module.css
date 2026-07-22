@@ -1,0 +1,377 @@
+.animation {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: blur(0.35px);
+}
+
+.frame {
+  opacity: 0;
+  animation-duration: 2.05s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.frame > path:first-child {
+  fill: var(--foreground, rgb(40 40 40));
+}
+
+.frame1 { animation-name: loader-frame-1; }
+@keyframes loader-frame-1 {
+  0.0000%, 1.6250% { opacity: 1; }
+  1.6260%, 100% { opacity: 0; }
+}
+
+.frame2 { animation-name: loader-frame-2; }
+@keyframes loader-frame-2 {
+  0%, 1.6250% { opacity: 0; }
+  1.6260%, 4.0640% { opacity: 1; }
+  4.0650%, 100% { opacity: 0; }
+}
+
+.frame3 { animation-name: loader-frame-3; }
+@keyframes loader-frame-3 {
+  0%, 4.0640% { opacity: 0; }
+  4.0650%, 5.6901% { opacity: 1; }
+  5.6911%, 100% { opacity: 0; }
+}
+
+.frame4 { animation-name: loader-frame-4; }
+@keyframes loader-frame-4 {
+  0%, 5.6901% { opacity: 0; }
+  5.6911%, 7.3161% { opacity: 1; }
+  7.3171%, 100% { opacity: 0; }
+}
+
+.frame5 { animation-name: loader-frame-5; }
+@keyframes loader-frame-5 {
+  0%, 7.3161% { opacity: 0; }
+  7.3171%, 9.7551% { opacity: 1; }
+  9.7561%, 100% { opacity: 0; }
+}
+
+.frame6 { animation-name: loader-frame-6; }
+@keyframes loader-frame-6 {
+  0%, 9.7551% { opacity: 0; }
+  9.7561%, 12.6006% { opacity: 1; }
+  12.6016%, 100% { opacity: 0; }
+}
+
+.frame7 { animation-name: loader-frame-7; }
+@keyframes loader-frame-7 {
+  0%, 12.6006% { opacity: 0; }
+  12.6016%, 14.2267% { opacity: 1; }
+  14.2277%, 100% { opacity: 0; }
+}
+
+.frame8 { animation-name: loader-frame-8; }
+@keyframes loader-frame-8 {
+  0%, 14.2267% { opacity: 0; }
+  14.2277%, 15.0396% { opacity: 1; }
+  15.0406%, 100% { opacity: 0; }
+}
+
+.frame9 { animation-name: loader-frame-9; }
+@keyframes loader-frame-9 {
+  0%, 15.0396% { opacity: 0; }
+  15.0406%, 18.2917% { opacity: 1; }
+  18.2927%, 100% { opacity: 0; }
+}
+
+.frame10 { animation-name: loader-frame-10; }
+@keyframes loader-frame-10 {
+  0%, 18.2917% { opacity: 0; }
+  18.2927%, 19.9177% { opacity: 1; }
+  19.9187%, 100% { opacity: 0; }
+}
+
+.frame11 { animation-name: loader-frame-11; }
+@keyframes loader-frame-11 {
+  0%, 19.9177% { opacity: 0; }
+  19.9187%, 21.5437% { opacity: 1; }
+  21.5447%, 100% { opacity: 0; }
+}
+
+.frame12 { animation-name: loader-frame-12; }
+@keyframes loader-frame-12 {
+  0%, 21.5437% { opacity: 0; }
+  21.5447%, 23.9828% { opacity: 1; }
+  23.9838%, 100% { opacity: 0; }
+}
+
+.frame13 { animation-name: loader-frame-13; }
+@keyframes loader-frame-13 {
+  0%, 23.9828% { opacity: 0; }
+  23.9838%, 26.0152% { opacity: 1; }
+  26.0162%, 100% { opacity: 0; }
+}
+
+.frame14 { animation-name: loader-frame-14; }
+@keyframes loader-frame-14 {
+  0%, 26.0152% { opacity: 0; }
+  26.0162%, 26.8283% { opacity: 1; }
+  26.8293%, 100% { opacity: 0; }
+}
+
+.frame15 { animation-name: loader-frame-15; }
+@keyframes loader-frame-15 {
+  0%, 26.8283% { opacity: 0; }
+  26.8293%, 30.4868% { opacity: 1; }
+  30.4878%, 100% { opacity: 0; }
+}
+
+.frame16 { animation-name: loader-frame-16; }
+@keyframes loader-frame-16 {
+  0%, 30.4868% { opacity: 0; }
+  30.4878%, 32.1128% { opacity: 1; }
+  32.1138%, 100% { opacity: 0; }
+}
+
+.frame17 { animation-name: loader-frame-17; }
+@keyframes loader-frame-17 {
+  0%, 32.1128% { opacity: 0; }
+  32.1138%, 33.3323% { opacity: 1; }
+  33.3333%, 100% { opacity: 0; }
+}
+
+.frame18 { animation-name: loader-frame-18; }
+@keyframes loader-frame-18 {
+  0%, 33.3323% { opacity: 0; }
+  33.3333%, 35.7713% { opacity: 1; }
+  35.7723%, 100% { opacity: 0; }
+}
+
+.frame19 { animation-name: loader-frame-19; }
+@keyframes loader-frame-19 {
+  0%, 35.7713% { opacity: 0; }
+  35.7723%, 37.3974% { opacity: 1; }
+  37.3984%, 100% { opacity: 0; }
+}
+
+.frame20 { animation-name: loader-frame-20; }
+@keyframes loader-frame-20 {
+  0%, 37.3974% { opacity: 0; }
+  37.3984%, 39.0234% { opacity: 1; }
+  39.0244%, 100% { opacity: 0; }
+}
+
+.frame21 { animation-name: loader-frame-21; }
+@keyframes loader-frame-21 {
+  0%, 39.0234% { opacity: 0; }
+  39.0244%, 40.6494% { opacity: 1; }
+  40.6504%, 100% { opacity: 0; }
+}
+
+.frame22 { animation-name: loader-frame-22; }
+@keyframes loader-frame-22 {
+  0%, 40.6494% { opacity: 0; }
+  40.6504%, 43.4950% { opacity: 1; }
+  43.4960%, 100% { opacity: 0; }
+}
+
+.frame23 { animation-name: loader-frame-23; }
+@keyframes loader-frame-23 {
+  0%, 43.4950% { opacity: 0; }
+  43.4960%, 45.1210% { opacity: 1; }
+  45.1220%, 100% { opacity: 0; }
+}
+
+.frame24 { animation-name: loader-frame-24; }
+@keyframes loader-frame-24 {
+  0%, 45.1210% { opacity: 0; }
+  45.1220%, 46.7470% { opacity: 1; }
+  46.7480%, 100% { opacity: 0; }
+}
+
+.frame25 { animation-name: loader-frame-25; }
+@keyframes loader-frame-25 {
+  0%, 46.7470% { opacity: 0; }
+  46.7480%, 48.3730% { opacity: 1; }
+  48.3740%, 100% { opacity: 0; }
+}
+
+.frame26 { animation-name: loader-frame-26; }
+@keyframes loader-frame-26 {
+  0%, 48.3730% { opacity: 0; }
+  48.3740%, 50.8120% { opacity: 1; }
+  50.8130%, 100% { opacity: 0; }
+}
+
+.frame27 { animation-name: loader-frame-27; }
+@keyframes loader-frame-27 {
+  0%, 50.8120% { opacity: 0; }
+  50.8130%, 53.6575% { opacity: 1; }
+  53.6585%, 100% { opacity: 0; }
+}
+
+.frame28 { animation-name: loader-frame-28; }
+@keyframes loader-frame-28 {
+  0%, 53.6575% { opacity: 0; }
+  53.6585%, 54.4706% { opacity: 1; }
+  54.4716%, 100% { opacity: 0; }
+}
+
+.frame29 { animation-name: loader-frame-29; }
+@keyframes loader-frame-29 {
+  0%, 54.4706% { opacity: 0; }
+  54.4716%, 56.0966% { opacity: 1; }
+  56.0976%, 100% { opacity: 0; }
+}
+
+.frame30 { animation-name: loader-frame-30; }
+@keyframes loader-frame-30 {
+  0%, 56.0966% { opacity: 0; }
+  56.0976%, 58.5356% { opacity: 1; }
+  58.5366%, 100% { opacity: 0; }
+}
+
+.frame31 { animation-name: loader-frame-31; }
+@keyframes loader-frame-31 {
+  0%, 58.5356% { opacity: 0; }
+  58.5366%, 60.9746% { opacity: 1; }
+  60.9756%, 100% { opacity: 0; }
+}
+
+.frame32 { animation-name: loader-frame-32; }
+@keyframes loader-frame-32 {
+  0%, 60.9746% { opacity: 0; }
+  60.9756%, 62.6006% { opacity: 1; }
+  62.6016%, 100% { opacity: 0; }
+}
+
+.frame33 { animation-name: loader-frame-33; }
+@keyframes loader-frame-33 {
+  0%, 62.6006% { opacity: 0; }
+  62.6016%, 64.2267% { opacity: 1; }
+  64.2277%, 100% { opacity: 0; }
+}
+
+.frame34 { animation-name: loader-frame-34; }
+@keyframes loader-frame-34 {
+  0%, 64.2267% { opacity: 0; }
+  64.2277%, 66.2591% { opacity: 1; }
+  66.2601%, 100% { opacity: 0; }
+}
+
+.frame35 { animation-name: loader-frame-35; }
+@keyframes loader-frame-35 {
+  0%, 66.2591% { opacity: 0; }
+  66.2601%, 68.2917% { opacity: 1; }
+  68.2927%, 100% { opacity: 0; }
+}
+
+.frame36 { animation-name: loader-frame-36; }
+@keyframes loader-frame-36 {
+  0%, 68.2917% { opacity: 0; }
+  68.2927%, 69.9177% { opacity: 1; }
+  69.9187%, 100% { opacity: 0; }
+}
+
+.frame37 { animation-name: loader-frame-37; }
+@keyframes loader-frame-37 {
+  0%, 69.9177% { opacity: 0; }
+  69.9187%, 72.3567% { opacity: 1; }
+  72.3577%, 100% { opacity: 0; }
+}
+
+.frame38 { animation-name: loader-frame-38; }
+@keyframes loader-frame-38 {
+  0%, 72.3567% { opacity: 0; }
+  72.3577%, 73.9828% { opacity: 1; }
+  73.9838%, 100% { opacity: 0; }
+}
+
+.frame39 { animation-name: loader-frame-39; }
+@keyframes loader-frame-39 {
+  0%, 73.9828% { opacity: 0; }
+  73.9838%, 76.0152% { opacity: 1; }
+  76.0162%, 100% { opacity: 0; }
+}
+
+.frame40 { animation-name: loader-frame-40; }
+@keyframes loader-frame-40 {
+  0%, 76.0152% { opacity: 0; }
+  76.0162%, 78.4543% { opacity: 1; }
+  78.4553%, 100% { opacity: 0; }
+}
+
+.frame41 { animation-name: loader-frame-41; }
+@keyframes loader-frame-41 {
+  0%, 78.4543% { opacity: 0; }
+  78.4553%, 79.6738% { opacity: 1; }
+  79.6748%, 100% { opacity: 0; }
+}
+
+.frame42 { animation-name: loader-frame-42; }
+@keyframes loader-frame-42 {
+  0%, 79.6738% { opacity: 0; }
+  79.6748%, 82.9258% { opacity: 1; }
+  82.9268%, 100% { opacity: 0; }
+}
+
+.frame43 { animation-name: loader-frame-43; }
+@keyframes loader-frame-43 {
+  0%, 82.9258% { opacity: 0; }
+  82.9268%, 83.7389% { opacity: 1; }
+  83.7399%, 100% { opacity: 0; }
+}
+
+.frame44 { animation-name: loader-frame-44; }
+@keyframes loader-frame-44 {
+  0%, 83.7389% { opacity: 0; }
+  83.7399%, 86.1779% { opacity: 1; }
+  86.1789%, 100% { opacity: 0; }
+}
+
+.frame45 { animation-name: loader-frame-45; }
+@keyframes loader-frame-45 {
+  0%, 86.1779% { opacity: 0; }
+  86.1789%, 88.2104% { opacity: 1; }
+  88.2114%, 100% { opacity: 0; }
+}
+
+.frame46 { animation-name: loader-frame-46; }
+@keyframes loader-frame-46 {
+  0%, 88.2104% { opacity: 0; }
+  88.2114%, 90.2429% { opacity: 1; }
+  90.2439%, 100% { opacity: 0; }
+}
+
+.frame47 { animation-name: loader-frame-47; }
+@keyframes loader-frame-47 {
+  0%, 90.2429% { opacity: 0; }
+  90.2439%, 91.4624% { opacity: 1; }
+  91.4634%, 100% { opacity: 0; }
+}
+
+.frame48 { animation-name: loader-frame-48; }
+@keyframes loader-frame-48 {
+  0%, 91.4624% { opacity: 0; }
+  91.4634%, 93.9014% { opacity: 1; }
+  93.9024%, 100% { opacity: 0; }
+}
+
+.frame49 { animation-name: loader-frame-49; }
+@keyframes loader-frame-49 {
+  0%, 93.9014% { opacity: 0; }
+  93.9024%, 95.9340% { opacity: 1; }
+  95.9350%, 100% { opacity: 0; }
+}
+
+.frame50 { animation-name: loader-frame-50; }
+@keyframes loader-frame-50 {
+  0%, 95.9340% { opacity: 0; }
+  95.9350%, 97.1535% { opacity: 1; }
+  97.1545%, 100% { opacity: 0; }
+}
+
+.frame51 { animation-name: loader-frame-51; }
+@keyframes loader-frame-51 {
+  0%, 97.1535% { opacity: 0; }
+  97.1545%, 99.9990% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame { animation: none; opacity: 0; }
+  .frame51 { opacity: 1; }
+}

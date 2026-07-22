@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { AdminAccessForm } from "@/components/recipes/admin-access-form";
 import { AdminRecipeEditor } from "@/components/recipes/admin-recipe-editor";
 import { AdminRecipeIdeas } from "@/components/recipes/admin-recipe-ideas";
+import { LocalizedLoading } from "@/components/recipes/localized-loading";
 import { getRecipeAdminE2EFixtures } from "@/components/recipes/admin-recipe-e2e-fixtures";
 import { api } from "@/convex/_generated/api";
 import type { Locale } from "@/i18n/config";
@@ -87,7 +88,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     const sourceIdea = sourceIdeaId === e2eFixtures.idea._id
       ? e2eFixtures.idea
       : undefined;
-    return <Suspense fallback={null}><AdminRecipeEditor key={shouldCreateNew ? "new" : initialSlug ?? "home"} locale={locale} dictionaries={dictionaries} recipes={e2eFixtures.recipes} initialRecipe={initialRecipe} initialSlug={initialSlug} startInCreateMode={shouldCreateNew} ideaCount={0} sourceIdea={sourceIdea} /></Suspense>;
+    return <Suspense fallback={<LocalizedLoading />}><AdminRecipeEditor key={shouldCreateNew ? "new" : initialSlug ?? "home"} locale={locale} dictionaries={dictionaries} recipes={e2eFixtures.recipes} initialRecipe={initialRecipe} initialSlug={initialSlug} startInCreateMode={shouldCreateNew} ideaCount={0} sourceIdea={sourceIdea} /></Suspense>;
   }
   const adminAccess = await getRecipeAdminAccess();
 
@@ -123,7 +124,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   ]);
 
   return (
-    <Suspense fallback={<main className="min-h-screen px-5 py-8"><p className="type-label text-primary">Chargement de l&apos;admin</p></main>}>
+    <Suspense fallback={<LocalizedLoading />}>
     <AdminRecipeEditor
       key={shouldCreateNew ? "new" : initialSlug ?? "home"}
       locale={locale}

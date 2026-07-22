@@ -200,7 +200,7 @@
     "closeIngredients": "Fermer les ingrédients"
   },
   "loading": {
-    "recipes": "Chargement des recettes"
+    "page": "Chargement de la page"
   },
   "notFound": {
     "globalEyebrow": "404",
