@@ -244,26 +244,14 @@ describe("recipe yield localization", () => {
         unit: "pincée",
         notes: "",
       },
-      {
-        name: "noix de pécan hachées",
-        quantity: "60",
-        unit: "g",
-        notes: "pour la garniture facultative",
-      },
-      {
-        name: "cassonade foncée",
-        quantity: "2",
-        unit: "c. à s.",
-        notes: "pour la garniture facultative",
-      },
-      {
-        name: "cannelle",
-        quantity: "1/2",
-        unit: "c. à café",
-        notes: "pour la garniture facultative",
-      },
     ]);
     expect(seeded.translations.fr.subRecipes).toEqual([]);
+    expect(seeded.translations.fr.sections.map(({ title }) => title)).toEqual([
+      "Préparation",
+      "Cuisson",
+      "Conservation",
+      "Garniture croustillante aux noix (facultative)",
+    ]);
 
     expect(seeded.translations.en).toMatchObject({
       title: "Banana Bread",
@@ -300,31 +288,13 @@ describe("recipe yield localization", () => {
         unit: "pinch",
         notes: "",
       },
-      {
-        name: "chopped pecans",
-        quantity: "60",
-        unit: "g",
-        notes: "for the optional topping",
-      },
-      {
-        name: "dark brown sugar",
-        quantity: "2",
-        unit: "tbsp",
-        notes: "for the optional topping",
-      },
-      {
-        name: "cinnamon",
-        quantity: "1/2",
-        unit: "tsp",
-        notes: "for the optional topping",
-      },
     ]);
     expect(seeded.translations.en.subRecipes).toEqual([]);
     expect(seeded.translations.en.sections.map(({ title }) => title)).toEqual([
       "Preparation",
-      "Crunchy Pecan Topping (Optional)",
       "Baking",
       "Storage",
+      "Crunchy Pecan Topping (Optional)",
     ]);
     expect(
       seeded.translations.en.sections.flatMap(({ steps }) => steps),
@@ -334,13 +304,13 @@ describe("recipe yield localization", () => {
       "Add the mashed bananas and beaten eggs, then mix until smooth.",
       "In another bowl, combine the T45 flour, baking soda and salt. Sift the dry ingredients, ideally several times, then fold them into the banana mixture without overmixing.",
       "Fold the chopped pecans and pinch of cinnamon into the batter.",
-      "Mix the chopped pecans, dark brown sugar and cinnamon.",
-      "Pour half the batter into the pan and sprinkle with some of the pecan mixture.",
-      "Add the remaining batter, sprinkle the rest of the pecan mixture on top and press it in lightly.",
-      "Without the optional topping, pour all the batter into 1 lightly greased loaf pan.",
+      "Pour the batter into 1 lightly greased loaf pan.",
       "Bake for 45 to 60 min, until the center is firm and a knife or toothpick inserted into it comes out clean or almost clean.",
       "Let cool in the pan for 10 min, then unmold onto a rack.",
       "This banana bread freezes very well.",
+      "Mix 60 g chopped pecans, 2 tbsp dark brown sugar and 1/2 tsp cinnamon.",
+      "Pour half the batter into the pan and sprinkle with some of the pecan mixture.",
+      "Add the remaining batter, sprinkle the rest of the pecan mixture on top and press it in lightly.",
     ]);
   });
 

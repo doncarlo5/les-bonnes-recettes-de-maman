@@ -472,7 +472,6 @@ const noteTranslations: Record<string, string> = {
   "pour le décor": "for decoration",
   "pour le glaçage": "for the glaze",
   "pour le gâteau": "for the cake",
-  "pour la garniture facultative": "for the optional topping",
   "pour le moule": "for the pan",
   "pour le plat": "for the dish",
   "pour parsemer": "for sprinkling",
@@ -517,8 +516,8 @@ const stepTranslations: Record<string, string> = {
     "Pour half the batter into the pan and sprinkle with some of the pecan mixture.",
   "Ajouter le reste de pâte, parsemer le reste du mélange sur le dessus et presser légèrement.":
     "Add the remaining batter, sprinkle the rest of the pecan mixture on top and press it in lightly.",
-  "Sans la garniture facultative, verser toute la pâte dans 1 moule à cake légèrement graissé.":
-    "Without the optional topping, pour all the batter into 1 lightly greased loaf pan.",
+  "Verser la pâte dans 1 moule à cake légèrement graissé.":
+    "Pour the batter into 1 lightly greased loaf pan.",
   "Cuire 45 à 60 min, jusqu’à ce que le centre soit ferme et qu’une lame de couteau ou un cure-dent ressorte propre ou presque propre.":
     "Bake for 45 to 60 min, until the center is firm and a knife or toothpick inserted into it comes out clean or almost clean.",
   "Laisser refroidir 10 min dans le moule, puis démouler sur une grille.":
@@ -906,8 +905,8 @@ const stepTranslations: Record<string, string> = {
     "Bake for 45 min to 1 h, until the center is firm and the edges begin to pull away from the pans.",
   "Laisser refroidir sur une grille pendant 10 min avant de démouler.":
     "Let cool on a rack for 10 min before unmolding.",
-  "Mélanger les noix de pécan hachées, la cassonade foncée et la cannelle.":
-    "Mix the chopped pecans, dark brown sugar and cinnamon.",
+  "Mélanger 60 g de noix de pécan hachées, 2 c. à s. de cassonade foncée et 1/2 c. à café de cannelle.":
+    "Mix 60 g chopped pecans, 2 tbsp dark brown sugar and 1/2 tsp cinnamon.",
   "Verser la moitié de la pâte dans le moule, saupoudrer avec ce mélange, puis ajouter le reste de pâte.":
     "Pour half the batter into the pan, sprinkle with this mixture, then add the remaining batter.",
   "S’il reste du mélange, en mettre sur le dessus et l’enfoncer légèrement.":

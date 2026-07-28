@@ -2218,24 +2218,6 @@
         "quantity": "1",
         "unit": "pincée",
         "notes": ""
-      },
-      {
-        "name": "noix de pécan hachées",
-        "quantity": "60",
-        "unit": "g",
-        "notes": "pour la garniture facultative"
-      },
-      {
-        "name": "cassonade foncée",
-        "quantity": "2",
-        "unit": "c. à s.",
-        "notes": "pour la garniture facultative"
-      },
-      {
-        "name": "cannelle",
-        "quantity": "1/2",
-        "unit": "c. à café",
-        "notes": "pour la garniture facultative"
       }
     ],
     "sections": [
@@ -2250,17 +2232,9 @@
         ]
       },
       {
-        "title": "Garniture croustillante aux noix (facultative)",
-        "steps": [
-          "Mélanger les noix de pécan hachées, la cassonade foncée et la cannelle.",
-          "Verser la moitié de la pâte dans le moule et parsemer une partie du mélange aux noix.",
-          "Ajouter le reste de pâte, parsemer le reste du mélange sur le dessus et presser légèrement."
-        ]
-      },
-      {
         "title": "Cuisson",
         "steps": [
-          "Sans la garniture facultative, verser toute la pâte dans 1 moule à cake légèrement graissé.",
+          "Verser la pâte dans 1 moule à cake légèrement graissé.",
           "Cuire 45 à 60 min, jusqu’à ce que le centre soit ferme et qu’une lame de couteau ou un cure-dent ressorte propre ou presque propre.",
           "Laisser refroidir 10 min dans le moule, puis démouler sur une grille."
         ]
@@ -2268,6 +2242,14 @@
       {
         "title": "Conservation",
         "steps": ["Ce banana bread se congèle très bien."]
+      },
+      {
+        "title": "Garniture croustillante aux noix (facultative)",
+        "steps": [
+          "Mélanger 60 g de noix de pécan hachées, 2 c. à s. de cassonade foncée et 1/2 c. à café de cannelle.",
+          "Verser la moitié de la pâte dans le moule et parsemer une partie du mélange aux noix.",
+          "Ajouter le reste de pâte, parsemer le reste du mélange sur le dessus et presser légèrement."
+        ]
       }
     ],
     "notes": ["Un incontournable avec les salades de poulet."]
