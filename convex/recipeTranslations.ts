@@ -210,8 +210,6 @@ const titleTranslations: Record<string, string> = {
   "Flan au lait concentré sucré Nestlé": "Nestlé Sweetened Condensed Milk Flan",
   "Crème au café": "Coffee Custard",
   "Banana bread": "Banana Bread",
-  "Variante avec garniture à la cannelle et aux noix de pécan":
-    "Cinnamon and Pecan Filling Variation",
   "Soupe de champagne": "Champagne Punch",
   "Cookies aux pépites de chocolat et fleur de sel":
     "Chocolate Chip Cookies with Fleur de Sel",
@@ -280,7 +278,6 @@ const descriptionTranslations: Record<string, string> = {
 };
 
 const sectionTranslations: Record<string, string> = {
-  "Ajout facultatif dans la pâte": "Optional Batter Addition",
   Conservation: "Storage",
   Crème: "Cream",
   "Crème au café": "Coffee Custard",
@@ -290,6 +287,8 @@ const sectionTranslations: Record<string, string> = {
   Décor: "Decoration",
   Finition: "Finishing",
   "Glaçage facultatif": "Optional Glaze",
+  "Garniture croustillante aux noix (facultative)":
+    "Crunchy Pecan Topping (Optional)",
   "Gâteau de Vichy": "Vichy Cake",
   Montage: "Assembly",
   "Notes de cuisson": "Baking Notes",
@@ -300,8 +299,6 @@ const sectionTranslations: Record<string, string> = {
   Refroidissement: "Cooling",
   Service: "Serving",
   "Suite de la cuisson": "Continuing the Baking",
-  "Variante avec garniture à la cannelle et aux noix de pécan":
-    "Cinnamon and Pecan Filling Variation",
 };
 
 const ingredientTranslations: Record<string, string> = {
@@ -463,7 +460,6 @@ const noteTranslations: Record<string, string> = {
   "ou 2 petits": "or 2 small ones",
   "ajout manuscrit possible": "possible handwritten addition",
   "bien battus": "well beaten",
-  "première variante facultative": "first optional variation",
   "pour la crème au citron": "for the lemon cream",
   "pour la crème anglaise": "for the custard",
   "pour la crème anglaise, jaunes restant après le macaron":
@@ -476,6 +472,7 @@ const noteTranslations: Record<string, string> = {
   "pour le décor": "for decoration",
   "pour le glaçage": "for the glaze",
   "pour le gâteau": "for the cake",
+  "pour la garniture facultative": "for the optional topping",
   "pour le moule": "for the pan",
   "pour le plat": "for the dish",
   "pour parsemer": "for sprinkling",
@@ -484,7 +481,6 @@ const noteTranslations: Record<string, string> = {
   "environ 20 cl, à ajouter progressivement": "about 20 cl, added gradually",
   "mélange de poissons surgelés sans arêtes": "frozen boneless fish mix",
   "facultatif, pour le service": "optional, for serving",
-  "variante avec garniture facultative": "optional filling variation",
   "environ 200 g chacune": "about 200 g each",
   "pour le sirop, note manuscrite 0,08 l":
     "for the syrup; handwritten note 0.08 l",
@@ -513,22 +509,20 @@ const stepTranslations: Record<string, string> = {
     "Beat the softened butter and sugar until light and fluffy.",
   "Ajouter les bananes écrasées et les œufs battus, puis mélanger jusqu’à obtenir une pâte homogène.":
     "Add the mashed bananas and beaten eggs, then mix until smooth.",
-  "Dans un autre saladier, mélanger la farine T45, la Maïzena, le bicarbonate de soude et le sel. Tamiser idéalement les ingrédients secs plusieurs fois, puis les incorporer à la préparation à la banane sans trop travailler la pâte.":
-    "In another bowl, combine the T45 flour, cornstarch, baking soda and salt. Sift the dry ingredients, ideally several times, then fold them into the banana mixture without overmixing.",
-  "Pour la première variante, incorporer les noix de pécan hachées et la pincée de cannelle à la pâte. Ne pas cumuler cet ajout avec la variante comportant une garniture.":
-    "For the first variation, fold the chopped pecans and pinch of cinnamon into the batter. Do not combine this option with the filling variation.",
-  "Verser la pâte dans 1 moule à cake légèrement graissé.":
-    "Pour the batter into 1 lightly greased loaf pan.",
+  "Dans un autre saladier, mélanger la farine T45, le bicarbonate de soude et le sel. Tamiser idéalement les ingrédients secs plusieurs fois, puis les incorporer à la préparation à la banane sans trop travailler la pâte.":
+    "In another bowl, combine the T45 flour, baking soda and salt. Sift the dry ingredients, ideally several times, then fold them into the banana mixture without overmixing.",
+  "Incorporer les noix de pécan hachées et la pincée de cannelle à la pâte.":
+    "Fold the chopped pecans and pinch of cinnamon into the batter.",
+  "Verser la moitié de la pâte dans le moule et parsemer une partie du mélange aux noix.":
+    "Pour half the batter into the pan and sprinkle with some of the pecan mixture.",
+  "Ajouter le reste de pâte, parsemer le reste du mélange sur le dessus et presser légèrement.":
+    "Add the remaining batter, sprinkle the rest of the pecan mixture on top and press it in lightly.",
+  "Sans la garniture facultative, verser toute la pâte dans 1 moule à cake légèrement graissé.":
+    "Without the optional topping, pour all the batter into 1 lightly greased loaf pan.",
   "Cuire 45 à 60 min, jusqu’à ce que le centre soit ferme et qu’une lame de couteau ou un cure-dent ressorte propre ou presque propre.":
     "Bake for 45 to 60 min, until the center is firm and a knife or toothpick inserted into it comes out clean or almost clean.",
   "Laisser refroidir 10 min dans le moule, puis démouler sur une grille.":
     "Let cool in the pan for 10 min, then unmold onto a rack.",
-  "Pour cette variante, ne pas ajouter à la pâte les noix de pécan et la cannelle prévues pour être incorporées directement.":
-    "For this variation, omit the pecans and cinnamon intended to be mixed directly into the batter.",
-  "Verser la moitié de la pâte dans le moule, saupoudrer une partie du mélange, puis ajouter le reste de pâte.":
-    "Pour half the batter into the pan, sprinkle with some of the mixture, then add the remaining batter.",
-  "S’il reste du mélange, le répartir sur le dessus et l’enfoncer légèrement dans la pâte.":
-    "If any mixture remains, sprinkle it on top and press it lightly into the batter.",
   "Mettre la moutarde de Dijon et le jaune d’œuf dans le bol du mixeur, puis mixer.":
     "Place the Dijon mustard and egg yolk in the blender bowl, then blend.",
   "Continuer à mixer en versant progressivement l’huile de tournesol en un petit filet, jusqu’à obtenir une mayonnaise bien émulsionnée.":
