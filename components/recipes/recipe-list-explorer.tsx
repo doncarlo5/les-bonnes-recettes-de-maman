@@ -377,7 +377,7 @@ function getActiveView(searchParams: { get: (name: string) => string | null }) {
 
 function getActiveSort(searchParams: { get: (name: string) => string | null }) {
   const value = searchParams.get("sort");
-  return sortValues.includes(value as RecipeSort) ? (value as RecipeSort) : "alpha";
+  return sortValues.includes(value as RecipeSort) ? (value as RecipeSort) : "date";
 }
 
 function getActiveSortDirection(

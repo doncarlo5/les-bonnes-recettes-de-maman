@@ -491,8 +491,7 @@ test("homepage discovery state remains URL-backed", async ({
   await revealFilters("Date d’ajout");
   const dateSort = page.getByRole("button", { name: "Date d’ajout" });
   const recipeLinks = page.locator('main a[href^="/fr/recettes/"]');
-  await dateSort.click();
-  await expect(page).toHaveURL(/sort=date&order=desc/);
+  await expect(dateSort).toHaveAttribute("aria-pressed", "true");
   const dateDescending = await recipeLinks.evaluateAll((links) =>
     links.map((link) => link.getAttribute("href")),
   );
@@ -501,6 +500,8 @@ test("homepage discovery state remains URL-backed", async ({
   await expect.poll(() => recipeLinks.evaluateAll((links) =>
     links.map((link) => link.getAttribute("href")),
   )).toEqual([...dateDescending].reverse());
+  await dateSort.click();
+  await expect(page).toHaveURL(/sort=date&order=desc/);
 
   const alphabeticalSort = page.getByRole("button", { name: "Alphabétique" });
   await alphabeticalSort.click();
