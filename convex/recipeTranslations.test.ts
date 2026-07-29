@@ -400,6 +400,61 @@ describe("recipe yield localization", () => {
     ]);
   });
 
+  test("localizes Maman's bolognese sauce with its project image", () => {
+    const source = recipes.find((recipe) => recipe.slug === "sauce-bolognaise");
+    expect(source).toBeDefined();
+
+    const seeded = toSeedRecipe(source!);
+    expect(seeded).toMatchObject({
+      slug: "sauce-bolognaise",
+      heroImageUrl: "/images/recipes/sauce-bolognaise.png",
+      categories: ["plat", "sale"],
+      legacyCategoryLabels: [],
+    });
+    expect(seeded.referenceServings).toBeUndefined();
+    expect(seeded.translations.fr).toMatchObject({
+      title: "Sauce bolognaise",
+      author: "Maman",
+      cookTime: "40 min",
+      temperature: "feu doux",
+      equipment: ["1 poêle"],
+      servings: null,
+    });
+    expect(seeded.translations.en).toMatchObject({
+      title: "Bolognese Sauce",
+      author: "Maman",
+      cookTime: "40 min",
+      temperature: "low heat",
+      equipment: ["1 frying pan"],
+      servings: null,
+    });
+    expect(
+      seeded.translations.en.ingredients.map(
+        ({ id: _id, ...ingredient }) => ingredient,
+      ),
+    ).toEqual([
+      { name: "ground beef", quantity: "500", unit: "g", notes: "" },
+      { name: "ham", quantity: "2", unit: "slices", notes: "" },
+      { name: "canned tomatoes", quantity: "1", unit: "can", notes: "" },
+      { name: "tomato passata", quantity: "1", unit: "", notes: "" },
+      { name: "onion", quantity: "1", unit: "", notes: "" },
+      { name: "garlic", quantity: "1", unit: "clove", notes: "" },
+      { name: "parsley", quantity: "1", unit: "bunch", notes: "" },
+      { name: "carrot", quantity: "1", unit: "", notes: "optional" },
+      { name: "Herbes de Provence", quantity: "", unit: "", notes: "" },
+      { name: "salt", quantity: "", unit: "", notes: "to taste" },
+      { name: "pepper", quantity: "", unit: "", notes: "to taste" },
+    ]);
+    expect(seeded.translations.en.sections[0]?.steps).toEqual([
+      "Peel the garlic and onion.",
+      "Heat a little oil in a frying pan. Add the onion, garlic and chopped parsley, then cook gently over low heat.",
+      "Add the ground beef and ham, then brown for about 10 minutes.",
+      "Add the canned tomatoes and tomato passata.",
+      "Season with salt and pepper, then add the Herbes de Provence.",
+      "Simmer partially covered for about 30 minutes.",
+    ]);
+  });
+
   test("seeds Marmiton-style metadata and structured recipe links", () => {
     const source = recipes.find((recipe) => recipe.slug === "pain-de-poisson");
     expect(source).toBeDefined();

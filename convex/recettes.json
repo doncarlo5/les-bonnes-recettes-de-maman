@@ -2493,5 +2493,100 @@
     "notes": [
       "Pour une mayonnaise bien fraîche, la laisser reposer 30 min au réfrigérateur avant de servir."
     ]
+  },
+  {
+    "title": "Sauce bolognaise",
+    "slug": "sauce-bolognaise",
+    "author": "Maman",
+    "description": "Sauce bolognaise familiale au bœuf haché, jambon, tomates, ail, oignon, persil et herbes de Provence.",
+    "heroImageUrl": "/images/recipes/sauce-bolognaise.png",
+    "servings": null,
+    "prepTime": "",
+    "cookTime": "40 min",
+    "totalTime": "",
+    "temperature": "feu doux",
+    "equipment": ["1 poêle"],
+    "ingredients": [
+      {
+        "name": "bœuf haché",
+        "quantity": "500",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "jambon",
+        "quantity": "2",
+        "unit": "tranches",
+        "notes": ""
+      },
+      {
+        "name": "tomates en conserve",
+        "quantity": "1",
+        "unit": "boîte",
+        "notes": ""
+      },
+      {
+        "name": "coulis de tomates",
+        "quantity": "1",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "oignon",
+        "quantity": "1",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "ail",
+        "quantity": "1",
+        "unit": "gousse",
+        "notes": ""
+      },
+      {
+        "name": "persil",
+        "quantity": "1",
+        "unit": "bouquet",
+        "notes": ""
+      },
+      {
+        "name": "carotte",
+        "quantity": "1",
+        "unit": "",
+        "notes": "facultatif"
+      },
+      {
+        "name": "herbes de Provence",
+        "quantity": "",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "sel",
+        "quantity": "",
+        "unit": "",
+        "notes": "à convenance"
+      },
+      {
+        "name": "poivre",
+        "quantity": "",
+        "unit": "",
+        "notes": "à convenance"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Éplucher l’ail et l’oignon.",
+          "Faire chauffer un fond d’huile dans une poêle. Ajouter l’oignon, l’ail et le persil hachés, puis faire revenir à feu doux.",
+          "Ajouter le bœuf haché et le jambon, puis faire dorer une dizaine de minutes.",
+          "Ajouter les tomates en conserve et le coulis de tomates.",
+          "Saler, poivrer et ajouter les herbes de Provence.",
+          "Laisser mijoter à demi-couvert pendant environ 30 min."
+        ]
+      }
+    ],
+    "notes": []
   }
 ]
