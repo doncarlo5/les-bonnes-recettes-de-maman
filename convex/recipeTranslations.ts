@@ -119,6 +119,7 @@ const recipeCategoryTags: Record<string, string[]> = {
   "pate-feuilletee-maman": ["sucre", "sale", "pâte de base"],
   "pate-sucree-de-pierre-herme": ["dessert", "sucre"],
   mayonnaise: ["sale"],
+  "sauce-bolognaise": ["plat", "sale"],
   "soupe-de-champagne": ["sucre"],
   "cookies-aux-pepites-de-chocolat-et-fleur-de-sel": ["dessert", "sucre"],
   "tarte-aux-amandes-et-confiture-de-framboises": ["dessert", "sucre"],
@@ -214,6 +215,7 @@ const titleTranslations: Record<string, string> = {
   "Cookies aux pépites de chocolat et fleur de sel":
     "Chocolate Chip Cookies with Fleur de Sel",
   Mayonnaise: "Mayonnaise",
+  "Sauce bolognaise": "Bolognese Sauce",
 };
 
 const descriptionTranslations: Record<string, string> = {
@@ -273,6 +275,8 @@ const descriptionTranslations: Record<string, string> = {
     "Large chocolate chip cookies with crisp edges, soft centers and a touch of fleur de sel.",
   "Mayonnaise maison à la moutarde de Dijon, montée au mixeur avec de l’huile de tournesol et assaisonnée de vinaigre balsamique.":
     "Homemade Dijon mustard mayonnaise blended with sunflower oil and seasoned with balsamic vinegar.",
+  "Sauce bolognaise familiale au bœuf haché, jambon, tomates, ail, oignon, persil et herbes de Provence.":
+    "Family-style Bolognese sauce with ground beef, ham, tomatoes, garlic, onion, parsley and Herbes de Provence.",
   "Gâteau macaron aux blancs d’œufs, amandes et extrait d’amande amère, servi avec une crème anglaise à la vanille.":
     "Macaron-style almond cake made with egg whites and bitter almond extract, served with vanilla custard.",
 };
@@ -320,6 +324,7 @@ const ingredientTranslations: Record<string, string> = {
   "biscuits à la cuillère": "ladyfingers",
   "blancs d’œufs": "egg whites",
   "bouquet garni": "bouquet garni",
+  "bœuf haché": "ground beef",
   café: "coffee",
   calvados: "calvados",
   cannelle: "cinnamon",
@@ -369,6 +374,8 @@ const ingredientTranslations: Record<string, string> = {
   huile: "oil",
   "huile de tournesol": "sunflower oil",
   "huile d’olive": "olive oil",
+  "herbes de Provence": "Herbes de Provence",
+  jambon: "ham",
   "jarret de veau": "veal shank",
   "jaune d’œuf": "egg yolk",
   "jaunes d’œufs": "egg yolks",
@@ -394,6 +401,7 @@ const ingredientTranslations: Record<string, string> = {
   orange: "orange",
   "parmesan râpé": "grated parmesan",
   persil: "parsley",
+  carotte: "carrot",
   "petites courgettes": "small zucchini",
   poires: "pears",
   poisson: "fish",
@@ -415,6 +423,8 @@ const ingredientTranslations: Record<string, string> = {
   "tapenade verte ou pesto vert": "green tapenade or green pesto",
   thym: "thyme",
   "tomates concassées": "crushed tomatoes",
+  "tomates en conserve": "canned tomatoes",
+  "coulis de tomates": "tomato passata",
   vanille: "vanilla",
   "vinaigre balsamique": "balsamic vinegar",
   "vin blanc": "white wine",
@@ -962,6 +972,17 @@ const stepTranslations: Record<string, string> = {
     "Let cool until warm, then gently slide a tablespoon between each lava cake and its cup to unmold it without breaking it.",
   "Servir chaque coulant tiède avec une boule de glace à la vanille.":
     "Serve each lava cake warm with a scoop of vanilla ice cream.",
+  "Éplucher l’ail et l’oignon.": "Peel the garlic and onion.",
+  "Faire chauffer un fond d’huile dans une poêle. Ajouter l’oignon, l’ail et le persil hachés, puis faire revenir à feu doux.":
+    "Heat a little oil in a frying pan. Add the onion, garlic and chopped parsley, then cook gently over low heat.",
+  "Ajouter le bœuf haché et le jambon, puis faire dorer une dizaine de minutes.":
+    "Add the ground beef and ham, then brown for about 10 minutes.",
+  "Ajouter les tomates en conserve et le coulis de tomates.":
+    "Add the canned tomatoes and tomato passata.",
+  "Saler, poivrer et ajouter les herbes de Provence.":
+    "Season with salt and pepper, then add the Herbes de Provence.",
+  "Laisser mijoter à demi-couvert pendant environ 30 min.":
+    "Simmer partially covered for about 30 minutes.",
 };
 
 const unitTranslations: Record<string, string> = {
@@ -980,6 +1001,7 @@ const unitTranslations: Record<string, string> = {
   cl: "cl",
   environ: "about",
   g: "g",
+  gousse: "clove",
   "gros citron": "large lemon",
   grosses: "large",
   litre: "liter",
@@ -991,6 +1013,7 @@ const unitTranslations: Record<string, string> = {
   pincée: "pinch",
   pincées: "pinches",
   sachet: "packet",
+  tranches: "slices",
   tasse: "cup",
   tasses: "cups",
   verre: "glass",
