@@ -10,3 +10,9 @@
 .loader {
   width: min(18rem, 72vw);
 }
+
+@media (max-width: 40rem) {
+  .loader {
+    width: min(9rem, 42vw);
+  }
+}
