@@ -400,6 +400,97 @@ describe("recipe yield localization", () => {
     ]);
   });
 
+  test("localizes Maman's apricot clafoutis for six people", () => {
+    const source = recipes.find(
+      (recipe) => recipe.slug === "clafoutis-aux-abricots",
+    );
+    expect(source).toBeDefined();
+
+    const seeded = toSeedRecipe(source!);
+    expect(seeded).toMatchObject({
+      slug: "clafoutis-aux-abricots",
+      categories: ["dessert", "sucre"],
+      legacyCategoryLabels: [],
+      referenceServings: 6,
+    });
+    expect(seeded.translations.fr).toMatchObject({
+      title: "Clafoutis aux abricots",
+      author: "Maman",
+      yieldLabel: "6 personnes",
+      cookTime: "35 à 40 min",
+      temperature: "180 °C",
+      equipment: ["1 plat à gratin ou 1 moule de 24 cm"],
+      servings: { quantity: 6, unit: "personnes" },
+    });
+    expect(seeded.translations.en).toMatchObject({
+      title: "Apricot Clafoutis",
+      author: "Maman",
+      description:
+        "Soft, lightly browned apricot clafoutis made with almond flour.",
+      yieldLabel: "6 people",
+      cookTime: "35 to 40 min",
+      temperature: "180 °C",
+      equipment: ["1 baking dish or 1 24 cm round pan"],
+      servings: { quantity: 6, unit: "people" },
+    });
+    expect(
+      seeded.translations.en.ingredients.map(
+        ({ id: _id, ...ingredient }) => ingredient,
+      ),
+    ).toEqual([
+      { name: "apricots", quantity: "500 to 600", unit: "g", notes: "" },
+      { name: "eggs", quantity: "3", unit: "", notes: "" },
+      { name: "sugar", quantity: "80", unit: "g", notes: "" },
+      { name: "flour", quantity: "60", unit: "g", notes: "" },
+      { name: "almond flour", quantity: "40", unit: "g", notes: "" },
+      {
+        name: "semi-skimmed milk",
+        quantity: "250",
+        unit: "ml",
+        notes: "",
+      },
+      {
+        name: "vanilla extract",
+        quantity: "1",
+        unit: "tsp",
+        notes: "or the seeds from half a vanilla bean",
+      },
+      { name: "salt", quantity: "1", unit: "pinch", notes: "" },
+      {
+        name: "butter",
+        quantity: "20",
+        unit: "g",
+        notes: "for the pan, or use a little oil",
+      },
+      {
+        name: "brown sugar",
+        quantity: "1",
+        unit: "tbsp",
+        notes: "optional, to lightly caramelize the top",
+      },
+      {
+        name: "sliced almonds",
+        quantity: "a few",
+        unit: "",
+        notes: "optional",
+      },
+    ]);
+    expect(
+      seeded.translations.en.sections.flatMap(({ steps }) => steps),
+    ).toEqual([
+      "Preheat the oven to 180 °C.",
+      "Butter a baking dish or a pan about 24 cm in diameter.",
+      "Wash the apricots, halve and pit them. Arrange them in the dish, cut side up.",
+      "Whisk the eggs with the sugar until evenly combined.",
+      "Add the flour, almond flour and pinch of salt.",
+      "Gradually pour in the milk while whisking until the batter is smooth, then add the vanilla.",
+      "Pour the batter over the apricots.",
+      "For a lightly caramelized top, sprinkle with brown sugar and, if desired, a few sliced almonds.",
+      "Bake for 35 to 40 min, until the top is golden brown and the center is just set.",
+      "Let cool for 15 to 20 min before serving. The clafoutis is excellent warm or chilled for a few hours in the refrigerator.",
+    ]);
+  });
+
   test("localizes Maman's bolognese sauce with its project image", () => {
     const source = recipes.find((recipe) => recipe.slug === "sauce-bolognaise");
     expect(source).toBeDefined();

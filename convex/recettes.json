@@ -2588,5 +2588,125 @@
       }
     ],
     "notes": []
+  },
+  {
+    "title": "Clafoutis aux abricots",
+    "slug": "clafoutis-aux-abricots",
+    "author": "Maman",
+    "description": "Clafoutis aux abricots et à la poudre d’amandes, moelleux et légèrement doré.",
+    "heroImageUrl": "",
+    "servings": {
+      "quantity": 6,
+      "unit": "personnes"
+    },
+    "referenceServings": 6,
+    "prepTime": "",
+    "cookTime": "35 à 40 min",
+    "totalTime": "",
+    "temperature": "180 °C",
+    "equipment": ["1 plat à gratin ou 1 moule de 24 cm"],
+    "ingredients": [
+      {
+        "name": "abricots",
+        "quantity": "500 à 600",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "œufs",
+        "quantity": "3",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "sucre",
+        "quantity": "80",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "farine",
+        "quantity": "60",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "poudre d’amandes",
+        "quantity": "40",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "lait demi-écrémé",
+        "quantity": "250",
+        "unit": "ml",
+        "notes": ""
+      },
+      {
+        "name": "extrait de vanille",
+        "quantity": "1",
+        "unit": "c. à café",
+        "notes": "ou les graines d’une demi-gousse"
+      },
+      {
+        "name": "sel",
+        "quantity": "1",
+        "unit": "pincée",
+        "notes": ""
+      },
+      {
+        "name": "beurre",
+        "quantity": "20",
+        "unit": "g",
+        "notes": "pour le moule, ou un peu d’huile"
+      },
+      {
+        "name": "sucre roux",
+        "quantity": "1",
+        "unit": "c. à s.",
+        "notes": "facultatif, pour caraméliser légèrement le dessus"
+      },
+      {
+        "name": "amandes effilées",
+        "quantity": "quelques",
+        "unit": "",
+        "notes": "facultatif"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Préchauffer le four à 180 °C.",
+          "Beurrer un plat à gratin ou un moule d’environ 24 cm.",
+          "Laver les abricots, les couper en deux et retirer les noyaux. Les disposer dans le plat, face coupée vers le haut.",
+          "Mélanger les œufs avec le sucre jusqu’à obtenir une préparation homogène.",
+          "Ajouter la farine, la poudre d’amandes et la pincée de sel.",
+          "Verser progressivement le lait en fouettant pour obtenir une pâte lisse, puis ajouter la vanille.",
+          "Verser la préparation sur les abricots."
+        ]
+      },
+      {
+        "title": "Finition facultative",
+        "steps": [
+          "Pour un dessus légèrement caramélisé, saupoudrer de sucre roux et, si souhaité, de quelques amandes effilées."
+        ]
+      },
+      {
+        "title": "Cuisson",
+        "steps": [
+          "Enfourner 35 à 40 min, jusqu’à ce que le dessus soit bien doré et que le centre soit juste pris."
+        ]
+      },
+      {
+        "title": "Dégustation",
+        "steps": [
+          "Laisser tiédir 15 à 20 min avant de servir. Le clafoutis est excellent tiède, mais aussi froid après quelques heures au réfrigérateur."
+        ]
+      }
+    ],
+    "notes": [
+      "Si les abricots sont un peu acides, les saupoudrer d’une cuillère à soupe de sucre avant de verser la pâte. Cela équilibre leur saveur sans rendre le clafoutis trop sucré."
+    ]
   }
 ]

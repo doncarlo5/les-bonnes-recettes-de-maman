@@ -105,6 +105,7 @@ const recipeCategoryTags: Record<string, string[]> = {
   "cake-moelleux-au-citron-de-pierre-herme": ["dessert", "sucre"],
   "cake-orange": ["dessert", "sucre"],
   "clafoutis-poires-et-framboises": ["dessert", "sucre"],
+  "clafoutis-aux-abricots": ["dessert", "sucre"],
   "cocotte-de-cabillaud-aux-courgettes-et-curry": ["plat", "sale"],
   "coulants-au-chocolat": ["dessert", "sucre"],
   "crumble-aux-pommes-du-verger": ["dessert", "sucre"],
@@ -216,6 +217,7 @@ const titleTranslations: Record<string, string> = {
     "Chocolate Chip Cookies with Fleur de Sel",
   Mayonnaise: "Mayonnaise",
   "Sauce bolognaise": "Bolognese Sauce",
+  "Clafoutis aux abricots": "Apricot Clafoutis",
 };
 
 const descriptionTranslations: Record<string, string> = {
@@ -277,6 +279,8 @@ const descriptionTranslations: Record<string, string> = {
     "Homemade Dijon mustard mayonnaise blended with sunflower oil and seasoned with balsamic vinegar.",
   "Sauce bolognaise familiale au bœuf haché, jambon, tomates, ail, oignon, persil et herbes de Provence.":
     "Family-style Bolognese sauce with ground beef, ham, tomatoes, garlic, onion, parsley and Herbes de Provence.",
+  "Clafoutis aux abricots et à la poudre d’amandes, moelleux et légèrement doré.":
+    "Soft, lightly browned apricot clafoutis made with almond flour.",
   "Gâteau macaron aux blancs d’œufs, amandes et extrait d’amande amère, servi avec une crème anglaise à la vanille.":
     "Macaron-style almond cake made with egg whites and bitter almond extract, served with vanilla custard.",
 };
@@ -291,6 +295,7 @@ const sectionTranslations: Record<string, string> = {
   Décor: "Decoration",
   Finition: "Finishing",
   "Glaçage facultatif": "Optional Glaze",
+  "Finition facultative": "Optional Finishing",
   "Garniture croustillante aux noix (facultative)":
     "Crunchy Pecan Topping (Optional)",
   "Gâteau de Vichy": "Vichy Cake",
@@ -302,6 +307,7 @@ const sectionTranslations: Record<string, string> = {
   Repos: "Resting",
   Refroidissement: "Cooling",
   Service: "Serving",
+  Dégustation: "Serving",
   "Suite de la cuisson": "Continuing the Baking",
 };
 
@@ -310,7 +316,9 @@ const ingredientTranslations: Record<string, string> = {
   Maïzena: "cornstarch",
   "Vache qui rit / Kiri": "Laughing Cow / Kiri cheese",
   ail: "garlic",
+  abricots: "apricots",
   amandes: "almonds",
+  "amandes effilées": "sliced almonds",
   "amandes effilées grillées": "toasted sliced almonds",
   "amandes en poudre": "ground almonds",
   beurre: "butter",
@@ -382,6 +390,7 @@ const ingredientTranslations: Record<string, string> = {
   "jus de citron": "lemon juice",
   "jus d’orange": "orange juice",
   lait: "milk",
+  "lait demi-écrémé": "semi-skimmed milk",
   "lait concentré sucré": "sweetened condensed milk",
   "lait entier": "whole milk",
   levure: "baking powder",
@@ -483,6 +492,7 @@ const noteTranslations: Record<string, string> = {
   "pour le glaçage": "for the glaze",
   "pour le gâteau": "for the cake",
   "pour le moule": "for the pan",
+  "pour le moule, ou un peu d’huile": "for the pan, or use a little oil",
   "pour le plat": "for the dish",
   "pour parsemer": "for sprinkling",
   "pour saupoudrer": "for dusting",
@@ -510,6 +520,11 @@ const noteTranslations: Record<string, string> = {
   rases: "level",
   "selon le goût": "to taste",
   "selon besoin": "as needed",
+  "ou les graines d’une demi-gousse": "or the seeds from half a vanilla bean",
+  "facultatif, pour caraméliser légèrement le dessus":
+    "optional, to lightly caramelize the top",
+  "Si les abricots sont un peu acides, les saupoudrer d’une cuillère à soupe de sucre avant de verser la pâte. Cela équilibre leur saveur sans rendre le clafoutis trop sucré.":
+    "If the apricots are a little tart, sprinkle them with one tablespoon of sugar before pouring in the batter. This balances their flavor without making the clafoutis too sweet.",
   "écrit « chivre » sur la recette": "written “chivre” on the recipe",
 };
 
@@ -983,6 +998,24 @@ const stepTranslations: Record<string, string> = {
     "Season with salt and pepper, then add the Herbes de Provence.",
   "Laisser mijoter à demi-couvert pendant environ 30 min.":
     "Simmer partially covered for about 30 minutes.",
+  "Beurrer un plat à gratin ou un moule d’environ 24 cm.":
+    "Butter a baking dish or a pan about 24 cm in diameter.",
+  "Laver les abricots, les couper en deux et retirer les noyaux. Les disposer dans le plat, face coupée vers le haut.":
+    "Wash the apricots, halve and pit them. Arrange them in the dish, cut side up.",
+  "Mélanger les œufs avec le sucre jusqu’à obtenir une préparation homogène.":
+    "Whisk the eggs with the sugar until evenly combined.",
+  "Ajouter la farine, la poudre d’amandes et la pincée de sel.":
+    "Add the flour, almond flour and pinch of salt.",
+  "Verser progressivement le lait en fouettant pour obtenir une pâte lisse, puis ajouter la vanille.":
+    "Gradually pour in the milk while whisking until the batter is smooth, then add the vanilla.",
+  "Verser la préparation sur les abricots.":
+    "Pour the batter over the apricots.",
+  "Pour un dessus légèrement caramélisé, saupoudrer de sucre roux et, si souhaité, de quelques amandes effilées.":
+    "For a lightly caramelized top, sprinkle with brown sugar and, if desired, a few sliced almonds.",
+  "Enfourner 35 à 40 min, jusqu’à ce que le dessus soit bien doré et que le centre soit juste pris.":
+    "Bake for 35 to 40 min, until the top is golden brown and the center is just set.",
+  "Laisser tiédir 15 à 20 min avant de servir. Le clafoutis est excellent tiède, mais aussi froid après quelques heures au réfrigérateur.":
+    "Let cool for 15 to 20 min before serving. The clafoutis is excellent warm or chilled for a few hours in the refrigerator.",
 };
 
 const unitTranslations: Record<string, string> = {
@@ -1005,6 +1038,7 @@ const unitTranslations: Record<string, string> = {
   "gros citron": "large lemon",
   grosses: "large",
   litre: "liter",
+  ml: "ml",
   moules: "molds",
   paquet: "packet",
   personnes: "people",
@@ -1021,7 +1055,9 @@ const unitTranslations: Record<string, string> = {
 
 const quantityTranslations: Record<string, string> = {
   "325 à 350": "325 to 350",
+  "500 à 600": "500 to 600",
   "5 à 7": "5 to 7",
+  quelques: "a few",
   "quelques gouttes": "a few drops",
 };
 
@@ -1055,6 +1091,8 @@ const equipmentTranslations: Record<string, string> = {
   "1 maryse": "1 silicone spatula",
   "1 plat de service": "1 serving dish",
   "1 plat à gratin": "1 baking dish",
+  "1 plat à gratin ou 1 moule de 24 cm":
+    "1 baking dish or 1 24 cm round pan",
   "1 moule à cake ou 12 moules à mini-cakes":
     "1 loaf pan or 12 mini-loaf molds",
   "1 cocotte-minute": "1 pressure cooker",
