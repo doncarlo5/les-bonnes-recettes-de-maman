@@ -121,6 +121,7 @@ const recipeCategoryTags: Record<string, string[]> = {
   "pate-sucree-de-pierre-herme": ["dessert", "sucre"],
   mayonnaise: ["sale"],
   "sauce-bolognaise": ["plat", "sale"],
+  "salade-de-lentilles": ["plat", "sale"],
   "soupe-de-champagne": ["sucre"],
   "cookies-aux-pepites-de-chocolat-et-fleur-de-sel": ["dessert", "sucre"],
   "tarte-aux-amandes-et-confiture-de-framboises": ["dessert", "sucre"],
@@ -218,6 +219,7 @@ const titleTranslations: Record<string, string> = {
   Mayonnaise: "Mayonnaise",
   "Sauce bolognaise": "Bolognese Sauce",
   "Clafoutis aux abricots": "Apricot Clafoutis",
+  "Salade de lentilles": "Lentil Salad",
 };
 
 const descriptionTranslations: Record<string, string> = {
@@ -281,6 +283,8 @@ const descriptionTranslations: Record<string, string> = {
     "Family-style Bolognese sauce with ground beef, ham, tomatoes, garlic, onion, parsley and Herbes de Provence.",
   "Clafoutis aux abricots et à la poudre d’amandes, moelleux et légèrement doré.":
     "Soft, lightly browned apricot clafoutis made with almond flour.",
+  "Salade de lentilles blondes aux tomates cerises, feta, oignon rouge et persil, assaisonnée d’une vinaigrette citronnée.":
+    "Blond lentil salad with cherry tomatoes, feta, red onion and parsley, dressed with a lemon vinaigrette.",
   "Gâteau macaron aux blancs d’œufs, amandes et extrait d’amande amère, servi avec une crème anglaise à la vanille.":
     "Macaron-style almond cake made with egg whites and bitter almond extract, served with vanilla custard.",
 };
@@ -365,6 +369,7 @@ const ingredientTranslations: Record<string, string> = {
   "extrait de café": "coffee extract",
   "extrait de vanille": "vanilla extract",
   "extrait d’amande amère": "bitter almond extract",
+  feta: "feta",
   "fleur de sel": "fleur de sel",
   farine: "flour",
   "farine T45": "T45 flour",
@@ -393,6 +398,7 @@ const ingredientTranslations: Record<string, string> = {
   "lait demi-écrémé": "semi-skimmed milk",
   "lait concentré sucré": "sweetened condensed milk",
   "lait entier": "whole milk",
+  "lentilles blondes": "blond lentils",
   levure: "baking powder",
   "levure chimique": "baking powder",
   "marsala, xérès ou malaga": "marsala, sherry or malaga",
@@ -405,9 +411,11 @@ const ingredientTranslations: Record<string, string> = {
   "noix de pécan hachées": "chopped pecans",
   "noix de muscade": "nutmeg",
   oignon: "onion",
+  "oignon rouge": "red onion",
   oignons: "onions",
   "olives entières": "whole olives",
   orange: "orange",
+  origan: "oregano",
   "parmesan râpé": "grated parmesan",
   persil: "parsley",
   carotte: "carrot",
@@ -432,6 +440,7 @@ const ingredientTranslations: Record<string, string> = {
   "tapenade verte ou pesto vert": "green tapenade or green pesto",
   thym: "thyme",
   "tomates concassées": "crushed tomatoes",
+  "tomates cerises": "cherry tomatoes",
   "tomates en conserve": "canned tomatoes",
   "coulis de tomates": "tomato passata",
   vanille: "vanilla",
@@ -469,6 +478,12 @@ const noteTranslations: Record<string, string> = {
   facultatif: "optional",
   "graines uniquement": "seeds only",
   "grossièrement haché": "roughly chopped",
+  hachée: "minced",
+  haché: "chopped",
+  "coupées en deux": "halved",
+  "jus et zeste": "juice and zest",
+  "émincé": "thinly sliced",
+  "émiettée": "crumbled",
   "grand moule": "large pan",
   "jus + zeste": "juice + zest",
   "lotte à l’origine, ou mélange saumon, cabillaud, julienne":
@@ -511,6 +526,10 @@ const noteTranslations: Record<string, string> = {
     "A classic with chicken salads.",
   "Pour une mayonnaise bien fraîche, la laisser reposer 30 min au réfrigérateur avant de servir.":
     "For a well-chilled mayonnaise, refrigerate it for 30 min before serving.",
+  "Pour ma version habituelle, je remplace la vinaigrette citronnée par du vinaigre balsamique, de l’huile d’olive et du sel.":
+    "For my usual version, I replace the lemon vinaigrette with balsamic vinegar, olive oil and salt.",
+  "J’ajoute 2 œufs et parfois, selon ce que j’ai sous la main, quelques dés de courgette, de concombre et/ou de carotte, coupés en très petits morceaux.":
+    "I add 2 eggs and sometimes, depending on what I have on hand, a few cubes of zucchini, cucumber and/or carrot, cut into very small pieces.",
   "Variante au café : remplacer la vanille par 2 c. à c. d’extrait de café, ajoutées hors du feu.":
     "Coffee variation: replace the vanilla with 2 tsp coffee extract, added off the heat.",
   "Cette recette donne plutôt 5 coulants que 6.":
@@ -998,6 +1017,12 @@ const stepTranslations: Record<string, string> = {
     "Season with salt and pepper, then add the Herbes de Provence.",
   "Laisser mijoter à demi-couvert pendant environ 30 min.":
     "Simmer partially covered for about 30 minutes.",
+  "Cuire les lentilles selon les indications de l’emballage. Les égoutter, les rincer et les laisser refroidir.":
+    "Cook the lentils according to the package directions. Drain, rinse and leave to cool.",
+  "Pendant ce temps, préparer la vinaigrette : dans un petit bol, fouetter le jus et le zeste de citron avec l’huile d’olive, l’ail, l’origan, du sel et du poivre. Réserver.":
+    "Meanwhile, make the vinaigrette: in a small bowl, whisk the lemon juice and zest with the olive oil, garlic, oregano, salt and pepper. Set aside.",
+  "Dans un saladier, mélanger les lentilles, le persil, les tomates cerises, l’oignon rouge et la feta. Arroser de vinaigrette et mélanger délicatement.":
+    "In a salad bowl, combine the lentils, parsley, cherry tomatoes, red onion and feta. Add the vinaigrette and toss gently.",
   "Beurrer un plat à gratin ou un moule d’environ 24 cm.":
     "Butter a baking dish or a pan about 24 cm in diameter.",
   "Laver les abricots, les couper en deux et retirer les noyaux. Les disposer dans le plat, face coupée vers le haut.":
@@ -1100,6 +1125,8 @@ const equipmentTranslations: Record<string, string> = {
   "1 poêle": "1 frying pan",
   "6 petites cocottes": "6 small cocottes",
   "1 mixeur": "1 blender",
+  "1 petit bol": "1 small bowl",
+  "1 saladier": "1 salad bowl",
 };
 
 export function localizeRecipe(

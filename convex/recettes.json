@@ -2708,5 +2708,107 @@
     "notes": [
       "Si les abricots sont un peu acides, les saupoudrer d’une cuillère à soupe de sucre avant de verser la pâte. Cela équilibre leur saveur sans rendre le clafoutis trop sucré."
     ]
+  },
+  {
+    "title": "Salade de lentilles",
+    "slug": "salade-de-lentilles",
+    "author": "Maman",
+    "description": "Salade de lentilles blondes aux tomates cerises, feta, oignon rouge et persil, assaisonnée d’une vinaigrette citronnée.",
+    "heroImageUrl": "/images/recipes/salade-de-lentilles.png",
+    "servings": {
+      "quantity": 4,
+      "unit": "personnes"
+    },
+    "prepTime": "5 min",
+    "cookTime": "20 min",
+    "totalTime": "25 min",
+    "temperature": "",
+    "equipment": [
+      "1 casserole",
+      "1 petit bol",
+      "1 saladier"
+    ],
+    "ingredients": [
+      {
+        "name": "citron",
+        "quantity": "1",
+        "unit": "",
+        "notes": "jus et zeste"
+      },
+      {
+        "name": "huile d’olive",
+        "quantity": "60",
+        "unit": "ml",
+        "notes": ""
+      },
+      {
+        "name": "ail",
+        "quantity": "1",
+        "unit": "gousse",
+        "notes": "hachée"
+      },
+      {
+        "name": "origan",
+        "quantity": "1/2",
+        "unit": "c. à s.",
+        "notes": ""
+      },
+      {
+        "name": "lentilles blondes",
+        "quantity": "250",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "oignon rouge",
+        "quantity": "1/2",
+        "unit": "",
+        "notes": "émincé"
+      },
+      {
+        "name": "tomates cerises",
+        "quantity": "200",
+        "unit": "g",
+        "notes": "coupées en deux"
+      },
+      {
+        "name": "persil",
+        "quantity": "4",
+        "unit": "c. à s.",
+        "notes": "haché"
+      },
+      {
+        "name": "feta",
+        "quantity": "80",
+        "unit": "g",
+        "notes": "émiettée"
+      },
+      {
+        "name": "sel",
+        "quantity": "",
+        "unit": "",
+        "notes": "à convenance"
+      },
+      {
+        "name": "poivre",
+        "quantity": "",
+        "unit": "",
+        "notes": "à convenance"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Cuire les lentilles selon les indications de l’emballage. Les égoutter, les rincer et les laisser refroidir.",
+          "Pendant ce temps, préparer la vinaigrette : dans un petit bol, fouetter le jus et le zeste de citron avec l’huile d’olive, l’ail, l’origan, du sel et du poivre. Réserver.",
+          "Dans un saladier, mélanger les lentilles, le persil, les tomates cerises, l’oignon rouge et la feta. Arroser de vinaigrette et mélanger délicatement."
+        ]
+      }
+    ],
+    "notes": [
+      "Pour ma version habituelle, je remplace la vinaigrette citronnée par du vinaigre balsamique, de l’huile d’olive et du sel.",
+      "J’ajoute 2 œufs et parfois, selon ce que j’ai sous la main, quelques dés de courgette, de concombre et/ou de carotte, coupés en très petits morceaux."
+    ]
   }
 ]

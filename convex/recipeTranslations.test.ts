@@ -546,6 +546,91 @@ describe("recipe yield localization", () => {
     ]);
   });
 
+  test("localizes Maman's lentil salad for four people", () => {
+    const source = recipes.find(
+      (recipe) => recipe.slug === "salade-de-lentilles",
+    );
+    expect(source).toBeDefined();
+
+    const seeded = toSeedRecipe(source!);
+    expect(seeded).toMatchObject({
+      slug: "salade-de-lentilles",
+      heroImageUrl: "/images/recipes/salade-de-lentilles.png",
+      categories: ["plat", "sale"],
+      legacyCategoryLabels: [],
+      referenceServings: 4,
+    });
+    expect(seeded.translations.fr).toMatchObject({
+      title: "Salade de lentilles",
+      author: "Maman",
+      yieldLabel: "4 personnes",
+      prepTime: "5 min",
+      cookTime: "20 min",
+      totalTime: "25 min",
+      servings: { quantity: 4, unit: "personnes" },
+    });
+    expect(seeded.translations.en).toMatchObject({
+      title: "Lentil Salad",
+      author: "Maman",
+      description:
+        "Blond lentil salad with cherry tomatoes, feta, red onion and parsley, dressed with a lemon vinaigrette.",
+      yieldLabel: "4 people",
+      equipment: ["1 saucepan", "1 small bowl", "1 salad bowl"],
+      servings: { quantity: 4, unit: "people" },
+    });
+    expect(
+      seeded.translations.en.ingredients.map(
+        ({ id: _id, ...ingredient }) => ingredient,
+      ),
+    ).toEqual([
+      {
+        name: "lemon",
+        quantity: "1",
+        unit: "",
+        notes: "juice and zest",
+      },
+      { name: "olive oil", quantity: "60", unit: "ml", notes: "" },
+      {
+        name: "garlic",
+        quantity: "1",
+        unit: "clove",
+        notes: "minced",
+      },
+      { name: "oregano", quantity: "1/2", unit: "tbsp", notes: "" },
+      { name: "blond lentils", quantity: "250", unit: "g", notes: "" },
+      {
+        name: "red onion",
+        quantity: "1/2",
+        unit: "",
+        notes: "thinly sliced",
+      },
+      {
+        name: "cherry tomatoes",
+        quantity: "200",
+        unit: "g",
+        notes: "halved",
+      },
+      {
+        name: "parsley",
+        quantity: "4",
+        unit: "tbsp",
+        notes: "chopped",
+      },
+      { name: "feta", quantity: "80", unit: "g", notes: "crumbled" },
+      { name: "salt", quantity: "", unit: "", notes: "to taste" },
+      { name: "pepper", quantity: "", unit: "", notes: "to taste" },
+    ]);
+    expect(seeded.translations.en.sections[0]?.steps).toEqual([
+      "Cook the lentils according to the package directions. Drain, rinse and leave to cool.",
+      "Meanwhile, make the vinaigrette: in a small bowl, whisk the lemon juice and zest with the olive oil, garlic, oregano, salt and pepper. Set aside.",
+      "In a salad bowl, combine the lentils, parsley, cherry tomatoes, red onion and feta. Add the vinaigrette and toss gently.",
+    ]);
+    expect(seeded.translations.en.notes).toEqual([
+      "For my usual version, I replace the lemon vinaigrette with balsamic vinegar, olive oil and salt.",
+      "I add 2 eggs and sometimes, depending on what I have on hand, a few cubes of zucchini, cucumber and/or carrot, cut into very small pieces.",
+    ]);
+  });
+
   test("seeds Marmiton-style metadata and structured recipe links", () => {
     const source = recipes.find((recipe) => recipe.slug === "pain-de-poisson");
     expect(source).toBeDefined();
