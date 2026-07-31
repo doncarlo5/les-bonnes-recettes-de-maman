@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import { useEffect, useMemo, useReducer, useRef, useState } from "react";
-import { ChevronDown, ImagePlus, MessageSquarePlus, Pencil, ThumbsDown, ThumbsUp, Trash2, X } from "lucide-react";
+import { ChevronDown, ImagePlus, MessageSquarePlus, Pencil, ThumbsDown, Trash2, X } from "lucide-react";
 import { useMutation, usePaginatedQuery } from "convex/react";
 import { toast } from "sonner";
+import { LikeBurst } from "@/components/interior/like-burst";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import type { Dictionary } from "@/i18n/get-dictionary";
@@ -119,6 +120,12 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
   const [composerOpen, setComposerOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Id<"recipeComments"> | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const desiredReactions = useRef(
+    new Map<Id<"recipeComments">, "up" | "down" | null>(),
+  );
+  const reactionRuns = useRef(
+    new Map<Id<"recipeComments">, Promise<void>>(),
+  );
 
   const query = usePaginatedQuery(
     api.comments.list,
@@ -133,6 +140,10 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
   const [photoPreviewUrl, setPhotoPreviewUrl] = useState<string | null>(null);
   const dateFormatter = useMemo(
     () => new Intl.DateTimeFormat(locale, { dateStyle: "long", timeZone: "Europe/Paris" }),
+    [locale],
+  );
+  const formatLikeCount = useMemo(
+    () => new Intl.NumberFormat(locale).format,
     [locale],
   );
 
@@ -255,18 +266,57 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
     }
   }
 
-  async function react(comment: CommentItem, direction: "up" | "down") {
+  async function persistReaction(
+    commentId: Id<"recipeComments">,
+    initialDirection: "up" | "down" | null,
+  ) {
+    if (!participantKey) throw new Error("PARTICIPANT_KEY_MISSING");
+    if (!desiredReactions.current.has(commentId)) {
+      desiredReactions.current.set(commentId, initialDirection);
+    }
+    const existingRun = reactionRuns.current.get(commentId);
+    if (existingRun) return existingRun;
+
+    const run = (async () => {
+      try {
+        while (true) {
+          const direction = desiredReactions.current.get(commentId) ?? null;
+          await setReaction({ commentId, participantKey, direction });
+          if (desiredReactions.current.get(commentId) === direction) return;
+        }
+      } finally {
+        reactionRuns.current.delete(commentId);
+      }
+    })();
+    reactionRuns.current.set(commentId, run);
+    return run;
+  }
+
+  function showReactionError(error: unknown) {
+    if (error instanceof DOMException && error.name === "AbortError") return;
+    toast.error(
+      String(error).includes("COMMENT_RATE_LIMITED")
+        ? labels.rateLimited
+        : labels.reactionError,
+    );
+  }
+
+  function formatLikeStatus(count: number, liked: boolean) {
+    const template = count === 1 ? labels.likeStatusOne : labels.likeStatusMany;
+    return template
+      .replace("{count}", formatLikeCount(count))
+      .replace("{state}", liked ? labels.liked : labels.notLiked);
+  }
+
+  async function toggleDownvote(comment: CommentItem) {
     if (!participantKey || reactionPending) return;
+    const direction = comment.viewerReaction === "down" ? null : "down";
+    desiredReactions.current.set(comment._id, direction);
     setReactionPending(comment._id);
-    setMessage(null);
     try {
-      await setReaction({
-        commentId: comment._id,
-        participantKey,
-        direction: comment.viewerReaction === direction ? null : direction,
-      });
+      await persistReaction(comment._id, direction);
     } catch (error) {
-      setMessage({ type: "error", text: String(error).includes("COMMENT_RATE_LIMITED") ? labels.rateLimited : labels.error });
+      showReactionError(error);
     } finally {
       setReactionPending(null);
     }
@@ -374,9 +424,33 @@ export function RecipeComments({ locale, dict, slug }: { locale: Locale; dict: D
                     </Dialog>
                   ) : null}</BubbleContent></Bubble>
                   <MessageFooter className="flex-wrap justify-between gap-3 px-0">
-                    <div className="flex gap-2 tabular-nums" role="group" aria-label={labels.title}>
-                      <Button type="button" size="sm" variant={comment.viewerReaction === "up" ? "secondary" : "ghost"} aria-pressed={comment.viewerReaction === "up"} aria-label={labels.thumbUp} disabled={reactionPending === comment._id} onClick={() => react(comment, "up")}><ThumbsUp /> {comment.thumbsUpCount}</Button>
-                      <Button type="button" size="sm" variant={comment.viewerReaction === "down" ? "secondary" : "ghost"} aria-pressed={comment.viewerReaction === "down"} aria-label={labels.thumbDown} disabled={reactionPending === comment._id} onClick={() => react(comment, "down")}><ThumbsDown /> {comment.thumbsDownCount}</Button>
+                    <div className="flex gap-2 tabular-nums" role="group" aria-label={labels.reactions}>
+                      <LikeBurst
+                        initialLiked={comment.viewerReaction === "up"}
+                        initialCount={comment.thumbsUpCount}
+                        syncWithProps
+                        label={labels.like}
+                        activeLabel={labels.liked}
+                        format={formatLikeCount}
+                        formatStatus={formatLikeStatus}
+                        disabled={!participantKey}
+                        onToggle={(liked) => desiredReactions.current.set(comment._id, liked ? "up" : null)}
+                        onCommit={(liked) => persistReaction(comment._id, liked ? "up" : null)}
+                        onError={(error) => {
+                          showReactionError(error);
+                        }}
+                      />
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant={comment.viewerReaction === "down" ? "secondary" : "ghost"}
+                        aria-pressed={comment.viewerReaction === "down"}
+                        aria-label={labels.thumbDown}
+                        disabled={reactionPending === comment._id}
+                        onClick={() => toggleDownvote(comment)}
+                      >
+                        <ThumbsDown /> {comment.thumbsDownCount}
+                      </Button>
                     </div>
                     {comment.canEdit ? <div className="flex gap-1"><Button type="button" size="sm" variant="ghost" onClick={() => startEditing(comment)}><Pencil /> {labels.edit}</Button><Button type="button" size="sm" variant="destructive" onClick={() => setDeleteTarget(comment._id)}><Trash2 /> {labels.delete}</Button></div> : null}
                   </MessageFooter>

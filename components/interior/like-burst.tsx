@@ -44,6 +44,7 @@ export type LikeBurstHandle = {
 export type UseOptimisticLikeOptions = {
   initialLiked?: boolean;
   initialCount?: number;
+  syncWithProps?: boolean;
   onCommit?: LikeCommit;
   onError?: (error: unknown) => void;
   settle?: number;
@@ -62,6 +63,7 @@ export type OptimisticLike = {
 export function useOptimisticLike({
   initialLiked = false,
   initialCount = 0,
+  syncWithProps = false,
   onCommit,
   onError,
   settle = 400,
@@ -78,6 +80,11 @@ export function useOptimisticLike({
   const likedNow = useRef(initialLiked);
   const countNow = useRef(initialCount);
   const truth = useRef({ liked: initialLiked, count: initialCount });
+  const authoritative = useRef({ liked: initialLiked, count: initialCount });
+  const deferredAuthoritative = useRef<{
+    liked: boolean;
+    count: number;
+  } | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inFlight = useRef<AbortController | null>(null);
   const seq = useRef(0);
@@ -89,6 +96,27 @@ export function useOptimisticLike({
     commit.current = onCommit;
     failed.current = onError;
   }, [onCommit, onError]);
+
+  useEffect(() => {
+    if (!syncWithProps) return;
+    const next = { liked: initialLiked, count: initialCount };
+    if (
+      authoritative.current.liked !== next.liked ||
+      authoritative.current.count !== next.count
+    ) {
+      authoritative.current = next;
+      deferredAuthoritative.current = next;
+    }
+    if (pending || !deferredAuthoritative.current) return;
+    const current = deferredAuthoritative.current;
+    deferredAuthoritative.current = null;
+    truth.current = current;
+    likedNow.current = current.liked;
+    countNow.current = current.count;
+    setLiked(current.liked);
+    setCount(current.count);
+    setSettled(current);
+  }, [initialCount, initialLiked, pending, syncWithProps]);
 
   const flush = useCallback(() => {
     timer.current = null;
@@ -181,6 +209,7 @@ export function useOptimisticLike({
 export type LikeBurstProps = {
   initialLiked?: boolean;
   initialCount?: number;
+  syncWithProps?: boolean;
   onCommit?: LikeCommit;
   onError?: (error: unknown) => void;
   onToggle?: (liked: boolean) => void;
@@ -188,6 +217,7 @@ export type LikeBurstProps = {
   label?: string;
   activeLabel?: string;
   format?: (value: number) => string;
+  formatStatus?: (count: number, liked: boolean) => string;
   disabled?: boolean;
   className?: string;
 };
@@ -195,6 +225,7 @@ export type LikeBurstProps = {
 export function LikeBurst({
   initialLiked = false,
   initialCount = 0,
+  syncWithProps = false,
   onCommit,
   onError,
   onToggle,
@@ -202,13 +233,21 @@ export function LikeBurst({
   label = "Like",
   activeLabel = "Liked",
   format = DEFAULT_FORMAT,
+  formatStatus,
   disabled = false,
   className = "",
   ref,
 }: LikeBurstProps & { ref?: React.Ref<LikeBurstHandle> }) {
   const reduced = useReducedMotion();
   const { liked, count, base, pending, burst, settled, toggle } =
-    useOptimisticLike({ initialLiked, initialCount, onCommit, onError, settle });
+    useOptimisticLike({
+      initialLiked,
+      initialCount,
+      syncWithProps,
+      onCommit,
+      onError,
+      settle,
+    });
 
   useImperativeHandle(ref, () => ({ toggle }), [toggle]);
 
@@ -323,7 +362,9 @@ export function LikeBurst({
       </button>
 
       <span role="status" aria-live="polite" className="sr-only">
-        {`${format(settled.count)} likes, ${settled.liked ? "liked" : "not liked"}`}
+        {formatStatus
+          ? formatStatus(settled.count, settled.liked)
+          : `${format(settled.count)} likes, ${settled.liked ? "liked" : "not liked"}`}
       </span>
     </span>
   );
