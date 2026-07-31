@@ -107,8 +107,6 @@ export function useRecipeDraftLifecycle({
   const queuedForceRef = useRef(false);
   const queuedSaveWaitersRef = useRef<Array<(saved: boolean) => void>>([]);
   const saveIdleWaitersRef = useRef<Array<() => void>>([]);
-  const autosaveTimerRef = useRef<number | null>(null);
-  const destructiveOperationRef = useRef(false);
   const conflictRetryRef = useRef<((revision: number) => Promise<void>) | null>(
     null,
   );
@@ -116,6 +114,7 @@ export function useRecipeDraftLifecycle({
     ((payload: RecipeDraftPayload, force?: boolean) => Promise<boolean>) | null
   >(null);
   const lastSavedPayloadRef = useRef<string | null>(null);
+  const loadedRecipeSlugRef = useRef(initialRecipe?.slug ?? "");
   if (lastSavedPayloadRef.current === null) {
     lastSavedPayloadRef.current = draftFingerprint(
       initialRecipe ? toFormValues(initialRecipe) : getValues(),
@@ -257,21 +256,6 @@ export function useRecipeDraftLifecycle({
     savePayloadRef.current = savePayload;
   }, [savePayload]);
 
-  const autosaveLatestDraft = useEffectEvent(() => {
-    if (!destructiveOperationRef.current) void saveCurrentDraft();
-  });
-  useEffect(() => {
-    if (mode !== "update" || !selectedSlug || !watchedValues) return;
-    autosaveTimerRef.current = window.setTimeout(() => {
-      autosaveLatestDraft();
-    }, 800);
-    return () => {
-      if (autosaveTimerRef.current !== null)
-        window.clearTimeout(autosaveTimerRef.current);
-      autosaveTimerRef.current = null;
-    };
-  }, [mode, selectedSlug, watchedValues]);
-
   useEffect(() => {
     if (!selectedSlug) return;
     const recovered = localStorage.getItem(recoveryKey(selectedSlug));
@@ -337,9 +321,13 @@ export function useRecipeDraftLifecycle({
       setPublishedRevision(selectedRecipe.publishedRevision),
     );
     queueMicrotask(() => setPublicationStatus(selectedRecipe.status));
-    if (selectedRecipe.revision !== revisionRef.current) {
+    if (
+      selectedRecipe.slug !== loadedRecipeSlugRef.current ||
+      selectedRecipe.revision !== revisionRef.current
+    ) {
       const values = toFormValues(selectedRecipe);
       reset(values);
+      loadedRecipeSlugRef.current = selectedRecipe.slug;
       revisionRef.current = selectedRecipe.revision;
       setRevision(selectedRecipe.revision);
       lastSavedPayloadRef.current = draftFingerprint(values);
@@ -354,11 +342,6 @@ export function useRecipeDraftLifecycle({
   }
 
   async function beginDestructiveOperation() {
-    destructiveOperationRef.current = true;
-    if (autosaveTimerRef.current !== null) {
-      window.clearTimeout(autosaveTimerRef.current);
-    }
-    autosaveTimerRef.current = null;
     queuedPayloadRef.current = null;
     for (const resolve of queuedSaveWaitersRef.current) resolve(false);
     queuedSaveWaitersRef.current = [];
@@ -393,7 +376,13 @@ export function useRecipeDraftLifecycle({
   }
 
   async function prepareRevisionedMutation() {
-    return (await flushLatestDraft()) ? revisionRef.current : null;
+    const values = getValues();
+    if (draftFingerprint(values) !== lastSavedPayloadRef.current) {
+      if (selectedSlug)
+        persistRecovery(selectedSlug, values, revisionRef.current);
+      return null;
+    }
+    return revisionRef.current;
   }
 
   async function publishRecipe() {
@@ -461,7 +450,6 @@ export function useRecipeDraftLifecycle({
         setSyncState(response.status === 409 ? "conflict" : "error");
       }
     } finally {
-      destructiveOperationRef.current = false;
       setIsPending(false);
     }
   }
@@ -495,7 +483,6 @@ export function useRecipeDraftLifecycle({
       });
       setSyncState("error");
     } finally {
-      destructiveOperationRef.current = false;
       setIsPending(false);
     }
   }
@@ -559,10 +546,15 @@ export function useRecipeDraftLifecycle({
     window.location.reload();
   }
 
+  const hasUnsavedChanges = Boolean(watchedValues) &&
+    draftFingerprint(watchedValues as RecipeDraftPayload) !==
+      lastSavedPayloadRef.current;
+
   return {
     state,
     isPending,
     syncState,
+    hasUnsavedChanges,
     revision,
     publishedRevision,
     publicationStatus,

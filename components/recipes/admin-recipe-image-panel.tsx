@@ -344,7 +344,7 @@ export function AdminRecipeImagePanel({
       if (preparedRevision === null) {
         setStatus({
           type: "error",
-          message: "Corrige les champs indiqués avant de remplacer l’image.",
+          message: "Enregistre ou corrige la recette avant de remplacer l’image.",
         });
         return;
       }
@@ -449,7 +449,7 @@ export function AdminRecipeImagePanel({
       if (preparedRevision === null) {
         setStatus({
           type: "error",
-          message: "Corrige les champs indiqués avant de remplacer l’image.",
+          message: "Enregistre ou corrige la recette avant de remplacer l’image.",
         });
         return;
       }
@@ -532,7 +532,7 @@ export function AdminRecipeImagePanel({
       if (preparedRevision === null) {
         setStatus({
           type: "error",
-          message: "Corrige les champs indiqués avant de remplacer l’image.",
+          message: "Enregistre ou corrige la recette avant de remplacer l’image.",
         });
         return;
       }

@@ -167,46 +167,60 @@ export function PublishWorkspace({
               </Button>
             </ConfirmRecipeAction>
           ) : null}
-          <AlertDialog>
-            <AlertDialogTrigger
-              render={
-                <Button
-                  type="button"
-                  variant="outline"
-                  disabled={isPending}
-                  className="min-h-11 rounded-xl border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive"
-                />
-              }
-            >
-              <Trash2 /> Supprimer la recette
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  Supprimer « {recipe.title} » ?
-                </AlertDialogTitle>
-                <AlertDialogDescription>
-                  Cette action est irréversible. La version publiée, le
-                  brouillon, les images et les commentaires associés seront
-                  supprimés.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Annuler</AlertDialogCancel>
-                <AlertDialogAction
-                  variant="destructive"
-                  onClick={onDelete}
-                  disabled={isPending}
-                >
-                  {isPending ? <Spinner /> : <Trash2 />} Supprimer
-                  définitivement
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+          <DeleteRecipeControl
+            recipe={recipe}
+            isPending={isPending}
+            onDelete={onDelete}
+          />
         </div>
       ) : null}
     </div>
+  );
+}
+
+export function DeleteRecipeControl({
+  recipe,
+  isPending,
+  onDelete,
+}: {
+  recipe: EditableRecipe;
+  isPending: boolean;
+  onDelete: () => void;
+}) {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger
+        render={
+          <Button
+            type="button"
+            variant="outline"
+            disabled={isPending}
+            className="min-h-11 rounded-xl border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive"
+          />
+        }
+      >
+        <Trash2 /> Supprimer la recette
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Supprimer « {recipe.title} » ?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Cette action est irréversible. La version publiée, le brouillon,
+            les images et les commentaires associés seront supprimés.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Annuler</AlertDialogCancel>
+          <AlertDialogAction
+            variant="destructive"
+            onClick={onDelete}
+            disabled={isPending}
+          >
+            {isPending ? <Spinner /> : <Trash2 />} Supprimer définitivement
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 

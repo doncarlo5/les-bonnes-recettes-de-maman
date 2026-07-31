@@ -11,9 +11,6 @@ test("shadcn migration keeps the key recipe surfaces stable", async ({ page }, t
   await expect(page.getByRole("heading", { name: "Image principale" })).toBeVisible();
   await expect(page.locator("main")).toHaveScreenshot("admin-information.png", { animations: "disabled", maxDiffPixelRatio: 0.02 });
 
-  await page.getByRole("navigation", { name: "Actions de la recette" }).getByRole("button", { name: /Publier,/ }).click();
-  await expect(page.getByRole("heading", { name: "Avant de publier" })).toBeVisible();
-  await expect(page.locator("main")).toHaveScreenshot("admin-publication.png", { animations: "disabled", maxDiffPixelRatio: 0.02 });
 
   await page.goto("/fr/recettes/amandin");
   const comments = page.getByRole("heading", { name: "Commentaires", exact: true }).locator("xpath=ancestor::section");
