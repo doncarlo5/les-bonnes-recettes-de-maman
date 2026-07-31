@@ -1086,19 +1086,19 @@ const stepTranslations: Record<string, string> = {
     "Remove from the oven and leave to cool for 30 min.",
   "Placer au réfrigérateur pendant 2 h, puis démouler.":
     "Refrigerate for 2 h, then unmold.",
-  "Déposer le cabillaud sur du papier sulfurisé. Ajouter 1 c. à c. de jus de citron et 1 c. à c. d’huile d’olive, puis assaisonner de sel, de poivre et de persil ou de coriandre.":
+  "Déposer le cabillaud sur du papier sulfurisé. Ajouter 1 cuillère à café de jus de citron et 1 cuillère à café d’huile d’olive, puis assaisonner de sel, de poivre et de persil ou de coriandre.":
     "Place the cod on parchment paper. Add 1 tsp lemon juice and 1 tsp olive oil, then season with salt, pepper and parsley or cilantro.",
   "Fermer la papillote avec l’agrafeuse en maintenant les agrafes éloignées des aliments.":
     "Close the parcel with the stapler, keeping the staples away from the food.",
   "Enfourner 30 min à 180 °C.": "Bake for 30 min at 180 °C.",
   "Écraser très finement l’œuf dur à la fourchette.":
     "Mash the hard-boiled egg very finely with a fork.",
-  "Le mettre dans le saucier avec le sel, le poivre, la moutarde et 1 c. à s. de jus de citron.":
-    "Place it in the sauce maker with the salt, pepper, mustard and 1 tbsp lemon juice.",
-  "Mettre le saucier en position 2, puis ajouter progressivement le beurre en petits morceaux.":
-    "Set the sauce maker to position 2, then gradually add the butter in small pieces.",
-  "Laisser tourner le saucier pendant 12 min, puis servir la sauce avec les papillotes de cabillaud.":
-    "Leave the sauce maker running for 12 min, then serve the sauce with the cod parcels.",
+  "Le mettre dans le saucier SEB avec le sel, le poivre, la moutarde et 1 c. à s. de jus de citron.":
+    "Place it in the SEB sauce maker with the salt, pepper, mustard and 1 tbsp lemon juice.",
+  "Régler le saucier SEB en position 2 pour une cuisson douce, puis ajouter progressivement le beurre en petits morceaux.":
+    "Set the SEB sauce maker to position 2 for gentle cooking, then gradually add the butter in small pieces.",
+  "Laisser tourner le saucier SEB pendant 12 min, puis servir la sauce avec les papillotes de cabillaud.":
+    "Leave the SEB sauce maker running for 12 min, then serve the sauce with the cod parcels.",
 };
 
 const unitTranslations: Record<string, string> = {
@@ -1162,6 +1162,8 @@ const timeTranslations: Record<string, string> = {
 
 const equipmentTranslations: Record<string, string> = {
   "1 moule": "1 baking pan",
+  "1 moule rectangulaire de 25 × 18 cm ou 1 moule carré équivalent":
+    "1 rectangular 25 × 18 cm baking pan or equivalent square pan",
   "1 moule à gâteau": "1 cake pan",
   "1 moule à cake": "1 loaf pan",
   "1 plat pour bain-marie": "1 roasting dish for the water bath",
@@ -1189,6 +1191,7 @@ const equipmentTranslations: Record<string, string> = {
   "papier sulfurisé": "parchment paper",
   agrafeuse: "stapler",
   saucier: "sauce maker",
+  "saucier SEB": "SEB sauce maker",
   fourchette: "fork",
 };
 

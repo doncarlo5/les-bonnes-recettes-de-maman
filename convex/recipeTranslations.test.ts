@@ -648,6 +648,10 @@ describe("recipe yield localization", () => {
       cookTime: "20 min",
       restTime: "2 h 35",
       temperature: "180 °C",
+      equipment: [
+        "1 moule rectangulaire de 25 × 18 cm ou 1 moule carré équivalent",
+        "papier sulfurisé",
+      ],
       servings: null,
     });
     expect(seeded.translations.en).toMatchObject({
@@ -658,7 +662,10 @@ describe("recipe yield localization", () => {
       cookTime: "20 min",
       restTime: "2 h 35",
       temperature: "180 °C",
-      equipment: ["1 baking pan", "parchment paper"],
+      equipment: [
+        "1 rectangular 25 × 18 cm baking pan or equivalent square pan",
+        "parchment paper",
+      ],
       servings: null,
     });
     expect(
@@ -708,8 +715,16 @@ describe("recipe yield localization", () => {
       author: "Maman",
       cookTime: "30 min",
       temperature: "180 °C",
+      equipment: [
+        "papier sulfurisé",
+        "agrafeuse",
+        "saucier SEB",
+        "fourchette",
+      ],
       servings: null,
     });
+    expect(seeded.translations.fr.ingredients[1]?.unit).toBe("c. à café");
+    expect(seeded.translations.fr.ingredients[7]?.unit).toBe("c. à café");
     expect(seeded.translations.en).toMatchObject({
       title: "Cod Parcels",
       author: "Maman",
@@ -720,7 +735,7 @@ describe("recipe yield localization", () => {
       equipment: [
         "parchment paper",
         "stapler",
-        "sauce maker",
+        "SEB sauce maker",
         "fork",
       ],
       servings: null,
@@ -769,9 +784,9 @@ describe("recipe yield localization", () => {
       "Close the parcel with the stapler, keeping the staples away from the food.",
       "Bake for 30 min at 180 °C.",
       "Mash the hard-boiled egg very finely with a fork.",
-      "Place it in the sauce maker with the salt, pepper, mustard and 1 tbsp lemon juice.",
-      "Set the sauce maker to position 2, then gradually add the butter in small pieces.",
-      "Leave the sauce maker running for 12 min, then serve the sauce with the cod parcels.",
+      "Place it in the SEB sauce maker with the salt, pepper, mustard and 1 tbsp lemon juice.",
+      "Set the SEB sauce maker to position 2 for gentle cooking, then gradually add the butter in small pieces.",
+      "Leave the SEB sauce maker running for 12 min, then serve the sauce with the cod parcels.",
     ]);
     expect(seeded.translations.en.notes).toEqual([
       "The handwritten recipe does not specify the amount of cod.",

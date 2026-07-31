@@ -2823,7 +2823,10 @@
     "restTime": "2 h 35",
     "totalTime": "",
     "temperature": "180 °C",
-    "equipment": ["1 moule", "papier sulfurisé"],
+    "equipment": [
+      "1 moule rectangulaire de 25 × 18 cm ou 1 moule carré équivalent",
+      "papier sulfurisé"
+    ],
     "ingredients": [
       {
         "name": "chocolat noir",
@@ -2914,7 +2917,12 @@
     "restTime": "",
     "totalTime": "",
     "temperature": "180 °C",
-    "equipment": ["papier sulfurisé", "agrafeuse", "saucier", "fourchette"],
+    "equipment": [
+      "papier sulfurisé",
+      "agrafeuse",
+      "saucier SEB",
+      "fourchette"
+    ],
     "ingredients": [
       {
         "name": "cabillaud",
@@ -2925,13 +2933,13 @@
       {
         "name": "jus de citron",
         "quantity": "1",
-        "unit": "c. à c.",
+        "unit": "c. à café",
         "notes": "pour les papillotes"
       },
       {
         "name": "huile d’olive",
         "quantity": "1",
-        "unit": "c. à c.",
+        "unit": "c. à café",
         "notes": "pour les papillotes"
       },
       {
@@ -2961,7 +2969,7 @@
       {
         "name": "moutarde",
         "quantity": "1",
-        "unit": "c. à c.",
+        "unit": "c. à café",
         "notes": ""
       },
       {
@@ -2982,7 +2990,7 @@
         "title": "Papillotes",
         "steps": [
           "Préchauffer le four à 180 °C.",
-          "Déposer le cabillaud sur du papier sulfurisé. Ajouter 1 c. à c. de jus de citron et 1 c. à c. d’huile d’olive, puis assaisonner de sel, de poivre et de persil ou de coriandre.",
+          "Déposer le cabillaud sur du papier sulfurisé. Ajouter 1 cuillère à café de jus de citron et 1 cuillère à café d’huile d’olive, puis assaisonner de sel, de poivre et de persil ou de coriandre.",
           "Fermer la papillote avec l’agrafeuse en maintenant les agrafes éloignées des aliments.",
           "Enfourner 30 min à 180 °C."
         ]
@@ -2991,9 +2999,9 @@
         "title": "Sauce au beurre blanc polonais",
         "steps": [
           "Écraser très finement l’œuf dur à la fourchette.",
-          "Le mettre dans le saucier avec le sel, le poivre, la moutarde et 1 c. à s. de jus de citron.",
-          "Mettre le saucier en position 2, puis ajouter progressivement le beurre en petits morceaux.",
-          "Laisser tourner le saucier pendant 12 min, puis servir la sauce avec les papillotes de cabillaud."
+          "Le mettre dans le saucier SEB avec le sel, le poivre, la moutarde et 1 c. à s. de jus de citron.",
+          "Régler le saucier SEB en position 2 pour une cuisson douce, puis ajouter progressivement le beurre en petits morceaux.",
+          "Laisser tourner le saucier SEB pendant 12 min, puis servir la sauce avec les papillotes de cabillaud."
         ]
       }
     ],
