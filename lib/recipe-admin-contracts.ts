@@ -156,6 +156,8 @@ export const saveRecipeSuccessSchema = z.strictObject({
   message: z.string(),
   slug: z.string(),
   revision: z.number().int().nonnegative(),
+  publishedRevision: z.number().int().min(-1).optional(),
+  isPublic: z.boolean().optional(),
   savedAt: z.number(),
 });
 

@@ -199,7 +199,10 @@ export function AdminRecipeImagePanel({
       credit: snapshot.imageCredit,
     });
     onRevisionChange?.(snapshot);
-    setStatus({ type: "success", message: "Image associée et enregistrée." });
+    setStatus({
+      type: "success",
+      message: "Image associée. Enregistre les modifications pour la publier.",
+    });
     setSelectedUpload(null);
     setIsSearchDialogOpen(false);
     toast.success("Image principale remplacée.");

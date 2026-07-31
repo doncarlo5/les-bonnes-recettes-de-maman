@@ -148,6 +148,8 @@ describe("recipe admin route contracts", () => {
       slug: "tarte-mobile",
       title: "Tarte mobile",
       revision: 4,
+      publishedRevision: 4,
+      isPublic: true,
       savedAt: 1234,
     });
     const response = await saveRecipe(
@@ -163,8 +165,18 @@ describe("recipe admin route contracts", () => {
     expect(await response.json()).toMatchObject({
       slug: "tarte-mobile",
       revision: 4,
+      publishedRevision: 4,
+      isPublic: true,
       savedAt: 1234,
     });
+    expect(fetchMutation).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        slug: "tarte-mobile",
+        expectedRevision: 3,
+        publishIfReady: true,
+      }),
+    );
   });
 
   test("recipe creation forwards an optional source idea without changing ordinary creates", async () => {

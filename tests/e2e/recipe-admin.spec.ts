@@ -272,81 +272,6 @@ test("admin creation chooser and idea conversion preserve the private source con
   await expect(page.getByLabel("Titre français")).toHaveValue("");
 });
 
-test.skip("unpublishing a linked recipe reopens its idea in the admin backlog", async ({
-  page,
-}, testInfo) => {
-  test.skip(testInfo.project.name !== "mobile-390");
-  let ideaState: "outstanding" | "completed" = "completed";
-  const linkedIdea = {
-    _id: "e2e-linked-idea",
-    _creationTime: 1,
-    text: "Le gâteau lié à la recette publiée",
-    authorName: "Jeanne",
-    state: ideaState,
-    updatedAt: 1,
-    edited: false,
-    creatorKind: "participant",
-    canEdit: false,
-    canDelete: false,
-    linkedRecipe: {
-      slug: "tarte-de-demonstration",
-      title: "Tarte de démonstration",
-      isPublic: true,
-    },
-  };
-  await page.route("**/api/admin/recipe-ideas**", async (route) => {
-    const requestedState = new URL(route.request().url()).searchParams.get("state");
-    return route.fulfill({
-      json: {
-        page: requestedState === ideaState
-          ? [{ ...linkedIdea, state: ideaState }]
-          : [],
-        isDone: true,
-        continueCursor: "",
-      },
-    });
-  });
-  await page.route("**/api/admin/recipes/unpublish", async (route) => {
-    ideaState = "outstanding";
-    return route.fulfill({
-      json: { type: "success", slug: "tarte-de-demonstration" },
-    });
-  });
-
-  await page.goto("/fr/admin/recettes?view=ideas");
-  await page.getByRole("button", { name: "Ajoutées au carnet" }).click();
-  const completedCard = page.locator("article").filter({
-    hasText: linkedIdea.text,
-  });
-  await expect(completedCard).toBeVisible();
-  await expect(
-    completedCard.getByRole("link", { name: "Brouillon en cours" }),
-  ).toBeVisible();
-  await expect(
-    completedCard.getByRole("link", { name: "Créer la recette" }),
-  ).toHaveCount(0);
-
-  await completedCard.getByRole("link", { name: "Brouillon en cours" }).click();
-  await page
-    .getByRole("navigation", { name: "Actions de la recette" })
-    .getByRole("button", { name: /Publier,/ })
-    .click();
-  await page.getByRole("button", { name: /Retirer du site public/ }).click();
-  await page
-    .getByRole("alertdialog")
-    .getByRole("button", { name: "Retirer du site", exact: true })
-    .click();
-
-  await page.goto("/fr/admin/recettes?view=ideas");
-  const reopenedCard = page.locator("article").filter({
-    hasText: linkedIdea.text,
-  });
-  await expect(reopenedCard).toBeVisible();
-  await expect(
-    reopenedCard.getByRole("link", { name: "Brouillon en cours" }),
-  ).toBeVisible();
-});
-
 test("the save bar only appears for unsaved changes and disappears after saving", async ({
   page,
 }) => {
@@ -372,6 +297,37 @@ test("the save bar only appears for unsaved changes and disappears after saving"
   await saveButton.click();
   await saveRequest;
   await expect(saveBar).toHaveCount(0);
+});
+
+test("a pending image save survives a reload", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "mobile-390");
+  await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
+  await expect(page).toHaveURL(/slug=tarte-de-demonstration/);
+  await page.evaluate(() =>
+    localStorage.setItem(
+      "recipe-admin-pending-image:v1:tarte-de-demonstration",
+      "3",
+    ),
+  );
+  await page.reload();
+
+  const saveRequest = page.waitForRequest((request) =>
+    request.url().endsWith("/api/admin/recipes/save"),
+  );
+  await page
+    .getByRole("button", { name: "Enregistrer les modifications" })
+    .click();
+  await saveRequest;
+  await expect(
+    page.getByRole("button", { name: "Enregistrer les modifications" }),
+  ).toHaveCount(0);
+  expect(
+    await page.evaluate(() =>
+      localStorage.getItem(
+        "recipe-admin-pending-image:v1:tarte-de-demonstration",
+      ),
+    ),
+  ).toBeNull();
 });
 
 test("legacy photo and essentials links normalize to the combined workspace", async ({
@@ -439,36 +395,6 @@ test("server field errors return to the combined workspace", async ({
   await expect(page).toHaveURL(/section=info.*field=translations.fr.title/);
 });
 
-test.skip("mobile publish action becomes primary when saved changes need publishing", async ({
-  page,
-}, testInfo) => {
-  test.skip(testInfo.project.name !== "mobile-390");
-  await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
-
-  const publishAction = page
-    .getByRole("navigation", { name: "Actions de la recette" })
-    .getByRole("button", { name: /Publier,/ });
-  await expect(publishAction).not.toHaveAttribute("data-publication-needed");
-  await expect(publishAction).not.toHaveClass(/\bbg-primary\b/);
-
-  await expect(page).toHaveURL(/section=info/);
-  const saveRequest = page.waitForRequest((request) =>
-    request.url().endsWith("/api/admin/recipes/save"),
-  );
-  await page
-    .getByLabel("Description")
-    .fill("Une modification prête à être publiée.");
-  await saveRequest;
-  await expect(page.getByText("Enregistré")).toBeVisible();
-
-  await expect(publishAction).toHaveAttribute(
-    "data-publication-needed",
-    "true",
-  );
-  await expect(publishAction).toHaveClass(/\bbg-primary\b/);
-  await expect(publishAction).toHaveClass(/\btext-primary-foreground\b/);
-});
-
 test("editor toolbar keeps context and language controls together", async ({
   page,
 }, testInfo) => {
@@ -493,6 +419,9 @@ test("guided editor previews the draft in either language", async ({
   const preview = page.getByRole("button", { name: "Prévisualiser le brouillon" });
   await expect(preview).toBeVisible();
   await page.getByRole("button", { name: "Anglais" }).click();
+  await expect(
+    page.getByLabel("Voir la recette publique", { exact: true }),
+  ).toHaveAttribute("href", "/en/recettes/tarte-de-demonstration");
   await preview.click();
   await expect(page).toHaveURL(/mode=preview/);
   await expect(page.getByText("Aperçu du brouillon")).toBeVisible();
@@ -533,18 +462,22 @@ test("desktop internet image search displays its result cards", async ({
     route.fulfill({ json: { ok: true } }),
   );
   const mutationOrder: string[] = [];
+  const saveBodies: Array<{ expectedRevision?: number; force?: boolean }> = [];
   page.on("request", (request) => {
-    if (request.url().endsWith("/api/admin/recipes/save"))
+    if (request.url().endsWith("/api/admin/recipes/save")) {
       mutationOrder.push("save");
+      saveBodies.push(
+        request.postDataJSON() as {
+          expectedRevision?: number;
+          force?: boolean;
+        },
+      );
+    }
     if (request.url().endsWith("/api/admin/recipes/unsplash-hero-image"))
       mutationOrder.push("image");
   });
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
   await page.getByLabel("Titre").fill("Tarte avec nouvelle image");
-  await page.getByRole("button", { name: "Enregistrer les modifications" }).click();
-  await expect(
-    page.getByRole("button", { name: "Enregistrer les modifications" }),
-  ).toHaveCount(0);
   await page.getByRole("button", { name: "Remplacer l’image" }).click();
   await page
     .getByRole("searchbox", { name: "Mots-clés de recherche d'image" })
@@ -565,14 +498,48 @@ test("desktop internet image search displays its result cards", async ({
   );
   await result.click();
   await expect(
-    page.getByRole("main").getByText("Image associée et enregistrée."),
+    page
+      .getByRole("main")
+      .getByText("Image associée. Enregistre les modifications pour la publier."),
   ).toBeVisible();
   await expect(
     page
       .getByRole("region", { name: /Notifications/ })
       .getByText("Image principale remplacée."),
   ).toBeVisible();
-  expect(mutationOrder).toEqual(["save", "image"]);
+  expect(mutationOrder).toEqual(["image"]);
+  expect(
+    await page.evaluate(() =>
+      localStorage.getItem(
+        "recipe-admin-pending-image:v1:tarte-de-demonstration",
+      ),
+    ),
+  ).not.toBeNull();
+  await page.getByRole("button", { name: "Enregistrer les modifications" }).click();
+  await expect(
+    page.getByRole("button", { name: "Enregistrer les modifications" }),
+  ).toHaveCount(0);
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        localStorage.getItem(
+          "recipe-admin-pending-image:v1:tarte-de-demonstration",
+        ),
+      ),
+    )
+    .toBeNull();
+  expect(mutationOrder).toEqual(["image", "save"]);
+  expect(saveBodies[0]).toMatchObject({ expectedRevision: 4, force: false });
+
+  await page.getByLabel("Titre").fill("Tarte enregistrée une seconde fois");
+  await page
+    .getByRole("button", { name: "Enregistrer les modifications" })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Enregistrer les modifications" }),
+  ).toHaveCount(0);
+  expect(mutationOrder).toEqual(["image", "save", "save"]);
+  expect(saveBodies[1]).toMatchObject({ expectedRevision: 5, force: false });
 });
 
 test("malformed image association responses clean up uploaded storage", async ({
@@ -824,7 +791,9 @@ test("mobile section editor remains usable above the software keyboard", async (
   await page.getByRole("button", { name: /Retour à la recette/ }).click();
   await page.getByRole("button", { name: /Préparation/ }).click();
   await expect(page).toHaveURL(/section=preparation/);
-  await page.getByRole("button", { name: /Préparation.*étapes?/ }).click();
+  await page
+    .getByRole("button", { name: /^Préparation \d+ étapes?$/ })
+    .click();
 
   const drawer = page.locator('[data-slot="drawer-content"]');
   await expect(drawer).toBeVisible();
@@ -875,7 +844,9 @@ test("mobile step editing shows one compact action bar above the keyboard", asyn
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
   await page.getByRole("button", { name: /Retour à la recette/ }).click();
   await page.getByRole("button", { name: /Préparation/ }).click();
-  await page.getByRole("button", { name: /Préparation.*étapes?/ }).click();
+  await page
+    .getByRole("button", { name: /^Préparation \d+ étapes?$/ })
+    .click();
 
   const drawer = page.locator('[data-slot="drawer-content"]');
   await drawer.locator("[data-sortable-open]").first().click();
@@ -1020,29 +991,6 @@ test("offline recovery and typed conflicts surface in the shared sync UI", async
   await mockRecipeApi(page);
   await page.getByRole("button", { name: "Remplacer", exact: true }).click();
   await expect(page.getByText("Enregistré")).toBeVisible();
-});
-
-test.skip("unpublish hides but retains the approved version, then publish restores visibility", async ({
-  page,
-}, testInfo) => {
-  test.skip(testInfo.project.name !== "mobile-390");
-  await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
-  await page
-    .getByRole("navigation", { name: "Actions de la recette" })
-    .getByRole("button", { name: /Publier,/ })
-    .click();
-  await page.getByRole("button", { name: /Retirer du site public/ }).click();
-  await page
-    .getByRole("alertdialog")
-    .getByRole("button", { name: "Retirer du site", exact: true })
-    .click();
-  await expect(
-    page.getByText(/version approuvée est actuellement masquée/i),
-  ).toBeVisible();
-  await page.getByRole("button", { name: /Publier les modifications/ }).click();
-  await expect(
-    page.getByText(/version approuvée est visible publiquement/i),
-  ).toBeVisible();
 });
 
 test("deleting a recipe requires confirmation and returns to the recipe list", async ({

@@ -32,6 +32,7 @@ export type SaveRecipeState = {
   slug?: string;
   revision?: number;
   publishedRevision?: number;
+  isPublic?: boolean;
   savedAt?: number;
   latestRevision?: number;
   fieldErrors?: Record<string, string>;
@@ -70,7 +71,6 @@ type LifecycleOptions = {
   onFieldError: (field: string) => void;
   onCreated: (slug: string) => void;
   onDeleted: () => void;
-  onRefresh: () => void;
 };
 
 export function useRecipeDraftLifecycle({
@@ -89,18 +89,15 @@ export function useRecipeDraftLifecycle({
   onFieldError,
   onCreated,
   onDeleted,
-  onRefresh,
 }: LifecycleOptions) {
   const [state, setState] = useState<SaveRecipeState>(initialState);
   const [isPending, setIsPending] = useState(false);
   const [syncState, setSyncState] = useState<SyncState>("idle");
   const [revision, setRevision] = useState(initialRecipe?.revision ?? 0);
-  const [publishedRevision, setPublishedRevision] = useState(
-    initialRecipe?.publishedRevision ?? -1,
+  const [isPublic, setIsPublic] = useState(
+    initialRecipe?.status === "published",
   );
-  const [publicationStatus, setPublicationStatus] = useState<
-    "draft" | "published"
-  >(initialRecipe?.status ?? "draft");
+  const [hasPendingImageChanges, setHasPendingImageChanges] = useState(false);
   const revisionRef = useRef(initialRecipe?.revision ?? 0);
   const saveInFlightRef = useRef(false);
   const queuedPayloadRef = useRef<RecipeDraftPayload | null>(null);
@@ -199,8 +196,13 @@ export function useRecipeDraftLifecycle({
         revisionRef.current = nextRevision;
         setRevision(nextRevision);
         lastSavedPayloadRef.current = fingerprint;
+        setHasPendingImageChanges(false);
+        if (typeof data.isPublic === "boolean") {
+          setIsPublic(data.isPublic);
+        }
         clearErrors("root.server");
         localStorage.removeItem(recoveryKey(data.slug));
+        localStorage.removeItem(pendingImageKey(data.slug));
         setSyncState("saved");
         if (mode === "create") onCreated(data.slug);
         saved = true;
@@ -317,20 +319,24 @@ export function useRecipeDraftLifecycle({
 
   useEffect(() => {
     if (!selectedRecipe || selectedRecipe.slug !== selectedSlug) return;
-    queueMicrotask(() =>
-      setPublishedRevision(selectedRecipe.publishedRevision),
-    );
-    queueMicrotask(() => setPublicationStatus(selectedRecipe.status));
+    const hasStoredPendingImage =
+      localStorage.getItem(pendingImageKey(selectedRecipe.slug)) ===
+      String(selectedRecipe.revision);
+    queueMicrotask(() => setHasPendingImageChanges(hasStoredPendingImage));
     if (
       selectedRecipe.slug !== loadedRecipeSlugRef.current ||
-      selectedRecipe.revision !== revisionRef.current
+      selectedRecipe.revision > revisionRef.current
     ) {
+      queueMicrotask(() => setIsPublic(selectedRecipe.status === "published"));
       const values = toFormValues(selectedRecipe);
       reset(values);
       loadedRecipeSlugRef.current = selectedRecipe.slug;
       revisionRef.current = selectedRecipe.revision;
       setRevision(selectedRecipe.revision);
       lastSavedPayloadRef.current = draftFingerprint(values);
+    }
+    if (hasStoredPendingImage) {
+      lastSavedPayloadRef.current = "pending-image-change";
     }
   }, [getValues, reset, selectedRecipe, selectedSlug]);
 
@@ -359,99 +365,8 @@ export function useRecipeDraftLifecycle({
     return savePayload(payload, force);
   }
 
-  async function flushLatestDraft() {
-    if (mode !== "update" || !selectedSlug) return true;
-    while (true) {
-      const saved = await saveCurrentDraft();
-      if (!saved) return false;
-      const latest = await validateDraft();
-      if (
-        latest &&
-        draftFingerprint(latest) === lastSavedPayloadRef.current &&
-        !saveInFlightRef.current &&
-        !queuedPayloadRef.current
-      )
-        return true;
-    }
-  }
-
   async function prepareRevisionedMutation() {
-    const values = getValues();
-    if (draftFingerprint(values) !== lastSavedPayloadRef.current) {
-      if (selectedSlug)
-        persistRecovery(selectedSlug, values, revisionRef.current);
-      return null;
-    }
     return revisionRef.current;
-  }
-
-  async function publishRecipe() {
-    if (!selectedSlug || isPending || !(await flushLatestDraft())) return;
-    setIsPending(true);
-    try {
-      const response = await fetch("/api/admin/recipes/publish", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          slug: selectedSlug,
-          expectedRevision: revisionRef.current,
-        }),
-      });
-      const data = (await response.json()) as SaveRecipeState;
-      setState(data);
-      if (!response.ok) {
-        setSyncState(response.status === 409 ? "conflict" : "error");
-        return;
-      }
-      setPublishedRevision(data.publishedRevision ?? revisionRef.current);
-      setPublicationStatus("published");
-      setSyncState("saved");
-      onRefresh();
-    } finally {
-      setIsPending(false);
-    }
-  }
-
-  async function discardChanges() {
-    if (!selectedSlug) return;
-    await beginDestructiveOperation();
-    setIsPending(true);
-    try {
-      const response = await fetch("/api/admin/recipes/discard-draft", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          slug: selectedSlug,
-          expectedRevision: revisionRef.current,
-        }),
-      });
-      const data = (await response.json()) as SaveRecipeState;
-      setState(data);
-      if (response.ok && typeof data.revision === "number" && data.draft) {
-        const compatibleDraft = compatibleRecipeDraftSchema.safeParse(data.draft);
-        if (!compatibleDraft.success) {
-          setState({
-            type: "error",
-            message: "Le brouillon restauré utilise un format incompatible.",
-          });
-          setSyncState("error");
-          return;
-        }
-        const restored = cloneRecipe(compatibleDraft.data);
-        reset(restored);
-        revisionRef.current = data.revision;
-        setRevision(data.revision);
-        setPublishedRevision(data.publishedRevision ?? data.revision);
-        lastSavedPayloadRef.current = draftFingerprint(restored);
-        localStorage.removeItem(recoveryKey(selectedSlug));
-        setSyncState("saved");
-        onRefresh();
-      } else {
-        setSyncState(response.status === 409 ? "conflict" : "error");
-      }
-    } finally {
-      setIsPending(false);
-    }
   }
 
   async function deleteRecipe() {
@@ -474,6 +389,7 @@ export function useRecipeDraftLifecycle({
         return;
       }
       localStorage.removeItem(recoveryKey(selectedSlug));
+      localStorage.removeItem(pendingImageKey(selectedSlug));
       setSyncState("idle");
       onDeleted();
     } catch {
@@ -487,37 +403,15 @@ export function useRecipeDraftLifecycle({
     }
   }
 
-  async function unpublishRecipe() {
-    if (!selectedSlug) return;
-    setIsPending(true);
-    try {
-      const response = await fetch("/api/admin/recipes/unpublish", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug: selectedSlug }),
-      });
-      if (response.ok) {
-        setPublicationStatus("draft");
-        onRefresh();
-      }
-    } finally {
-      setIsPending(false);
-    }
-  }
-
-  function resetForCreate(payload: RecipeDraftPayload) {
-    revisionRef.current = 0;
-    setRevision(0);
-    setPublishedRevision(-1);
-    setPublicationStatus("draft");
-    setSyncState("idle");
-    lastSavedPayloadRef.current = draftFingerprint(payload);
-  }
-
   function handleImageRevision(nextRevision: number) {
     revisionRef.current = nextRevision;
     setRevision(nextRevision);
-    setSyncState("saved");
+    lastSavedPayloadRef.current = "pending-image-change";
+    setHasPendingImageChanges(true);
+    if (selectedSlug) {
+      localStorage.setItem(pendingImageKey(selectedSlug), String(nextRevision));
+    }
+    setSyncState("idle");
   }
 
   function handleImageConflict(
@@ -546,9 +440,11 @@ export function useRecipeDraftLifecycle({
     window.location.reload();
   }
 
-  const hasUnsavedChanges = Boolean(watchedValues) &&
-    draftFingerprint(watchedValues as RecipeDraftPayload) !==
-      lastSavedPayloadRef.current;
+  const hasUnsavedChanges =
+    hasPendingImageChanges ||
+    (Boolean(watchedValues) &&
+      draftFingerprint(watchedValues as RecipeDraftPayload) !==
+        lastSavedPayloadRef.current);
 
   return {
     state,
@@ -556,27 +452,25 @@ export function useRecipeDraftLifecycle({
     syncState,
     hasUnsavedChanges,
     revision,
-    publishedRevision,
-    publicationStatus,
+    isPublic,
     savePayload,
     saveCurrentDraft,
-    flushLatestDraft,
     prepareRevisionedMutation,
-    publishRecipe,
-    discardChanges,
     deleteRecipe,
-    unpublishRecipe,
     handleImageRevision,
     handleImageConflict,
     replaceConflict,
     reloadLatest,
-    resetForCreate,
     resetSyncState: () => setSyncState("idle"),
   };
 }
 
 function recoveryKey(slug: string) {
   return `recipe-admin-draft:v1:${slug}`;
+}
+
+function pendingImageKey(slug: string) {
+  return `recipe-admin-pending-image:v1:${slug}`;
 }
 
 function persistRecovery(

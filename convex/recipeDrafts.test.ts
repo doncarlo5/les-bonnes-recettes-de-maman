@@ -958,6 +958,102 @@ describe("recipe working drafts", () => {
     });
   });
 
+  test("publishes a ready recipe atomically when saving from the simple editor", async () => {
+    const t = convexTest(schema, modules);
+    const created = await t.mutation(api.recipes.create, {
+      recipe: recipe("Première version"),
+      adminPassword: password,
+    });
+    const changed = recipe("Version enregistrée et publique");
+
+    const saved = await t.mutation(api.recipes.saveDraft, {
+      slug: created.slug,
+      recipe: {
+        defaultLocale: changed.defaultLocale,
+        referenceServings: changed.referenceServings,
+        translations: changed.translations,
+        categories: changed.categories,
+      },
+      expectedRevision: created.revision,
+      publishIfReady: true,
+      adminPassword: password,
+    });
+
+    expect(saved).toMatchObject({ revision: 1, publishedRevision: 1 });
+    await expect(
+      t.query(api.recipes.getBySlug, {
+        locale: "fr",
+        slug: created.slug,
+      }),
+    ).resolves.toMatchObject({ title: "Version enregistrée et publique" });
+  });
+
+  test("keeps an incomplete simple-editor save private", async () => {
+    const t = convexTest(schema, modules);
+    const initial = recipe("Recette à compléter");
+    initial.translations.fr.description = "";
+    const created = await t.mutation(api.recipes.create, {
+      recipe: initial,
+      adminPassword: password,
+    });
+
+    const saved = await t.mutation(api.recipes.saveDraft, {
+      slug: created.slug,
+      recipe: {
+        defaultLocale: initial.defaultLocale,
+        referenceServings: initial.referenceServings,
+        translations: initial.translations,
+        categories: initial.categories,
+      },
+      expectedRevision: created.revision,
+      publishIfReady: true,
+      adminPassword: password,
+    });
+
+    expect(saved).toMatchObject({ revision: 1, publishedRevision: -1 });
+    await expect(
+      t.query(api.recipes.getBySlug, {
+        locale: "fr",
+        slug: created.slug,
+      }),
+    ).resolves.toBeNull();
+  });
+
+  test("saves a ready draft privately when a related recipe is unavailable", async () => {
+    const t = convexTest(schema, modules);
+    const initial = recipe("Recette avec relation privée");
+    const created = await t.mutation(api.recipes.create, {
+      recipe: initial,
+      adminPassword: password,
+    });
+
+    const saved = await t.mutation(api.recipes.saveDraft, {
+      slug: created.slug,
+      recipe: {
+        defaultLocale: initial.defaultLocale,
+        referenceServings: initial.referenceServings,
+        relatedRecipeSlugs: ["recette-encore-privee"],
+        translations: initial.translations,
+        categories: initial.categories,
+      },
+      expectedRevision: created.revision,
+      publishIfReady: true,
+      adminPassword: password,
+    });
+
+    expect(saved).toMatchObject({ revision: 1, publishedRevision: -1 });
+    await expect(
+      t.query(api.recipes.getForEditing, {
+        locale: "fr",
+        slug: created.slug,
+        adminPassword: password,
+      }),
+    ).resolves.toMatchObject({
+      revision: 1,
+      relatedRecipeSlugs: ["recette-encore-privee"],
+    });
+  });
+
   test("allows an incomplete draft but requires a yield or reference servings to publish", async () => {
     const t = convexTest(schema, modules);
     const incomplete = { ...recipe(), referenceServings: undefined };

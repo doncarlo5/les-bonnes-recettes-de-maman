@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   FormProvider,
@@ -38,6 +39,7 @@ import {
   Cloud,
   CloudOff,
   Eye,
+  ExternalLink,
   House,
   Languages,
   ListChecks,
@@ -54,7 +56,7 @@ import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import {
   Empty,
@@ -146,7 +148,7 @@ import type { EditableRecipe, EditableRecipeSummary, RecipeIdea } from "./types"
 import { AdminRecipeComments } from "./admin-recipe-comments";
 import { AdminDraftPreview } from "./admin-draft-preview";
 import { AdminRecipeHome } from "./admin-recipe-home";
-import { DeleteRecipeControl } from "./admin-publish-workspace";
+import { DeleteRecipeControl } from "./admin-recipe-delete-control";
 
 type AdminRecipeEditorProps = {
   locale: Locale;
@@ -357,6 +359,10 @@ export function AdminRecipeEditor({
     searchParams.get("lang"),
     defaultLocale,
   );
+  const requestedLanguageRef = useRef(requestedLanguage);
+  useEffect(() => {
+    requestedLanguageRef.current = requestedLanguage;
+  }, [requestedLanguage]);
   const categoryValues = useWatch({
     control: form.control,
     name: "categories",
@@ -407,13 +413,13 @@ export function AdminRecipeEditor({
     router.replace(`/${locale}/admin/recettes`);
     router.refresh();
   }, [locale, reset, router]);
-  const refreshRecipe = useCallback(() => router.refresh(), [router]);
   const {
     state,
     isPending,
     syncState,
     hasUnsavedChanges,
     revision,
+    isPublic,
     saveCurrentDraft,
     prepareRevisionedMutation,
     deleteRecipe,
@@ -438,7 +444,6 @@ export function AdminRecipeEditor({
     onFieldError: revealFieldError,
     onCreated: handleCreated,
     onDeleted: handleDeleted,
-    onRefresh: refreshRecipe,
   });
   const handleImageMutation = useCallback(
     (mutation: RecipeImageMutation) => {
@@ -501,6 +506,7 @@ export function AdminRecipeEditor({
   }
 
   function selectEditorLanguage(language: LocaleKey) {
+    requestedLanguageRef.current = language;
     const params = new URLSearchParams(searchParams.toString());
     params.delete("mode");
     params.set("lang", language);
@@ -511,7 +517,7 @@ export function AdminRecipeEditor({
     if (!selectedSlug) return;
     const params = new URLSearchParams(searchParams.toString());
     params.set("mode", "preview");
-    params.set("lang", requestedLanguage);
+    params.set("lang", requestedLanguageRef.current);
     router.push(`/${locale}/admin/recettes?${params.toString()}`);
     window.scrollTo({ top: 0, behavior: "auto" });
   }
@@ -575,6 +581,7 @@ export function AdminRecipeEditor({
           syncState={syncState}
           hasUnsavedChanges={hasUnsavedChanges}
           revision={revision}
+          isPublic={isPublic}
           isPending={isPending}
           state={state}
           form={form}
@@ -612,6 +619,7 @@ function MobileRecipeAdmin({
   syncState,
   hasUnsavedChanges,
   revision,
+  isPublic,
   isPending,
   state,
   form,
@@ -643,6 +651,7 @@ function MobileRecipeAdmin({
   syncState: SyncState;
   hasUnsavedChanges: boolean;
   revision: number;
+  isPublic: boolean;
   isPending: boolean;
   state: SaveRecipeState;
   form: RecipeForm;
@@ -810,6 +819,30 @@ function MobileRecipeAdmin({
             </ToggleGroupItem>
           </ToggleGroup>
           <div className="col-start-3 row-start-1 flex items-center gap-1 sm:col-start-4">
+            {selectedRecipe && isPublic ? (
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <Link
+                      href={`/${requestedLanguage}/recettes/${selectedRecipe.slug}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label="Voir la recette publique"
+                      className={buttonVariants({
+                        variant: "ghost",
+                        size: "icon",
+                        className: "rounded-xl",
+                      })}
+                    >
+                      <ExternalLink />
+                    </Link>
+                  }
+                />
+                <TooltipContent className="">
+                  Voir la recette publique
+                </TooltipContent>
+              </Tooltip>
+            ) : null}
             <Tooltip>
               <TooltipTrigger
                 render={

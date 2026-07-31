@@ -71,6 +71,7 @@ export async function POST(request: NextRequest) {
             recipe: validation.data,
             expectedRevision: body.expectedRevision,
             force: body.force,
+            publishIfReady: true,
             preserveStepIngredientUses: validation.legacyStepLocales,
             adminPassword: adminAccess.adminPassword,
           });
@@ -83,6 +84,8 @@ export async function POST(request: NextRequest) {
         message: `Recette enregistree: ${result.title}`,
         slug: result.slug,
         revision: result.revision,
+        publishedRevision: result.publishedRevision,
+        isPublic: "isPublic" in result ? result.isPublic : false,
         savedAt: result.savedAt,
       }),
     );

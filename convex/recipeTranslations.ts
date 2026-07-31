@@ -332,7 +332,10 @@ const sectionTranslations: Record<string, string> = {
 
 const ingredientTranslations: Record<string, string> = {
   Astra: "Astra margarine",
+  Canadou: "Canadou",
+  Cointreau: "Cointreau",
   Maïzena: "cornstarch",
+  "Pulco Citron": "Pulco Citron",
   "Vache qui rit / Kiri": "Laughing Cow / Kiri cheese",
   ail: "garlic",
   abricots: "apricots",
@@ -493,6 +496,8 @@ const noteTranslations: Record<string, string> = {
   "Meilleur préparé la veille.": "Best prepared the day before.",
   "PDT sur la recette": "Potato on the recipe",
   "Pierre Hermé ou autre": "Pierre Hermé or another one",
+  "selon besoin, pour le glaçage facultatif":
+    "as needed, for the optional glaze",
   "blancs en neige": "whipped egg whites",
   "blancs et jaunes séparés": "whites and yolks separated",
   "correction utilisateur": "user correction",
@@ -1105,23 +1110,33 @@ const unitTranslations: Record<string, string> = {
   "": "",
   "à 10 personnes": "to 10 people",
   "à 6 personnes": "to 6 people",
+  belle: "large",
   boîte: "can",
+  "boîte de 400 g": "400 g can",
+  boules: "scoops",
   belles: "large",
+  "beau bouquet": "large bunch",
   bouquet: "bunch",
   cafetière: "coffee pot",
   "c. à café": "tsp",
   "c. à café très rase": "very level tsp",
   "c. à c.": "tsp",
   "c. à s.": "tbsp",
+  cake: "loaf",
   cakes: "loaves",
   cl: "cl",
+  coulants: "lava cakes",
   environ: "about",
   g: "g",
+  kg: "kg",
   gousse: "clove",
+  gousses: "cloves",
   "gros citron": "large lemon",
   grosses: "large",
   litre: "liter",
   ml: "ml",
+  "moule tablette ou 12 mini cakes":
+    "tablet pan or 12 mini loaves",
   moules: "molds",
   paquet: "packet",
   personnes: "people",
@@ -1129,6 +1144,7 @@ const unitTranslations: Record<string, string> = {
   "petite boîte": "small can",
   pincée: "pinch",
   pincées: "pinches",
+  portions: "servings",
   sachet: "packet",
   tranches: "slices",
   tasse: "cup",
@@ -1226,14 +1242,22 @@ export function localizeRecipe(
   }
 
   return {
-    title: translate(titleTranslations, recipe.title),
+    title: translateRequired(titleTranslations, recipe.title, "recipe title"),
     author: recipe.author,
-    description: translate(descriptionTranslations, recipe.description),
+    description: translateRequired(
+      descriptionTranslations,
+      recipe.description,
+      "recipe description",
+    ),
     yieldLabel: resolveYieldLabel({
       locale: "en",
       slug: recipe.slug,
       yieldLabel: recipe.yieldLabel
-        ? translate(yieldLabelTranslations, recipe.yieldLabel)
+        ? translateRequired(
+            yieldLabelTranslations,
+            recipe.yieldLabel,
+            "yield label",
+          )
         : undefined,
       servings: translateServings(recipe.servings),
     }),
@@ -1248,14 +1272,26 @@ export function localizeRecipe(
     equipment: (recipe.equipment ?? []).map(translateEquipment),
     ingredients: recipe.ingredients.map(translateIngredient),
     sections: recipe.sections.map((section) => ({
-      title: translate(sectionTranslations, section.title),
-      steps: section.steps.map((step) => translate(stepTranslations, step)),
+      title: translateRequired(
+        sectionTranslations,
+        section.title,
+        "section title",
+      ),
+      steps: section.steps.map((step) =>
+        translateRequired(stepTranslations, step, "recipe step"),
+      ),
     })),
     subRecipes: (recipe.subRecipes ?? []).map((subRecipe) => ({
-      title: translate(titleTranslations, subRecipe.title),
+      title: translateRequired(
+        titleTranslations,
+        subRecipe.title,
+        "sub-recipe title",
+      ),
       ingredients: subRecipe.ingredients.map(translateIngredient),
     })),
-    notes: recipe.notes.map((note) => translate(noteTranslations, note)),
+    notes: recipe.notes.map((note) =>
+      translateRequired(noteTranslations, note, "recipe note"),
+    ),
   };
 }
 
@@ -1291,11 +1327,15 @@ export function toSeedRecipe(recipe: SourceRecipe): SeedRecipe {
 
 function translateIngredient(ingredient: SourceIngredient): SourceIngredient {
   return {
-    name: translate(ingredientTranslations, ingredient.name),
+    name: translateRequired(
+      ingredientTranslations,
+      ingredient.name,
+      "ingredient name",
+    ),
     quantity: translate(quantityTranslations, ingredient.quantity),
-    unit: translate(unitTranslations, ingredient.unit),
+    unit: translateRequired(unitTranslations, ingredient.unit, "ingredient unit"),
     notes: ingredient.notes
-      ? translate(noteTranslations, ingredient.notes)
+      ? translateRequired(noteTranslations, ingredient.notes, "ingredient note")
       : "",
   };
 }
@@ -1306,7 +1346,7 @@ function translateServings(
   if (!servings) return null;
   return {
     quantity: servings.quantity,
-    unit: translate(unitTranslations, servings.unit),
+    unit: translateRequired(unitTranslations, servings.unit, "servings unit"),
   };
 }
 
@@ -1325,7 +1365,7 @@ function translateTime(value: string) {
 }
 
 function translateEquipment(value: string) {
-  return translate(equipmentTranslations, value);
+  return translateRequired(equipmentTranslations, value, "equipment");
 }
 
 function getTimeLabel(recipe: SourceRecipe, locale: Locale) {
@@ -1347,4 +1387,13 @@ function inferTags(recipe: SourceRecipe) {
 
 function translate(translations: Record<string, string>, value: string) {
   return translations[value] ?? value;
+}
+
+function translateRequired(
+  translations: Record<string, string>,
+  value: string,
+  field: string,
+) {
+  if (Object.hasOwn(translations, value)) return translations[value]!;
+  throw new Error(`Missing English ${field} translation: ${JSON.stringify(value)}`);
 }

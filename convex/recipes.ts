@@ -435,6 +435,7 @@ export const saveDraft = mutation({
     recipe: draftContentValidator,
     expectedRevision: v.number(),
     force: v.optional(v.boolean()),
+    publishIfReady: v.optional(v.boolean()),
     preserveStepIngredientUses: v.optional(v.union(
       v.boolean(),
       v.object({ fr: v.boolean(), en: v.boolean() }),
@@ -498,12 +499,14 @@ export const saveDraft = mutation({
       revision,
       updatedAt: savedAt,
     };
+    let draftId: Id<"recipeDrafts">;
     if (currentDraft) {
       assertProspectiveDraft(
         { ...currentDraft, ...contentPatch },
         existing.slug,
       );
       await ctx.db.patch(currentDraft._id, contentPatch);
+      draftId = currentDraft._id;
     } else {
       const initialDraft = {
         recipeId: existing._id,
@@ -520,7 +523,20 @@ export const saveDraft = mutation({
         updatedAt: savedAt,
       };
       assertProspectiveDraft(initialDraft, existing.slug);
-      await ctx.db.insert("recipeDrafts", initialDraft);
+      draftId = await ctx.db.insert("recipeDrafts", initialDraft);
+    }
+
+    const savedDraft = await ctx.db.get(draftId);
+    if (!savedDraft) throw new Error("RECIPE_DRAFT_NOT_FOUND");
+    let publishedRevision = savedDraft.publishedRevision;
+    let isPublic = existing.status === "published";
+    if (
+      args.publishIfReady &&
+      await canAutoPublishDraft(ctx, savedDraft, existing.slug)
+    ) {
+      await publishDraftSnapshot(ctx, existing, savedDraft, savedAt);
+      publishedRevision = revision;
+      isPublic = true;
     }
 
     return {
@@ -528,6 +544,8 @@ export const saveDraft = mutation({
       slug: existing.slug,
       title: args.recipe.translations[args.recipe.defaultLocale].title,
       revision,
+      publishedRevision,
+      isPublic,
       savedAt,
     };
   },
@@ -548,42 +566,8 @@ export const publishDraft = mutation({
     if (draft.revision !== args.expectedRevision) {
       throw new Error(`RECIPE_DRAFT_CONFLICT:${draft.revision}`);
     }
-    assertRecipeBounds(toEditableRecipeContent(draft, recipe.slug));
-    assertDraftReadyForPublication(draft, recipe.slug);
-    const relatedRecipeSlugs = normalizeRelatedRecipeSlugs(
-      draft.relatedRecipeSlugs ?? [],
-    );
-    await assertRelatedRecipesPublishable(ctx, recipe.slug, relatedRecipeSlugs);
-
-    const publishedPatch = {
-      heroImageStorageId: draft.heroImageStorageId,
-      heroImageUrl: draft.heroImageUrl,
-      imageCredit: draft.imageCredit,
-      defaultLocale: draft.defaultLocale,
-      referenceServings: draft.referenceServings,
-      relatedRecipeSlugs,
-      translations: draft.translations,
-      ...toStoredCategoryFields(resolveRecipeCategories(draft)),
-      status: "published",
-    } as const;
-    assertStoredRecipeBytes({ ...recipe, ...publishedPatch });
-    await ctx.db.patch(recipe._id, publishedPatch);
     const savedAt = Date.now();
-    assertProspectiveDraft(
-      { ...draft, publishedRevision: draft.revision, updatedAt: savedAt },
-      recipe.slug,
-    );
-    await ctx.db.patch(draft._id, {
-      relatedRecipeSlugs,
-      publishedRevision: draft.revision,
-      updatedAt: savedAt,
-    });
-    await deleteStorageIfOrphaned(
-      ctx,
-      recipe.heroImageStorageId,
-      draft.heroImageStorageId,
-    );
-    await completeLinkedIdea(ctx, recipe._id);
+    await publishDraftSnapshot(ctx, recipe, draft, savedAt);
 
     return {
       slug: recipe.slug,
@@ -1732,14 +1716,72 @@ function assertExpectedRevision(
 }
 
 function assertDraftReadyForPublication(draft: RecipeDraftDoc, slug: string) {
-  if (
-    getRecipeReadiness(
-      toEditableRecipeContent(draft, slug),
-      Boolean(draft.heroImageStorageId || draft.heroImageUrl),
-    ).blockers.length
-  ) {
+  if (!isDraftReadyForPublication(draft, slug)) {
     throw new Error("RECIPE_NOT_READY");
   }
+}
+
+function isDraftReadyForPublication(draft: RecipeDraftDoc, slug: string) {
+  return getRecipeReadiness(
+    toEditableRecipeContent(draft, slug),
+    Boolean(draft.heroImageStorageId || draft.heroImageUrl),
+  ).blockers.length === 0;
+}
+
+async function canAutoPublishDraft(
+  ctx: MutationCtx,
+  draft: RecipeDraftDoc,
+  recipeSlug: string,
+) {
+  if (!isDraftReadyForPublication(draft, recipeSlug)) return false;
+  const relatedRecipeSlugs = normalizeRelatedRecipeSlugs(
+    draft.relatedRecipeSlugs ?? [],
+  );
+  if (relatedRecipeSlugs.includes(recipeSlug)) return false;
+  return relatedRecipesArePublished(ctx, relatedRecipeSlugs);
+}
+
+async function publishDraftSnapshot(
+  ctx: MutationCtx,
+  recipe: RecipeDoc,
+  draft: RecipeDraftDoc,
+  savedAt: number,
+) {
+  assertRecipeBounds(toEditableRecipeContent(draft, recipe.slug));
+  assertDraftReadyForPublication(draft, recipe.slug);
+  const relatedRecipeSlugs = normalizeRelatedRecipeSlugs(
+    draft.relatedRecipeSlugs ?? [],
+  );
+  await assertRelatedRecipesPublishable(ctx, recipe.slug, relatedRecipeSlugs);
+
+  const publishedPatch = {
+    heroImageStorageId: draft.heroImageStorageId,
+    heroImageUrl: draft.heroImageUrl,
+    imageCredit: draft.imageCredit,
+    defaultLocale: draft.defaultLocale,
+    referenceServings: draft.referenceServings,
+    relatedRecipeSlugs,
+    translations: draft.translations,
+    ...toStoredCategoryFields(resolveRecipeCategories(draft)),
+    status: "published",
+  } as const;
+  assertStoredRecipeBytes({ ...recipe, ...publishedPatch });
+  await ctx.db.patch(recipe._id, publishedPatch);
+  assertProspectiveDraft(
+    { ...draft, publishedRevision: draft.revision, updatedAt: savedAt },
+    recipe.slug,
+  );
+  await ctx.db.patch(draft._id, {
+    relatedRecipeSlugs,
+    publishedRevision: draft.revision,
+    updatedAt: savedAt,
+  });
+  await deleteStorageIfOrphaned(
+    ctx,
+    recipe.heroImageStorageId,
+    draft.heroImageStorageId,
+  );
+  await completeLinkedIdea(ctx, recipe._id);
 }
 
 function assertRecipeBounds(recipe: RecipeDraftContentLike) {
@@ -1853,6 +1895,23 @@ async function assertRelatedRecipesPublishable(
   relatedSlugs: readonly string[],
 ) {
   assertNoSelfRelatedRecipe(recipeSlug, relatedSlugs);
+  const invalidSlug = await firstUnavailableRelatedRecipe(ctx, relatedSlugs);
+  if (invalidSlug) {
+    throw new Error(`RECIPE_RELATED_RECIPE_NOT_FOUND:${invalidSlug}`);
+  }
+}
+
+async function relatedRecipesArePublished(
+  ctx: MutationCtx,
+  relatedSlugs: readonly string[],
+) {
+  return (await firstUnavailableRelatedRecipe(ctx, relatedSlugs)) === null;
+}
+
+async function firstUnavailableRelatedRecipe(
+  ctx: MutationCtx,
+  relatedSlugs: readonly string[],
+) {
   const relations = await Promise.all(
     relatedSlugs.map(async (slug) => ({
       slug,
@@ -1865,9 +1924,7 @@ async function assertRelatedRecipesPublishable(
   const invalid = relations.find(
     ({ recipe }) => !recipe || recipe.status !== "published",
   );
-  if (invalid) {
-    throw new Error(`RECIPE_RELATED_RECIPE_NOT_FOUND:${invalid.slug}`);
-  }
+  return invalid?.slug ?? null;
 }
 
 function assertRecipeAdminPassword(adminPassword: string) {
