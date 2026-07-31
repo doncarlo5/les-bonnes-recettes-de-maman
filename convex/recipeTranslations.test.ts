@@ -690,6 +690,95 @@ describe("recipe yield localization", () => {
     ]);
   });
 
+  test("localizes Maman's cod parcels and Polish butter sauce", () => {
+    const source = recipes.find(
+      (recipe) => recipe.slug === "papillotes-de-cabillaud",
+    );
+    expect(source).toBeDefined();
+
+    const seeded = toSeedRecipe(source!);
+    expect(seeded).toMatchObject({
+      slug: "papillotes-de-cabillaud",
+      categories: ["plat", "sale"],
+      legacyCategoryLabels: [],
+    });
+    expect(seeded.referenceServings).toBeUndefined();
+    expect(seeded.translations.fr).toMatchObject({
+      title: "Papillotes de cabillaud",
+      author: "Maman",
+      cookTime: "30 min",
+      temperature: "180 °C",
+      servings: null,
+    });
+    expect(seeded.translations.en).toMatchObject({
+      title: "Cod Parcels",
+      author: "Maman",
+      description:
+        "Oven-baked cod parcels served with Polish-style butter sauce.",
+      cookTime: "30 min",
+      temperature: "180 °C",
+      equipment: [
+        "parchment paper",
+        "stapler",
+        "sauce maker",
+        "fork",
+      ],
+      servings: null,
+    });
+    expect(
+      seeded.translations.en.ingredients.map(
+        ({ id: _id, ...ingredient }) => ingredient,
+      ),
+    ).toEqual([
+      { name: "cod", quantity: "", unit: "", notes: "quantity not specified" },
+      {
+        name: "lemon juice",
+        quantity: "1",
+        unit: "tsp",
+        notes: "for the parcels",
+      },
+      {
+        name: "olive oil",
+        quantity: "1",
+        unit: "tsp",
+        notes: "for the parcels",
+      },
+      { name: "salt", quantity: "", unit: "", notes: "to taste" },
+      { name: "pepper", quantity: "", unit: "", notes: "to taste" },
+      {
+        name: "parsley or cilantro",
+        quantity: "",
+        unit: "",
+        notes: "to taste",
+      },
+      { name: "hard-boiled egg", quantity: "1", unit: "", notes: "" },
+      { name: "mustard", quantity: "1", unit: "tsp", notes: "" },
+      { name: "butter", quantity: "100", unit: "g", notes: "" },
+      {
+        name: "lemon juice",
+        quantity: "1",
+        unit: "tbsp",
+        notes: "for the sauce",
+      },
+    ]);
+    expect(
+      seeded.translations.en.sections.flatMap(({ steps }) => steps),
+    ).toEqual([
+      "Preheat the oven to 180 °C.",
+      "Place the cod on parchment paper. Add 1 tsp lemon juice and 1 tsp olive oil, then season with salt, pepper and parsley or cilantro.",
+      "Close the parcel with the stapler, keeping the staples away from the food.",
+      "Bake for 30 min at 180 °C.",
+      "Mash the hard-boiled egg very finely with a fork.",
+      "Place it in the sauce maker with the salt, pepper, mustard and 1 tbsp lemon juice.",
+      "Set the sauce maker to position 2, then gradually add the butter in small pieces.",
+      "Leave the sauce maker running for 12 min, then serve the sauce with the cod parcels.",
+    ]);
+    expect(seeded.translations.en.notes).toEqual([
+      "The handwritten recipe does not specify the amount of cod.",
+      "The sauce makes about 1 bowl.",
+    ]);
+  });
+
   test("seeds Marmiton-style metadata and structured recipe links", () => {
     const source = recipes.find((recipe) => recipe.slug === "pain-de-poisson");
     expect(source).toBeDefined();

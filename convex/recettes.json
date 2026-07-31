@@ -2901,5 +2901,105 @@
       }
     ],
     "notes": []
+  },
+  {
+    "title": "Papillotes de cabillaud",
+    "slug": "papillotes-de-cabillaud",
+    "author": "Maman",
+    "description": "Papillotes de cabillaud au citron et aux herbes, accompagnées d’une sauce au beurre blanc polonais.",
+    "heroImageUrl": "",
+    "servings": null,
+    "prepTime": "",
+    "cookTime": "30 min",
+    "restTime": "",
+    "totalTime": "",
+    "temperature": "180 °C",
+    "equipment": ["papier sulfurisé", "agrafeuse", "saucier", "fourchette"],
+    "ingredients": [
+      {
+        "name": "cabillaud",
+        "quantity": "",
+        "unit": "",
+        "notes": "quantité non précisée"
+      },
+      {
+        "name": "jus de citron",
+        "quantity": "1",
+        "unit": "c. à c.",
+        "notes": "pour les papillotes"
+      },
+      {
+        "name": "huile d’olive",
+        "quantity": "1",
+        "unit": "c. à c.",
+        "notes": "pour les papillotes"
+      },
+      {
+        "name": "sel",
+        "quantity": "",
+        "unit": "",
+        "notes": "à convenance"
+      },
+      {
+        "name": "poivre",
+        "quantity": "",
+        "unit": "",
+        "notes": "à convenance"
+      },
+      {
+        "name": "persil ou coriandre",
+        "quantity": "",
+        "unit": "",
+        "notes": "à convenance"
+      },
+      {
+        "name": "œuf dur",
+        "quantity": "1",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "moutarde",
+        "quantity": "1",
+        "unit": "c. à c.",
+        "notes": ""
+      },
+      {
+        "name": "beurre",
+        "quantity": "100",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "jus de citron",
+        "quantity": "1",
+        "unit": "c. à s.",
+        "notes": "pour la sauce"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Papillotes",
+        "steps": [
+          "Préchauffer le four à 180 °C.",
+          "Déposer le cabillaud sur du papier sulfurisé. Ajouter 1 c. à c. de jus de citron et 1 c. à c. d’huile d’olive, puis assaisonner de sel, de poivre et de persil ou de coriandre.",
+          "Fermer la papillote avec l’agrafeuse en maintenant les agrafes éloignées des aliments.",
+          "Enfourner 30 min à 180 °C."
+        ]
+      },
+      {
+        "title": "Sauce au beurre blanc polonais",
+        "steps": [
+          "Écraser très finement l’œuf dur à la fourchette.",
+          "Le mettre dans le saucier avec le sel, le poivre, la moutarde et 1 c. à s. de jus de citron.",
+          "Mettre le saucier en position 2, puis ajouter progressivement le beurre en petits morceaux.",
+          "Laisser tourner le saucier pendant 12 min, puis servir la sauce avec les papillotes de cabillaud."
+        ]
+      }
+    ],
+    "notes": [
+      "La quantité de cabillaud n’est pas précisée sur la fiche manuscrite.",
+      "La sauce donne environ 1 bol."
+    ]
   }
 ]

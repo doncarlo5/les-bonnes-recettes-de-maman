@@ -108,6 +108,7 @@ const recipeCategoryTags: Record<string, string[]> = {
   "clafoutis-poires-et-framboises": ["dessert", "sucre"],
   "clafoutis-aux-abricots": ["dessert", "sucre"],
   "cocotte-de-cabillaud-aux-courgettes-et-curry": ["plat", "sale"],
+  "papillotes-de-cabillaud": ["plat", "sale"],
   "coulants-au-chocolat": ["dessert", "sucre"],
   "crumble-aux-pommes-du-verger": ["dessert", "sucre"],
   "flan-au-lait-concentre-sucre-nestle": ["dessert", "sucre"],
@@ -177,6 +178,8 @@ const fallbackHeroImageUrls: Record<string, string> = {
     "https://images.unsplash.com/photo-1543353071-10c8ba85a904?auto=format&fit=crop&w=1400&q=85",
   "cocotte-de-cabillaud-aux-courgettes-et-curry":
     "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=1400&q=85",
+  "papillotes-de-cabillaud":
+    "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=1400&q=85",
   "pate-sucree-de-pierre-herme":
     "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=85",
   "pain-de-poisson":
@@ -224,6 +227,7 @@ const titleTranslations: Record<string, string> = {
   "Clafoutis aux abricots": "Apricot Clafoutis",
   "Salade de lentilles": "Lentil Salad",
   Brownies: "Brownies",
+  "Papillotes de cabillaud": "Cod Parcels",
 };
 
 const descriptionTranslations: Record<string, string> = {
@@ -291,6 +295,8 @@ const descriptionTranslations: Record<string, string> = {
     "Blond lentil salad with cherry tomatoes, feta, red onion and parsley, dressed with a lemon vinaigrette.",
   "Brownies au chocolat noir et aux noix, fondants à cœur.":
     "Dark chocolate and walnut brownies with a soft, fudgy center.",
+  "Papillotes de cabillaud au citron et aux herbes, accompagnées d’une sauce au beurre blanc polonais.":
+    "Oven-baked cod parcels served with Polish-style butter sauce.",
   "Gâteau macaron aux blancs d’œufs, amandes et extrait d’amande amère, servi avec une crème anglaise à la vanille.":
     "Macaron-style almond cake made with egg whites and bitter almond extract, served with vanilla custard.",
 };
@@ -314,8 +320,10 @@ const sectionTranslations: Record<string, string> = {
   Préparation: "Preparation",
   "Préparation de la pâte": "Preparing the Dough",
   "Préparation du macaron": "Macaron Preparation",
+  Papillotes: "Parcels",
   Repos: "Resting",
   "Repos et démoulage": "Resting and Unmolding",
+  "Sauce au beurre blanc polonais": "Polish-Style Butter Sauce",
   Refroidissement: "Cooling",
   Service: "Serving",
   Dégustation: "Serving",
@@ -385,6 +393,7 @@ const ingredientTranslations: Record<string, string> = {
   "farine semi-complète": "semi-wholemeal flour",
   "filet de cabillaud sans peau et sans arêtes":
     "skinless, boneless cod fillet",
+  cabillaud: "cod",
   framboises: "raspberries",
   fécule: "starch",
   "gruyère râpé": "grated Gruyère",
@@ -412,6 +421,7 @@ const ingredientTranslations: Record<string, string> = {
   mascarpone: "mascarpone",
   meringues: "meringues",
   "moutarde de Dijon": "Dijon mustard",
+  moutarde: "mustard",
   muscade: "nutmeg",
   "noisettes concassées": "chopped hazelnuts",
   noix: "walnuts",
@@ -425,6 +435,7 @@ const ingredientTranslations: Record<string, string> = {
   origan: "oregano",
   "parmesan râpé": "grated parmesan",
   persil: "parsley",
+  "persil ou coriandre": "parsley or cilantro",
   carotte: "carrot",
   "petites courgettes": "small zucchini",
   poires: "pears",
@@ -457,6 +468,7 @@ const ingredientTranslations: Record<string, string> = {
   "zeste de citron": "lemon zest",
   "glace à la vanille": "vanilla ice cream",
   œuf: "egg",
+  "œuf dur": "hard-boiled egg",
   œufs: "eggs",
 };
 
@@ -472,6 +484,9 @@ const noteTranslations: Record<string, string> = {
     "Carré frais noted from user correction",
   "La formulation exacte du pliage était difficile à lire.":
     "The exact folding wording was difficult to read.",
+  "La quantité de cabillaud n’est pas précisée sur la fiche manuscrite.":
+    "The handwritten recipe does not specify the amount of cod.",
+  "La sauce donne environ 1 bol.": "The sauce makes about 1 bowl.",
   "La phrase « avec 1 c. à s. » est conservée telle quelle car son sens exact n’est pas totalement explicite.":
     "The phrase “with 1 tbsp.” is kept as written because its exact meaning is not fully clear.",
   "Matériel : plat à gratin.": "Equipment: gratin dish.",
@@ -515,11 +530,14 @@ const noteTranslations: Record<string, string> = {
   "pour le glaçage": "for the glaze",
   "pour le gâteau": "for the cake",
   "pour le moule": "for the pan",
+  "pour les papillotes": "for the parcels",
   "pour le moule, ou un peu d’huile": "for the pan, or use a little oil",
   "pour le plat": "for the dish",
   "pour parsemer": "for sprinkling",
   "pour saupoudrer": "for dusting",
   "pour le sirop": "for the syrup",
+  "pour la sauce": "for the sauce",
+  "quantité non précisée": "quantity not specified",
   "environ 20 cl, à ajouter progressivement": "about 20 cl, added gradually",
   "mélange de poissons surgelés sans arêtes": "frozen boneless fish mix",
   "facultatif, pour le service": "optional, for serving",
@@ -1068,6 +1086,19 @@ const stepTranslations: Record<string, string> = {
     "Remove from the oven and leave to cool for 30 min.",
   "Placer au réfrigérateur pendant 2 h, puis démouler.":
     "Refrigerate for 2 h, then unmold.",
+  "Déposer le cabillaud sur du papier sulfurisé. Ajouter 1 c. à c. de jus de citron et 1 c. à c. d’huile d’olive, puis assaisonner de sel, de poivre et de persil ou de coriandre.":
+    "Place the cod on parchment paper. Add 1 tsp lemon juice and 1 tsp olive oil, then season with salt, pepper and parsley or cilantro.",
+  "Fermer la papillote avec l’agrafeuse en maintenant les agrafes éloignées des aliments.":
+    "Close the parcel with the stapler, keeping the staples away from the food.",
+  "Enfourner 30 min à 180 °C.": "Bake for 30 min at 180 °C.",
+  "Écraser très finement l’œuf dur à la fourchette.":
+    "Mash the hard-boiled egg very finely with a fork.",
+  "Le mettre dans le saucier avec le sel, le poivre, la moutarde et 1 c. à s. de jus de citron.":
+    "Place it in the sauce maker with the salt, pepper, mustard and 1 tbsp lemon juice.",
+  "Mettre le saucier en position 2, puis ajouter progressivement le beurre en petits morceaux.":
+    "Set the sauce maker to position 2, then gradually add the butter in small pieces.",
+  "Laisser tourner le saucier pendant 12 min, puis servir la sauce avec les papillotes de cabillaud.":
+    "Leave the sauce maker running for 12 min, then serve the sauce with the cod parcels.",
 };
 
 const unitTranslations: Record<string, string> = {
@@ -1156,6 +1187,9 @@ const equipmentTranslations: Record<string, string> = {
   "1 petit bol": "1 small bowl",
   "1 saladier": "1 salad bowl",
   "papier sulfurisé": "parchment paper",
+  agrafeuse: "stapler",
+  saucier: "sauce maker",
+  fourchette: "fork",
 };
 
 export function localizeRecipe(
