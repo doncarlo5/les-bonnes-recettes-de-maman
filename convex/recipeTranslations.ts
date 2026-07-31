@@ -99,6 +99,7 @@ export type SeedRecipe = {
 const recipeCategoryTags: Record<string, string[]> = {
   amandin: ["dessert", "sucre"],
   "banana-bread-du-kona-inn": ["dessert", "sucre"],
+  brownies: ["dessert", "sucre"],
   "cake-au-chevre-et-courgettes": ["sale"],
   "cake-chevre-noix-olives": ["sale"],
   "cake-d-ete-tout-vert": ["sale"],
@@ -136,6 +137,8 @@ const defaultHeroImageUrl =
 const fallbackHeroImageUrls: Record<string, string> = {
   amandin:
     "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=85",
+  brownies:
+    "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1400&q=85",
   "tarte-aux-amandes-et-confiture-de-framboises":
     "https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=1400&q=85",
   "gateau-aux-pommes":
@@ -220,6 +223,7 @@ const titleTranslations: Record<string, string> = {
   "Sauce bolognaise": "Bolognese Sauce",
   "Clafoutis aux abricots": "Apricot Clafoutis",
   "Salade de lentilles": "Lentil Salad",
+  Brownies: "Brownies",
 };
 
 const descriptionTranslations: Record<string, string> = {
@@ -285,6 +289,8 @@ const descriptionTranslations: Record<string, string> = {
     "Soft, lightly browned apricot clafoutis made with almond flour.",
   "Salade de lentilles blondes aux tomates cerises, feta, oignon rouge et persil, assaisonnée d’une vinaigrette citronnée.":
     "Blond lentil salad with cherry tomatoes, feta, red onion and parsley, dressed with a lemon vinaigrette.",
+  "Brownies au chocolat noir et aux noix, fondants à cœur.":
+    "Dark chocolate and walnut brownies with a soft, fudgy center.",
   "Gâteau macaron aux blancs d’œufs, amandes et extrait d’amande amère, servi avec une crème anglaise à la vanille.":
     "Macaron-style almond cake made with egg whites and bitter almond extract, served with vanilla custard.",
 };
@@ -309,6 +315,7 @@ const sectionTranslations: Record<string, string> = {
   "Préparation de la pâte": "Preparing the Dough",
   "Préparation du macaron": "Macaron Preparation",
   Repos: "Resting",
+  "Repos et démoulage": "Resting and Unmolding",
   Refroidissement: "Cooling",
   Service: "Serving",
   Dégustation: "Serving",
@@ -431,6 +438,7 @@ const ingredientTranslations: Record<string, string> = {
   rhum: "rum",
   sel: "salt",
   sucre: "sugar",
+  "sucre vanillé": "vanilla sugar",
   "sucre fin": "caster sugar",
   "sucre en poudre": "granulated sugar",
   "sucre blanc": "white sugar",
@@ -538,6 +546,7 @@ const noteTranslations: Record<string, string> = {
   ramolli: "softened",
   rases: "level",
   "selon le goût": "to taste",
+  tamisée: "sifted",
   "selon besoin": "as needed",
   "ou les graines d’une demi-gousse": "or the seeds from half a vanilla bean",
   "facultatif, pour caraméliser légèrement le dessus":
@@ -1041,6 +1050,24 @@ const stepTranslations: Record<string, string> = {
     "Bake for 35 to 40 min, until the top is golden brown and the center is just set.",
   "Laisser tiédir 15 à 20 min avant de servir. Le clafoutis est excellent tiède, mais aussi froid après quelques heures au réfrigérateur.":
     "Let cool for 15 to 20 min before serving. The clafoutis is excellent warm or chilled for a few hours in the refrigerator.",
+  "Préchauffer le four à 180 °C et chemiser le moule de papier sulfurisé.":
+    "Preheat the oven to 180 °C and line the baking pan with parchment paper.",
+  "Faire fondre le chocolat noir avec le beurre.":
+    "Melt the dark chocolate with the butter.",
+  "Ajouter le sucre et le sucre vanillé, puis mélanger.":
+    "Add the sugar and vanilla sugar, then mix.",
+  "Battre les œufs en omelette avec la pincée de sel, puis les incorporer au mélange au chocolat.":
+    "Beat the eggs with the pinch of salt, then fold them into the chocolate mixture.",
+  "Ajouter la farine tamisée et les noix, puis mélanger jusqu’à obtenir une pâte homogène.":
+    "Add the sifted flour and walnuts, then mix until combined.",
+  "Verser la pâte dans le moule et cuire 20 min à 180 °C.":
+    "Pour the batter into the pan and bake for 20 min at 180 °C.",
+  "Après la cuisson, laisser les brownies reposer 5 min dans le four éteint.":
+    "After baking, leave the brownies in the switched-off oven for 5 min.",
+  "Sortir du four et laisser refroidir 30 min.":
+    "Remove from the oven and leave to cool for 30 min.",
+  "Placer au réfrigérateur pendant 2 h, puis démouler.":
+    "Refrigerate for 2 h, then unmold.",
 };
 
 const unitTranslations: Record<string, string> = {
@@ -1103,6 +1130,7 @@ const timeTranslations: Record<string, string> = {
 };
 
 const equipmentTranslations: Record<string, string> = {
+  "1 moule": "1 baking pan",
   "1 moule à gâteau": "1 cake pan",
   "1 moule à cake": "1 loaf pan",
   "1 plat pour bain-marie": "1 roasting dish for the water bath",
@@ -1127,6 +1155,7 @@ const equipmentTranslations: Record<string, string> = {
   "1 mixeur": "1 blender",
   "1 petit bol": "1 small bowl",
   "1 saladier": "1 salad bowl",
+  "papier sulfurisé": "parchment paper",
 };
 
 export function localizeRecipe(

@@ -2810,5 +2810,96 @@
       "Pour ma version habituelle, je remplace la vinaigrette citronnée par du vinaigre balsamique, de l’huile d’olive et du sel.",
       "J’ajoute 2 œufs et parfois, selon ce que j’ai sous la main, quelques dés de courgette, de concombre et/ou de carotte, coupés en très petits morceaux."
     ]
+  },
+  {
+    "title": "Brownies",
+    "slug": "brownies",
+    "author": "Maman",
+    "description": "Brownies au chocolat noir et aux noix, fondants à cœur.",
+    "heroImageUrl": "",
+    "servings": null,
+    "prepTime": "",
+    "cookTime": "20 min",
+    "restTime": "2 h 35",
+    "totalTime": "",
+    "temperature": "180 °C",
+    "equipment": ["1 moule", "papier sulfurisé"],
+    "ingredients": [
+      {
+        "name": "chocolat noir",
+        "quantity": "250",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "sucre",
+        "quantity": "150",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "beurre",
+        "quantity": "150",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "sucre vanillé",
+        "quantity": "1",
+        "unit": "sachet",
+        "notes": ""
+      },
+      {
+        "name": "farine",
+        "quantity": "60",
+        "unit": "g",
+        "notes": "tamisée"
+      },
+      {
+        "name": "œufs",
+        "quantity": "3",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "sel",
+        "quantity": "1",
+        "unit": "pincée",
+        "notes": ""
+      },
+      {
+        "name": "noix",
+        "quantity": "60",
+        "unit": "g",
+        "notes": ""
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Préchauffer le four à 180 °C et chemiser le moule de papier sulfurisé.",
+          "Faire fondre le chocolat noir avec le beurre.",
+          "Ajouter le sucre et le sucre vanillé, puis mélanger.",
+          "Battre les œufs en omelette avec la pincée de sel, puis les incorporer au mélange au chocolat.",
+          "Ajouter la farine tamisée et les noix, puis mélanger jusqu’à obtenir une pâte homogène."
+        ]
+      },
+      {
+        "title": "Cuisson",
+        "steps": [
+          "Verser la pâte dans le moule et cuire 20 min à 180 °C."
+        ]
+      },
+      {
+        "title": "Repos et démoulage",
+        "steps": [
+          "Après la cuisson, laisser les brownies reposer 5 min dans le four éteint.",
+          "Sortir du four et laisser refroidir 30 min.",
+          "Placer au réfrigérateur pendant 2 h, puis démouler."
+        ]
+      }
+    ],
+    "notes": []
   }
 ]

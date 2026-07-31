@@ -631,6 +631,65 @@ describe("recipe yield localization", () => {
     ]);
   });
 
+  test("localizes Maman's walnut brownies from the handwritten recipe", () => {
+    const source = recipes.find((recipe) => recipe.slug === "brownies");
+    expect(source).toBeDefined();
+
+    const seeded = toSeedRecipe(source!);
+    expect(seeded).toMatchObject({
+      slug: "brownies",
+      categories: ["dessert", "sucre"],
+      legacyCategoryLabels: [],
+    });
+    expect(seeded.referenceServings).toBeUndefined();
+    expect(seeded.translations.fr).toMatchObject({
+      title: "Brownies",
+      author: "Maman",
+      cookTime: "20 min",
+      restTime: "2 h 35",
+      temperature: "180 °C",
+      servings: null,
+    });
+    expect(seeded.translations.en).toMatchObject({
+      title: "Brownies",
+      author: "Maman",
+      description:
+        "Dark chocolate and walnut brownies with a soft, fudgy center.",
+      cookTime: "20 min",
+      restTime: "2 h 35",
+      temperature: "180 °C",
+      equipment: ["1 baking pan", "parchment paper"],
+      servings: null,
+    });
+    expect(
+      seeded.translations.en.ingredients.map(
+        ({ id: _id, ...ingredient }) => ingredient,
+      ),
+    ).toEqual([
+      { name: "dark chocolate", quantity: "250", unit: "g", notes: "" },
+      { name: "sugar", quantity: "150", unit: "g", notes: "" },
+      { name: "butter", quantity: "150", unit: "g", notes: "" },
+      { name: "vanilla sugar", quantity: "1", unit: "packet", notes: "" },
+      { name: "flour", quantity: "60", unit: "g", notes: "sifted" },
+      { name: "eggs", quantity: "3", unit: "", notes: "" },
+      { name: "salt", quantity: "1", unit: "pinch", notes: "" },
+      { name: "walnuts", quantity: "60", unit: "g", notes: "" },
+    ]);
+    expect(
+      seeded.translations.en.sections.flatMap(({ steps }) => steps),
+    ).toEqual([
+      "Preheat the oven to 180 °C and line the baking pan with parchment paper.",
+      "Melt the dark chocolate with the butter.",
+      "Add the sugar and vanilla sugar, then mix.",
+      "Beat the eggs with the pinch of salt, then fold them into the chocolate mixture.",
+      "Add the sifted flour and walnuts, then mix until combined.",
+      "Pour the batter into the pan and bake for 20 min at 180 °C.",
+      "After baking, leave the brownies in the switched-off oven for 5 min.",
+      "Remove from the oven and leave to cool for 30 min.",
+      "Refrigerate for 2 h, then unmold.",
+    ]);
+  });
+
   test("seeds Marmiton-style metadata and structured recipe links", () => {
     const source = recipes.find((recipe) => recipe.slug === "pain-de-poisson");
     expect(source).toBeDefined();
