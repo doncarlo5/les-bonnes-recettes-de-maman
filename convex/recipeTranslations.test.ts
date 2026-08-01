@@ -819,6 +819,7 @@ describe("recipe yield localization", () => {
     const seeded = toSeedRecipe(source!);
     expect(seeded).toMatchObject({
       slug: "pates-carbonara",
+      heroImageUrl: "/images/recipes/pates-carbonara.png",
       categories: ["plat", "sale"],
       legacyCategoryLabels: [],
       referenceServings: 2,
