@@ -826,7 +826,7 @@ describe("recipe yield localization", () => {
     });
     expect(seeded.translations.fr).toMatchObject({
       title: "Pâtes carbonara",
-      author: "Maman",
+      author: "Antoine",
       prepTime: "5 min",
       cookTime: "15 min",
       totalTime: "20 min",
@@ -834,7 +834,7 @@ describe("recipe yield localization", () => {
     });
     expect(seeded.translations.en).toMatchObject({
       title: "Pasta Carbonara",
-      author: "Maman",
+      author: "Antoine",
       description:
         "Family-style pasta carbonara with whole eggs, parmesan and smoked bacon, loosened with a little pasta cooking water if needed.",
       equipment: [
