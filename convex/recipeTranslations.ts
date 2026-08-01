@@ -109,6 +109,7 @@ const recipeCategoryTags: Record<string, string[]> = {
   "clafoutis-aux-abricots": ["dessert", "sucre"],
   "cocotte-de-cabillaud-aux-courgettes-et-curry": ["plat", "sale"],
   "papillotes-de-cabillaud": ["plat", "sale"],
+  "pates-carbonara": ["plat", "sale"],
   "coulants-au-chocolat": ["dessert", "sucre"],
   "crumble-aux-pommes-du-verger": ["dessert", "sucre"],
   "flan-au-lait-concentre-sucre-nestle": ["dessert", "sucre"],
@@ -228,6 +229,7 @@ const titleTranslations: Record<string, string> = {
   "Salade de lentilles": "Lentil Salad",
   Brownies: "Brownies",
   "Papillotes de cabillaud": "Cod Parcels",
+  "Pâtes carbonara": "Pasta Carbonara",
 };
 
 const descriptionTranslations: Record<string, string> = {
@@ -297,6 +299,8 @@ const descriptionTranslations: Record<string, string> = {
     "Dark chocolate and walnut brownies with a soft, fudgy center.",
   "Papillotes de cabillaud au citron et aux herbes, accompagnées d’une sauce au beurre blanc polonais.":
     "Oven-baked cod parcels served with Polish-style butter sauce.",
+  "Pâtes carbonara familiales aux œufs entiers, parmesan et lardons fumés, liées avec un peu d’eau de cuisson si nécessaire.":
+    "Family-style pasta carbonara with whole eggs, parmesan and smoked bacon, loosened with a little pasta cooking water if needed.",
   "Gâteau macaron aux blancs d’œufs, amandes et extrait d’amande amère, servi avec une crème anglaise à la vanille.":
     "Macaron-style almond cake made with egg whites and bitter almond extract, served with vanilla custard.",
 };
@@ -384,6 +388,7 @@ const ingredientTranslations: Record<string, string> = {
   "crémant de Loire": "Loire Valley Crémant",
   "curry en poudre": "curry powder",
   eau: "water",
+  "eau de cuisson des pâtes": "pasta cooking water",
   "extrait de café": "coffee extract",
   "extrait de vanille": "vanilla extract",
   "extrait d’amande amère": "bitter almond extract",
@@ -437,6 +442,7 @@ const ingredientTranslations: Record<string, string> = {
   orange: "orange",
   origan: "oregano",
   "parmesan râpé": "grated parmesan",
+  "lardons fumés": "smoked bacon lardons",
   persil: "parsley",
   "persil ou coriandre": "parsley or cilantro",
   carotte: "carrot",
@@ -447,6 +453,7 @@ const ingredientTranslations: Record<string, string> = {
   "poivre du moulin": "freshly ground pepper",
   "pomme de terre": "potato",
   pommes: "apples",
+  spaghettis: "spaghetti",
   "poudre d’amandes": "almond flour",
   "pâte sablée": "shortcrust pastry",
   rhum: "rum",
@@ -577,6 +584,11 @@ const noteTranslations: Record<string, string> = {
   "Si les abricots sont un peu acides, les saupoudrer d’une cuillère à soupe de sucre avant de verser la pâte. Cela équilibre leur saveur sans rendre le clafoutis trop sucré.":
     "If the apricots are a little tart, sprinkle them with one tablespoon of sugar before pouring in the batter. This balances their flavor without making the clafoutis too sweet.",
   "écrit « chivre » sur la recette": "written “chivre” on the recipe",
+  "entiers, sans séparer les blancs des jaunes":
+    "whole, without separating the whites and yolks",
+  "plus un peu pour servir": "plus extra for serving",
+  "à réserver au cas où la sauce est trop sèche":
+    "reserve in case the sauce is too dry",
 };
 
 const stepTranslations: Record<string, string> = {
@@ -1104,6 +1116,18 @@ const stepTranslations: Record<string, string> = {
     "Set the SEB sauce maker to position 2 for gentle cooking, then gradually add the butter in small pieces.",
   "Laisser tourner le saucier SEB pendant 12 min, puis servir la sauce avec les papillotes de cabillaud.":
     "Leave the SEB sauce maker running for 12 min, then serve the sauce with the cod parcels.",
+  "Faire cuire les pâtes dans une grande casserole d’eau bouillante salée selon les indications du paquet.":
+    "Cook the pasta in a large saucepan of salted boiling water according to the package directions.",
+  "Pendant ce temps, faire dorer les lardons fumés dans une poêle.":
+    "Meanwhile, brown the smoked bacon lardons in a frying pan.",
+  "Dans un bol, battre les œufs entiers avec le parmesan et du poivre. Saler très légèrement, car les lardons fumés et le parmesan le sont déjà.":
+    "In a bowl, beat the whole eggs with the parmesan and pepper. Add only a little salt, as the smoked bacon and parmesan are already salty.",
+  "Avant d’égoutter les pâtes, réserver un verre d’eau de cuisson. Égoutter les pâtes sans les assécher, puis les remettre dans la casserole chaude hors du feu.":
+    "Before draining the pasta, reserve a glass of cooking water. Drain the pasta without drying it out, then return it to the hot saucepan off the heat.",
+  "Ajouter aussitôt les lardons, puis verser le mélange aux œufs et au parmesan. Remuer sans arrêt afin que la chaleur résiduelle nappe les pâtes sans brouiller les œufs.":
+    "Immediately add the smoked bacon, then pour in the egg and parmesan mixture. Stir continuously so the residual heat coats the pasta without scrambling the eggs.",
+  "Si la sauce est trop sèche, ajouter un peu d’eau de cuisson réservée. Servir immédiatement avec un peu de parmesan et de poivre.":
+    "If the sauce is too dry, add a little reserved cooking water. Serve immediately with extra parmesan and pepper.",
 };
 
 const unitTranslations: Record<string, string> = {
@@ -1158,6 +1182,7 @@ const quantityTranslations: Record<string, string> = {
   "5 à 7": "5 to 7",
   quelques: "a few",
   "quelques gouttes": "a few drops",
+  "un peu": "a little",
 };
 
 const yieldLabelTranslations: Record<string, string> = {
@@ -1186,6 +1211,7 @@ const equipmentTranslations: Record<string, string> = {
   "1 moule à manqué": "1 round cake pan",
   "1 moule en couronne": "1 ring mold",
   "1 casserole": "1 saucepan",
+  "1 grande casserole": "1 large saucepan",
   "1 couteau à longue lame": "1 long-bladed knife",
   "1 rouleau à pâtisserie": "1 rolling pin",
   "5 empreintes à muffins": "5 muffin cups",
@@ -1200,6 +1226,8 @@ const equipmentTranslations: Record<string, string> = {
   "1 cocotte-minute": "1 pressure cooker",
   "1 plaque de cuisson": "1 baking sheet",
   "1 poêle": "1 frying pan",
+  "1 bol": "1 bowl",
+  "1 verre": "1 glass",
   "6 petites cocottes": "6 small cocottes",
   "1 mixeur": "1 blender",
   "1 petit bol": "1 small bowl",

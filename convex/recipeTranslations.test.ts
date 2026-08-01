@@ -809,4 +809,83 @@ describe("recipe yield localization", () => {
       equipment: ["1 loaf pan", "1 roasting dish for the water bath"],
     });
   });
+
+  test("localizes Maman's pasta carbonara for two people", () => {
+    const source = recipes.find(
+      (recipe) => recipe.slug === "pates-carbonara",
+    );
+    expect(source).toBeDefined();
+
+    const seeded = toSeedRecipe(source!);
+    expect(seeded).toMatchObject({
+      slug: "pates-carbonara",
+      categories: ["plat", "sale"],
+      legacyCategoryLabels: [],
+      referenceServings: 2,
+    });
+    expect(seeded.translations.fr).toMatchObject({
+      title: "Pâtes carbonara",
+      author: "Maman",
+      prepTime: "5 min",
+      cookTime: "15 min",
+      totalTime: "20 min",
+      servings: { quantity: 2, unit: "personnes" },
+    });
+    expect(seeded.translations.en).toMatchObject({
+      title: "Pasta Carbonara",
+      author: "Maman",
+      description:
+        "Family-style pasta carbonara with whole eggs, parmesan and smoked bacon, loosened with a little pasta cooking water if needed.",
+      equipment: [
+        "1 large saucepan",
+        "1 frying pan",
+        "1 bowl",
+        "1 glass",
+      ],
+      servings: { quantity: 2, unit: "people" },
+    });
+    expect(
+      seeded.translations.en.ingredients.map(
+        ({ id: _id, ...ingredient }) => ingredient,
+      ),
+    ).toEqual([
+      { name: "spaghetti", quantity: "250", unit: "g", notes: "" },
+      {
+        name: "smoked bacon lardons",
+        quantity: "125",
+        unit: "g",
+        notes: "",
+      },
+      {
+        name: "eggs",
+        quantity: "2",
+        unit: "",
+        notes: "whole, without separating the whites and yolks",
+      },
+      {
+        name: "grated parmesan",
+        quantity: "50",
+        unit: "g",
+        notes: "plus extra for serving",
+      },
+      {
+        name: "pasta cooking water",
+        quantity: "a little",
+        unit: "",
+        notes: "reserve in case the sauce is too dry",
+      },
+      { name: "salt", quantity: "", unit: "", notes: "to taste" },
+      { name: "pepper", quantity: "", unit: "", notes: "to taste" },
+    ]);
+    expect(
+      seeded.translations.en.sections.flatMap(({ steps }) => steps),
+    ).toEqual([
+      "Cook the pasta in a large saucepan of salted boiling water according to the package directions.",
+      "Meanwhile, brown the smoked bacon lardons in a frying pan.",
+      "In a bowl, beat the whole eggs with the parmesan and pepper. Add only a little salt, as the smoked bacon and parmesan are already salty.",
+      "Before draining the pasta, reserve a glass of cooking water. Drain the pasta without drying it out, then return it to the hot saucepan off the heat.",
+      "Immediately add the smoked bacon, then pour in the egg and parmesan mixture. Stir continuously so the residual heat coats the pasta without scrambling the eggs.",
+      "If the sauce is too dry, add a little reserved cooking water. Serve immediately with extra parmesan and pepper.",
+    ]);
+  });
 });

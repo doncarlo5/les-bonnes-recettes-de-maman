@@ -3009,5 +3009,80 @@
       "La quantité de cabillaud n’est pas précisée sur la fiche manuscrite.",
       "La sauce donne environ 1 bol."
     ]
+  },
+  {
+    "title": "Pâtes carbonara",
+    "slug": "pates-carbonara",
+    "author": "Maman",
+    "description": "Pâtes carbonara familiales aux œufs entiers, parmesan et lardons fumés, liées avec un peu d’eau de cuisson si nécessaire.",
+    "heroImageUrl": "",
+    "servings": {
+      "quantity": 2,
+      "unit": "personnes"
+    },
+    "referenceServings": 2,
+    "prepTime": "5 min",
+    "cookTime": "15 min",
+    "totalTime": "20 min",
+    "temperature": "",
+    "equipment": ["1 grande casserole", "1 poêle", "1 bol", "1 verre"],
+    "ingredients": [
+      {
+        "name": "spaghettis",
+        "quantity": "250",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "lardons fumés",
+        "quantity": "125",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "œufs",
+        "quantity": "2",
+        "unit": "",
+        "notes": "entiers, sans séparer les blancs des jaunes"
+      },
+      {
+        "name": "parmesan râpé",
+        "quantity": "50",
+        "unit": "g",
+        "notes": "plus un peu pour servir"
+      },
+      {
+        "name": "eau de cuisson des pâtes",
+        "quantity": "un peu",
+        "unit": "",
+        "notes": "à réserver au cas où la sauce est trop sèche"
+      },
+      {
+        "name": "sel",
+        "quantity": "",
+        "unit": "",
+        "notes": "à convenance"
+      },
+      {
+        "name": "poivre",
+        "quantity": "",
+        "unit": "",
+        "notes": "à convenance"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Faire cuire les pâtes dans une grande casserole d’eau bouillante salée selon les indications du paquet.",
+          "Pendant ce temps, faire dorer les lardons fumés dans une poêle.",
+          "Dans un bol, battre les œufs entiers avec le parmesan et du poivre. Saler très légèrement, car les lardons fumés et le parmesan le sont déjà.",
+          "Avant d’égoutter les pâtes, réserver un verre d’eau de cuisson. Égoutter les pâtes sans les assécher, puis les remettre dans la casserole chaude hors du feu.",
+          "Ajouter aussitôt les lardons, puis verser le mélange aux œufs et au parmesan. Remuer sans arrêt afin que la chaleur résiduelle nappe les pâtes sans brouiller les œufs.",
+          "Si la sauce est trop sèche, ajouter un peu d’eau de cuisson réservée. Servir immédiatement avec un peu de parmesan et de poivre."
+        ]
+      }
+    ],
+    "notes": []
   }
 ]
