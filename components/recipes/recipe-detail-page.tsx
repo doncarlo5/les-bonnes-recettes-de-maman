@@ -116,6 +116,14 @@ export function RecipePresentation({
                 {recipe.description}
               </p>
             ) : null}
+            {(recipe.realisationCount ?? 0) > 0 ? (
+              <p className="mt-4 type-label text-primary">
+                {((recipe.realisationCount ?? 0) === 1
+                  ? dict.recipeDetail.makes.countSingular
+                  : dict.recipeDetail.makes.countPlural
+                ).replace("{count}", String(recipe.realisationCount ?? 0))}
+              </p>
+            ) : null}
             {mode === "public" ? (
               <div className="mt-8 grid gap-4">
                 <CookModeEntry
@@ -357,7 +365,7 @@ export function RecipePresentation({
         </div>
       </section>
       {mode === "public" ? (
-        <RecipeComments locale={locale} dict={dict} slug={recipe.slug} />
+        <RecipeComments locale={locale} dict={dict} recipe={recipe} />
       ) : null}
     </main>
   );

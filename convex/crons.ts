@@ -24,4 +24,11 @@ crons.cron(
   {},
 );
 
+crons.cron(
+  "purge expired recipe make data",
+  "55 3 * * *",
+  internal.recipeMakes.adminCleanupExpired,
+  {},
+);
+
 export default crons;

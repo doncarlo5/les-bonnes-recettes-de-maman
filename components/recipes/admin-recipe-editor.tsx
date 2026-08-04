@@ -145,7 +145,7 @@ import {
   type SyncState,
 } from "./use-recipe-draft-lifecycle";
 import type { EditableRecipe, EditableRecipeSummary, RecipeIdea } from "./types";
-import { AdminRecipeComments } from "./admin-recipe-comments";
+import { AdminRecipeMakes } from "./admin-recipe-makes";
 import { AdminDraftPreview } from "./admin-draft-preview";
 import { AdminRecipeHome } from "./admin-recipe-home";
 import { DeleteRecipeControl } from "./admin-recipe-delete-control";
@@ -168,7 +168,7 @@ type MobileSection =
   | "ingredients"
   | "preparation"
   | "notes"
-  | "comments"
+  | "makes"
   | "translation";
 
 type LocaleKey = "fr" | "en";
@@ -536,7 +536,7 @@ export function AdminRecipeEditor({
   }
 
   function returnFromPreview(
-    section: Exclude<MobileSection, "overview" | "comments">,
+    section: Exclude<MobileSection, "overview" | "makes">,
   ) {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("mode");
@@ -1005,9 +1005,9 @@ function MobileOverview({
       ...status("notes"),
     },
     {
-      id: "comments",
-      title: "Commentaires",
-      detail: "Contributions des visiteurs",
+      id: "makes",
+      title: "Réalisations",
+      detail: "Photos et signalements des visiteurs",
       icon: MessageSquare,
       complete: true,
       blockers: 0,
@@ -1288,8 +1288,8 @@ function MobileSectionFields({
         register={form.register}
       />
     );
-  if (section === "comments" && recipe)
-    return <AdminRecipeComments slug={recipe.slug} locale={locale} />;
+  if (section === "makes" && recipe)
+    return <AdminRecipeMakes />;
   if (section === "translation")
     return (
       <div className="grid gap-4">
@@ -1490,7 +1490,7 @@ function mobileSectionTitle(section: MobileSection) {
       ingredients: "Ingrédients",
       preparation: "Préparation",
       notes: "Notes",
-      comments: "Commentaires",
+      makes: "Réalisations",
       translation: "Traduction",
     } as const
   )[section];
@@ -1505,7 +1505,7 @@ function normalizeMobileSection(value: string | null): MobileSection {
     "ingredients",
     "preparation",
     "notes",
-    "comments",
+    "makes",
     "translation",
   ];
   return sections.includes(value as MobileSection)

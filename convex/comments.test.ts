@@ -49,7 +49,7 @@ async function insertRecipe(t: ReturnType<typeof convexTest>, status: "draft" | 
 }
 
 describe("recipe comments", () => {
-  test("maintains the public recipe comment count through creation and deletion", async () => {
+  test("keeps legacy comments out of the public Réalisation count", async () => {
     const t = convexTest(schema, modules);
     await insertRecipe(t);
     const listSummaries = () => t.query(api.recipes.list, {
@@ -58,7 +58,7 @@ describe("recipe comments", () => {
     });
 
     await expect(listSummaries()).resolves.toMatchObject({
-      page: [{ commentCount: 0 }],
+      page: [{ realisationCount: 0 }],
     });
     const first = await t.mutation(commentsApi.create, {
       slug: "tarte-aux-pommes",
@@ -73,7 +73,7 @@ describe("recipe comments", () => {
       honeypot: "",
     });
     await expect(listSummaries()).resolves.toMatchObject({
-      page: [{ commentCount: 2 }],
+      page: [{ realisationCount: 0 }],
     });
 
     await t.mutation(commentsApi.removeOwn, {
@@ -81,7 +81,7 @@ describe("recipe comments", () => {
       participantKey: ownerKey,
     });
     await expect(listSummaries()).resolves.toMatchObject({
-      page: [{ commentCount: 1 }],
+      page: [{ realisationCount: 0 }],
     });
   });
 
@@ -105,11 +105,11 @@ describe("recipe comments", () => {
     );
 
     await expect(listSummaries()).resolves.toMatchObject({
-      page: [{ commentCount: 0 }],
+      page: [{ realisationCount: 0 }],
     });
     await runBackfill();
     await expect(listSummaries()).resolves.toMatchObject({
-      page: [{ commentCount: 1 }],
+      page: [{ realisationCount: 0 }],
     });
     await expect(t.run((ctx) => ctx.db.get(commentId))).resolves.toMatchObject({
       countedAt: expect.any(Number),
@@ -117,7 +117,7 @@ describe("recipe comments", () => {
 
     await runBackfill();
     await expect(listSummaries()).resolves.toMatchObject({
-      page: [{ commentCount: 1 }],
+      page: [{ realisationCount: 0 }],
     });
   });
 
