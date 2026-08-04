@@ -20,7 +20,6 @@ const allowedMimeTypes = new Set<string>(RECIPE_MAKE_PHOTO_MIME_TYPES);
 export const process = internalAction({
   args: {
     slug: v.string(),
-    participantDigest: v.string(),
     ticketDigest: v.string(),
     sourceStorageId: v.id("_storage"),
     mimeType: v.string(),
@@ -56,7 +55,6 @@ export const process = internalAction({
 
       await ctx.runMutation(internal.recipeMakes.finalizeUpload, {
         slug: args.slug,
-        participantDigest: args.participantDigest,
         ticketDigest: args.ticketDigest,
         fullPhotoStorageId,
         thumbnailStorageId,

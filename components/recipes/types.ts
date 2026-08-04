@@ -79,6 +79,7 @@ export type Recipe = {
   sections: RecipeSection[];
   subRecipes: SubRecipe[];
   notes: string[];
+  realisationCount?: number;
 };
 
 export type RecipeSummary = Pick<
@@ -97,7 +98,7 @@ export type RecipeSummary = Pick<
   | "timeLabel"
 > & {
   ingredients: Array<Pick<Ingredient, "name">>;
-  commentCount: number;
+  realisationCount: number;
 };
 
 export type EditableRecipeContent = {

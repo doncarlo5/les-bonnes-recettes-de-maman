@@ -214,10 +214,10 @@ export function GuidedCookMode({
                 {dict.cookMode.previous}
               </Button>
               <Link
-                href={recipeHref}
+                href={`${recipeHref}${recipeHref.includes("?") ? "&" : "?"}make=1`}
                 className="inline-flex min-h-11 items-center rounded-lg bg-background px-4 text-sm font-semibold shadow-[0_0_0_1px_var(--border)] transition-[scale,background-color,color] duration-150 hover:bg-muted active:scale-[0.96] md:min-h-10"
               >
-                {dict.cookMode.backToRecipe}
+                {dict.cookMode.shareMake}
               </Link>
             </div>
           </section>
