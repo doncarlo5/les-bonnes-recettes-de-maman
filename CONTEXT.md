@@ -48,6 +48,10 @@ _Avoid_: Avancement de recette, statut de préparation, historique de cuisson
 Élément alimentaire d’une Recette, principal ou rattaché à une sous-recette, défini par un nom et éventuellement une quantité, une unité et une note.
 _Avoid_: Produit, composant technique
 
+**Ustensile**:
+Objet ou consommable non alimentaire requis pour préparer ou présenter une Recette.
+_Avoid_: Équipement, matériel
+
 **Étape de préparation**:
 Instruction ordonnée qui décrit une action à accomplir pendant la préparation d’une Recette.
 _Avoid_: Tâche, instruction libre
