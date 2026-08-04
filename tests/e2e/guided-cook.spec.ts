@@ -493,22 +493,9 @@ test("homepage discovery state remains URL-backed", async ({
   const alphabeticalSort = page.getByRole("button", { name: "Alphabétique" });
   await expect(alphabeticalSort).toBeVisible();
   const recipeLinks = page.locator('main a[href^="/fr/recettes/"]');
-  await expect(alphabeticalSort).toHaveAttribute("aria-pressed", "true");
-  const alphabeticalAscending = await recipeLinks.evaluateAll((links) =>
-    links.map((link) => link.getAttribute("href")),
-  );
-  await alphabeticalSort.click();
-  await expect(page).toHaveURL(/sort=alpha&order=desc/);
-  await expect.poll(() => recipeLinks.evaluateAll((links) =>
-    links.map((link) => link.getAttribute("href")),
-  )).toEqual([...alphabeticalAscending].reverse());
-  await alphabeticalSort.click();
-  await expect(page).toHaveURL(/sort=alpha&order=asc/);
-
   const dateSort = page.getByRole("button", { name: "Date d’ajout" });
   await expect(dateSort).toBeVisible();
-  await dateSort.click();
-  await expect(page).toHaveURL(/sort=date&order=desc/);
+  await expect(dateSort).toHaveAttribute("aria-pressed", "true");
   const dateDescending = await recipeLinks.evaluateAll((links) =>
     links.map((link) => link.getAttribute("href")),
   );
@@ -517,4 +504,15 @@ test("homepage discovery state remains URL-backed", async ({
   await expect.poll(() => recipeLinks.evaluateAll((links) =>
     links.map((link) => link.getAttribute("href")),
   )).toEqual([...dateDescending].reverse());
+
+  await alphabeticalSort.click();
+  await expect(page).toHaveURL(/sort=alpha&order=asc/);
+  const alphabeticalAscending = await recipeLinks.evaluateAll((links) =>
+    links.map((link) => link.getAttribute("href")),
+  );
+  await alphabeticalSort.click();
+  await expect(page).toHaveURL(/sort=alpha&order=desc/);
+  await expect.poll(() => recipeLinks.evaluateAll((links) =>
+    links.map((link) => link.getAttribute("href")),
+  )).toEqual([...alphabeticalAscending].reverse());
 });
