@@ -247,6 +247,13 @@ test("recipe content orders equipment, ingredients, then preparation", async ({ 
   await expect(equipment).toBeVisible();
   await expect(preparation).toBeVisible();
 
+  const equipmentItems = page.locator("[data-equipment-list] > li");
+  await expect(equipmentItems).toHaveCount(1);
+  await expect(equipmentItems.first()).toContainText("moule à tarte");
+  await expect(
+    equipmentItems.first().locator("[data-equipment-icon][aria-hidden='true']"),
+  ).toHaveCount(1);
+
   const ingredientsBox = await ingredients.boundingBox();
   const equipmentBox = await equipment.boundingBox();
   const preparationBox = await preparation.boundingBox();

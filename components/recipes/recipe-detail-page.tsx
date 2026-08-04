@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/accordion";
 import { EditRecipeAccess } from "./edit-recipe-access";
 import { CookModeEntry } from "./cook-mode-entry";
+import { EquipmentIcon } from "./equipment-icon";
 import { RecipeIngredientsPanel } from "./recipe-ingredients-panel";
 import { RecipeComments } from "./recipe-comments";
 import type { Recipe } from "./types";
@@ -143,9 +144,18 @@ export function RecipePresentation({
                     <h2 className="type-content-title mb-4 text-foreground lg:mb-6">
                       {dict.recipeDetail.equipment}
                     </h2>
-                    <ul className="type-body-spacious list-disc space-y-2 pl-5 text-foreground/90">
-                      {recipe.equipment.map((item) => (
-                        <li key={item}>{item}</li>
+                    <ul
+                      data-equipment-list
+                      className="type-body-spacious space-y-2 text-foreground/90"
+                    >
+                      {recipe.equipment.map((item, index) => (
+                        <li
+                          key={`${item}-${index}`}
+                          className="grid grid-cols-[1.375rem_minmax(0,1fr)] items-start gap-3"
+                        >
+                          <EquipmentIcon label={item} />
+                          <span>{item}</span>
+                        </li>
                       ))}
                     </ul>
                   </div>
