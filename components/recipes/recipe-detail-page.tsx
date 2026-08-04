@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/accordion";
 import { EditRecipeAccess } from "./edit-recipe-access";
 import { CookModeEntry } from "./cook-mode-entry";
-import { EquipmentIcon, resolveEquipmentIcon } from "./equipment-icon";
+import { EquipmentIcon } from "./equipment-icon";
 import { RecipeIngredientsPanel } from "./recipe-ingredients-panel";
 import { RecipeComments } from "./recipe-comments";
 import type { Recipe } from "./types";
@@ -158,22 +158,6 @@ export function RecipePresentation({
                         </li>
                       ))}
                     </ul>
-                    {recipe.equipment.some(
-                      (item) => resolveEquipmentIcon(item) === "loaf-pan",
-                    ) ? (
-                      <p className="type-meta mt-3 text-muted-foreground/70">
-                        “Bread Pan” icon by Joost, from{" "}
-                        <a
-                          href="https://thenounproject.com/browse/icons/term/bread-pan/"
-                          target="_blank"
-                          rel="noreferrer"
-                          className="underline decoration-current/40 underline-offset-2 hover:decoration-current"
-                        >
-                          Noun Project
-                        </a>{" "}
-                        CC BY 3.0
-                      </p>
-                    ) : null}
                   </div>
                 ) : null}
                 <RecipeIngredientsPanel
