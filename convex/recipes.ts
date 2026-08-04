@@ -1226,7 +1226,15 @@ async function localizeSummary(
       .query("recipeCommentSummaries")
       .withIndex("by_recipeId", (q) => q.eq("recipeId", recipe._id))
       .unique(),
+    ctx.db
+      .query("recipeMakeSummaries")
+      .withIndex("by_recipeId", (q) => q.eq("recipeId", recipe._id))
+      .unique(),
   ]);
+  const recipeMakeSummary = await ctx.db
+    .query("recipeMakeSummaries")
+    .withIndex("by_recipeId", (q) => q.eq("recipeId", recipe._id))
+    .unique();
   return {
     _id: recipe._id,
     _creationTime: recipe._creationTime,
@@ -1239,7 +1247,7 @@ async function localizeSummary(
     prepTime: translation.prepTime,
     cookTime: translation.cookTime,
     timeLabel: translation.timeLabel,
-    commentCount: commentSummary?.commentCount ?? 0,
+    commentCount: (recipeMakeSummary?.makeCount ?? commentSummary?.commentCount ?? 0),
     ingredients: translation.ingredients.map(({ name }) => ({ name })),
   };
 }

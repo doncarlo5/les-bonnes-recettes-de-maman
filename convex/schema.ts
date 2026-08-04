@@ -176,6 +176,114 @@ export default defineSchema({
     recipeId: v.id("recipes"),
     commentCount: v.number(),
   }).index("by_recipeId", ["recipeId"]),
+  recipeMakes: defineTable({
+    recipeId: v.id("recipes"),
+    participantDigest: v.string(),
+    fullPhotoStorageId: v.id("_storage"),
+    thumbnailStorageId: v.id("_storage"),
+    authorName: v.optional(v.string()),
+    caption: v.optional(v.string()),
+    altText: v.optional(v.string()),
+    state: v.union(v.literal("published"), v.literal("removed"), v.literal("blocked")),
+    publishedAt: v.optional(v.number()),
+    removedAt: v.optional(v.number()),
+    removedBy: v.optional(v.union(v.literal("admin"), v.literal("auto"))),
+    removalReason: v.optional(v.string()),
+    blockUntil: v.optional(v.number()),
+    editedAt: v.optional(v.number()),
+    updatedAt: v.optional(v.number()),
+  })
+    .index("by_state", ["state"])
+    .index("by_removedAt", ["removedAt"])
+    .index("by_recipeId", ["recipeId"])
+    .index("by_recipeId_and_state", ["recipeId", "state"])
+    .index("by_participantDigest", ["participantDigest"])
+    .index("by_participantDigest_and_recipeId", [
+      "participantDigest",
+      "recipeId",
+    ]),
+  recipeMakeSummaries: defineTable({
+    recipeId: v.id("recipes"),
+    makeCount: v.number(),
+  }).index("by_recipeId", ["recipeId"]),
+  recipeMakeBravos: defineTable({
+    makeId: v.id("recipeMakes"),
+    participantDigest: v.string(),
+    createdAt: v.number(),
+  })
+    .index("by_makeId", ["makeId"])
+    .index("by_makeId_and_participantDigest", [
+      "makeId",
+      "participantDigest",
+    ]),
+  recipeMakeBravoSummaries: defineTable({
+    makeId: v.id("recipeMakes"),
+    bravoCount: v.number(),
+  }).index("by_makeId", ["makeId"]),
+  recipeMakeReports: defineTable({
+    makeId: v.id("recipeMakes"),
+    participantDigest: v.string(),
+    reason: v.union(
+      v.literal("spam"),
+      v.literal("inappropriate"),
+      v.literal("privacy"),
+      v.literal("copyright"),
+      v.literal("other"),
+    ),
+    details: v.optional(v.string()),
+    createdAt: v.number(),
+    state: v.union(v.literal("open"), v.literal("dismissed"), v.literal("resolved")),
+  })
+    .index("by_makeId", ["makeId"])
+    .index("by_makeId_and_state", ["makeId", "state"])
+    .index("by_makeId_and_participantDigest", ["makeId", "participantDigest"]),
+  recipeMakeReportSummaries: defineTable({
+    makeId: v.id("recipeMakes"),
+    openReportCount: v.number(),
+    totalReportCount: v.number(),
+  })
+    .index("by_makeId", ["makeId"])
+    .index("by_openReportCount", ["openReportCount"]),
+  recipeMakeUploadTickets: defineTable({
+    recipeId: v.id("recipes"),
+    participantDigest: v.string(),
+    ticketDigest: v.string(),
+    sourceStorageId: v.optional(v.id("_storage")),
+    fullPhotoStorageId: v.optional(v.id("_storage")),
+    thumbnailStorageId: v.optional(v.id("_storage")),
+    replaceMakeId: v.optional(v.id("recipeMakes")),
+    requestedByIpDigest: v.optional(v.string()),
+    createdAt: v.number(),
+    expiresAt: v.number(),
+    redeemedAt: v.optional(v.number()),
+    reason: v.optional(v.string()),
+  })
+    .index("by_ticketDigest", ["ticketDigest"])
+    .index("by_recipeId", ["recipeId"])
+    .index("by_participantDigest", ["participantDigest"])
+    .index("by_expiresAt", ["expiresAt"]),
+  recipeMakeRateLimits: defineTable({
+    participantDigest: v.string(),
+    windowStartedAt: v.number(),
+    count: v.number(),
+  })
+    .index("by_participantDigest", ["participantDigest"])
+    .index("by_windowStartedAt", ["windowStartedAt"]),
+  recipeMakeNetworkRateLimits: defineTable({
+    networkDigest: v.string(),
+    windowStartedAt: v.number(),
+    count: v.number(),
+  })
+    .index("by_networkDigest", ["networkDigest"])
+    .index("by_windowStartedAt", ["windowStartedAt"]),
+  recipeMakeParticipantBlocks: defineTable({
+    participantDigest: v.string(),
+    reason: v.string(),
+    createdAt: v.number(),
+    expiresAt: v.number(),
+    canReact: v.optional(v.boolean()),
+  })
+    .index("by_participantDigest", ["participantDigest"]),
   commentReactions: defineTable({
     commentId: v.id("recipeComments"),
     participantDigest: v.string(),

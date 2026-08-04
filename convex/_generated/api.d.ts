@@ -18,6 +18,8 @@ import type * as migrations from "../migrations.js";
 import type * as recipeIdeaAdmin from "../recipeIdeaAdmin.js";
 import type * as recipeIdeaMaintenance from "../recipeIdeaMaintenance.js";
 import type * as recipeIdeas from "../recipeIdeas.js";
+import type * as recipeMakeUploads from "../recipeMakeUploads.js";
+import type * as recipeMakes from "../recipeMakes.js";
 import type * as recipeTranslations from "../recipeTranslations.js";
 import type * as recipes from "../recipes.js";
 
@@ -38,6 +40,8 @@ declare const fullApi: ApiFromModules<{
   recipeIdeaAdmin: typeof recipeIdeaAdmin;
   recipeIdeaMaintenance: typeof recipeIdeaMaintenance;
   recipeIdeas: typeof recipeIdeas;
+  recipeMakeUploads: typeof recipeMakeUploads;
+  recipeMakes: typeof recipeMakes;
   recipeTranslations: typeof recipeTranslations;
   recipes: typeof recipes;
 }>;

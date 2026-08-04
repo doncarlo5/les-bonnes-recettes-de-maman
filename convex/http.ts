@@ -8,21 +8,117 @@ import {
   RECIPE_COMMENT_MAX_PHOTO_PIXELS,
   RECIPE_COMMENT_PHOTO_MIME_TYPES,
 } from "../lib/recipe-comment-policy";
+import {
+  RECIPE_MAKE_MAX_PHOTO_BYTES,
+  RECIPE_MAKE_PHOTO_MIME_TYPES,
+} from "../lib/recipe-makes-policy";
 
-declare const process: { env: { RECIPE_ADMIN_PASSWORD?: string } };
+declare const process: {
+  env: {
+    RECIPE_ADMIN_PASSWORD?: string;
+    RECIPE_MAKE_UPLOAD_ORIGIN?: string;
+    RECIPE_MAKE_UPLOAD_ENABLED?: string;
+  };
+};
 
 const http = httpRouter();
 const allowedPhotoTypes = new Set<string>(RECIPE_COMMENT_PHOTO_MIME_TYPES);
+const allowedMakePhotoTypes = new Set<string>(RECIPE_MAKE_PHOTO_MIME_TYPES);
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
+const makeAllowedOrigin = process.env.RECIPE_MAKE_UPLOAD_ORIGIN ?? "";
+const makeCorsHeaders = {
+  "Access-Control-Allow-Origin": makeAllowedOrigin || "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+  Vary: "Origin",
+};
+
 http.route({
   path: "/comment-photo-upload",
   method: "OPTIONS",
   handler: httpAction(async () => new Response(null, { status: 204, headers: corsHeaders })),
+});
+
+http.route({
+  path: "/recipe-make-upload",
+  method: "OPTIONS",
+  handler: httpAction(async (ctx, request) => {
+    const origin = request.headers.get("origin");
+    const allowOrigin = getMakeAllowedOrigin(origin);
+    if (makeAllowedOrigin && allowOrigin === null) {
+      return new Response(null, { status: 403 });
+    }
+    return new Response(null, {
+      status: 204,
+      headers: {
+        ...makeCorsHeaders,
+        ...(allowOrigin ? { "Access-Control-Allow-Origin": allowOrigin } : {}),
+      },
+    });
+  }),
+});
+
+http.route({
+  path: "/recipe-make-upload",
+  method: "POST",
+  handler: httpAction(async (ctx, request) => {
+    const origin = request.headers.get("origin");
+    const allowOrigin = getMakeAllowedOrigin(origin);
+    if (makeAllowedOrigin && allowOrigin === null) {
+      return makeResponse({ error: "RECIPE_MAKE_ORIGIN_BLOCKED" }, 403);
+    }
+
+    try {
+      const formData = await request.formData();
+      const slug = formData.get("slug");
+      const ticketDigest = formData.get("ticketDigest");
+      const participantDigest = formData.get("participantDigest");
+      const authorName = formData.get("authorName");
+      const caption = formData.get("caption");
+      const altText = formData.get("altText");
+      const photo = formData.get("photo");
+
+      if (
+        typeof slug !== "string" ||
+        typeof ticketDigest !== "string" ||
+        typeof participantDigest !== "string" ||
+        !(photo instanceof File) ||
+        !allowedMakePhotoTypes.has(photo.type) ||
+        photo.size > RECIPE_MAKE_MAX_PHOTO_BYTES
+      ) {
+        return makeResponse({ error: "RECIPE_MAKE_INVALID_UPLOAD" }, 400);
+      }
+
+      const sourceStorageId = await ctx.storage.store(photo);
+      await ctx.runAction(internal.recipeMakeUploads.process, {
+        slug,
+        participantDigest,
+        ticketDigest,
+        sourceStorageId,
+        mimeType: photo.type,
+        ...(authorName !== null ? { authorName: String(authorName) } : {}),
+        ...(caption !== null ? { caption: String(caption) } : {}),
+        ...(altText !== null ? { altText: String(altText) } : {}),
+      });
+
+      return makeResponse(
+        { success: true },
+        200,
+        allowOrigin ? { "Access-Control-Allow-Origin": allowOrigin } : undefined,
+      );
+    } catch {
+      return makeResponse(
+        { error: "RECIPE_MAKE_UPLOAD_FAILED" },
+        400,
+        allowOrigin ? { "Access-Control-Allow-Origin": allowOrigin } : undefined,
+      );
+    }
+  }),
 });
 
 http.route({
@@ -194,6 +290,22 @@ http.route({
 
 function json(value: unknown, status: number) {
   return Response.json(value, { status, headers: corsHeaders });
+}
+
+function makeResponse(value: unknown, status: number, headers: Record<string, string> = {}) {
+  return Response.json(value, {
+    status,
+    headers: {
+      ...makeCorsHeaders,
+      ...headers,
+    },
+  });
+}
+
+function getMakeAllowedOrigin(origin: string | null) {
+  if (!makeAllowedOrigin) return origin ?? "*";
+  if (!origin) return null;
+  return origin === makeAllowedOrigin ? origin : null;
 }
 
 function adminJson(value: unknown, status: number) {
