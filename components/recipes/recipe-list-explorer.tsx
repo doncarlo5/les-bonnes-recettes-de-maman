@@ -149,8 +149,8 @@ export function RecipeListExplorer({
           </ToggleGroup>
 
           <div className="flex min-w-0 items-center justify-between gap-2 xl:justify-end">
-            <div className="flex shrink-0 items-center gap-1.5 whitespace-nowrap text-xs font-bold text-muted-foreground sm:text-sm">
-              <span aria-live="polite" className="tabular-nums">
+            <div className="flex shrink-0 items-center gap-1.5 whitespace-nowrap text-muted-foreground">
+              <span aria-live="polite" className="type-meta">
                 {formatResultCount(dict, filteredRecipes.length, recipes.length)}
               </span>
               {hasActiveFilters ? (
@@ -212,7 +212,7 @@ export function RecipeListExplorer({
                   (values[0] as RecipeSort | undefined) ?? activeSort,
                 )}
                 spacing={1}
-                className="hidden md:flex"
+                className="flex"
                 aria-label={dict.recipeList.sortLabel}
               >
                 {sortValues.map((sort) => {
@@ -250,38 +250,37 @@ export function RecipeListExplorer({
           </div>
         </div>
 
-        <div
-          id="recipe-search-controls"
-          className={cn("max-w-3xl", searchOpen ? "block" : "hidden")}
-        >
-          <form onSubmit={submitSearch} className="grid gap-2 sm:grid-cols-[1fr_auto]">
-            <label className="sr-only" htmlFor="recipe-search">
-              {dict.recipeList.searchLabel}
-            </label>
-            <InputGroup className="h-11 bg-card">
-              <InputGroupAddon><Search aria-hidden /></InputGroupAddon>
-              <InputGroupInput
-                id="recipe-search"
-                name="q"
-                type="search"
-                enterKeyHint="search"
-                autoComplete="off"
-                autoCapitalize="none"
-                autoCorrect="off"
-                value={draftQuery}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  setDraftState({ query, value: event.target.value })}
-                className="h-11"
-                placeholder={dict.recipeList.searchPlaceholder}
-                autoFocus={searchOpen}
-              />
-            </InputGroup>
-            <Button type="submit" size="lg" className="h-11">
-              <Search data-icon="inline-start" />
-              {dict.recipeList.searchSubmit}
-            </Button>
-          </form>
-        </div>
+        {searchOpen ? (
+          <div id="recipe-search-controls" className="max-w-3xl">
+            <form onSubmit={submitSearch} className="grid gap-2 sm:grid-cols-[1fr_auto]">
+              <label className="sr-only" htmlFor="recipe-search">
+                {dict.recipeList.searchLabel}
+              </label>
+              <InputGroup className="h-11 bg-card">
+                <InputGroupAddon><Search aria-hidden /></InputGroupAddon>
+                <InputGroupInput
+                  id="recipe-search"
+                  name="q"
+                  type="search"
+                  enterKeyHint="search"
+                  autoComplete="off"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  value={draftQuery}
+                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                    setDraftState({ query, value: event.target.value })}
+                  className="h-11"
+                  placeholder={dict.recipeList.searchPlaceholder}
+                  autoFocus
+                />
+              </InputGroup>
+              <Button type="submit" size="lg" className="h-11">
+                <Search data-icon="inline-start" />
+                {dict.recipeList.searchSubmit}
+              </Button>
+            </form>
+          </div>
+        ) : null}
       </section>
 
       {filteredRecipes.length > 0 ? (
@@ -395,7 +394,7 @@ function getActiveView(searchParams: { get: (name: string) => string | null }) {
 
 function getActiveSort(searchParams: { get: (name: string) => string | null }) {
   const value = searchParams.get("sort");
-  return sortValues.includes(value as RecipeSort) ? (value as RecipeSort) : "date";
+  return sortValues.includes(value as RecipeSort) ? (value as RecipeSort) : "alpha";
 }
 
 function getActiveSortDirection(

@@ -31,5 +31,5 @@ async function listPublishedRecipes(locale: Locale) {
       paginationOpts: { numItems: 50, cursor },
     }),
   );
-  return recipes.sort((a, b) => b._creationTime - a._creationTime);
+  return recipes.sort((a, b) => a.title.localeCompare(b.title, locale));
 }
