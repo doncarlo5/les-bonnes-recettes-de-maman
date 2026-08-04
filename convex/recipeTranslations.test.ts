@@ -573,7 +573,7 @@ describe("recipe yield localization", () => {
       title: "Lentil Salad",
       author: "Maman",
       description:
-        "Blond lentil salad with cherry tomatoes, feta, red onion and parsley, dressed with a lemon vinaigrette.",
+        "Green lentil salad with cherry tomatoes, feta, red onion and parsley, dressed with a lemon vinaigrette.",
       yieldLabel: "4 people",
       equipment: ["1 saucepan", "1 small bowl", "1 salad bowl"],
       servings: { quantity: 4, unit: "people" },
@@ -585,19 +585,19 @@ describe("recipe yield localization", () => {
     ).toEqual([
       {
         name: "lemon",
-        quantity: "1",
+        quantity: "1/2",
         unit: "",
         notes: "juice and zest",
       },
       { name: "olive oil", quantity: "60", unit: "ml", notes: "" },
       {
         name: "garlic",
-        quantity: "1",
+        quantity: "1/2",
         unit: "clove",
         notes: "minced",
       },
       { name: "oregano", quantity: "1/2", unit: "tbsp", notes: "" },
-      { name: "blond lentils", quantity: "250", unit: "g", notes: "" },
+      { name: "green lentils", quantity: "320", unit: "g", notes: "" },
       {
         name: "red onion",
         quantity: "1/2",
@@ -608,7 +608,7 @@ describe("recipe yield localization", () => {
         name: "cherry tomatoes",
         quantity: "200",
         unit: "g",
-        notes: "halved",
+        notes: "cut into very small pieces",
       },
       {
         name: "parsley",
@@ -622,10 +622,11 @@ describe("recipe yield localization", () => {
     ]);
     expect(seeded.translations.en.sections[0]?.steps).toEqual([
       "Cook the lentils according to the package directions. Drain, rinse and leave to cool.",
-      "Meanwhile, make the vinaigrette: in a small bowl, whisk the lemon juice and zest with the olive oil, garlic, oregano, salt and pepper. Set aside.",
-      "In a salad bowl, combine the lentils, parsley, cherry tomatoes, red onion and feta. Add the vinaigrette and toss gently.",
+      "Meanwhile, make the vinaigrette: in a small bowl, whisk the juice and zest of half a lemon with the olive oil, garlic, oregano, salt and pepper. Set aside.",
+      "Cut the cherry tomatoes into very small pieces. In a salad bowl, combine them with the lentils, parsley, red onion and feta. Add the vinaigrette and toss gently.",
     ]);
     expect(seeded.translations.en.notes).toEqual([
+      "Add the lemon juice sparingly: too much could overpower the flavors of the other ingredients.",
       "For my usual version, I replace the lemon vinaigrette with balsamic vinegar, olive oil and salt.",
       "I add 2 eggs and sometimes, depending on what I have on hand, a few cubes of zucchini, cucumber and/or carrot, cut into very small pieces.",
     ]);

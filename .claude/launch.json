@@ -7,6 +7,14 @@
       "runtimeArgs": ["run", "start"],
       "autoPort": true,
       "port": 3000
+    },
+    {
+      "name": "dev-e2e",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "env": { "RECIPE_ADMIN_E2E": "1" },
+      "autoPort": true,
+      "port": 3100
     }
   ]
 }

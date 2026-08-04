@@ -52,7 +52,7 @@ export function RecipeListExplorer({
   const activeSort = getActiveSort(searchParams);
   const activeSortDirection = getActiveSortDirection(searchParams, activeSort);
   const [draftState, setDraftState] = useState({ query, value: query });
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(query.length > 0);
   const draftQuery = draftState.query === query ? draftState.value : query;
 
   const filteredRecipes = useMemo(
@@ -116,47 +116,149 @@ export function RecipeListExplorer({
   }
 
   return (
-    <div className="grid gap-3 md:gap-10">
+    <div className="grid gap-3 md:gap-5">
       <section
         aria-label={dict.recipeList.filtersLabel}
-        className="grid gap-3 md:gap-0"
+        className="grid gap-3 border-b border-border pb-3 md:pb-4"
       >
-        <div className="flex justify-self-end gap-2 md:hidden">
-          <RecipeCreationChooser locale={locale} dict={dict} trigger="icon" />
-          <button
-            type="button"
-            aria-expanded={mobileSearchOpen}
-            aria-controls="recipe-search-controls"
-            aria-label={
-              mobileSearchOpen
-                ? dict.recipeList.closeSearch
-                : dict.recipeList.searchLabel
-            }
-            onClick={() => setMobileSearchOpen((open) => !open)}
-            className="surface-elevated inline-flex size-11 items-center justify-center rounded-full bg-card text-foreground transition-[scale,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.96]"
+        <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+          <ToggleGroup
+            multiple
+            value={activeCategories}
+            onValueChange={(values: string[]) => updateUrl({
+              query,
+              categories: values as RecipeCategory[],
+              view: activeView,
+              sort: activeSort,
+              direction: activeSortDirection,
+              mode: "push",
+            })}
+            spacing={2}
+            className="flex w-full flex-wrap xl:w-auto"
+            aria-label={dict.recipeList.categoriesLabel}
           >
-            <span aria-hidden className="relative size-5">
-              <Search className={cn("absolute inset-0 size-5 stroke-[1.8] transition-[scale,opacity,filter] duration-300 [transition-timing-function:cubic-bezier(0.2,0,0,1)]", mobileSearchOpen ? "scale-[0.25] opacity-0 blur-[4px]" : "scale-100 opacity-100 blur-0")} />
-              <X className={cn("absolute inset-0 size-5 stroke-[1.8] transition-[scale,opacity,filter] duration-300 [transition-timing-function:cubic-bezier(0.2,0,0,1)]", mobileSearchOpen ? "scale-100 opacity-100 blur-0" : "scale-[0.25] opacity-0 blur-[4px]")} />
-            </span>
-          </button>
+            {categoryValues.map((category) => (
+              <ToggleGroupItem
+                key={category}
+                value={category}
+                className="min-h-10 rounded-full px-4 font-bold"
+              >
+                {dict.recipeList.categories[category]}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+
+          <div className="flex min-w-0 items-center justify-between gap-2 xl:justify-end">
+            <div className="flex shrink-0 items-center gap-1.5 whitespace-nowrap text-xs font-bold text-muted-foreground sm:text-sm">
+              <span aria-live="polite" className="tabular-nums">
+                {formatResultCount(dict, filteredRecipes.length, recipes.length)}
+              </span>
+              {hasActiveFilters ? (
+                <Button type="button" variant="ghost" size="sm" onClick={resetFilters}>
+                  <X data-icon="inline-start" />
+                  {dict.recipeList.reset}
+                </Button>
+              ) : null}
+            </div>
+
+            <div className="flex items-center gap-1.5">
+              <div className="md:hidden">
+                <RecipeCreationChooser locale={locale} dict={dict} trigger="icon" />
+              </div>
+              <button
+                type="button"
+                aria-expanded={searchOpen}
+                aria-controls="recipe-search-controls"
+                aria-label={searchOpen
+                  ? dict.recipeList.closeSearch
+                  : dict.recipeList.searchLabel}
+                onClick={() => setSearchOpen((open) => !open)}
+                className="inline-flex size-10 items-center justify-center rounded-full text-foreground transition-[background-color,scale] duration-150 hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.96]"
+              >
+                <span aria-hidden className="relative size-5">
+                  <Search className={cn("absolute inset-0 size-5 stroke-[1.8] transition-[scale,opacity,filter] duration-300 [transition-timing-function:cubic-bezier(0.2,0,0,1)]", searchOpen ? "scale-[0.25] opacity-0 blur-[4px]" : "scale-100 opacity-100 blur-0")} />
+                  <X className={cn("absolute inset-0 size-5 stroke-[1.8] transition-[scale,opacity,filter] duration-300 [transition-timing-function:cubic-bezier(0.2,0,0,1)]", searchOpen ? "scale-100 opacity-100 blur-0" : "scale-[0.25] opacity-0 blur-[4px]")} />
+                </span>
+              </button>
+
+              <span aria-hidden className="mx-1 hidden h-6 w-px bg-border md:block" />
+
+              <ToggleGroup
+                value={[activeView]}
+                onValueChange={(values: string[]) =>
+                  values[0] && setView(values[0] as RecipeView)}
+                spacing={1}
+                className="hidden md:flex"
+                aria-label={dict.recipeList.viewLabel}
+              >
+                {viewValues.map((view) => {
+                  const Icon = view === "cards" ? LayoutGrid : List;
+                  return (
+                    <ToggleGroupItem
+                      key={view}
+                      value={view}
+                      className="size-10 rounded-full p-0"
+                      aria-label={dict.recipeList.views[view]}
+                    >
+                      <Icon aria-hidden />
+                    </ToggleGroupItem>
+                  );
+                })}
+              </ToggleGroup>
+
+              <ToggleGroup
+                value={[activeSort]}
+                onValueChange={(values: string[]) => setSort(
+                  (values[0] as RecipeSort | undefined) ?? activeSort,
+                )}
+                spacing={1}
+                className="hidden md:flex"
+                aria-label={dict.recipeList.sortLabel}
+              >
+                {sortValues.map((sort) => {
+                  const direction = sort === activeSort
+                    ? activeSortDirection
+                    : getDefaultSortDirection(sort);
+                  const Icon = sort === "alpha"
+                    ? direction === "asc" ? ArrowDownAZ : ArrowUpAZ
+                    : direction === "asc" ? CalendarArrowUp : CalendarArrowDown;
+                  return (
+                    <ToggleGroupItem
+                      key={sort}
+                      value={sort}
+                      className="min-h-10 rounded-full px-3 font-bold"
+                    >
+                      <Icon data-icon="inline-start" />
+                      <span className="hidden lg:inline">
+                        {dict.recipeList.sorts[sort]}
+                      </span>
+                      <span className="sr-only lg:hidden">
+                        {dict.recipeList.sorts[sort]}
+                      </span>
+                      {sort === activeSort ? (
+                        <span className="sr-only">
+                          {locale === "fr"
+                            ? direction === "asc" ? "ordre croissant" : "ordre décroissant"
+                            : direction === "asc" ? "ascending" : "descending"}
+                        </span>
+                      ) : null}
+                    </ToggleGroupItem>
+                  );
+                })}
+              </ToggleGroup>
+            </div>
+          </div>
         </div>
 
         <div
           id="recipe-search-controls"
-          className={cn(
-            "surface-elevated gap-5 rounded-3xl bg-card p-4 md:grid md:p-6",
-            mobileSearchOpen ? "grid" : "hidden",
-          )}
+          className={cn("max-w-3xl", searchOpen ? "block" : "hidden")}
         >
-          <form
-            onSubmit={submitSearch}
-            className="grid gap-3 md:grid-cols-[1fr_auto]"
-          >
+          <form onSubmit={submitSearch} className="grid gap-2 sm:grid-cols-[1fr_auto]">
             <label className="sr-only" htmlFor="recipe-search">
               {dict.recipeList.searchLabel}
             </label>
-            <InputGroup className="h-11">
+            <InputGroup className="h-11 bg-card">
               <InputGroupAddon><Search aria-hidden /></InputGroupAddon>
               <InputGroupInput
                 id="recipe-search"
@@ -168,10 +270,10 @@ export function RecipeListExplorer({
                 autoCorrect="off"
                 value={draftQuery}
                 onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  setDraftState({ query, value: event.target.value })
-                }
+                  setDraftState({ query, value: event.target.value })}
                 className="h-11"
                 placeholder={dict.recipeList.searchPlaceholder}
+                autoFocus={searchOpen}
               />
             </InputGroup>
             <Button type="submit" size="lg" className="h-11">
@@ -179,90 +281,6 @@ export function RecipeListExplorer({
               {dict.recipeList.searchSubmit}
             </Button>
           </form>
-
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <ToggleGroup
-              multiple
-              value={activeCategories}
-              onValueChange={(values: string[]) => updateUrl({ query, categories: values as RecipeCategory[], view: activeView, sort: activeSort, direction: activeSortDirection, mode: "push" })}
-              spacing={2}
-              className="flex w-full flex-wrap lg:w-auto lg:min-w-0 lg:flex-1"
-              aria-label={dict.recipeList.categoriesLabel}
-            >
-              {categoryValues.map((category) => (
-                  <ToggleGroupItem key={category} value={category} className="min-h-11 rounded-full px-4 font-bold md:min-h-10">
-                    {dict.recipeList.categories[category]}
-                  </ToggleGroupItem>
-              ))}
-            </ToggleGroup>
-
-            <div className="flex shrink-0 flex-nowrap items-center gap-3 self-end whitespace-nowrap text-sm font-bold text-muted-foreground lg:self-auto">
-              <span aria-live="polite" className="tabular-nums">
-                {formatResultCount(dict, filteredRecipes.length, recipes.length)}
-              </span>
-              {hasActiveFilters ? (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={resetFilters}
-                >
-                  <X data-icon="inline-start" />
-                  {dict.recipeList.reset}
-                </Button>
-              ) : null}
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-3 border-t border-border pt-4 md:flex-row md:items-center md:justify-between">
-            <ToggleGroup
-              value={[activeView]}
-              onValueChange={(values: string[]) => values[0] && setView(values[0] as RecipeView)}
-              spacing={2}
-              className="hidden flex-wrap md:flex"
-              aria-label={dict.recipeList.viewLabel}
-            >
-              {viewValues.map((view) => {
-                const Icon = view === "cards" ? LayoutGrid : List;
-                return (
-                  <ToggleGroupItem key={view} value={view} className="min-h-10 rounded-full px-4 font-bold">
-                    <Icon data-icon="inline-start" />
-                    {dict.recipeList.views[view]}
-                  </ToggleGroupItem>
-                );
-              })}
-            </ToggleGroup>
-
-            <ToggleGroup
-              value={[activeSort]}
-              onValueChange={(values: string[]) => setSort((values[0] as RecipeSort | undefined) ?? activeSort)}
-              spacing={2}
-              className="flex flex-wrap"
-              aria-label={dict.recipeList.sortLabel}
-            >
-              {sortValues.map((sort) => {
-                const direction = sort === activeSort
-                  ? activeSortDirection
-                  : getDefaultSortDirection(sort);
-                const Icon = sort === "alpha"
-                  ? direction === "asc" ? ArrowDownAZ : ArrowUpAZ
-                  : direction === "asc" ? CalendarArrowUp : CalendarArrowDown;
-                return (
-                  <ToggleGroupItem key={sort} value={sort} className="min-h-11 rounded-full px-4 font-bold md:min-h-10">
-                    <Icon data-icon="inline-start" />
-                    {dict.recipeList.sorts[sort]}
-                    {sort === activeSort ? (
-                      <span className="sr-only">
-                        {locale === "fr"
-                          ? direction === "asc" ? "ordre croissant" : "ordre décroissant"
-                          : direction === "asc" ? "ascending" : "descending"}
-                      </span>
-                    ) : null}
-                  </ToggleGroupItem>
-                );
-              })}
-            </ToggleGroup>
-          </div>
         </div>
       </section>
 

@@ -29,10 +29,6 @@ export function RecipeGrid({
   return (
     <ul className="grid grid-cols-2 gap-3 md:gap-6 xl:grid-cols-3">
       {recipes.map((recipe, index) => {
-        const mobileTime = recipe.prepTime || recipe.cookTime;
-        const mobileTimeLabel = recipe.prepTime
-          ? dict.recipeDetail.prepTime
-          : dict.recipeDetail.cookTime;
         const commentLabel = (
           recipe.commentCount === 1
             ? dict.recipeList.commentSingular
@@ -74,17 +70,14 @@ export function RecipeGrid({
                 >
                   {recipe.title}
                 </span>
-                {mobileTime || recipe.commentCount > 0 ? (
+                {recipe.timeLabel || recipe.commentCount > 0 ? (
                   <span
                     className="mt-auto inline-flex items-center gap-3 pt-3 text-xs font-bold text-muted-foreground tabular-nums md:hidden"
                   >
-                    {mobileTime ? (
-                      <span
-                        className="inline-flex items-center gap-1.5"
-                        aria-label={`${mobileTimeLabel}: ${mobileTime}`}
-                      >
+                    {recipe.timeLabel ? (
+                      <span className="inline-flex items-center gap-1.5">
                         <Clock3 aria-hidden className="size-3.5 stroke-[1.8]" />
-                        {mobileTimeLabel} · {mobileTime}
+                        {recipe.timeLabel}
                       </span>
                     ) : null}
                     <CommentCount

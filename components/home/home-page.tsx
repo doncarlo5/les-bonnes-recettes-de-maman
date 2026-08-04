@@ -14,31 +14,11 @@ type HomePageProps = {
 export function HomePage({ locale, dict, recipes }: HomePageProps) {
   return (
     <main>
-      <section className="sr-only md:not-sr-only md:relative md:block md:overflow-hidden md:px-5 md:py-20 lg:px-10 lg:py-28">
-        <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-border" />
-        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.42fr)] lg:items-end">
-          <div>
-          <p className="type-label mb-5 text-primary">{dict.home.eyebrow}</p>
-          <h1 className="type-display sr-only text-foreground md:not-sr-only">
-            {dict.site.title}
-          </h1>
-          </div>
-          <p className="type-editorial-lead text-foreground/75 lg:pb-2">
-            {dict.home.lead}
-          </p>
-        </div>
-      </section>
+      <h1 className="sr-only">{dict.site.title}</h1>
 
-      <section id="recettes" className="scroll-mt-24 bg-muted/55 px-3 py-3 md:px-5 md:py-16 lg:px-10 lg:py-24">
+      <section id="recettes" className="scroll-mt-24 bg-muted/55 px-3 py-3 md:px-5 md:py-5 lg:px-10 lg:py-6">
         <div className="mx-auto max-w-7xl">
-          <div className="sr-only md:not-sr-only md:mb-10 md:flex md:items-end md:justify-between md:gap-4 md:border-b md:border-border md:pb-5">
-            <div>
-              <p className="type-label mb-2 text-primary">{dict.home.allRecipesEyebrow}</p>
-              <h2 className="type-section-title text-foreground">
-                {dict.home.allRecipesTitle}
-              </h2>
-            </div>
-          </div>
+          <h2 className="sr-only">{dict.home.allRecipesTitle}</h2>
           <Suspense fallback={<RecipeGrid locale={locale} dict={dict} recipes={recipes} />}>
             <RecipeListExplorer locale={locale} dict={dict} recipes={recipes} />
           </Suspense>

@@ -2713,7 +2713,7 @@
     "title": "Salade de lentilles",
     "slug": "salade-de-lentilles",
     "author": "Maman",
-    "description": "Salade de lentilles blondes aux tomates cerises, feta, oignon rouge et persil, assaisonnée d’une vinaigrette citronnée.",
+    "description": "Salade de lentilles vertes aux tomates cerises, feta, oignon rouge et persil, assaisonnée d’une vinaigrette citronnée.",
     "heroImageUrl": "/images/recipes/salade-de-lentilles.png",
     "servings": {
       "quantity": 4,
@@ -2731,7 +2731,7 @@
     "ingredients": [
       {
         "name": "citron",
-        "quantity": "1",
+        "quantity": "1/2",
         "unit": "",
         "notes": "jus et zeste"
       },
@@ -2743,7 +2743,7 @@
       },
       {
         "name": "ail",
-        "quantity": "1",
+        "quantity": "1/2",
         "unit": "gousse",
         "notes": "hachée"
       },
@@ -2754,8 +2754,8 @@
         "notes": ""
       },
       {
-        "name": "lentilles blondes",
-        "quantity": "250",
+        "name": "lentilles vertes",
+        "quantity": "320",
         "unit": "g",
         "notes": ""
       },
@@ -2769,7 +2769,7 @@
         "name": "tomates cerises",
         "quantity": "200",
         "unit": "g",
-        "notes": "coupées en deux"
+        "notes": "coupées en tout petits morceaux"
       },
       {
         "name": "persil",
@@ -2801,12 +2801,13 @@
         "title": "Préparation",
         "steps": [
           "Cuire les lentilles selon les indications de l’emballage. Les égoutter, les rincer et les laisser refroidir.",
-          "Pendant ce temps, préparer la vinaigrette : dans un petit bol, fouetter le jus et le zeste de citron avec l’huile d’olive, l’ail, l’origan, du sel et du poivre. Réserver.",
-          "Dans un saladier, mélanger les lentilles, le persil, les tomates cerises, l’oignon rouge et la feta. Arroser de vinaigrette et mélanger délicatement."
+          "Pendant ce temps, préparer la vinaigrette : dans un petit bol, fouetter le jus et le zeste du demi-citron avec l’huile d’olive, l’ail, l’origan, du sel et du poivre. Réserver.",
+          "Couper les tomates cerises en tout petits morceaux. Dans un saladier, les mélanger avec les lentilles, le persil, l’oignon rouge et la feta. Arroser de vinaigrette et mélanger délicatement."
         ]
       }
     ],
     "notes": [
+      "Ajouter le jus de citron avec parcimonie : en trop grande quantité, il risquerait de masquer la saveur des autres ingrédients.",
       "Pour ma version habituelle, je remplace la vinaigrette citronnée par du vinaigre balsamique, de l’huile d’olive et du sel.",
       "J’ajoute 2 œufs et parfois, selon ce que j’ai sous la main, quelques dés de courgette, de concombre et/ou de carotte, coupés en très petits morceaux."
     ]

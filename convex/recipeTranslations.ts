@@ -293,8 +293,8 @@ const descriptionTranslations: Record<string, string> = {
     "Family-style Bolognese sauce with ground beef, ham, tomatoes, garlic, onion, parsley and Herbes de Provence.",
   "Clafoutis aux abricots et à la poudre d’amandes, moelleux et légèrement doré.":
     "Soft, lightly browned apricot clafoutis made with almond flour.",
-  "Salade de lentilles blondes aux tomates cerises, feta, oignon rouge et persil, assaisonnée d’une vinaigrette citronnée.":
-    "Blond lentil salad with cherry tomatoes, feta, red onion and parsley, dressed with a lemon vinaigrette.",
+  "Salade de lentilles vertes aux tomates cerises, feta, oignon rouge et persil, assaisonnée d’une vinaigrette citronnée.":
+    "Green lentil salad with cherry tomatoes, feta, red onion and parsley, dressed with a lemon vinaigrette.",
   "Brownies au chocolat noir et aux noix, fondants à cœur.":
     "Dark chocolate and walnut brownies with a soft, fudgy center.",
   "Papillotes de cabillaud au citron et aux herbes, accompagnées d’une sauce au beurre blanc polonais.":
@@ -423,6 +423,7 @@ const ingredientTranslations: Record<string, string> = {
   "lait concentré sucré": "sweetened condensed milk",
   "lait entier": "whole milk",
   "lentilles blondes": "blond lentils",
+  "lentilles vertes": "green lentils",
   levure: "baking powder",
   "levure chimique": "baking powder",
   "marsala, xérès ou malaga": "marsala, sherry or malaga",
@@ -516,6 +517,7 @@ const noteTranslations: Record<string, string> = {
   hachée: "minced",
   haché: "chopped",
   "coupées en deux": "halved",
+  "coupées en tout petits morceaux": "cut into very small pieces",
   "jus et zeste": "juice and zest",
   "émincé": "thinly sliced",
   "émiettée": "crumbled",
@@ -566,6 +568,8 @@ const noteTranslations: Record<string, string> = {
     "For a well-chilled mayonnaise, refrigerate it for 30 min before serving.",
   "Pour ma version habituelle, je remplace la vinaigrette citronnée par du vinaigre balsamique, de l’huile d’olive et du sel.":
     "For my usual version, I replace the lemon vinaigrette with balsamic vinegar, olive oil and salt.",
+  "Ajouter le jus de citron avec parcimonie : en trop grande quantité, il risquerait de masquer la saveur des autres ingrédients.":
+    "Add the lemon juice sparingly: too much could overpower the flavors of the other ingredients.",
   "J’ajoute 2 œufs et parfois, selon ce que j’ai sous la main, quelques dés de courgette, de concombre et/ou de carotte, coupés en très petits morceaux.":
     "I add 2 eggs and sometimes, depending on what I have on hand, a few cubes of zucchini, cucumber and/or carrot, cut into very small pieces.",
   "Variante au café : remplacer la vanille par 2 c. à c. d’extrait de café, ajoutées hors du feu.":
@@ -1063,10 +1067,10 @@ const stepTranslations: Record<string, string> = {
     "Simmer partially covered for about 30 minutes.",
   "Cuire les lentilles selon les indications de l’emballage. Les égoutter, les rincer et les laisser refroidir.":
     "Cook the lentils according to the package directions. Drain, rinse and leave to cool.",
-  "Pendant ce temps, préparer la vinaigrette : dans un petit bol, fouetter le jus et le zeste de citron avec l’huile d’olive, l’ail, l’origan, du sel et du poivre. Réserver.":
-    "Meanwhile, make the vinaigrette: in a small bowl, whisk the lemon juice and zest with the olive oil, garlic, oregano, salt and pepper. Set aside.",
-  "Dans un saladier, mélanger les lentilles, le persil, les tomates cerises, l’oignon rouge et la feta. Arroser de vinaigrette et mélanger délicatement.":
-    "In a salad bowl, combine the lentils, parsley, cherry tomatoes, red onion and feta. Add the vinaigrette and toss gently.",
+  "Pendant ce temps, préparer la vinaigrette : dans un petit bol, fouetter le jus et le zeste du demi-citron avec l’huile d’olive, l’ail, l’origan, du sel et du poivre. Réserver.":
+    "Meanwhile, make the vinaigrette: in a small bowl, whisk the juice and zest of half a lemon with the olive oil, garlic, oregano, salt and pepper. Set aside.",
+  "Couper les tomates cerises en tout petits morceaux. Dans un saladier, les mélanger avec les lentilles, le persil, l’oignon rouge et la feta. Arroser de vinaigrette et mélanger délicatement.":
+    "Cut the cherry tomatoes into very small pieces. In a salad bowl, combine them with the lentils, parsley, red onion and feta. Add the vinaigrette and toss gently.",
   "Beurrer un plat à gratin ou un moule d’environ 24 cm.":
     "Butter a baking dish or a pan about 24 cm in diameter.",
   "Laver les abricots, les couper en deux et retirer les noyaux. Les disposer dans le plat, face coupée vers le haut.":
