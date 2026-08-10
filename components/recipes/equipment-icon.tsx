@@ -162,15 +162,13 @@ export function EquipmentIcon({ label }: { label: string }) {
 
   if (iconName === "baking-sheet") {
     return (
-      // “Oven Tray” from SVG Repo, licensed under CC0.
-      // Source: https://www.svgrepo.com/svg/474630/oven-tray
       <svg
-        viewBox="0 0 48 48"
+        viewBox="0 0 24 24"
         width="22"
         height="22"
         fill="none"
         stroke="currentColor"
-        strokeWidth="4"
+        strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
         className="text-primary"
@@ -178,8 +176,11 @@ export function EquipmentIcon({ label }: { label: string }) {
         focusable="false"
         data-equipment-icon
       >
-        <rect width="40" height="32" x="4" y="8" rx="2" />
-        <path d="M4 16h40M4 24h40M4 32h40" />
+        <rect x="2.5" y="3.5" width="19" height="17" rx="2" />
+        <circle cx="7.25" cy="8" r="1.75" />
+        <circle cx="16.75" cy="8" r="1.75" />
+        <circle cx="7.25" cy="16" r="1.75" />
+        <circle cx="16.75" cy="16" r="1.75" />
       </svg>
     );
   }
