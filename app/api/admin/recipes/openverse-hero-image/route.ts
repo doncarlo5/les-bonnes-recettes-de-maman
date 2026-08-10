@@ -23,8 +23,10 @@ export async function POST(request: NextRequest) {
   const parsed = await parseJsonRequest(request, openverseImageRequestSchema);
   if (!parsed.ok) return parsed.response;
   try {
+    const { provider: _provider, ...imageCredit } = parsed.data.imageCredit;
     const result = await fetchMutation(api.recipes.setOpenverseHeroImage, {
       ...parsed.data,
+      imageCredit,
       storageId: parsed.data.storageId as Id<"_storage">,
       adminPassword: access.adminPassword,
     });

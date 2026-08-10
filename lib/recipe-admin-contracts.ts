@@ -78,6 +78,10 @@ export const openverseCreditSchema = z.strictObject({
   alt: z.string().max(1_000),
 });
 
+export const openverseImageCreditSchema = openverseCreditSchema.extend({
+  provider: z.literal("openverse"),
+});
+
 export const openverseImportRequestSchema = z.strictObject({
   imageUrl: optionalUrl,
 });
@@ -87,7 +91,7 @@ export const storageUploadResponseSchema = z.strictObject({
 export const openverseImageRequestSchema = revisionedRecipeRequestSchema.extend(
   {
     storageId: z.string().trim().min(1),
-    imageCredit: openverseCreditSchema,
+    imageCredit: openverseImageCreditSchema,
   },
 );
 
@@ -99,7 +103,7 @@ export const recipeImageCreditSchema = z.discriminatedUnion("provider", [
     photoUrl: z.string(),
     alt: z.string(),
   }),
-  openverseCreditSchema.extend({ provider: z.literal("openverse") }),
+  openverseImageCreditSchema,
 ]);
 
 export const mutationErrorSchema = z.discriminatedUnion("type", [

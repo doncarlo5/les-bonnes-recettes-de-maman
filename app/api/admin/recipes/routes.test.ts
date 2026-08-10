@@ -443,6 +443,7 @@ describe("recipe admin route contracts", () => {
         storageId: "storage-id",
         expectedRevision: 3,
         imageCredit: {
+          provider: "openverse",
           title: "Tarte",
           creator: "Maman",
           creatorUrl: "https://example.com/maman",
@@ -458,6 +459,9 @@ describe("recipe admin route contracts", () => {
       }) as never,
     );
     expect(response.status).toBe(409);
+    expect(fetchMutation.mock.calls[0]?.[1].imageCredit).not.toHaveProperty(
+      "provider",
+    );
     expect(await response.json()).toMatchObject({
       type: "conflict",
       latestRevision: 9,
