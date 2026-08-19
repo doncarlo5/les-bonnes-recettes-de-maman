@@ -18,8 +18,22 @@ if (!productionUrl) {
 }
 
 const client = new ConvexHttpClient(productionUrl);
-const syncProduction = makeFunctionReference("recipes:syncProduction");
-const result = await client.mutation(syncProduction, {
-  adminPassword,
-});
+const [recipeSlug, ...unexpectedArgs] = process.argv.slice(2);
+if (unexpectedArgs.length > 0) {
+  throw new Error("Pass at most one recipe slug.");
+}
+if (process.env.RECIPE_SYNC_MODE === "single" && !recipeSlug) {
+  throw new Error("A recipe slug is required for targeted production sync.");
+}
+if (recipeSlug && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(recipeSlug)) {
+  throw new Error("The recipe slug is invalid.");
+}
+
+const syncProduction = makeFunctionReference(
+  recipeSlug ? "recipes:syncProductionRecipe" : "recipes:syncProduction",
+);
+const result = await client.mutation(
+  syncProduction,
+  recipeSlug ? { adminPassword, slug: recipeSlug } : { adminPassword },
+);
 console.log(JSON.stringify(result, null, 2));

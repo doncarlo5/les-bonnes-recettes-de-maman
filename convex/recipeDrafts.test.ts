@@ -378,6 +378,73 @@ describe("recipe working drafts", () => {
     ).resolves.toMatchObject({ title: "Titre éditorial préservé" });
   });
 
+  test("targeted production sync publishes only the requested recipe", async () => {
+    const t = convexTest(schema, modules);
+    await t.mutation(api.recipes.seed, {
+      adminPassword: password,
+      slug: "banana-bread-du-kona-inn",
+    });
+    await t.mutation(api.recipes.seed, {
+      adminPassword: password,
+      slug: "amandin",
+    });
+    await t.run(async (ctx) => {
+      const [bananaBread, amandin] = await Promise.all([
+        ctx.db
+          .query("recipes")
+          .withIndex("by_slug", (q) =>
+            q.eq("slug", "banana-bread-du-kona-inn"),
+          )
+          .unique(),
+        ctx.db
+          .query("recipes")
+          .withIndex("by_slug", (q) => q.eq("slug", "amandin"))
+          .unique(),
+      ]);
+      if (!bananaBread || !amandin) throw new Error("seed fixture missing");
+      await Promise.all([
+        ctx.db.patch(bananaBread._id, {
+          translations: {
+            ...bananaBread.translations,
+            fr: {
+              ...bananaBread.translations.fr,
+              description: "Ancienne description",
+            },
+          },
+        }),
+        ctx.db.patch(amandin._id, {
+          translations: {
+            ...amandin.translations,
+            fr: {
+              ...amandin.translations.fr,
+              title: "Amandin éditorial",
+            },
+          },
+        }),
+      ]);
+    });
+
+    await expect(
+      t.mutation(api.recipes.syncProductionRecipe, {
+        adminPassword: password,
+        slug: "banana-bread-du-kona-inn",
+      }),
+    ).resolves.toEqual({ inserted: 0, updated: 1, total: 1 });
+    await expect(
+      t.query(api.recipes.getBySlug, {
+        locale: "fr",
+        slug: "banana-bread-du-kona-inn",
+      }),
+    ).resolves.toMatchObject({
+      description: "Banana bread moelleux aux bananes bien mûres.",
+      notes: [],
+      status: "published",
+    });
+    await expect(
+      t.query(api.recipes.getBySlug, { locale: "fr", slug: "amandin" }),
+    ).resolves.toMatchObject({ title: "Amandin éditorial" });
+  });
+
   test("production sync publishes canonical data and removes obsolete Moka", async () => {
     const t = convexTest(schema, modules);
     await t.mutation(api.recipes.seed, {

@@ -897,6 +897,24 @@ export const syncProduction = mutation({
   },
 });
 
+export const syncProductionRecipe = mutation({
+  args: {
+    adminPassword: v.string(),
+    slug: v.string(),
+  },
+  handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
+    const selectedRecipes = recipes.filter(
+      (recipe) => recipe.slug === args.slug,
+    );
+    if (selectedRecipes.length === 0) {
+      throw new Error("RECIPE_NOT_FOUND");
+    }
+
+    return syncSeedRecipes(ctx, selectedRecipes, true);
+  },
+});
+
 async function syncSeedRecipes(
   ctx: MutationCtx,
   selectedRecipes: typeof recipes,
