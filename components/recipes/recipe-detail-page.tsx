@@ -24,6 +24,7 @@ import { RecipeIngredientsPanel } from "./recipe-ingredients-panel";
 import { RecipeComments } from "./recipe-comments";
 import type { Recipe } from "./types";
 import { StepIngredients } from "./step-ingredients";
+import { RecipeStepText } from "./recipe-step-text";
 
 const defaultRecipeImageUrl =
   "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=1400&q=85";
@@ -182,7 +183,13 @@ export function RecipePresentation({
                             {index + 1}
                           </span>
                           <div>
-                            <span>{step.text}</span>
+                            <span>
+                              <RecipeStepText
+                                locale={locale}
+                                recipeSlug={recipe.slug}
+                                text={step.text}
+                              />
+                            </span>
                             <StepIngredients
                               locale={locale}
                               label={dict.recipeDetail.forThisStep}

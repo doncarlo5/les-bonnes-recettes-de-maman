@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/sheet";
 import type { Ingredient, Recipe } from "./types";
 import { StepIngredients } from "./step-ingredients";
+import { RecipeStepText } from "./recipe-step-text";
 
 type WakeLockSentinelLike = {
   release: () => Promise<void>;
@@ -233,7 +234,13 @@ export function GuidedCookMode({
                 })}
               </ProgressValue>
             </Progress>
-            <h1 className="type-page-title max-w-[22ch] text-pretty">{step?.text ?? ""}</h1>
+            <h1 className="type-page-title max-w-[22ch] text-pretty">
+              <RecipeStepText
+                locale={locale}
+                recipeSlug={recipe.slug}
+                text={step?.text ?? ""}
+              />
+            </h1>
             {step ? (
               <StepIngredients
                 locale={locale}
