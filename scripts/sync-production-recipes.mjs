@@ -24,8 +24,6 @@ const syncRecipes = makeFunctionReference(
 );
 const result = await client.mutation(
   syncRecipes,
-  recipeSlug
-    ? { adminPassword, slug: recipeSlug, publish: true }
-    : { adminPassword },
+  recipeSlug ? { adminPassword, slug: recipeSlug } : { adminPassword },
 );
 console.log(JSON.stringify(result, null, 2));

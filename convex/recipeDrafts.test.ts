@@ -378,47 +378,6 @@ describe("recipe working drafts", () => {
     ).resolves.toMatchObject({ title: "Titre éditorial préservé" });
   });
 
-  test("targeted seeding can publish the requested canonical recipe", async () => {
-    const t = convexTest(schema, modules);
-    await t.mutation(api.recipes.seed, {
-      adminPassword: password,
-      slug: "banana-bread-du-kona-inn",
-    });
-    await t.run(async (ctx) => {
-      const bananaBread = await ctx.db
-        .query("recipes")
-        .withIndex("by_slug", (q) => q.eq("slug", "banana-bread-du-kona-inn"))
-        .unique();
-      if (!bananaBread) throw new Error("seed fixture missing");
-      await ctx.db.patch(bananaBread._id, {
-        translations: {
-          ...bananaBread.translations,
-          fr: {
-            ...bananaBread.translations.fr,
-            description: "Ancienne description",
-          },
-        },
-      });
-    });
-
-    await t.mutation(api.recipes.seed, {
-      adminPassword: password,
-      slug: "banana-bread-du-kona-inn",
-      publish: true,
-    });
-
-    await expect(
-      t.query(api.recipes.getBySlug, {
-        locale: "fr",
-        slug: "banana-bread-du-kona-inn",
-      }),
-    ).resolves.toMatchObject({
-      description: "Banana bread moelleux aux bananes bien mûres.",
-      notes: [],
-      status: "published",
-    });
-  });
-
   test("production sync publishes canonical data and removes obsolete Moka", async () => {
     const t = convexTest(schema, modules);
     await t.mutation(api.recipes.seed, {
