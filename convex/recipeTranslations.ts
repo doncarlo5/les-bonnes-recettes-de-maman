@@ -281,8 +281,8 @@ const descriptionTranslations: Record<string, string> = {
     "Small dark-chocolate lava cakes served warm with a scoop of vanilla ice cream.",
   "Flan au lait concentré sucré cuit au bain-marie avec caramel.":
     "Sweetened condensed milk flan baked in a water bath with caramel.",
-  "Banana bread moelleux aux bananes bien mûres, parfait avec une salade de poulet.":
-    "Moist banana bread made with very ripe bananas, perfect with chicken salad.",
+  "Banana bread moelleux aux bananes bien mûres.":
+    "Moist banana bread made with very ripe bananas.",
   "Cocktail pétillant au crémant de Loire, Cointreau, Pulco Citron et sirop de sucre de canne, à servir très frais.":
     "Sparkling cocktail with Loire Valley Crémant, Cointreau, Pulco Citron and cane sugar syrup, served very cold.",
   "Gros cookies aux pépites de chocolat, croustillants sur les bords, moelleux au centre et relevés d’une touche de fleur de sel.":
@@ -562,8 +562,6 @@ const noteTranslations: Record<string, string> = {
   "écrasées, environ 3 à 4 bananes selon leur taille":
     "mashed, about 3 to 4 bananas depending on their size",
   "ou farine pâtissière": "or pastry flour",
-  "Un incontournable avec les salades de poulet.":
-    "A classic with chicken salads.",
   "Pour une mayonnaise bien fraîche, la laisser reposer 30 min au réfrigérateur avant de servir.":
     "For a well-chilled mayonnaise, refrigerate it for 30 min before serving.",
   "Pour ma version habituelle, je remplace la vinaigrette citronnée par du vinaigre balsamique, de l’huile d’olive et du sel.":

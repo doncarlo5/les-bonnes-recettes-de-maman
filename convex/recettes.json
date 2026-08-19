@@ -2155,7 +2155,7 @@
     "title": "Banana bread",
     "slug": "banana-bread-du-kona-inn",
     "author": "Mary McHale",
-    "description": "Banana bread moelleux aux bananes bien mûres, parfait avec une salade de poulet.",
+    "description": "Banana bread moelleux aux bananes bien mûres.",
     "heroImageUrl": "",
     "yieldLabel": "1 cake",
     "servings": null,
@@ -2252,7 +2252,7 @@
         ]
       }
     ],
-    "notes": ["Un incontournable avec les salades de poulet."]
+    "notes": []
   },
   {
     "title": "Soupe de champagne",
