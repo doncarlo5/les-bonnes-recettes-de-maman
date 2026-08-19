@@ -18,12 +18,8 @@ if (!productionUrl) {
 }
 
 const client = new ConvexHttpClient(productionUrl);
-const recipeSlug = process.env.RECIPE_SYNC_SLUG;
-const syncRecipes = makeFunctionReference(
-  recipeSlug ? "recipes:seed" : "recipes:syncProduction",
-);
-const result = await client.mutation(
-  syncRecipes,
-  recipeSlug ? { adminPassword, slug: recipeSlug } : { adminPassword },
-);
+const syncProduction = makeFunctionReference("recipes:syncProduction");
+const result = await client.mutation(syncProduction, {
+  adminPassword,
+});
 console.log(JSON.stringify(result, null, 2));
