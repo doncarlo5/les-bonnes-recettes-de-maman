@@ -865,6 +865,7 @@ export const seed = mutation({
   args: {
     adminPassword: v.string(),
     slug: v.optional(v.string()),
+    publish: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
@@ -876,7 +877,7 @@ export const seed = mutation({
       throw new Error("RECIPE_NOT_FOUND");
     }
 
-    return syncSeedRecipes(ctx, selectedRecipes, false);
+    return syncSeedRecipes(ctx, selectedRecipes, args.publish ?? false);
   },
 });
 
