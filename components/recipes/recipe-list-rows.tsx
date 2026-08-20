@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Clock3 } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
+import { formatRecipeByline } from "@/lib/recipe-author";
 import type { RecipeSummary } from "./types";
 import { RecipeCreationChooser } from "./recipe-creation-chooser";
 
@@ -51,7 +52,11 @@ export function RecipeListRows({
                   {recipe.title}
                 </span>
                 <span className="type-byline text-muted-foreground">
-                  {dict.recipeDetail.recipeBy} {recipe.author}
+                  {formatRecipeByline(
+                    locale,
+                    dict.recipeDetail.recipeBy,
+                    recipe.author,
+                  )}
                 </span>
               </span>
               {recipe.description ? (

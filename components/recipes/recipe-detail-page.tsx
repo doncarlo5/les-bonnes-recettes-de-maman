@@ -11,6 +11,7 @@ import {
   getServingsFactor,
   resolveSelectedServings,
 } from "@/lib/recipe-servings";
+import { formatRecipeByline } from "@/lib/recipe-author";
 import {
   Accordion,
   AccordionContent,
@@ -110,7 +111,11 @@ export function RecipePresentation({
             </div>
             <h1 className="type-display max-w-[14ch]">{recipe.title}</h1>
             <p className="type-byline mt-4 text-muted-foreground">
-              {dict.recipeDetail.recipeBy} {recipe.author}
+              {formatRecipeByline(
+                locale,
+                dict.recipeDetail.recipeBy,
+                recipe.author,
+              )}
             </p>
             {recipe.description ? (
               <p className="type-editorial-lead mt-7 max-w-[52ch] text-foreground/75">

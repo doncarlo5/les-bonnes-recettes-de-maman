@@ -98,6 +98,12 @@ export type SeedRecipe = {
 
 const recipeCategoryTags: Record<string, string[]> = {
   amandin: ["dessert", "sucre"],
+  "smoothie-banane-et-fruits-rouges": [
+    "sucre",
+    "boisson",
+    "petit déjeuner",
+    "sans cuisson",
+  ],
   "banana-bread-du-kona-inn": ["dessert", "sucre"],
   brownies: ["dessert", "sucre"],
   "cake-au-chevre-et-courgettes": ["sale"],
@@ -230,6 +236,7 @@ const titleTranslations: Record<string, string> = {
   Brownies: "Brownies",
   "Papillotes de cabillaud": "Cod Parcels",
   "Pâtes carbonara": "Pasta Carbonara",
+  "Smoothie banane et fruits rouges": "Banana and Berry Smoothie",
 };
 
 const descriptionTranslations: Record<string, string> = {
@@ -301,6 +308,8 @@ const descriptionTranslations: Record<string, string> = {
     "Oven-baked cod parcels served with Polish-style butter sauce.",
   "Pâtes carbonara familiales aux œufs entiers, parmesan et lardons fumés, liées avec un peu d’eau de cuisson si nécessaire.":
     "Family-style pasta carbonara with whole eggs, parmesan and smoked bacon, loosened with a little pasta cooking water if needed.",
+  "Smoothie onctueux à la banane, aux fruits rouges, au fromage blanc, aux graines de chia et aux flocons d’avoine.":
+    "Creamy banana and berry smoothie with fromage blanc, chia seeds and rolled oats.",
   "Gâteau macaron aux blancs d’œufs, amandes et extrait d’amande amère, servi avec une crème anglaise à la vanille.":
     "Macaron-style almond cake made with egg whites and bitter almond extract, served with vanilla custard.",
 };
@@ -353,6 +362,7 @@ const ingredientTranslations: Record<string, string> = {
   "beurre salé tempéré": "salted butter, at room temperature",
   "beurre à température ambiante": "butter at room temperature",
   "bananes bien mûres": "very ripe bananas",
+  banane: "banana",
   "bicarbonate de soude": "baking soda",
   "bicarbonate alimentaire": "baking soda",
   "biscuits à la cuillère": "ladyfingers",
@@ -393,6 +403,9 @@ const ingredientTranslations: Record<string, string> = {
   "extrait de vanille": "vanilla extract",
   "extrait d’amande amère": "bitter almond extract",
   feta: "feta",
+  "flocons d’avoine": "rolled oats",
+  "fromage blanc": "fromage blanc",
+  "fruits rouges": "mixed berries",
   "fleur de sel": "fleur de sel",
   farine: "flour",
   "farine T45": "T45 flour",
@@ -405,6 +418,7 @@ const ingredientTranslations: Record<string, string> = {
   framboises: "raspberries",
   fécule: "starch",
   "gruyère râpé": "grated Gruyère",
+  "graines de chia": "chia seeds",
   "gros œuf": "large egg",
   "gousse de vanille": "vanilla bean",
   glaçons: "ice cubes",
@@ -428,6 +442,7 @@ const ingredientTranslations: Record<string, string> = {
   "levure chimique": "baking powder",
   "marsala, xérès ou malaga": "marsala, sherry or malaga",
   mascarpone: "mascarpone",
+  miel: "honey",
   meringues: "meringues",
   "moutarde de Dijon": "Dijon mustard",
   moutarde: "mustard",
@@ -512,6 +527,7 @@ const noteTranslations: Record<string, string> = {
   crème: "cream",
   "découpé en petits dés": "cut into small cubes",
   facultatif: "optional",
+  "frais ou surgelés": "fresh or frozen",
   "graines uniquement": "seeds only",
   "grossièrement haché": "roughly chopped",
   hachée: "minced",
@@ -594,6 +610,14 @@ const noteTranslations: Record<string, string> = {
 };
 
 const stepTranslations: Record<string, string> = {
+  "Peler la banane et la couper en morceaux.":
+    "Peel the banana and cut it into pieces.",
+  "Mettre la banane, les fruits rouges, le fromage blanc, le miel, les graines de chia et les flocons d’avoine dans le mixeur.":
+    "Place the banana, mixed berries, fromage blanc, honey, chia seeds and rolled oats in the blender.",
+  "Verser le lait et mixer environ 1 min, jusqu’à obtenir une texture lisse et onctueuse.":
+    "Pour in the milk and blend for about 1 min, until smooth and creamy.",
+  "Ajouter un peu de lait si le smoothie est trop épais, puis servir immédiatement.":
+    "Add a little milk if the smoothie is too thick, then serve immediately.",
   "Battre le beurre ramolli avec le sucre jusqu’à obtenir un mélange clair, léger et mousseux.":
     "Beat the softened butter and sugar until light and fluffy.",
   "Ajouter les bananes écrasées et les œufs battus, puis mélanger jusqu’à obtenir une pâte homogène.":
@@ -1166,6 +1190,7 @@ const unitTranslations: Record<string, string> = {
   moules: "molds",
   paquet: "packet",
   personnes: "people",
+  personne: "person",
   "petit verre": "small glass",
   "petite boîte": "small can",
   pincée: "pinch",
@@ -1175,10 +1200,13 @@ const unitTranslations: Record<string, string> = {
   tranches: "slices",
   tasse: "cup",
   tasses: "cups",
+  "tasses à café": "small coffee cups",
   verre: "glass",
 };
 
 const quantityTranslations: Record<string, string> = {
+  "1 à 2": "1 to 2",
+  "2 à 3": "2 to 3",
   "325 à 350": "325 to 350",
   "500 à 600": "500 to 600",
   "5 à 7": "5 to 7",

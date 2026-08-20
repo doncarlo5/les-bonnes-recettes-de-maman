@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Clock3, MessageCircle } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
+import { formatRecipeByline } from "@/lib/recipe-author";
 import type { RecipeSummary } from "./types";
 import { RecipeCreationChooser } from "./recipe-creation-chooser";
 
@@ -88,7 +89,11 @@ export function RecipeGrid({
                   </span>
                 ) : null}
                 <span className="type-byline mt-3 hidden text-muted-foreground md:block">
-                  {dict.recipeDetail.recipeBy} {recipe.author}
+                  {formatRecipeByline(
+                    locale,
+                    dict.recipeDetail.recipeBy,
+                    recipe.author,
+                  )}
                 </span>
               </span>
             </Link>

@@ -3012,6 +3012,79 @@
     ]
   },
   {
+    "title": "Smoothie banane et fruits rouges",
+    "slug": "smoothie-banane-et-fruits-rouges",
+    "author": "Alexia",
+    "description": "Smoothie onctueux à la banane, aux fruits rouges, au fromage blanc, aux graines de chia et aux flocons d’avoine.",
+    "heroImageUrl": "",
+    "servings": {
+      "quantity": 1,
+      "unit": "personne"
+    },
+    "referenceServings": 1,
+    "prepTime": "5 min",
+    "cookTime": "",
+    "totalTime": "5 min",
+    "temperature": "",
+    "equipment": ["1 mixeur"],
+    "ingredients": [
+      {
+        "name": "banane",
+        "quantity": "1",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "lait",
+        "quantity": "2",
+        "unit": "tasses à café",
+        "notes": ""
+      },
+      {
+        "name": "fromage blanc",
+        "quantity": "2",
+        "unit": "c. à s.",
+        "notes": ""
+      },
+      {
+        "name": "miel",
+        "quantity": "1",
+        "unit": "c. à café",
+        "notes": ""
+      },
+      {
+        "name": "graines de chia",
+        "quantity": "1",
+        "unit": "c. à café",
+        "notes": ""
+      },
+      {
+        "name": "flocons d’avoine",
+        "quantity": "1 à 2",
+        "unit": "c. à s.",
+        "notes": ""
+      },
+      {
+        "name": "fruits rouges",
+        "quantity": "2 à 3",
+        "unit": "tasses à café",
+        "notes": "frais ou surgelés"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Peler la banane et la couper en morceaux.",
+          "Mettre la banane, les fruits rouges, le fromage blanc, le miel, les graines de chia et les flocons d’avoine dans le mixeur.",
+          "Verser le lait et mixer environ 1 min, jusqu’à obtenir une texture lisse et onctueuse.",
+          "Ajouter un peu de lait si le smoothie est trop épais, puis servir immédiatement."
+        ]
+      }
+    ],
+    "notes": []
+  },
+  {
     "title": "Pâtes carbonara",
     "slug": "pates-carbonara",
     "author": "Antoine",
