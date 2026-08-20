@@ -142,37 +142,40 @@ export function RecipePresentation({
         <div className="mx-auto max-w-7xl">
           <RecipeMeta dict={dict} recipe={recipe} />
 
-          <div className="mt-8 lg:mt-12">
-            <div className="min-w-0 lg:max-w-[65ch]">
-              <div className="space-y-8 lg:space-y-12">
-                {recipe.equipment.length > 0 ? (
-                  <div>
-                    <h2 className="type-content-title mb-4 text-foreground lg:mb-6">
-                      {dict.recipeDetail.equipment}
-                    </h2>
-                    <ul
-                      data-equipment-list
-                      className="type-body-spacious space-y-2 text-foreground/90"
-                    >
-                      {recipe.equipment.map((item, index) => (
-                        <li
-                          key={`${item}-${index}`}
-                          className="grid grid-cols-[1.375rem_minmax(0,1fr)] items-start gap-3"
-                        >
-                          <EquipmentIcon label={item} />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
-                <RecipeIngredientsPanel
-                  locale={locale}
-                  dict={dict}
-                  recipe={recipe}
-                  selectedServings={selectedServings}
-                  onSelectedServingsChange={setSelectedServings}
-                />
+          <div className="mt-8 lg:mt-12 lg:grid lg:grid-cols-[minmax(18rem,22rem)_minmax(0,65ch)] lg:items-start lg:justify-between lg:gap-12 xl:gap-20">
+            <div className="space-y-8 lg:sticky lg:top-24 lg:self-start lg:space-y-10">
+              {recipe.equipment.length > 0 ? (
+                <div>
+                  <h2 className="type-content-title mb-4 text-foreground lg:mb-6">
+                    {dict.recipeDetail.equipment}
+                  </h2>
+                  <ul
+                    data-equipment-list
+                    className="type-body-spacious space-y-2 text-foreground/90"
+                  >
+                    {recipe.equipment.map((item, index) => (
+                      <li
+                        key={`${item}-${index}`}
+                        className="grid grid-cols-[1.375rem_minmax(0,1fr)] items-start gap-3"
+                      >
+                        <EquipmentIcon label={item} />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+              <RecipeIngredientsPanel
+                locale={locale}
+                dict={dict}
+                recipe={recipe}
+                selectedServings={selectedServings}
+                onSelectedServingsChange={setSelectedServings}
+              />
+            </div>
+
+            <div className="min-w-0">
+              <div className="mt-8 space-y-8 lg:mt-0 lg:space-y-12">
                 {recipe.sections.map((section) => (
                   <div key={section.title}>
                     <h2 className="type-content-title mb-4 text-foreground lg:mb-6">
@@ -364,7 +367,6 @@ export function RecipePresentation({
                 </>
               ) : null}
             </div>
-
           </div>
         </div>
       </section>

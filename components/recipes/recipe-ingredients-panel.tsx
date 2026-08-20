@@ -54,7 +54,7 @@ export function RecipeIngredientsPanel({
   );
 
   return (
-    <aside className="lg:w-80">
+    <aside className="w-full">
       <div data-ingredients-layout="mobile" className="lg:hidden">
         <div className="rounded-2xl bg-card px-4 shadow-[var(--shadow-card)]">
           <Accordion defaultValue="ingredients">
