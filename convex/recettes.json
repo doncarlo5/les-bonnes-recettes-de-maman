@@ -3029,12 +3029,6 @@
     "equipment": ["1 mixeur"],
     "ingredients": [
       {
-        "name": "banane",
-        "quantity": "1",
-        "unit": "",
-        "notes": ""
-      },
-      {
         "name": "lait",
         "quantity": "2",
         "unit": "tasses à café",
@@ -3044,6 +3038,12 @@
         "name": "fromage blanc",
         "quantity": "2",
         "unit": "c. à s.",
+        "notes": ""
+      },
+      {
+        "name": "banane",
+        "quantity": "1",
+        "unit": "",
         "notes": ""
       },
       {
@@ -3068,7 +3068,7 @@
         "name": "fruits rouges",
         "quantity": "2 à 3",
         "unit": "tasses à café",
-        "notes": "frais ou surgelés"
+        "notes": "frais ou surgelés : framboises, cerises, fraises, myrtilles, mûres…"
       }
     ],
     "sections": [
@@ -3076,13 +3076,15 @@
         "title": "Préparation",
         "steps": [
           "Peler la banane et la couper en morceaux.",
-          "Mettre la banane, les fruits rouges, le fromage blanc, le miel, les graines de chia et les flocons d’avoine dans le mixeur.",
-          "Verser le lait et mixer environ 1 min, jusqu’à obtenir une texture lisse et onctueuse.",
+          "Verser d’abord le lait dans le mixeur, puis ajouter le fromage blanc, la banane, le miel, les graines de chia et les flocons d’avoine, dans cet ordre.",
+          "Ajouter les fruits rouges en dernier, puis mixer environ 1 min, jusqu’à obtenir une texture lisse et onctueuse.",
           "Ajouter un peu de lait si le smoothie est trop épais, puis servir immédiatement."
         ]
       }
     ],
-    "notes": []
+    "notes": [
+      "Les fruits rouges surgelés sont très durs, comme des glaçons. Toujours mettre les ingrédients mous dans le mixeur en premier et les fruits congelés en dernier afin de ne pas forcer sur l’appareil."
+    ]
   },
   {
     "title": "Pâtes carbonara",

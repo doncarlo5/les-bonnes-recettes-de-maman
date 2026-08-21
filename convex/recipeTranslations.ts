@@ -527,7 +527,8 @@ const noteTranslations: Record<string, string> = {
   crème: "cream",
   "découpé en petits dés": "cut into small cubes",
   facultatif: "optional",
-  "frais ou surgelés": "fresh or frozen",
+  "frais ou surgelés : framboises, cerises, fraises, myrtilles, mûres…":
+    "fresh or frozen: raspberries, cherries, strawberries, blueberries, blackberries…",
   "graines uniquement": "seeds only",
   "grossièrement haché": "roughly chopped",
   hachée: "minced",
@@ -580,6 +581,8 @@ const noteTranslations: Record<string, string> = {
   "ou farine pâtissière": "or pastry flour",
   "Pour une mayonnaise bien fraîche, la laisser reposer 30 min au réfrigérateur avant de servir.":
     "For a well-chilled mayonnaise, refrigerate it for 30 min before serving.",
+  "Les fruits rouges surgelés sont très durs, comme des glaçons. Toujours mettre les ingrédients mous dans le mixeur en premier et les fruits congelés en dernier afin de ne pas forcer sur l’appareil.":
+    "Frozen berries are very hard, like ice cubes. Always put the soft ingredients in the blender first and the frozen fruit in last to avoid straining the appliance.",
   "Pour ma version habituelle, je remplace la vinaigrette citronnée par du vinaigre balsamique, de l’huile d’olive et du sel.":
     "For my usual version, I replace the lemon vinaigrette with balsamic vinegar, olive oil and salt.",
   "Ajouter le jus de citron avec parcimonie : en trop grande quantité, il risquerait de masquer la saveur des autres ingrédients.":
@@ -612,10 +615,10 @@ const noteTranslations: Record<string, string> = {
 const stepTranslations: Record<string, string> = {
   "Peler la banane et la couper en morceaux.":
     "Peel the banana and cut it into pieces.",
-  "Mettre la banane, les fruits rouges, le fromage blanc, le miel, les graines de chia et les flocons d’avoine dans le mixeur.":
-    "Place the banana, mixed berries, fromage blanc, honey, chia seeds and rolled oats in the blender.",
-  "Verser le lait et mixer environ 1 min, jusqu’à obtenir une texture lisse et onctueuse.":
-    "Pour in the milk and blend for about 1 min, until smooth and creamy.",
+  "Verser d’abord le lait dans le mixeur, puis ajouter le fromage blanc, la banane, le miel, les graines de chia et les flocons d’avoine, dans cet ordre.":
+    "Pour the milk into the blender first, then add the fromage blanc, banana, honey, chia seeds and rolled oats, in that order.",
+  "Ajouter les fruits rouges en dernier, puis mixer environ 1 min, jusqu’à obtenir une texture lisse et onctueuse.":
+    "Add the mixed berries last, then blend for about 1 min, until smooth and creamy.",
   "Ajouter un peu de lait si le smoothie est trop épais, puis servir immédiatement.":
     "Add a little milk if the smoothie is too thick, then serve immediately.",
   "Battre le beurre ramolli avec le sucre jusqu’à obtenir un mélange clair, léger et mousseux.":
