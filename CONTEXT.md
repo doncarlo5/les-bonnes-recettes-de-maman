@@ -90,17 +90,21 @@ _Avoid_: Validation technique, statut de formulaire
 Situation où le Brouillon de travail diffère de la Version publiée et nécessite une nouvelle publication pour devenir public.
 _Avoid_: État sale, modifications enregistrées, conflit
 
-**Commentaire de recette**:
-Contribution publique d’un Participant à une Recette, composée d’un texte et éventuellement d’une signature et d’une photo.
-_Avoid_: Note éditoriale, avis vérifié, message
+**Réalisation de recette**:
+Contribution publique liée à une Recette et à une occasion de cuisine, composée d’une photo obligatoire et, facultativement, d’un nom, d’une légende et d’une description visuelle. Un Participant peut publier plusieurs Réalisations pour une même Recette.
+_Avoid_: Commentaire, avis vérifié, personne ayant réalisé la recette
 
 **Participant**:
-Visiteur public pseudonyme représenté par son navigateur, sans compte ni identité vérifiée.
+Visiteur public pseudonyme représenté par une session serveur signée dans son navigateur, sans compte ni identité vérifiée.
 _Avoid_: Utilisateur authentifié, auteur de recette, administrateur
 
-**Réaction**:
-Choix exclusif pouce haut ou pouce bas d’un Participant sur un Commentaire de recette.
-_Avoid_: Note, score, vote multiple
+**Bravo**:
+Réponse positive unique et réversible d’un Participant à une Réalisation de recette.
+_Avoid_: Réaction négative, note, score, vote multiple
+
+**Signalement de réalisation**:
+Demande unique d’un Participant pour faire examiner manuellement une Réalisation, avec un motif et des précisions facultatives. Un Signalement ne masque jamais automatiquement la Réalisation.
+_Avoid_: Suppression automatique, vote de modération
 
 ## Example Dialogue
 

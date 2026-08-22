@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Clock3, MessageCircle } from "lucide-react";
+import { Camera, Clock3 } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import { formatRecipeByline } from "@/lib/recipe-author";
@@ -30,11 +30,11 @@ export function RecipeGrid({
   return (
     <ul className="grid grid-cols-2 gap-3 md:gap-6 xl:grid-cols-3">
       {recipes.map((recipe, index) => {
-        const commentLabel = (
-          recipe.commentCount === 1
-            ? dict.recipeList.commentSingular
-            : dict.recipeList.commentPlural
-        ).replace("{count}", String(recipe.commentCount));
+        const makeLabel = (
+          recipe.realisationCount === 1
+            ? dict.recipeList.makeSingular
+            : dict.recipeList.makePlural
+        ).replace("{count}", String(recipe.realisationCount));
 
         return (
           <li key={recipe._id} className="h-full">
@@ -58,9 +58,9 @@ export function RecipeGrid({
                     <Clock3 aria-hidden className="size-4 stroke-[1.8]" />
                     {recipe.timeLabel}
                   </span>
-                  <CommentCount
-                    count={recipe.commentCount}
-                    label={commentLabel}
+                  <MakeCount
+                    count={recipe.realisationCount}
+                    label={makeLabel}
                     className="text-muted-foreground"
                     iconClassName="size-4 stroke-[1.8]"
                   />
@@ -71,7 +71,7 @@ export function RecipeGrid({
                 >
                   {recipe.title}
                 </span>
-                {recipe.timeLabel || recipe.commentCount > 0 ? (
+                {recipe.timeLabel || recipe.realisationCount > 0 ? (
                   <span
                     className="mt-auto inline-flex items-center gap-3 pt-3 text-xs font-bold text-muted-foreground tabular-nums md:hidden"
                   >
@@ -81,9 +81,9 @@ export function RecipeGrid({
                         {recipe.timeLabel}
                       </span>
                     ) : null}
-                    <CommentCount
-                      count={recipe.commentCount}
-                      label={commentLabel}
+                    <MakeCount
+                      count={recipe.realisationCount}
+                      label={makeLabel}
                       iconClassName="size-3.5 stroke-[1.8]"
                     />
                   </span>
@@ -109,7 +109,7 @@ export function RecipeGrid({
   );
 }
 
-function CommentCount({
+function MakeCount({
   count,
   label,
   className = "",
@@ -127,7 +127,7 @@ function CommentCount({
       className={`inline-flex items-center gap-1.5 ${className}`}
       aria-label={label}
     >
-      <MessageCircle aria-hidden className={iconClassName} />
+      <Camera aria-hidden className={iconClassName} />
       {count}
     </span>
   );

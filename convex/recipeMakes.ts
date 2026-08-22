@@ -50,8 +50,14 @@ type AdminMakePresentation = {
 
 type ModerationQueueItem = {
   make: MakePresentation;
+  participantDigest: string;
   openReportCount: number;
   totalReportCount: number;
+  reports: Array<{
+    _id: Id<"recipeMakeReports">;
+    reason: "spam" | "inappropriate" | "privacy" | "copyright" | "other";
+    details: string | null;
+  }>;
 };
 
 export const list = query({
@@ -114,8 +120,9 @@ export const listPreview = query({
 });
 
 export const listModerationQueue = query({
-  args: { paginationOpts: paginationOptsValidator },
+  args: { adminPassword: v.string(), paginationOpts: paginationOptsValidator },
   handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
     const result = await ctx.db
       .query("recipeMakeReportSummaries")
       .withIndex("by_openReportCount")
@@ -127,10 +134,25 @@ export const listModerationQueue = query({
         if (summary.openReportCount <= 0) return null;
         const make = await ctx.db.get(summary.makeId);
         if (!make) return null;
+        const reports = await ctx.db
+          .query("recipeMakeReports")
+          .withIndex("by_makeId", (q) => q.eq("makeId", make._id))
+          .take(20);
         return {
           make: await presentMake(ctx, make, null),
+          participantDigest: make.participantDigest,
           openReportCount: summary.openReportCount,
           totalReportCount: summary.totalReportCount,
+          reports: reports.reduce<ModerationQueueItem["reports"]>((openReports, report) => {
+            if (report.state === "open") {
+              openReports.push({
+                _id: report._id,
+                reason: report.reason,
+                details: report.details ?? null,
+              });
+            }
+            return openReports;
+          }, []),
         };
       }),
     );
@@ -144,12 +166,14 @@ export const listModerationQueue = query({
 
 export const requestUploadTicket = mutation({
   args: {
+    serverSecret: v.string(),
     slug: v.string(),
     participantDigest: v.string(),
     requestedByIpDigest: v.optional(v.string()),
     makeIdToReplace: v.optional(v.id("recipeMakes")),
   },
   handler: async (ctx, args) => {
+    assertServerSecret(args.serverSecret);
     if (!isUploadEnabled()) {
       throw new Error("RECIPE_MAKE_UPLOAD_DISABLED");
     }
@@ -191,7 +215,6 @@ export const requestUploadTicket = mutation({
 export const finalizeUpload = internalMutation({
   args: {
     slug: v.string(),
-    participantDigest: v.string(),
     ticketDigest: v.string(),
     fullPhotoStorageId: v.id("_storage"),
     thumbnailStorageId: v.id("_storage"),
@@ -201,8 +224,8 @@ export const finalizeUpload = internalMutation({
     sourceStorageId: v.optional(v.id("_storage")),
   },
   handler: async (ctx, args) => {
-    const ticket = await getUploadTicket(ctx, args.ticketDigest, args.participantDigest);
-    if (!ticket || ticket.participantDigest !== args.participantDigest) {
+    const ticket = await getUploadTicket(ctx, args.ticketDigest);
+    if (!ticket) {
       throw new Error("RECIPE_MAKE_TICKET_INVALID");
     }
     if (ticket.redeemedAt) {
@@ -222,7 +245,7 @@ export const finalizeUpload = internalMutation({
 
     if (ticket.replaceMakeId) {
       const make = await ctx.db.get(ticket.replaceMakeId);
-      if (!make || make.participantDigest !== args.participantDigest || make.recipeId !== recipe._id) {
+      if (!make || make.participantDigest !== ticket.participantDigest || make.recipeId !== recipe._id) {
         throw new Error("RECIPE_MAKE_OWNER_REQUIRED");
       }
 
@@ -249,7 +272,7 @@ export const finalizeUpload = internalMutation({
     } else {
       const makeId = await ctx.db.insert("recipeMakes", {
         recipeId: recipe._id,
-        participantDigest: args.participantDigest,
+        participantDigest: ticket.participantDigest,
         fullPhotoStorageId: args.fullPhotoStorageId,
         thumbnailStorageId: args.thumbnailStorageId,
         authorName: normalizeOptionalText(args.authorName, 120),
@@ -268,12 +291,7 @@ export const finalizeUpload = internalMutation({
       });
     }
 
-    await ctx.db.patch(ticket._id, {
-      redeemedAt: now,
-      sourceStorageId: args.sourceStorageId,
-      fullPhotoStorageId: args.fullPhotoStorageId,
-      thumbnailStorageId: args.thumbnailStorageId,
-    });
+    await ctx.db.delete(ticket._id);
 
     if (args.sourceStorageId) {
       await ctx.storage.delete(args.sourceStorageId).catch(() => undefined);
@@ -285,6 +303,7 @@ export const finalizeUpload = internalMutation({
 
 export const update = mutation({
   args: {
+    serverSecret: v.string(),
     makeId: v.id("recipeMakes"),
     participantDigest: v.string(),
     authorName: v.optional(v.string()),
@@ -292,6 +311,7 @@ export const update = mutation({
     altText: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    assertServerSecret(args.serverSecret);
     const make = await requireOwnedMake(ctx, args.makeId, args.participantDigest);
     if (make.state !== "published") {
       throw new Error("RECIPE_MAKE_NOT_EDITABLE");
@@ -315,10 +335,12 @@ export const update = mutation({
 
 export const removeOwn = mutation({
   args: {
+    serverSecret: v.string(),
     makeId: v.id("recipeMakes"),
     participantDigest: v.string(),
   },
   handler: async (ctx, args) => {
+    assertServerSecret(args.serverSecret);
     const make = await requireOwnedMake(ctx, args.makeId, args.participantDigest);
     if (await isBlocked(ctx, args.participantDigest)) {
       throw new Error("RECIPE_MAKE_PARTICIPANT_BLOCKED");
@@ -331,10 +353,12 @@ export const removeOwn = mutation({
 
 export const toggleBravo = mutation({
   args: {
+    serverSecret: v.string(),
     makeId: v.id("recipeMakes"),
     participantDigest: v.string(),
   },
   handler: async (ctx, args) => {
+    assertServerSecret(args.serverSecret);
     const make = await ctx.db.get(args.makeId);
     if (!make || make.state !== "published") {
       throw new Error("RECIPE_MAKE_NOT_FOUND");
@@ -375,6 +399,7 @@ export const toggleBravo = mutation({
 
 export const report = mutation({
   args: {
+    serverSecret: v.string(),
     makeId: v.id("recipeMakes"),
     participantDigest: v.string(),
     reason: v.union(
@@ -387,6 +412,7 @@ export const report = mutation({
     details: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    assertServerSecret(args.serverSecret);
     const make = await ctx.db.get(args.makeId);
     if (!make) throw new Error("RECIPE_MAKE_NOT_FOUND");
 
@@ -403,16 +429,26 @@ export const report = mutation({
 
     const normalizedDetails = normalizeOptionalText(args.details, 500);
     if (existing) {
+      const wasDismissed = existing.state === "dismissed";
       await ctx.db.patch(existing._id, {
         reason: args.reason,
         details: normalizedDetails,
         state: "open",
         createdAt: Date.now(),
       });
+      if (wasDismissed) {
+        const summary = await getReportSummary(ctx, args.makeId);
+        if (summary) {
+          await upsertReportSummary(ctx, args.makeId, {
+            openReportCount: summary.openReportCount + 1,
+            totalReportCount: summary.totalReportCount,
+          });
+        }
+      }
       return { reportId: existing._id };
     }
 
-    await ctx.db.insert("recipeMakeReports", {
+    const reportId = await ctx.db.insert("recipeMakeReports", {
       makeId: args.makeId,
       participantDigest: args.participantDigest,
       reason: args.reason,
@@ -435,16 +471,18 @@ export const report = mutation({
       });
     }
 
-    return { reportId: null };
+    return { reportId };
   },
 });
 
 export const adminList = query({
   args: {
+    adminPassword: v.string(),
     recipeId: v.id("recipes"),
     paginationOpts: paginationOptsValidator,
   },
   handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
     const result = await ctx.db
       .query("recipeMakes")
       .withIndex("by_recipeId", (q) => q.eq("recipeId", args.recipeId))
@@ -460,12 +498,14 @@ export const adminList = query({
 
 export const adminSetState = mutation({
   args: {
+    adminPassword: v.string(),
     makeId: v.id("recipeMakes"),
     state: v.union(v.literal("published"), v.literal("removed"), v.literal("blocked")),
     reason: v.optional(v.string()),
     participantDigest: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
     const make = await ctx.db.get(args.makeId);
     if (!make) throw new Error("RECIPE_MAKE_NOT_FOUND");
 
@@ -502,12 +542,25 @@ export const adminSetState = mutation({
       if (!args.participantDigest) {
         throw new Error("RECIPE_MAKE_PARTICIPANT_REQUIRED");
       }
-      await ctx.db.insert("recipeMakeParticipantBlocks", {
-        participantDigest: args.participantDigest,
+      const existingBlock = await ctx.db
+        .query("recipeMakeParticipantBlocks")
+        .withIndex("by_participantDigest", (q) => q.eq("participantDigest", args.participantDigest!))
+        .unique();
+      const block = {
         reason: normalizeOptionalText(args.reason, 500) ?? "manual moderation",
         createdAt: Date.now(),
         expiresAt: Date.now() + dayMs,
         canReact: false,
+      };
+      if (existingBlock) await ctx.db.patch(existingBlock._id, block);
+      else await ctx.db.insert("recipeMakeParticipantBlocks", { participantDigest: args.participantDigest, ...block });
+      if (make.state === "published") await upsertMakeSummary(ctx, make.recipeId, -1);
+      await ctx.db.patch(make._id, {
+        state: "blocked",
+        removedAt: Date.now(),
+        removedBy: "admin",
+        removalReason: block.reason,
+        updatedAt: Date.now(),
       });
       return { makeId: make._id };
     }
@@ -535,13 +588,42 @@ export const adminCleanupExpired = internalMutation({
       await removeMake(ctx, make, true);
     }
 
-    return { purged: expired.length };
+    const expiredTickets = await ctx.db
+      .query("recipeMakeUploadTickets")
+      .withIndex("by_expiresAt")
+      .order("asc")
+      .take(50);
+    let ticketsPurged = 0;
+    for (const ticket of expiredTickets) {
+      if (ticket.expiresAt > Date.now()) break;
+      await Promise.all([
+        ticket.sourceStorageId ? ctx.storage.delete(ticket.sourceStorageId).catch(() => undefined) : Promise.resolve(),
+        ticket.fullPhotoStorageId ? ctx.storage.delete(ticket.fullPhotoStorageId).catch(() => undefined) : Promise.resolve(),
+        ticket.thumbnailStorageId ? ctx.storage.delete(ticket.thumbnailStorageId).catch(() => undefined) : Promise.resolve(),
+      ]);
+      await ctx.db.delete(ticket._id);
+      ticketsPurged += 1;
+    }
+
+    const expiredNetworkLimits = await ctx.db
+      .query("recipeMakeNetworkRateLimits")
+      .withIndex("by_windowStartedAt")
+      .order("asc")
+      .take(100);
+    const networkLimitsToPurge = expiredNetworkLimits.filter(
+      (limit) => limit.windowStartedAt + dayMs <= Date.now(),
+    );
+    await Promise.all(networkLimitsToPurge.map((limit) => ctx.db.delete(limit._id)));
+    const networkLimitsPurged = networkLimitsToPurge.length;
+
+    return { purged: expired.length, ticketsPurged, networkLimitsPurged };
   },
 });
 
-export const adminDismissReport = internalMutation({
-  args: { reportId: v.id("recipeMakeReports") },
+export const adminDismissReport = mutation({
+  args: { adminPassword: v.string(), reportId: v.id("recipeMakeReports") },
   handler: async (ctx, args) => {
+    assertRecipeAdminPassword(args.adminPassword);
     const report = await ctx.db.get(args.reportId);
     if (!report) return { reportId: null };
 
@@ -688,12 +770,15 @@ async function upsertMakeSummary(ctx: MutationCtx, recipeId: Id<"recipes">, delt
   await ctx.db.patch(summary._id, { makeCount: nextCount });
 }
 
-async function getUploadTicket(ctx: QueryCtx | MutationCtx, ticketDigest: string, participantDigest: string) {
+async function getUploadTicket(ctx: MutationCtx, ticketDigest: string) {
   const ticket = await ctx.db
     .query("recipeMakeUploadTickets")
     .withIndex("by_ticketDigest", (q) => q.eq("ticketDigest", ticketDigest))
     .unique();
-  if (!ticket || ticket.participantDigest !== participantDigest) {
+  if (!ticket || ticket.expiresAt < Date.now()) {
+    if (ticket && ticket.expiresAt < Date.now() && !ticket.redeemedAt) {
+      await ctx.db.delete(ticket._id);
+    }
     throw new Error("RECIPE_MAKE_TICKET_INVALID");
   }
   return ticket;
@@ -908,10 +993,27 @@ function isUploadEnabled() {
   return value !== "false";
 }
 
+function assertRecipeAdminPassword(adminPassword: string) {
+  const expectedPassword = process.env.RECIPE_ADMIN_PASSWORD;
+  if (!expectedPassword || adminPassword !== expectedPassword) {
+    throw new Error("RECIPE_ADMIN_REQUIRED");
+  }
+}
+
+function assertServerSecret(serverSecret: string) {
+  const expectedSecret = process.env.RECIPE_MAKE_SERVER_SECRET
+    || process.env.RECIPE_ADMIN_PASSWORD;
+  if (!expectedSecret || serverSecret !== expectedSecret) {
+    throw new Error("RECIPE_MAKE_SERVER_REQUIRED");
+  }
+}
+
 declare const process: {
   env: {
     RECIPE_MAKE_UPLOAD_ENABLED?: string;
     RECIPE_MAKE_UPLOAD_ORIGIN?: string;
+    RECIPE_ADMIN_PASSWORD?: string;
+    RECIPE_MAKE_SERVER_SECRET?: string;
   };
 };
 

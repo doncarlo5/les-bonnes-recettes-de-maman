@@ -32,7 +32,6 @@ const corsHeaders = {
 
 const makeAllowedOrigin = process.env.RECIPE_MAKE_UPLOAD_ORIGIN ?? "";
 const makeCorsHeaders = {
-  "Access-Control-Allow-Origin": makeAllowedOrigin || "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
   Vary: "Origin",
@@ -50,7 +49,7 @@ http.route({
   handler: httpAction(async (ctx, request) => {
     const origin = request.headers.get("origin");
     const allowOrigin = getMakeAllowedOrigin(origin);
-    if (makeAllowedOrigin && allowOrigin === null) {
+    if (allowOrigin === null) {
       return new Response(null, { status: 403 });
     }
     return new Response(null, {
@@ -69,7 +68,7 @@ http.route({
   handler: httpAction(async (ctx, request) => {
     const origin = request.headers.get("origin");
     const allowOrigin = getMakeAllowedOrigin(origin);
-    if (makeAllowedOrigin && allowOrigin === null) {
+    if (allowOrigin === null) {
       return makeResponse({ error: "RECIPE_MAKE_ORIGIN_BLOCKED" }, 403);
     }
 
@@ -77,7 +76,6 @@ http.route({
       const formData = await request.formData();
       const slug = formData.get("slug");
       const ticketDigest = formData.get("ticketDigest");
-      const participantDigest = formData.get("participantDigest");
       const authorName = formData.get("authorName");
       const caption = formData.get("caption");
       const altText = formData.get("altText");
@@ -86,7 +84,6 @@ http.route({
       if (
         typeof slug !== "string" ||
         typeof ticketDigest !== "string" ||
-        typeof participantDigest !== "string" ||
         !(photo instanceof File) ||
         !allowedMakePhotoTypes.has(photo.type) ||
         photo.size > RECIPE_MAKE_MAX_PHOTO_BYTES
@@ -97,7 +94,6 @@ http.route({
       const sourceStorageId = await ctx.storage.store(photo);
       await ctx.runAction(internal.recipeMakeUploads.process, {
         slug,
-        participantDigest,
         ticketDigest,
         sourceStorageId,
         mimeType: photo.type,
@@ -303,7 +299,7 @@ function makeResponse(value: unknown, status: number, headers: Record<string, st
 }
 
 function getMakeAllowedOrigin(origin: string | null) {
-  if (!makeAllowedOrigin) return origin ?? "*";
+  if (!makeAllowedOrigin) return null;
   if (!origin) return null;
   return origin === makeAllowedOrigin ? origin : null;
 }

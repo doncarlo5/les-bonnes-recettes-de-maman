@@ -1178,6 +1178,10 @@ async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
   const storedHeroImageUrl = recipe.heroImageStorageId
     ? await ctx.storage.getUrl(recipe.heroImageStorageId)
     : null;
+  const recipeMakeSummary = await ctx.db
+    .query("recipeMakeSummaries")
+    .withIndex("by_recipeId", (q) => q.eq("recipeId", recipe._id))
+    .unique();
   const relatedRecipes = (
     await Promise.all(
       [...new Set(recipe.relatedRecipeSlugs ?? [])]
@@ -1211,6 +1215,7 @@ async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
     relatedRecipes,
     ...resolveRecipeCategories(recipe),
     status: recipe.status,
+    realisationCount: recipeMakeSummary?.makeCount ?? 0,
     ...publicContent,
     // Rollout 1 remains additive: old clients keep reading string steps while
     // new clients prefer stepDetails. Rollout 2 can make stepDetails canonical.
@@ -1236,23 +1241,15 @@ async function localizeSummary(
   locale: Locale,
 ) {
   const translation = recipe.translations[locale];
-  const [storedHeroImageUrl, commentSummary] = await Promise.all([
+  const [storedHeroImageUrl, recipeMakeSummary] = await Promise.all([
     recipe.heroImageStorageId
       ? ctx.storage.getUrl(recipe.heroImageStorageId)
       : Promise.resolve(null),
-    ctx.db
-      .query("recipeCommentSummaries")
-      .withIndex("by_recipeId", (q) => q.eq("recipeId", recipe._id))
-      .unique(),
     ctx.db
       .query("recipeMakeSummaries")
       .withIndex("by_recipeId", (q) => q.eq("recipeId", recipe._id))
       .unique(),
   ]);
-  const recipeMakeSummary = await ctx.db
-    .query("recipeMakeSummaries")
-    .withIndex("by_recipeId", (q) => q.eq("recipeId", recipe._id))
-    .unique();
   return {
     _id: recipe._id,
     _creationTime: recipe._creationTime,
@@ -1265,7 +1262,7 @@ async function localizeSummary(
     prepTime: translation.prepTime,
     cookTime: translation.cookTime,
     timeLabel: translation.timeLabel,
-    commentCount: (recipeMakeSummary?.makeCount ?? commentSummary?.commentCount ?? 0),
+    realisationCount: recipeMakeSummary?.makeCount ?? 0,
     ingredients: translation.ingredients.map(({ name }) => ({ name })),
   };
 }
