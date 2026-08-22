@@ -101,7 +101,7 @@ export function RecipeGrid({
         );
       })}
       {showAddRecipeCard ? (
-        <li>
+        <li className="h-full">
           <RecipeCreationChooser locale={locale} dict={dict} trigger="card" />
         </li>
       ) : null}

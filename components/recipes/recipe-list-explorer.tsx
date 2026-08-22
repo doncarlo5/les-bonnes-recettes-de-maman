@@ -29,6 +29,8 @@ const categoryValues = RECIPE_CATEGORIES;
 const viewValues = ["cards", "list"] as const;
 const sortValues = ["alpha", "date"] as const;
 const sortDirectionValues = ["asc", "desc"] as const;
+const activeToggleClassName =
+  "aria-pressed:bg-primary aria-pressed:text-primary-foreground aria-pressed:shadow-sm aria-pressed:hover:bg-primary/90";
 
 type RecipeView = (typeof viewValues)[number];
 type RecipeSort = (typeof sortValues)[number];
@@ -141,7 +143,10 @@ export function RecipeListExplorer({
               <ToggleGroupItem
                 key={category}
                 value={category}
-                className="min-h-10 rounded-full px-4 font-bold"
+                className={cn(
+                  "min-h-10 rounded-full px-4 font-bold",
+                  activeToggleClassName,
+                )}
               >
                 {dict.recipeList.categories[category]}
               </ToggleGroupItem>
@@ -197,7 +202,10 @@ export function RecipeListExplorer({
                     <ToggleGroupItem
                       key={view}
                       value={view}
-                      className="size-10 rounded-full p-0"
+                      className={cn(
+                        "size-10 rounded-full p-0",
+                        activeToggleClassName,
+                      )}
                       aria-label={dict.recipeList.views[view]}
                     >
                       <Icon aria-hidden />
@@ -226,7 +234,10 @@ export function RecipeListExplorer({
                     <ToggleGroupItem
                       key={sort}
                       value={sort}
-                      className="min-h-10 rounded-full px-3 font-bold"
+                      className={cn(
+                        "min-h-10 rounded-full px-3 font-bold",
+                        activeToggleClassName,
+                      )}
                     >
                       <Icon data-icon="inline-start" />
                       <span className="hidden lg:inline">

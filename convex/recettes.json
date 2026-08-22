@@ -15,7 +15,7 @@
     "ingredients": [
       {
         "name": "sucre",
-        "quantity": "250",
+        "quantity": "200",
         "unit": "g",
         "notes": ""
       },
@@ -2167,7 +2167,7 @@
     "ingredients": [
       {
         "name": "sucre blanc",
-        "quantity": "200",
+        "quantity": "150",
         "unit": "g",
         "notes": ""
       },
@@ -3160,5 +3160,113 @@
       }
     ],
     "notes": []
+  },
+  {
+    "title": "Cake aux tomates séchées et à la feta",
+    "slug": "cake-aux-tomates-sechees-et-a-la-feta",
+    "author": "Alexia",
+    "description": "Cake salé moelleux aux tomates séchées, à la feta, au basilic et au gruyère.",
+    "heroImageUrl": "/images/recipes/cake-aux-tomates-sechees-et-a-la-feta.png",
+    "servings": {
+      "quantity": 6,
+      "unit": "personnes"
+    },
+    "referenceServings": 6,
+    "prepTime": "15 min",
+    "cookTime": "40 min",
+    "totalTime": "55 min",
+    "temperature": "180 °C",
+    "equipment": ["1 saladier", "1 moule à cake"],
+    "ingredients": [
+      {
+        "name": "gruyère râpé",
+        "quantity": "50",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "huile",
+        "quantity": "6",
+        "unit": "cl",
+        "notes": "huile du bocal de tomates séchées de préférence, sinon huile d’olive"
+      },
+      {
+        "name": "levure chimique",
+        "quantity": "1",
+        "unit": "sachet",
+        "notes": ""
+      },
+      {
+        "name": "farine",
+        "quantity": "100",
+        "unit": "g",
+        "notes": ""
+      },
+      {
+        "name": "tomates séchées",
+        "quantity": "200",
+        "unit": "g",
+        "notes": "coupées en petits morceaux"
+      },
+      {
+        "name": "feta",
+        "quantity": "100",
+        "unit": "g",
+        "notes": "coupée en dés"
+      },
+      {
+        "name": "œufs",
+        "quantity": "3",
+        "unit": "",
+        "notes": ""
+      },
+      {
+        "name": "lait",
+        "quantity": "12",
+        "unit": "cl",
+        "notes": ""
+      },
+      {
+        "name": "basilic",
+        "quantity": "1",
+        "unit": "bouquet",
+        "notes": "ciselé"
+      },
+      {
+        "name": "sel",
+        "quantity": "",
+        "unit": "",
+        "notes": "à convenance"
+      },
+      {
+        "name": "poivre",
+        "quantity": "",
+        "unit": "",
+        "notes": "à convenance"
+      },
+      {
+        "name": "beurre",
+        "quantity": "un peu",
+        "unit": "",
+        "notes": "pour le moule"
+      }
+    ],
+    "sections": [
+      {
+        "title": "Préparation",
+        "steps": [
+          "Préchauffer le four à 180 °C.",
+          "Dans un saladier, mélanger la farine et la levure chimique.",
+          "Ajouter les œufs, le lait et l’huile, puis bien mélanger.",
+          "Incorporer les tomates séchées coupées en petits morceaux, le basilic ciselé, la feta coupée en dés et le gruyère râpé.",
+          "Ajouter le sel et le poivre, puis mélanger de nouveau.",
+          "Graisser le moule à cake avec le beurre, y verser la pâte et enfourner pour 40 min.",
+          "Laisser refroidir avant de démouler et de déguster."
+        ]
+      }
+    ],
+    "notes": [
+      "Pour l’huile, utiliser de préférence celle du bocal de tomates séchées ; à défaut, utiliser de l’huile d’olive."
+    ]
   }
 ]

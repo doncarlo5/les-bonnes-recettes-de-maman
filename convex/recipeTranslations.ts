@@ -107,6 +107,7 @@ const recipeCategoryTags: Record<string, string[]> = {
   "banana-bread-du-kona-inn": ["dessert", "sucre"],
   brownies: ["dessert", "sucre"],
   "cake-au-chevre-et-courgettes": ["sale"],
+  "cake-aux-tomates-sechees-et-a-la-feta": ["sale"],
   "cake-chevre-noix-olives": ["sale"],
   "cake-d-ete-tout-vert": ["sale"],
   "cake-moelleux-au-citron-de-pierre-herme": ["dessert", "sucre"],
@@ -237,6 +238,8 @@ const titleTranslations: Record<string, string> = {
   "Papillotes de cabillaud": "Cod Parcels",
   "Pâtes carbonara": "Pasta Carbonara",
   "Smoothie banane et fruits rouges": "Banana and Berry Smoothie",
+  "Cake aux tomates séchées et à la feta":
+    "Sun-Dried Tomato and Feta Loaf",
 };
 
 const descriptionTranslations: Record<string, string> = {
@@ -310,6 +313,8 @@ const descriptionTranslations: Record<string, string> = {
     "Family-style pasta carbonara with whole eggs, parmesan and smoked bacon, loosened with a little pasta cooking water if needed.",
   "Smoothie onctueux à la banane, aux fruits rouges, au fromage blanc, aux graines de chia et aux flocons d’avoine.":
     "Creamy banana and berry smoothie with fromage blanc, chia seeds and rolled oats.",
+  "Cake salé moelleux aux tomates séchées, à la feta, au basilic et au gruyère.":
+    "Moist savory loaf with sun-dried tomatoes, feta, basil and Gruyère.",
   "Gâteau macaron aux blancs d’œufs, amandes et extrait d’amande amère, servi avec une crème anglaise à la vanille.":
     "Macaron-style almond cake made with egg whites and bitter almond extract, served with vanilla custard.",
 };
@@ -363,6 +368,7 @@ const ingredientTranslations: Record<string, string> = {
   "beurre à température ambiante": "butter at room temperature",
   "bananes bien mûres": "very ripe bananas",
   banane: "banana",
+  basilic: "basil",
   "bicarbonate de soude": "baking soda",
   "bicarbonate alimentaire": "baking soda",
   "biscuits à la cuillère": "ladyfingers",
@@ -487,6 +493,7 @@ const ingredientTranslations: Record<string, string> = {
   "tomates concassées": "crushed tomatoes",
   "tomates cerises": "cherry tomatoes",
   "tomates en conserve": "canned tomatoes",
+  "tomates séchées": "sun-dried tomatoes",
   "coulis de tomates": "tomato passata",
   vanille: "vanilla",
   "vinaigre balsamique": "balsamic vinegar",
@@ -535,6 +542,9 @@ const noteTranslations: Record<string, string> = {
   haché: "chopped",
   "coupées en deux": "halved",
   "coupées en tout petits morceaux": "cut into very small pieces",
+  "coupées en petits morceaux": "cut into small pieces",
+  "coupée en dés": "diced",
+  ciselé: "finely sliced",
   "jus et zeste": "juice and zest",
   "émincé": "thinly sliced",
   "émiettée": "crumbled",
@@ -610,9 +620,25 @@ const noteTranslations: Record<string, string> = {
   "plus un peu pour servir": "plus extra for serving",
   "à réserver au cas où la sauce est trop sèche":
     "reserve in case the sauce is too dry",
+  "huile du bocal de tomates séchées de préférence, sinon huile d’olive":
+    "preferably oil from the sun-dried tomato jar, otherwise olive oil",
+  "Pour l’huile, utiliser de préférence celle du bocal de tomates séchées ; à défaut, utiliser de l’huile d’olive.":
+    "For the oil, preferably use the oil from the sun-dried tomato jar; otherwise, use olive oil.",
 };
 
 const stepTranslations: Record<string, string> = {
+  "Dans un saladier, mélanger la farine et la levure chimique.":
+    "In a mixing bowl, combine the flour and baking powder.",
+  "Ajouter les œufs, le lait et l’huile, puis bien mélanger.":
+    "Add the eggs, milk and oil, then mix well.",
+  "Incorporer les tomates séchées coupées en petits morceaux, le basilic ciselé, la feta coupée en dés et le gruyère râpé.":
+    "Fold in the chopped sun-dried tomatoes, finely sliced basil, diced feta and grated Gruyère.",
+  "Ajouter le sel et le poivre, puis mélanger de nouveau.":
+    "Add the salt and pepper, then mix again.",
+  "Graisser le moule à cake avec le beurre, y verser la pâte et enfourner pour 40 min.":
+    "Grease the loaf pan with the butter, pour in the batter and bake for 40 min.",
+  "Laisser refroidir avant de démouler et de déguster.":
+    "Let cool before unmolding and serving.",
   "Peler la banane et la couper en morceaux.":
     "Peel the banana and cut it into pieces.",
   "Verser d’abord le lait dans le mixeur, puis ajouter le fromage blanc, la banane, le miel, les graines de chia et les flocons d’avoine, dans cet ordre.":

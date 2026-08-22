@@ -215,7 +215,7 @@ describe("recipe yield localization", () => {
         ({ id: _id, ...ingredient }) => ingredient,
       ),
     ).toEqual([
-      { name: "sucre blanc", quantity: "200", unit: "g", notes: "" },
+      { name: "sucre blanc", quantity: "150", unit: "g", notes: "" },
       { name: "beurre", quantity: "115", unit: "g", notes: "ramolli" },
       {
         name: "bananes bien mûres",
@@ -264,7 +264,7 @@ describe("recipe yield localization", () => {
         ({ id: _id, ...ingredient }) => ingredient,
       ),
     ).toEqual([
-      { name: "white sugar", quantity: "200", unit: "g", notes: "" },
+      { name: "white sugar", quantity: "150", unit: "g", notes: "" },
       { name: "butter", quantity: "115", unit: "g", notes: "softened" },
       {
         name: "very ripe bananas",
@@ -888,6 +888,51 @@ describe("recipe yield localization", () => {
       "Before draining the pasta, reserve a glass of cooking water. Drain the pasta without drying it out, then return it to the hot saucepan off the heat.",
       "Immediately add the smoked bacon, then pour in the egg and parmesan mixture. Stir continuously so the residual heat coats the pasta without scrambling the eggs.",
       "If the sauce is too dry, add a little reserved cooking water. Serve immediately with extra parmesan and pepper.",
+    ]);
+  });
+
+  test("localizes Alexia's sun-dried tomato and feta loaf for six people", () => {
+    const source = recipes.find(
+      (recipe) => recipe.slug === "cake-aux-tomates-sechees-et-a-la-feta",
+    );
+    expect(source).toBeDefined();
+
+    const seeded = toSeedRecipe(source!);
+    expect(seeded).toMatchObject({
+      slug: "cake-aux-tomates-sechees-et-a-la-feta",
+      heroImageUrl:
+        "/images/recipes/cake-aux-tomates-sechees-et-a-la-feta.png",
+      categories: ["sale"],
+      legacyCategoryLabels: [],
+      referenceServings: 6,
+    });
+    expect(seeded.translations.fr).toMatchObject({
+      title: "Cake aux tomates séchées et à la feta",
+      author: "Alexia",
+      prepTime: "15 min",
+      cookTime: "40 min",
+      totalTime: "55 min",
+      temperature: "180 °C",
+      equipment: ["1 saladier", "1 moule à cake"],
+      servings: { quantity: 6, unit: "personnes" },
+    });
+    expect(seeded.translations.en).toMatchObject({
+      title: "Sun-Dried Tomato and Feta Loaf",
+      author: "Alexia",
+      description:
+        "Moist savory loaf with sun-dried tomatoes, feta, basil and Gruyère.",
+      equipment: ["1 salad bowl", "1 loaf pan"],
+      servings: { quantity: 6, unit: "people" },
+    });
+    expect(seeded.translations.en.ingredients[1]).toMatchObject({
+      name: "oil",
+      quantity: "6",
+      unit: "cl",
+      notes:
+        "preferably oil from the sun-dried tomato jar, otherwise olive oil",
+    });
+    expect(seeded.translations.en.notes).toEqual([
+      "For the oil, preferably use the oil from the sun-dried tomato jar; otherwise, use olive oil.",
     ]);
   });
 });

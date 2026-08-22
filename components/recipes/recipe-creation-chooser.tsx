@@ -104,7 +104,7 @@ function renderTrigger(variant: TriggerVariant, dict: Dictionary) {
       className={cn(
         "surface-elevated group w-full bg-card text-center transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         variant === "card"
-          ? "flex min-h-48 flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl md:min-h-80 md:gap-5 md:rounded-3xl"
+          ? "flex h-full min-h-48 flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl md:min-h-80 md:gap-5 md:rounded-3xl"
           : "grid gap-4 rounded-3xl p-4 sm:grid-cols-[11rem_1fr] sm:items-center sm:text-left",
       )}
     />
