@@ -15,10 +15,6 @@
       "author": "Virginie",
       "description": "Gâteau aux pommes avec une pâte simple et une crème versée en cours de cuisson.",
       "yieldLabel": "6 personnes",
-      "servings": {
-        "quantity": 6,
-        "unit": "personnes"
-      },
       "prepTime": "25 min",
       "cookTime": "40 min",
       "restTime": "",
@@ -236,10 +232,6 @@
       "author": "Virginie",
       "description": "Apple cake with a simple batter and a cream poured over partway through baking.",
       "yieldLabel": "6 people",
-      "servings": {
-        "quantity": 6,
-        "unit": "people"
-      },
       "prepTime": "25 min",
       "cookTime": "40 min",
       "restTime": "",

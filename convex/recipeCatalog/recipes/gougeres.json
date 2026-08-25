@@ -13,10 +13,6 @@
       "author": "Maman",
       "description": "Gougères au comté, poivre et noix de muscade.",
       "yieldLabel": "Environ 20 gougères",
-      "servings": {
-        "quantity": 20,
-        "unit": "environ"
-      },
       "prepTime": "",
       "cookTime": "30 min",
       "restTime": "",
@@ -175,10 +171,6 @@
       "author": "Maman",
       "description": "Comté gougères with pepper and nutmeg.",
       "yieldLabel": "About 20 gougères",
-      "servings": {
-        "quantity": 20,
-        "unit": "about"
-      },
       "prepTime": "",
       "cookTime": "30 min",
       "restTime": "",

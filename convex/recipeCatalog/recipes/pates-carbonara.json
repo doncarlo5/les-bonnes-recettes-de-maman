@@ -15,10 +15,6 @@
       "author": "Antoine",
       "description": "Pâtes carbonara familiales aux œufs entiers, parmesan et lardons fumés, liées avec un peu d’eau de cuisson si nécessaire.",
       "yieldLabel": "2 personnes",
-      "servings": {
-        "quantity": 2,
-        "unit": "personnes"
-      },
       "prepTime": "5 min",
       "cookTime": "15 min",
       "restTime": "",
@@ -175,10 +171,6 @@
       "author": "Antoine",
       "description": "Family-style pasta carbonara with whole eggs, parmesan and smoked bacon, loosened with a little pasta cooking water if needed.",
       "yieldLabel": "2 people",
-      "servings": {
-        "quantity": 2,
-        "unit": "people"
-      },
       "prepTime": "5 min",
       "cookTime": "15 min",
       "restTime": "",

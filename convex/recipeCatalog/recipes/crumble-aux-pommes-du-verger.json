@@ -15,10 +15,6 @@
       "author": "Maman",
       "description": "Crumble aux pommes, cassonade, poudre d’amandes, cannelle et calvados.",
       "yieldLabel": "4 à 6 personnes",
-      "servings": {
-        "quantity": 4,
-        "unit": "à 6 personnes"
-      },
       "prepTime": "15 min",
       "cookTime": "35 min",
       "restTime": "",
@@ -187,10 +183,6 @@
       "author": "Maman",
       "description": "Apple crumble with brown sugar, almond flour, cinnamon and calvados.",
       "yieldLabel": "4 to 6 people",
-      "servings": {
-        "quantity": 4,
-        "unit": "to 6 people"
-      },
       "prepTime": "15 min",
       "cookTime": "35 min",
       "restTime": "",

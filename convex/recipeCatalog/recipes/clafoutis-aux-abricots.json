@@ -15,10 +15,6 @@
       "author": "Maman",
       "description": "Clafoutis aux abricots et à la poudre d’amandes, moelleux et légèrement doré.",
       "yieldLabel": "6 personnes",
-      "servings": {
-        "quantity": 6,
-        "unit": "personnes"
-      },
       "prepTime": "",
       "cookTime": "35 à 40 min",
       "restTime": "",
@@ -232,10 +228,6 @@
       "author": "Maman",
       "description": "Soft, lightly browned apricot clafoutis made with almond flour.",
       "yieldLabel": "6 people",
-      "servings": {
-        "quantity": 6,
-        "unit": "people"
-      },
       "prepTime": "",
       "cookTime": "35 to 40 min",
       "restTime": "",

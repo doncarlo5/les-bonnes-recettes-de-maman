@@ -15,10 +15,6 @@
       "author": "Maman",
       "description": "Petits coulants au chocolat noir à servir tièdes avec une boule de glace vanille.",
       "yieldLabel": "Environ 5 coulants",
-      "servings": {
-        "quantity": 5,
-        "unit": "coulants"
-      },
       "prepTime": "",
       "cookTime": "10 min",
       "restTime": "",
@@ -186,10 +182,6 @@
       "author": "Maman",
       "description": "Small dark-chocolate lava cakes served warm with a scoop of vanilla ice cream.",
       "yieldLabel": "About 5 lava cakes",
-      "servings": {
-        "quantity": 5,
-        "unit": "lava cakes"
-      },
       "prepTime": "",
       "cookTime": "10 min",
       "restTime": "",

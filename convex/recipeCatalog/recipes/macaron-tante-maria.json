@@ -15,10 +15,6 @@
       "author": "Tante Maria",
       "description": "Gâteau macaron aux blancs d’œufs, amandes et extrait d’amande amère, servi avec une crème anglaise à la vanille.",
       "yieldLabel": "8 personnes",
-      "servings": {
-        "quantity": 8,
-        "unit": "personnes"
-      },
       "prepTime": "",
       "cookTime": "45 min",
       "restTime": "",
@@ -232,10 +228,6 @@
       "author": "Tante Maria",
       "description": "Macaron-style almond cake made with egg whites and bitter almond extract, served with vanilla custard.",
       "yieldLabel": "8 people",
-      "servings": {
-        "quantity": 8,
-        "unit": "people"
-      },
       "prepTime": "",
       "cookTime": "45 min",
       "restTime": "",

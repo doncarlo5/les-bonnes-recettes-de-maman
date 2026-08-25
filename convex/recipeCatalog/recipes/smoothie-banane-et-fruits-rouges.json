@@ -18,10 +18,6 @@
       "author": "Alexia",
       "description": "Smoothie onctueux à la banane, aux fruits rouges, au fromage blanc, aux graines de chia et aux flocons d’avoine.",
       "yieldLabel": "1 personne",
-      "servings": {
-        "quantity": 1,
-        "unit": "personne"
-      },
       "prepTime": "5 min",
       "cookTime": "",
       "restTime": "",
@@ -150,10 +146,6 @@
       "author": "Alexia",
       "description": "Creamy banana and berry smoothie with fromage blanc, chia seeds and rolled oats.",
       "yieldLabel": "1 person",
-      "servings": {
-        "quantity": 1,
-        "unit": "person"
-      },
       "prepTime": "5 min",
       "cookTime": "",
       "restTime": "",

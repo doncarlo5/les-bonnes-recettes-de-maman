@@ -15,10 +15,6 @@
       "author": "Maman",
       "description": "Salade de lentilles vertes aux tomates cerises, feta, oignon rouge et persil, assaisonnée d’une vinaigrette citronnée.",
       "yieldLabel": "4 personnes",
-      "servings": {
-        "quantity": 4,
-        "unit": "personnes"
-      },
       "prepTime": "5 min",
       "cookTime": "20 min",
       "restTime": "",
@@ -182,10 +178,6 @@
       "author": "Maman",
       "description": "Green lentil salad with cherry tomatoes, feta, red onion and parsley, dressed with a lemon vinaigrette.",
       "yieldLabel": "4 people",
-      "servings": {
-        "quantity": 4,
-        "unit": "people"
-      },
       "prepTime": "5 min",
       "cookTime": "20 min",
       "restTime": "",

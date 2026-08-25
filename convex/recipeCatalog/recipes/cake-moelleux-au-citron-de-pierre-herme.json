@@ -15,10 +15,6 @@
       "author": "Pierre Hermé",
       "description": "Cake moelleux au citron imbibé d’un sirop citronné.",
       "yieldLabel": "1 cake",
-      "servings": {
-        "quantity": 1,
-        "unit": "cake"
-      },
       "prepTime": "10 min",
       "cookTime": "60 min",
       "restTime": "",
@@ -277,10 +273,6 @@
       "author": "Pierre Hermé",
       "description": "Moist lemon loaf cake soaked with lemon syrup.",
       "yieldLabel": "1 loaf",
-      "servings": {
-        "quantity": 1,
-        "unit": "loaf"
-      },
       "prepTime": "10 min",
       "cookTime": "60 min",
       "restTime": "",

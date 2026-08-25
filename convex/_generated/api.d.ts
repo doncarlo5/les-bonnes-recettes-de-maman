@@ -17,6 +17,7 @@ import type * as http from "../http.js";
 import type * as migrations from "../migrations.js";
 import type * as recipeCatalog_index from "../recipeCatalog/index.js";
 import type * as recipeCatalog_rawCatalog from "../recipeCatalog/rawCatalog.js";
+import type * as recipeCatalog_validation from "../recipeCatalog/validation.js";
 import type * as recipeIdeaAdmin from "../recipeIdeaAdmin.js";
 import type * as recipeIdeaMaintenance from "../recipeIdeaMaintenance.js";
 import type * as recipeIdeas from "../recipeIdeas.js";
@@ -40,6 +41,7 @@ declare const fullApi: ApiFromModules<{
   migrations: typeof migrations;
   "recipeCatalog/index": typeof recipeCatalog_index;
   "recipeCatalog/rawCatalog": typeof recipeCatalog_rawCatalog;
+  "recipeCatalog/validation": typeof recipeCatalog_validation;
   recipeIdeaAdmin: typeof recipeIdeaAdmin;
   recipeIdeaMaintenance: typeof recipeIdeaMaintenance;
   recipeIdeas: typeof recipeIdeas;

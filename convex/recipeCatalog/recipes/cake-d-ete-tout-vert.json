@@ -13,10 +13,6 @@
       "author": "Maman",
       "description": "Cake salé aux herbes, pesto ou tapenade verte, gruyère et noisettes.",
       "yieldLabel": "1 moule tablette ou 12 mini cakes",
-      "servings": {
-        "quantity": 1,
-        "unit": "moule tablette ou 12 mini cakes"
-      },
       "prepTime": "",
       "cookTime": "30 à 40 min selon le format",
       "restTime": "",
@@ -223,10 +219,6 @@
       "author": "Maman",
       "description": "Savory herb loaf with green pesto or tapenade, Gruyère and hazelnuts.",
       "yieldLabel": "1 tablet pan or 12 mini loaves",
-      "servings": {
-        "quantity": 1,
-        "unit": "tablet pan or 12 mini loaves"
-      },
       "prepTime": "",
       "cookTime": "30 to 40 min depending on size",
       "restTime": "",

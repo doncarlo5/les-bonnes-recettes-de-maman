@@ -6,7 +6,7 @@ let references = 0;
 
 for (const recipe of recipeCatalog) {
   for (const section of recipe.translations.fr.sections) {
-    for (const step of section.stepDetails ?? []) {
+    for (const step of section.steps) {
       steps += 1;
       if (step.ingredientUses.length > 0) enrichedSteps += 1;
       references += step.ingredientUses.length;

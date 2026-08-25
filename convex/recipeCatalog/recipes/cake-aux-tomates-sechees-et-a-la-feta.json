@@ -14,10 +14,6 @@
       "author": "Alexia",
       "description": "Cake salé moelleux aux tomates séchées, à la feta, au basilic et au gruyère.",
       "yieldLabel": "6 personnes",
-      "servings": {
-        "quantity": 6,
-        "unit": "personnes"
-      },
       "prepTime": "15 min",
       "cookTime": "40 min",
       "restTime": "",
@@ -207,10 +203,6 @@
       "author": "Alexia",
       "description": "Moist savory loaf with sun-dried tomatoes, feta, basil and Gruyère.",
       "yieldLabel": "6 people",
-      "servings": {
-        "quantity": 6,
-        "unit": "people"
-      },
       "prepTime": "15 min",
       "cookTime": "40 min",
       "restTime": "",

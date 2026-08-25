@@ -15,10 +15,6 @@
       "author": "Maman",
       "description": "Flan au lait concentré sucré cuit au bain-marie avec caramel.",
       "yieldLabel": "6 personnes",
-      "servings": {
-        "quantity": 6,
-        "unit": "personnes"
-      },
       "prepTime": "",
       "cookTime": "30 à 45 min",
       "restTime": "",
@@ -151,10 +147,6 @@
       "author": "Maman",
       "description": "Sweetened condensed milk flan baked in a water bath with caramel.",
       "yieldLabel": "6 people",
-      "servings": {
-        "quantity": 6,
-        "unit": "people"
-      },
       "prepTime": "",
       "cookTime": "30 to 45 min",
       "restTime": "",

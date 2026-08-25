@@ -15,10 +15,6 @@
       "author": "Maman",
       "description": "Cocottes de cabillaud aux courgettes, curry, crème liquide et parmesan.",
       "yieldLabel": "6 personnes",
-      "servings": {
-        "quantity": 6,
-        "unit": "personnes"
-      },
       "prepTime": "20 min",
       "cookTime": "30 min",
       "restTime": "",
@@ -246,10 +242,6 @@
       "author": "Maman",
       "description": "Small cocottes of cod with zucchini, curry, cream and parmesan.",
       "yieldLabel": "6 people",
-      "servings": {
-        "quantity": 6,
-        "unit": "people"
-      },
       "prepTime": "20 min",
       "cookTime": "30 min",
       "restTime": "",

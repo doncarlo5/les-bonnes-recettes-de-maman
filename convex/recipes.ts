@@ -11,6 +11,7 @@ import type { Doc, Id } from "./_generated/dataModel";
 import {
   recipeCatalog,
   selectCatalogRecipes,
+  type CatalogRecipe,
 } from "./recipeCatalog";
 import {
   assertRecipeDraftBytes,
@@ -168,6 +169,8 @@ const openverseImageCreditValidator = v.object({
   attribution: v.string(),
   alt: v.string(),
 });
+
+const storedRecipeCatalog = recipeCatalog.map(toStoredCatalogRecipe);
 
 const referenceServingsResetSlugs = new Set([
   "amandin",
@@ -870,7 +873,9 @@ export const seed = mutation({
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
 
-    const selectedRecipes = selectCatalogRecipes(args.slug);
+    const selectedRecipes = selectCatalogRecipes(args.slug).map(
+      toStoredCatalogRecipe,
+    );
 
     return syncSeedRecipes(ctx, selectedRecipes, false);
   },
@@ -881,7 +886,7 @@ export const syncProduction = mutation({
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
     const [result, removals] = await Promise.all([
-      syncSeedRecipes(ctx, recipeCatalog, true),
+      syncSeedRecipes(ctx, storedRecipeCatalog, true),
       Promise.all(
         obsoleteRecipeSlugs.map((slug) =>
           removeRecipeBySlugIfPresent(ctx, slug),
@@ -900,7 +905,9 @@ export const syncProductionRecipe = mutation({
   },
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
-    const selectedRecipes = selectCatalogRecipes(args.slug);
+    const selectedRecipes = selectCatalogRecipes(args.slug).map(
+      toStoredCatalogRecipe,
+    );
 
     return syncSeedRecipes(ctx, selectedRecipes, true);
   },
@@ -908,7 +915,7 @@ export const syncProductionRecipe = mutation({
 
 async function syncSeedRecipes(
   ctx: MutationCtx,
-  selectedRecipes: readonly (typeof recipeCatalog)[number][],
+  selectedRecipes: readonly (typeof storedRecipeCatalog)[number][],
   publish: boolean,
 ) {
   const changes = await Promise.all(
@@ -1013,6 +1020,15 @@ async function syncSeedRecipes(
     inserted: changes.filter((change) => change === "inserted").length,
     updated: changes.filter((change) => change === "updated").length,
     total: selectedRecipes.length,
+  };
+}
+
+function toStoredCatalogRecipe(source: CatalogRecipe) {
+  return {
+    ...source,
+    translations: toStoredTranslations(source.translations),
+    tags: toLegacyTags(source.categories, source.legacyCategoryLabels),
+    status: "published" as const,
   };
 }
 

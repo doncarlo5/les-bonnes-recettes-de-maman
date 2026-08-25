@@ -17,10 +17,6 @@
       "author": "Maman",
       "description": "Dessert glacé en moule couronne à base d’œufs, crème fraîche et meringues.",
       "yieldLabel": "8 personnes",
-      "servings": {
-        "quantity": 8,
-        "unit": "personnes"
-      },
       "prepTime": "20 min",
       "cookTime": "",
       "restTime": "3 h au congélateur",
@@ -158,10 +154,6 @@
       "author": "Maman",
       "description": "Frozen ring-mold dessert made with eggs, crème fraîche and meringues.",
       "yieldLabel": "8 people",
-      "servings": {
-        "quantity": 8,
-        "unit": "people"
-      },
       "prepTime": "20 min",
       "cookTime": "",
       "restTime": "3 h in the freezer",

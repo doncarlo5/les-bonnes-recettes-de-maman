@@ -17,10 +17,6 @@
       "author": "Maman",
       "description": "Osso buco de jarret de veau aux tomates, carottes, vin blanc et bouquet garni.",
       "yieldLabel": "4 personnes",
-      "servings": {
-        "quantity": 4,
-        "unit": "personnes"
-      },
       "prepTime": "",
       "cookTime": "45 min",
       "restTime": "",
@@ -179,10 +175,6 @@
       "author": "Maman",
       "description": "Veal shank osso buco with tomatoes, carrots, white wine and a bouquet garni.",
       "yieldLabel": "4 people",
-      "servings": {
-        "quantity": 4,
-        "unit": "people"
-      },
       "prepTime": "",
       "cookTime": "45 min",
       "restTime": "",

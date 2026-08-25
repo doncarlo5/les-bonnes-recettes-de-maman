@@ -1,9 +1,34 @@
+import { readdirSync } from "node:fs";
 import { describe, expect, test } from "vitest";
 import { recipeCatalog } from "./recipeCatalog";
+import { rawRecipeCatalog } from "./recipeCatalog/rawCatalog";
+import { loadCatalogSources } from "./recipeCatalog/validation";
 
 const recipes = recipeCatalog;
 
 describe("bilingual recipe catalog", () => {
+  test("keeps the generated manifest aligned with every recipe filename", () => {
+    const filenames = readdirSync(
+      new URL("./recipeCatalog/recipes", import.meta.url),
+    )
+      .filter((filename) => filename.endsWith(".json"))
+      .sort();
+
+    expect(rawRecipeCatalog.map(({ sourcePath }) => sourcePath)).toEqual(
+      filenames.map((filename) => `./recipes/${filename}`),
+    );
+  });
+
+  test("rejects a manifest path that disagrees with the embedded slug", () => {
+    const [entry] = rawRecipeCatalog;
+
+    expect(() =>
+      loadCatalogSources([
+        { ...entry, sourcePath: "./recipes/not-the-embedded-slug.json" },
+      ]),
+    ).toThrow("Catalog file slug not-the-embedded-slug");
+  });
+
   test("loads every recipe with explicit French and English content", () => {
     for (const recipe of recipes) {
       const french = recipe.translations.fr;
@@ -34,7 +59,7 @@ describe("bilingual recipe catalog", () => {
     expect(source).toBeDefined();
 
     const seeded = source!;
-    expect(seeded.tags).toEqual(["sucre"]);
+    expect(seeded.categories).toEqual(["sucre"]);
     expect(seeded.heroImageUrl).toBe("/images/recipes/soupe-de-champagne.png");
     expect(seeded.referenceServings).toBeUndefined();
 
@@ -43,7 +68,6 @@ describe("bilingual recipe catalog", () => {
       author: "Fabrice",
       yieldLabel: "Environ 1 litre",
       prepTime: "5 min",
-      servings: null,
     });
     expect(
       seeded.translations.fr.ingredients.map(({ name, quantity, unit }) => ({
@@ -58,7 +82,9 @@ describe("bilingual recipe catalog", () => {
       { name: "Canadou", quantity: "5 à 7", unit: "cl" },
       { name: "glaçons", quantity: "", unit: "" },
     ]);
-    expect(seeded.translations.fr.sections[0]?.steps).toEqual([
+    expect(
+      seeded.translations.fr.sections[0]?.steps.map(({ text }) => text),
+    ).toEqual([
       "Placer tous les ingrédients au réfrigérateur à l’avance afin qu’ils soient bien frais.",
       "Dans un saladier, mélanger le Cointreau, le Pulco Citron et le Canadou.",
       "Au dernier moment, ajouter le crémant de Loire.",
@@ -81,7 +107,6 @@ describe("bilingual recipe catalog", () => {
       author: "Fabrice",
       yieldLabel: "About 1 litre",
       prepTime: "5 min",
-      servings: null,
     });
     expect(
       seeded.translations.en.ingredients.map(({ name, quantity }) => ({
@@ -95,7 +120,9 @@ describe("bilingual recipe catalog", () => {
       { name: "Canadou", quantity: "5 to 7" },
       { name: "ice cubes", quantity: "" },
     ]);
-    expect(seeded.translations.en.sections[0]?.steps).toEqual([
+    expect(
+      seeded.translations.en.sections[0]?.steps.map(({ text }) => text),
+    ).toEqual([
       "Chill all the ingredients in advance so they are very cold.",
       "In a punch bowl, combine the Cointreau, Pulco Citron and Canadou.",
       "At the last moment, add the Loire Valley Crémant.",
@@ -128,7 +155,6 @@ describe("bilingual recipe catalog", () => {
       cookTime: "10 min",
       totalTime: "≈ 1 h",
       temperature: "180 °C",
-      servings: null,
     });
     expect(seeded.translations.en).toMatchObject({
       title: "Chocolate Chip Cookies with Fleur de Sel",
@@ -140,7 +166,6 @@ describe("bilingual recipe catalog", () => {
       cookTime: "10 min",
       totalTime: "≈ 1 h",
       temperature: "180 °C",
-      servings: null,
     });
     expect(
       seeded.translations.en.ingredients.map(({ name, notes }) => ({
@@ -167,7 +192,9 @@ describe("bilingual recipe catalog", () => {
       "Cooling",
     ]);
     expect(
-      seeded.translations.en.sections.flatMap(({ steps }) => steps),
+      seeded.translations.en.sections.flatMap(({ steps }) =>
+        steps.map(({ text }) => text),
+      ),
     ).toEqual([
       "In a bowl, combine the flour, baking soda, baking powder and salt.",
       "Melt the butter over medium heat, then pour it into a large bowl.",
@@ -197,7 +224,6 @@ describe("bilingual recipe catalog", () => {
       title: "Banana bread",
       author: "Mary McHale",
       yieldLabel: "1 cake",
-      servings: null,
       prepTime: "20 min",
       cookTime: "45 à 60 min",
       temperature: "175 °C",
@@ -249,7 +275,6 @@ describe("bilingual recipe catalog", () => {
       title: "Banana Bread",
       author: "Mary McHale",
       yieldLabel: "1 loaf",
-      servings: null,
     });
     expect(
       seeded.translations.en.ingredients.map(
@@ -289,7 +314,9 @@ describe("bilingual recipe catalog", () => {
       "Crunchy Pecan Topping (Optional)",
     ]);
     expect(
-      seeded.translations.en.sections.flatMap(({ steps }) => steps),
+      seeded.translations.en.sections.flatMap(({ steps }) =>
+        steps.map(({ text }) => text),
+      ),
     ).toEqual([
       "Preheat the oven to 175 °C.",
       "Beat the softened butter and sugar until light and fluffy.",
@@ -326,7 +353,6 @@ describe("bilingual recipe catalog", () => {
       prepTime: "5 min",
       cookTime: "",
       totalTime: "5 min",
-      servings: null,
     });
     expect(
       seeded.translations.fr.ingredients.map(
@@ -363,7 +389,6 @@ describe("bilingual recipe catalog", () => {
       prepTime: "5 min",
       cookTime: "",
       totalTime: "5 min",
-      servings: null,
     });
     expect(
       seeded.translations.en.ingredients.map(
@@ -382,7 +407,9 @@ describe("bilingual recipe catalog", () => {
       { name: "salt", quantity: "", unit: "", notes: "to taste" },
       { name: "pepper", quantity: "", unit: "", notes: "to taste" },
     ]);
-    expect(seeded.translations.en.sections[0]?.steps).toEqual([
+    expect(
+      seeded.translations.en.sections[0]?.steps.map(({ text }) => text),
+    ).toEqual([
       "Place the Dijon mustard and egg yolk in the blender bowl, then blend.",
       "Keep blending while gradually pouring in the sunflower oil in a thin stream, until the mayonnaise is well emulsified.",
       "Add a few drops of balsamic vinegar, then season with salt and pepper to taste. Blend once more until smooth.",
@@ -412,7 +439,6 @@ describe("bilingual recipe catalog", () => {
       cookTime: "35 à 40 min",
       temperature: "180 °C",
       equipment: ["1 plat à gratin ou 1 moule de 24 cm"],
-      servings: { quantity: 6, unit: "personnes" },
     });
     expect(seeded.translations.en).toMatchObject({
       title: "Apricot Clafoutis",
@@ -423,7 +449,6 @@ describe("bilingual recipe catalog", () => {
       cookTime: "35 to 40 min",
       temperature: "180 °C",
       equipment: ["1 baking dish or 1 24 cm round pan"],
-      servings: { quantity: 6, unit: "people" },
     });
     expect(
       seeded.translations.en.ingredients.map(
@@ -468,7 +493,9 @@ describe("bilingual recipe catalog", () => {
       },
     ]);
     expect(
-      seeded.translations.en.sections.flatMap(({ steps }) => steps),
+      seeded.translations.en.sections.flatMap(({ steps }) =>
+        steps.map(({ text }) => text),
+      ),
     ).toEqual([
       "Preheat the oven to 180 °C.",
       "Butter a baking dish or a pan about 24 cm in diameter.",
@@ -502,7 +529,6 @@ describe("bilingual recipe catalog", () => {
       cookTime: "40 min",
       temperature: "feu doux",
       equipment: ["1 poêle"],
-      servings: null,
     });
     expect(seeded.translations.en).toMatchObject({
       title: "Bolognese Sauce",
@@ -510,7 +536,6 @@ describe("bilingual recipe catalog", () => {
       cookTime: "40 min",
       temperature: "low heat",
       equipment: ["1 frying pan"],
-      servings: null,
     });
     expect(
       seeded.translations.en.ingredients.map(
@@ -529,7 +554,9 @@ describe("bilingual recipe catalog", () => {
       { name: "salt", quantity: "", unit: "", notes: "to taste" },
       { name: "pepper", quantity: "", unit: "", notes: "to taste" },
     ]);
-    expect(seeded.translations.en.sections[0]?.steps).toEqual([
+    expect(
+      seeded.translations.en.sections[0]?.steps.map(({ text }) => text),
+    ).toEqual([
       "Peel the garlic and onion.",
       "Heat a little oil in a frying pan. Add the onion, garlic and chopped parsley along with the carrot cut into very small dice, then cook gently over low heat.",
       "Add the ground beef and ham, then brown for about 10 minutes.",
@@ -589,7 +616,11 @@ describe("bilingual recipe catalog", () => {
         "Vegetarian lasagna with ratatouille, béchamel and grated cheeses.",
       yieldLabel: "1 dish",
     });
-    expect(seededVegetarian.translations.en.sections[0]?.steps).toContain(
+    expect(
+      seededVegetarian.translations.en.sections[0]?.steps.map(
+        ({ text }) => text,
+      ),
+    ).toContain(
       "Use a ratatouille that is not too liquid so the lasagna holds together well.",
     );
   });
@@ -615,7 +646,6 @@ describe("bilingual recipe catalog", () => {
       prepTime: "5 min",
       cookTime: "20 min",
       totalTime: "25 min",
-      servings: { quantity: 4, unit: "personnes" },
     });
     expect(seeded.translations.en).toMatchObject({
       title: "Lentil Salad",
@@ -624,7 +654,6 @@ describe("bilingual recipe catalog", () => {
         "Green lentil salad with cherry tomatoes, feta, red onion and parsley, dressed with a lemon vinaigrette.",
       yieldLabel: "4 people",
       equipment: ["1 saucepan", "1 small bowl", "1 salad bowl"],
-      servings: { quantity: 4, unit: "people" },
     });
     expect(
       seeded.translations.en.ingredients.map(
@@ -668,7 +697,9 @@ describe("bilingual recipe catalog", () => {
       { name: "salt", quantity: "", unit: "", notes: "to taste" },
       { name: "pepper", quantity: "", unit: "", notes: "to taste" },
     ]);
-    expect(seeded.translations.en.sections[0]?.steps).toEqual([
+    expect(
+      seeded.translations.en.sections[0]?.steps.map(({ text }) => text),
+    ).toEqual([
       "Cook the lentils according to the package directions. Drain, rinse and leave to cool.",
       "Meanwhile, make the vinaigrette: in a small bowl, whisk the juice and zest of half a lemon with the olive oil, garlic, oregano, salt and pepper. Set aside.",
       "Cut the cherry tomatoes into very small pieces. In a salad bowl, combine them with the lentils, parsley, red onion and feta. Add the vinaigrette and toss gently.",
@@ -701,7 +732,6 @@ describe("bilingual recipe catalog", () => {
         "1 moule rectangulaire de 25 × 18 cm ou 1 moule carré équivalent",
         "papier sulfurisé",
       ],
-      servings: null,
     });
     expect(seeded.translations.en).toMatchObject({
       title: "Brownies",
@@ -715,7 +745,6 @@ describe("bilingual recipe catalog", () => {
         "1 rectangular 25 × 18 cm baking pan or equivalent square pan",
         "parchment paper",
       ],
-      servings: null,
     });
     expect(
       seeded.translations.en.ingredients.map(
@@ -732,7 +761,9 @@ describe("bilingual recipe catalog", () => {
       { name: "walnuts", quantity: "60", unit: "g", notes: "" },
     ]);
     expect(
-      seeded.translations.en.sections.flatMap(({ steps }) => steps),
+      seeded.translations.en.sections.flatMap(({ steps }) =>
+        steps.map(({ text }) => text),
+      ),
     ).toEqual([
       "Preheat the oven to 180 °C and line the baking pan with parchment paper.",
       "Melt the dark chocolate with the butter.",
@@ -765,7 +796,6 @@ describe("bilingual recipe catalog", () => {
       cookTime: "30 min",
       temperature: "180 °C",
       equipment: ["papier sulfurisé", "agrafeuse", "saucier SEB", "fourchette"],
-      servings: null,
     });
     expect(seeded.translations.fr.ingredients[1]?.unit).toBe("c. à café");
     expect(seeded.translations.fr.ingredients[7]?.unit).toBe("c. à café");
@@ -777,7 +807,6 @@ describe("bilingual recipe catalog", () => {
       cookTime: "30 min",
       temperature: "180 °C",
       equipment: ["parchment paper", "stapler", "SEB sauce maker", "fork"],
-      servings: null,
     });
     expect(
       seeded.translations.en.ingredients.map(
@@ -816,7 +845,9 @@ describe("bilingual recipe catalog", () => {
       },
     ]);
     expect(
-      seeded.translations.en.sections.flatMap(({ steps }) => steps),
+      seeded.translations.en.sections.flatMap(({ steps }) =>
+        steps.map(({ text }) => text),
+      ),
     ).toEqual([
       "Preheat the oven to 180 °C.",
       "Place the cod on parchment paper. Add 1 tsp lemon juice and 1 tsp olive oil, then season with salt, pepper and parsley or cilantro.",
@@ -867,7 +898,6 @@ describe("bilingual recipe catalog", () => {
       prepTime: "5 min",
       cookTime: "15 min",
       totalTime: "20 min",
-      servings: { quantity: 2, unit: "personnes" },
     });
     expect(seeded.translations.en).toMatchObject({
       title: "Pasta Carbonara",
@@ -875,7 +905,6 @@ describe("bilingual recipe catalog", () => {
       description:
         "Family-style pasta carbonara with whole eggs, parmesan and smoked bacon, loosened with a little pasta cooking water if needed.",
       equipment: ["1 large saucepan", "1 frying pan", "1 bowl", "1 glass"],
-      servings: { quantity: 2, unit: "people" },
     });
     expect(
       seeded.translations.en.ingredients.map(
@@ -911,7 +940,9 @@ describe("bilingual recipe catalog", () => {
       { name: "pepper", quantity: "", unit: "", notes: "to taste" },
     ]);
     expect(
-      seeded.translations.en.sections.flatMap(({ steps }) => steps),
+      seeded.translations.en.sections.flatMap(({ steps }) =>
+        steps.map(({ text }) => text),
+      ),
     ).toEqual([
       "Cook the pasta in a large saucepan of salted boiling water according to the package directions.",
       "Meanwhile, brown the smoked bacon lardons in a frying pan.",
@@ -944,7 +975,6 @@ describe("bilingual recipe catalog", () => {
       totalTime: "55 min",
       temperature: "180 °C",
       equipment: ["1 saladier", "1 moule à cake"],
-      servings: { quantity: 6, unit: "personnes" },
     });
     expect(seeded.translations.en).toMatchObject({
       title: "Sun-Dried Tomato and Feta Loaf",
@@ -952,7 +982,6 @@ describe("bilingual recipe catalog", () => {
       description:
         "Moist savory loaf with sun-dried tomatoes, feta, basil and Gruyère.",
       equipment: ["1 salad bowl", "1 loaf pan"],
-      servings: { quantity: 6, unit: "people" },
     });
     expect(seeded.translations.en.ingredients[1]).toMatchObject({
       name: "oil",
