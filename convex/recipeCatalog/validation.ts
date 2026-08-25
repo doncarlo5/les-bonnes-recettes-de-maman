@@ -75,21 +75,31 @@ type RawCatalogEntry = {
   readonly recipe: unknown;
 };
 
-export function loadCatalogSources(entries: readonly RawCatalogEntry[]) {
-  const sources = entries.map(({ sourcePath, recipe }) => {
-    const filenameMatch = sourcePath.match(/\/([^/]+)\.json$/);
-    if (!filenameMatch) {
-      throw new Error(`Invalid catalog recipe path: ${sourcePath}`);
-    }
-    const source = catalogRecipeSchema.parse(recipe);
-    const expectedSlug = filenameMatch[1];
-    if (source.slug !== expectedSlug) {
-      throw new Error(
-        `Catalog file slug ${expectedSlug} contains recipe ${source.slug}`,
-      );
-    }
-    return source;
-  });
+type RawCatalogIndex = Readonly<Record<string, RawCatalogEntry>>;
+
+export function loadCatalogSources(entries: RawCatalogIndex) {
+  const sources = Object.entries(entries).map(
+    ([indexSlug, { sourcePath, recipe }]) => {
+      recipeSlugSchema.parse(indexSlug);
+      const filenameMatch = sourcePath.match(/\/([^/]+)\.json$/);
+      if (!filenameMatch) {
+        throw new Error(`Invalid catalog recipe path: ${sourcePath}`);
+      }
+      const source = catalogRecipeSchema.parse(recipe);
+      const filenameSlug = filenameMatch[1];
+      if (indexSlug !== filenameSlug) {
+        throw new Error(
+          `Catalog index slug ${indexSlug} does not match file slug ${filenameSlug}`,
+        );
+      }
+      if (source.slug !== indexSlug) {
+        throw new Error(
+          `Catalog index slug ${indexSlug} contains recipe ${source.slug}`,
+        );
+      }
+      return source;
+    },
+  );
   const slugs = new Set<string>();
 
   for (const source of sources) {

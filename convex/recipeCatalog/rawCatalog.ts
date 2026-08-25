@@ -38,43 +38,157 @@ import recipe35 from "./recipes/tiramisu.json";
 import recipe36 from "./recipes/vacherin.json";
 import recipe37 from "./recipes/veloute-de-courgettes.json";
 
-export const rawRecipeCatalog = [
-  { sourcePath: "./recipes/amandin.json", recipe: recipe0 },
-  { sourcePath: "./recipes/banana-bread-du-kona-inn.json", recipe: recipe1 },
-  { sourcePath: "./recipes/brownies.json", recipe: recipe2 },
-  { sourcePath: "./recipes/cake-au-chevre-et-courgettes.json", recipe: recipe3 },
-  { sourcePath: "./recipes/cake-aux-tomates-sechees-et-a-la-feta.json", recipe: recipe4 },
-  { sourcePath: "./recipes/cake-chevre-noix-olives.json", recipe: recipe5 },
-  { sourcePath: "./recipes/cake-d-ete-tout-vert.json", recipe: recipe6 },
-  { sourcePath: "./recipes/cake-moelleux-au-citron-de-pierre-herme.json", recipe: recipe7 },
-  { sourcePath: "./recipes/cake-orange.json", recipe: recipe8 },
-  { sourcePath: "./recipes/clafoutis-aux-abricots.json", recipe: recipe9 },
-  { sourcePath: "./recipes/clafoutis-poires-et-framboises.json", recipe: recipe10 },
-  { sourcePath: "./recipes/cocotte-de-cabillaud-aux-courgettes-et-curry.json", recipe: recipe11 },
-  { sourcePath: "./recipes/cookies-aux-pepites-de-chocolat-et-fleur-de-sel.json", recipe: recipe12 },
-  { sourcePath: "./recipes/coulants-au-chocolat.json", recipe: recipe13 },
-  { sourcePath: "./recipes/crumble-aux-pommes-du-verger.json", recipe: recipe14 },
-  { sourcePath: "./recipes/flan-au-lait-concentre-sucre-nestle.json", recipe: recipe15 },
-  { sourcePath: "./recipes/gateau-au-chocolat.json", recipe: recipe16 },
-  { sourcePath: "./recipes/gateau-au-citron.json", recipe: recipe17 },
-  { sourcePath: "./recipes/gateau-aux-pommes.json", recipe: recipe18 },
-  { sourcePath: "./recipes/gougeres.json", recipe: recipe19 },
-  { sourcePath: "./recipes/lasagnes-vegetariennes.json", recipe: recipe20 },
-  { sourcePath: "./recipes/lasagnes.json", recipe: recipe21 },
-  { sourcePath: "./recipes/macaron-tante-maria.json", recipe: recipe22 },
-  { sourcePath: "./recipes/mayonnaise.json", recipe: recipe23 },
-  { sourcePath: "./recipes/osso-buco.json", recipe: recipe24 },
-  { sourcePath: "./recipes/pain-de-poisson.json", recipe: recipe25 },
-  { sourcePath: "./recipes/papillotes-de-cabillaud.json", recipe: recipe26 },
-  { sourcePath: "./recipes/pate-feuilletee-maman.json", recipe: recipe27 },
-  { sourcePath: "./recipes/pate-sucree-de-pierre-herme.json", recipe: recipe28 },
-  { sourcePath: "./recipes/pates-carbonara.json", recipe: recipe29 },
-  { sourcePath: "./recipes/salade-de-lentilles.json", recipe: recipe30 },
-  { sourcePath: "./recipes/sauce-bolognaise.json", recipe: recipe31 },
-  { sourcePath: "./recipes/smoothie-banane-et-fruits-rouges.json", recipe: recipe32 },
-  { sourcePath: "./recipes/soupe-de-champagne.json", recipe: recipe33 },
-  { sourcePath: "./recipes/tarte-aux-amandes-et-confiture-de-framboises.json", recipe: recipe34 },
-  { sourcePath: "./recipes/tiramisu.json", recipe: recipe35 },
-  { sourcePath: "./recipes/vacherin.json", recipe: recipe36 },
-  { sourcePath: "./recipes/veloute-de-courgettes.json", recipe: recipe37 },
-] as const;
+export const rawRecipeCatalog = {
+  "amandin": {
+    sourcePath: "./recipes/amandin.json",
+    recipe: recipe0,
+  },
+  "banana-bread-du-kona-inn": {
+    sourcePath: "./recipes/banana-bread-du-kona-inn.json",
+    recipe: recipe1,
+  },
+  "brownies": {
+    sourcePath: "./recipes/brownies.json",
+    recipe: recipe2,
+  },
+  "cake-au-chevre-et-courgettes": {
+    sourcePath: "./recipes/cake-au-chevre-et-courgettes.json",
+    recipe: recipe3,
+  },
+  "cake-aux-tomates-sechees-et-a-la-feta": {
+    sourcePath: "./recipes/cake-aux-tomates-sechees-et-a-la-feta.json",
+    recipe: recipe4,
+  },
+  "cake-chevre-noix-olives": {
+    sourcePath: "./recipes/cake-chevre-noix-olives.json",
+    recipe: recipe5,
+  },
+  "cake-d-ete-tout-vert": {
+    sourcePath: "./recipes/cake-d-ete-tout-vert.json",
+    recipe: recipe6,
+  },
+  "cake-moelleux-au-citron-de-pierre-herme": {
+    sourcePath: "./recipes/cake-moelleux-au-citron-de-pierre-herme.json",
+    recipe: recipe7,
+  },
+  "cake-orange": {
+    sourcePath: "./recipes/cake-orange.json",
+    recipe: recipe8,
+  },
+  "clafoutis-aux-abricots": {
+    sourcePath: "./recipes/clafoutis-aux-abricots.json",
+    recipe: recipe9,
+  },
+  "clafoutis-poires-et-framboises": {
+    sourcePath: "./recipes/clafoutis-poires-et-framboises.json",
+    recipe: recipe10,
+  },
+  "cocotte-de-cabillaud-aux-courgettes-et-curry": {
+    sourcePath: "./recipes/cocotte-de-cabillaud-aux-courgettes-et-curry.json",
+    recipe: recipe11,
+  },
+  "cookies-aux-pepites-de-chocolat-et-fleur-de-sel": {
+    sourcePath: "./recipes/cookies-aux-pepites-de-chocolat-et-fleur-de-sel.json",
+    recipe: recipe12,
+  },
+  "coulants-au-chocolat": {
+    sourcePath: "./recipes/coulants-au-chocolat.json",
+    recipe: recipe13,
+  },
+  "crumble-aux-pommes-du-verger": {
+    sourcePath: "./recipes/crumble-aux-pommes-du-verger.json",
+    recipe: recipe14,
+  },
+  "flan-au-lait-concentre-sucre-nestle": {
+    sourcePath: "./recipes/flan-au-lait-concentre-sucre-nestle.json",
+    recipe: recipe15,
+  },
+  "gateau-au-chocolat": {
+    sourcePath: "./recipes/gateau-au-chocolat.json",
+    recipe: recipe16,
+  },
+  "gateau-au-citron": {
+    sourcePath: "./recipes/gateau-au-citron.json",
+    recipe: recipe17,
+  },
+  "gateau-aux-pommes": {
+    sourcePath: "./recipes/gateau-aux-pommes.json",
+    recipe: recipe18,
+  },
+  "gougeres": {
+    sourcePath: "./recipes/gougeres.json",
+    recipe: recipe19,
+  },
+  "lasagnes-vegetariennes": {
+    sourcePath: "./recipes/lasagnes-vegetariennes.json",
+    recipe: recipe20,
+  },
+  "lasagnes": {
+    sourcePath: "./recipes/lasagnes.json",
+    recipe: recipe21,
+  },
+  "macaron-tante-maria": {
+    sourcePath: "./recipes/macaron-tante-maria.json",
+    recipe: recipe22,
+  },
+  "mayonnaise": {
+    sourcePath: "./recipes/mayonnaise.json",
+    recipe: recipe23,
+  },
+  "osso-buco": {
+    sourcePath: "./recipes/osso-buco.json",
+    recipe: recipe24,
+  },
+  "pain-de-poisson": {
+    sourcePath: "./recipes/pain-de-poisson.json",
+    recipe: recipe25,
+  },
+  "papillotes-de-cabillaud": {
+    sourcePath: "./recipes/papillotes-de-cabillaud.json",
+    recipe: recipe26,
+  },
+  "pate-feuilletee-maman": {
+    sourcePath: "./recipes/pate-feuilletee-maman.json",
+    recipe: recipe27,
+  },
+  "pate-sucree-de-pierre-herme": {
+    sourcePath: "./recipes/pate-sucree-de-pierre-herme.json",
+    recipe: recipe28,
+  },
+  "pates-carbonara": {
+    sourcePath: "./recipes/pates-carbonara.json",
+    recipe: recipe29,
+  },
+  "salade-de-lentilles": {
+    sourcePath: "./recipes/salade-de-lentilles.json",
+    recipe: recipe30,
+  },
+  "sauce-bolognaise": {
+    sourcePath: "./recipes/sauce-bolognaise.json",
+    recipe: recipe31,
+  },
+  "smoothie-banane-et-fruits-rouges": {
+    sourcePath: "./recipes/smoothie-banane-et-fruits-rouges.json",
+    recipe: recipe32,
+  },
+  "soupe-de-champagne": {
+    sourcePath: "./recipes/soupe-de-champagne.json",
+    recipe: recipe33,
+  },
+  "tarte-aux-amandes-et-confiture-de-framboises": {
+    sourcePath: "./recipes/tarte-aux-amandes-et-confiture-de-framboises.json",
+    recipe: recipe34,
+  },
+  "tiramisu": {
+    sourcePath: "./recipes/tiramisu.json",
+    recipe: recipe35,
+  },
+  "vacherin": {
+    sourcePath: "./recipes/vacherin.json",
+    recipe: recipe36,
+  },
+  "veloute-de-courgettes": {
+    sourcePath: "./recipes/veloute-de-courgettes.json",
+    recipe: recipe37,
+  },
+} as const;

@@ -14,19 +14,39 @@ describe("bilingual recipe catalog", () => {
       .filter((filename) => filename.endsWith(".json"))
       .sort();
 
-    expect(rawRecipeCatalog.map(({ sourcePath }) => sourcePath)).toEqual(
+    expect(Object.keys(rawRecipeCatalog)).toEqual(
+      filenames.map((filename) => filename.replace(/\.json$/, "")),
+    );
+    expect(
+      Object.values(rawRecipeCatalog).map(({ sourcePath }) => sourcePath),
+    ).toEqual(
       filenames.map((filename) => `./recipes/${filename}`),
     );
   });
 
-  test("rejects a manifest path that disagrees with the embedded slug", () => {
-    const [entry] = rawRecipeCatalog;
+  test("rejects an index slug that disagrees with its recipe filename", () => {
+    const [entry] = Object.values(rawRecipeCatalog);
 
     expect(() =>
-      loadCatalogSources([
-        { ...entry, sourcePath: "./recipes/not-the-embedded-slug.json" },
-      ]),
-    ).toThrow("Catalog file slug not-the-embedded-slug");
+      loadCatalogSources({ "not-the-indexed-slug": entry }),
+    ).toThrow(
+      "Catalog index slug not-the-indexed-slug does not match file slug amandin",
+    );
+  });
+
+  test("rejects an embedded slug that disagrees with its index and filename", () => {
+    const [entry] = Object.values(rawRecipeCatalog);
+
+    expect(() =>
+      loadCatalogSources({
+        "not-the-embedded-slug": {
+          ...entry,
+          sourcePath: "./recipes/not-the-embedded-slug.json",
+        },
+      }),
+    ).toThrow(
+      "Catalog index slug not-the-embedded-slug contains recipe amandin",
+    );
   });
 
   test("loads every recipe with explicit French and English content", () => {
@@ -564,6 +584,18 @@ describe("bilingual recipe catalog", () => {
       "Season with salt and pepper, then add the Herbes de Provence.",
       "Simmer partially covered for about 30 minutes.",
     ]);
+    for (const locale of ["fr", "en"] as const) {
+      const steps = seeded.translations[locale].sections[0]!.steps;
+      expect(steps[3]!.ingredientUses).toEqual([
+        { ingredientId: "ingredient-main-2" },
+        { ingredientId: "ingredient-main-3" },
+      ]);
+      expect(steps[4]!.ingredientUses).toEqual([
+        { ingredientId: "ingredient-main-8" },
+        { ingredientId: "ingredient-main-9" },
+        { ingredientId: "ingredient-main-10" },
+      ]);
+    }
     expect(seeded.translations.en.notes).toEqual([
       "This sauce can notably be used to make lasagna.",
     ]);

@@ -155,6 +155,9 @@
               "text": "Ajouter la pulpe et la purée de tomates.",
               "ingredientUses": [
                 {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
                   "ingredientId": "ingredient-main-3"
                 }
               ]
@@ -165,6 +168,12 @@
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
                 }
               ]
             },
@@ -324,6 +333,9 @@
               "id": "step-0-3",
               "text": "Add the tomato pulp and tomato purée.",
               "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
                 {
                   "ingredientId": "ingredient-main-3"
                 }
