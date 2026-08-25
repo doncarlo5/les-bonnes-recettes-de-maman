@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -124,10 +124,11 @@ import {
   type RecipeDraftPayload,
 } from "./recipe-form-schema";
 import { StepIngredientUsesEditor } from "./step-ingredient-uses-editor";
-import {
-  AdminRecipeImagePanel,
-  type RecipeImageMutation,
-} from "./admin-recipe-image-panel";
+import { AdminRecipeImagePanel } from "./admin-recipe-image-panel";
+import type {
+  RecipeImageMutation,
+  RecipeImageRevisionSession,
+} from "./recipe-main-image-acquisition";
 import {
   CompactIngredientsEditor,
   CompactSectionsEditor,
@@ -421,10 +422,8 @@ export function AdminRecipeEditor({
     revision,
     isPublic,
     saveCurrentDraft,
-    prepareRevisionedMutation,
+    imageRevisionSession: draftImageRevisionSession,
     deleteRecipe,
-    handleImageRevision,
-    handleImageConflict,
     replaceConflict,
     reloadLatest,
     resetSyncState,
@@ -445,12 +444,16 @@ export function AdminRecipeEditor({
     onCreated: handleCreated,
     onDeleted: handleDeleted,
   });
-  const handleImageMutation = useCallback(
-    (mutation: RecipeImageMutation) => {
-      setImageMutation({ ...mutation, slug: selectedSlug });
-      handleImageRevision(mutation.revision);
-    },
-    [handleImageRevision, selectedSlug],
+  const imageRevisionSession = useMemo<RecipeImageRevisionSession>(
+    () => ({
+      run: (operation) =>
+        draftImageRevisionSession.run(async (expectedRevision) => {
+          const mutation = await operation(expectedRevision);
+          setImageMutation({ ...mutation, slug: selectedSlug });
+          return mutation;
+        }),
+    }),
+    [draftImageRevisionSession, selectedSlug],
   );
 
   useEffect(() => {
@@ -597,9 +600,7 @@ export function AdminRecipeEditor({
           onOpenSection={openMobileSection}
           onSave={() => saveCurrentDraft(syncState === "conflict")}
           onDelete={deleteRecipe}
-          onImageRevision={handleImageMutation}
-          onImageConflict={handleImageConflict}
-          onBeforeImageChange={prepareRevisionedMutation}
+          imageRevisionSession={imageRevisionSession}
           onReplaceConflict={replaceConflict}
           onReloadConflict={reloadLatest}
           onPreview={openPreview}
@@ -635,9 +636,7 @@ function MobileRecipeAdmin({
   onOpenSection,
   onSave,
   onDelete,
-  onImageRevision,
-  onImageConflict,
-  onBeforeImageChange,
+  imageRevisionSession,
   onReplaceConflict,
   onReloadConflict,
   onPreview,
@@ -667,12 +666,7 @@ function MobileRecipeAdmin({
   onOpenSection: (section: MobileSection) => void;
   onSave: () => void;
   onDelete: () => void;
-  onImageRevision: (mutation: RecipeImageMutation) => void;
-  onImageConflict: (
-    revision?: number,
-    retry?: (revision: number) => Promise<void>,
-  ) => void;
-  onBeforeImageChange: () => Promise<number | null>;
+  imageRevisionSession: RecipeImageRevisionSession;
   onReplaceConflict: () => void;
   onReloadConflict: () => void;
   onPreview: () => void;
@@ -891,10 +885,7 @@ function MobileRecipeAdmin({
               section={section}
               locale={locale}
               recipe={selectedRecipe}
-              revision={revision}
-              onImageRevision={onImageRevision}
-              onImageConflict={onImageConflict}
-              onBeforeImageChange={onBeforeImageChange}
+              imageRevisionSession={imageRevisionSession}
               form={form}
               categoryValues={categoryValues}
               defaultLocale={defaultLocale}
@@ -1095,10 +1086,7 @@ function MobileSectionFields({
   section,
   locale,
   recipe,
-  revision,
-  onImageRevision,
-  onImageConflict,
-  onBeforeImageChange,
+  imageRevisionSession,
   form,
   categoryValues,
   defaultLocale,
@@ -1107,13 +1095,7 @@ function MobileSectionFields({
   section: MobileSection;
   locale: Locale;
   recipe: EditableRecipe | null;
-  revision: number;
-  onImageRevision: (mutation: RecipeImageMutation) => void;
-  onImageConflict: (
-    revision?: number,
-    retry?: (revision: number) => Promise<void>,
-  ) => void;
-  onBeforeImageChange: () => Promise<number | null>;
+  imageRevisionSession: RecipeImageRevisionSession;
   form: RecipeForm;
   categoryValues: RecipeCategory[];
   defaultLocale: LocaleKey;
@@ -1129,10 +1111,7 @@ function MobileSectionFields({
             key={recipe?.slug ?? "new"}
             locale={locale}
             recipe={recipe}
-            revision={revision}
-            onBeforeChange={onBeforeImageChange}
-            onRevisionChange={onImageRevision}
-            onConflict={onImageConflict}
+            revisionSession={imageRevisionSession}
             compact
           />
         </div>
