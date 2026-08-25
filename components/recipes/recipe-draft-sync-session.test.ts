@@ -291,6 +291,85 @@ describe("RecipeDraftSyncSession", () => {
     });
   });
 
+  test("resets recipe-scoped conflict state when the slug changes", async () => {
+    const adapter = transport({
+      save: vi.fn().mockResolvedValue({
+        ok: false,
+        status: 409,
+        data: {
+          type: "conflict",
+          message: "Conflit",
+          latestRevision: 4,
+        },
+      }),
+    });
+    const sync = session({ adapter });
+    sync.connect();
+    await sync.save(draft("Version en conflit"));
+
+    sync.updateContext({
+      context: {
+        locale: "fr",
+        mode: "update",
+        selectedSlug: "cake-au-citron",
+      },
+      selectedRecipe: {
+        slug: "cake-au-citron",
+        revision: 8,
+        isPublic: false,
+        draft: draft("Cake enregistré"),
+      },
+    });
+
+    expect(sync.getSnapshot()).toMatchObject({
+      state: { type: "idle" },
+      syncState: "idle",
+      revision: 8,
+    });
+  });
+
+  test("ignores an in-flight save after switching recipes", async () => {
+    const firstResponse = deferred<ReturnType<typeof success>>();
+    const adapter = transport({
+      save: vi
+        .fn()
+        .mockImplementationOnce(() => firstResponse.promise)
+        .mockResolvedValueOnce(success(9, "cake-au-citron")),
+    });
+    const sync = session({ adapter });
+    sync.connect();
+
+    const staleSave = sync.save(draft("Tarte en cours"));
+    sync.updateContext({
+      context: {
+        locale: "fr",
+        mode: "update",
+        selectedSlug: "cake-au-citron",
+      },
+      selectedRecipe: {
+        slug: "cake-au-citron",
+        revision: 8,
+        isPublic: false,
+        draft: draft("Cake enregistré"),
+      },
+    });
+    sync.observeDraft(draft("Cake modifié"));
+    const currentSave = sync.save(draft("Cake modifié"));
+    firstResponse.resolve(success(4));
+
+    await expect(staleSave).resolves.toBe(false);
+    await expect(currentSave).resolves.toBe(true);
+    expect(vi.mocked(adapter.save).mock.calls[1][0]).toMatchObject({
+      slug: "cake-au-citron",
+      expectedRevision: 8,
+    });
+    expect(sync.getSnapshot()).toMatchObject({
+      state: { type: "success", slug: "cake-au-citron" },
+      revision: 9,
+      syncState: "saved",
+    });
+  });
+
   test("surfaces a conflict for recovery based on an older revision", () => {
     const browser = environment({
       entries: new Map([
@@ -406,6 +485,62 @@ describe("RecipeDraftSyncSession", () => {
       slug: "tarte-au-citron",
       expectedRevision: 4,
     });
+  });
+
+  test("ignores an in-flight deletion after switching recipes", async () => {
+    const deleteResponse = deferred<{
+      ok: boolean;
+      status: number;
+      data: SaveRecipeState;
+    }>();
+    const adapter = transport({
+      deleteRecipe: vi.fn(() => deleteResponse.promise),
+    });
+    const cakeRecovery = JSON.stringify({
+      payload: draft("Cake local"),
+      revision: 8,
+    });
+    const browser = environment({
+      entries: new Map([
+        ["recipe-admin-draft:v1:cake-au-citron", cakeRecovery],
+      ]),
+    });
+    const sync = session({ adapter, browser });
+    sync.connect();
+
+    const staleDeletion = sync.deleteRecipe();
+    sync.updateContext({
+      context: {
+        locale: "fr",
+        mode: "update",
+        selectedSlug: "cake-au-citron",
+      },
+      selectedRecipe: {
+        slug: "cake-au-citron",
+        revision: 8,
+        isPublic: false,
+        draft: draft("Cake enregistré"),
+      },
+    });
+    deleteResponse.resolve({
+      ok: true,
+      status: 200,
+      data: {
+        type: "success",
+        message: "Supprimé",
+        slug: "tarte-au-citron",
+      },
+    });
+
+    await expect(staleDeletion).resolves.toBe(false);
+    expect(sync.getSnapshot()).toMatchObject({
+      state: { type: "idle" },
+      deleted: false,
+      revision: 8,
+    });
+    expect(
+      browser.entries.get("recipe-admin-draft:v1:cake-au-citron"),
+    ).toBe(cakeRecovery);
   });
 
   test("adopts a created slug for subsequent saves", async () => {
