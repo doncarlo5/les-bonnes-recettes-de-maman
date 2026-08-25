@@ -1,0 +1,309 @@
+{
+  "slug": "lasagnes-vegetariennes",
+  "heroImageUrl": "/images/recipes/lasagnes-vegetariennes.png",
+  "defaultLocale": "fr",
+  "relatedRecipeSlugs": [
+    "lasagnes"
+  ],
+  "categories": [
+    "plat",
+    "sale"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Lasagnes végétariennes",
+      "author": "Maman",
+      "description": "Lasagnes végétariennes à la ratatouille, à la béchamel et aux fromages râpés.",
+      "yieldLabel": "1 plat",
+      "servings": null,
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "200 °C",
+      "equipment": [
+        "1 plat à gratin"
+      ],
+      "ingredients": [
+        {
+          "name": "béchamel",
+          "quantity": "1/2",
+          "unit": "litre",
+          "notes": "environ",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "ratatouille",
+          "quantity": "1",
+          "unit": "préparation",
+          "notes": "pas trop liquide",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "feuilles de lasagnes",
+          "quantity": "1",
+          "unit": "paquet",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "gruyère râpé",
+          "quantity": "",
+          "unit": "",
+          "notes": "pour chaque couche",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "parmesan râpé",
+          "quantity": "",
+          "unit": "",
+          "notes": "pour gratiner",
+          "id": "ingredient-main-4"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 200 °C et préparer la béchamel.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Veiller à utiliser une ratatouille pas trop liquide afin que les lasagnes se tiennent bien.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Étaler une louche de béchamel au fond du plat, puis déposer une couche de feuilles de lasagnes.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Ajouter une couche de ratatouille, recouvrir de béchamel et saupoudrer généreusement de gruyère râpé.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Répéter les couches de feuilles de lasagnes, de ratatouille, de béchamel et de gruyère jusqu’à épuisement des ingrédients.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Terminer par une couche de béchamel et la recouvrir généreusement de parmesan râpé.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-6",
+              "text": "Enfourner pour environ 30 min à 200 °C.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "Ces lasagnes peuvent être préparées la veille. Dans ce cas, réduire légèrement le temps de cuisson afin qu’elles ne soient pas trop cuites au réchauffage."
+      ]
+    },
+    "en": {
+      "title": "Vegetarian Lasagna",
+      "author": "Maman",
+      "description": "Vegetarian lasagna with ratatouille, béchamel and grated cheeses.",
+      "yieldLabel": "1 dish",
+      "servings": null,
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "200 °C",
+      "equipment": [
+        "1 baking dish"
+      ],
+      "ingredients": [
+        {
+          "name": "béchamel",
+          "quantity": "1/2",
+          "unit": "liter",
+          "notes": "about",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "ratatouille",
+          "quantity": "1",
+          "unit": "batch",
+          "notes": "not too liquid",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "lasagna sheets",
+          "quantity": "1",
+          "unit": "packet",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "grated Gruyère",
+          "quantity": "",
+          "unit": "",
+          "notes": "for each layer",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "grated parmesan",
+          "quantity": "",
+          "unit": "",
+          "notes": "for browning",
+          "id": "ingredient-main-4"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 200 °C and prepare the béchamel.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Use a ratatouille that is not too liquid so the lasagna holds together well.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Spread a ladleful of béchamel over the bottom of the dish, then add a layer of lasagna sheets.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Add a layer of ratatouille, cover with béchamel and sprinkle generously with grated Gruyère.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Repeat the layers of lasagna sheets, ratatouille, béchamel and Gruyère until all the ingredients are used.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Finish with a layer of béchamel and cover it generously with grated parmesan.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-6",
+              "text": "Bake for about 30 min at 200 °C.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "This lasagna can be prepared the day before. In that case, slightly reduce the baking time so it does not overcook when reheated."
+      ]
+    }
+  }
+}

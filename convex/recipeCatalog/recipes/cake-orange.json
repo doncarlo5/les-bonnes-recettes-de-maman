@@ -1,0 +1,364 @@
+{
+  "slug": "cake-orange",
+  "heroImageUrl": "https://images.unsplash.com/photo-1587132137056-bfbf0166836e?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "referenceServings": 6,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "dessert",
+    "sucre"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Cake orange",
+      "author": "Maman",
+      "description": "Cake à l’orange et au beurre salé avec glaçage ou sirop à l’orange.",
+      "yieldLabel": "",
+      "servings": null,
+      "prepTime": "",
+      "cookTime": "40 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "40 min",
+      "temperature": "180 °C",
+      "equipment": [],
+      "ingredients": [
+        {
+          "name": "orange",
+          "quantity": "1",
+          "unit": "",
+          "notes": "jus + zeste",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "œufs",
+          "quantity": "3",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "beurre salé",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "sucre",
+          "quantity": "160",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "farine",
+          "quantity": "160",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "levure",
+          "quantity": "1/2",
+          "unit": "c. à c.",
+          "notes": "grand moule",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "sucre glace",
+          "quantity": "",
+          "unit": "",
+          "notes": "pour le glaçage",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "jus d’orange",
+          "quantity": "un peu",
+          "unit": "",
+          "notes": "pour le glaçage",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "jus d’orange",
+          "quantity": "1",
+          "unit": "",
+          "notes": "pour le sirop",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "sucre",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "pour le sirop",
+          "id": "ingredient-main-9"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Mélanger les œufs et le sucre jusqu’à obtenir un mélange mousseux.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Ajouter la farine et la levure.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Ajouter le beurre fondu, puis le jus d’orange et le zeste.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Cuisson",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Cuire 40 min à 180 °C.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Finition",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "Pour un glaçage : mélanger du sucre glace avec un peu de jus d’orange.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-2-1",
+              "text": "Ou pour un sirop : faire chauffer 1 jus d’orange avec 50 g de sucre.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Orange Loaf Cake",
+      "author": "Maman",
+      "description": "Orange and salted-butter loaf cake with an orange glaze or syrup.",
+      "yieldLabel": "",
+      "servings": null,
+      "prepTime": "",
+      "cookTime": "40 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "40 min",
+      "temperature": "180 °C",
+      "equipment": [],
+      "ingredients": [
+        {
+          "name": "orange",
+          "quantity": "1",
+          "unit": "",
+          "notes": "juice + zest",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "eggs",
+          "quantity": "3",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "salted butter",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "sugar",
+          "quantity": "160",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "flour",
+          "quantity": "160",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "baking powder",
+          "quantity": "1/2",
+          "unit": "tsp",
+          "notes": "large pan",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "icing sugar",
+          "quantity": "",
+          "unit": "",
+          "notes": "for the glaze",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "orange juice",
+          "quantity": "a little",
+          "unit": "",
+          "notes": "for the glaze",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "orange juice",
+          "quantity": "1",
+          "unit": "",
+          "notes": "for the syrup",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "sugar",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "for the syrup",
+          "id": "ingredient-main-9"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Mix the eggs and sugar until foamy.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Add the flour and baking powder.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Add the melted butter, then the orange juice and zest.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Baking",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Bake for 40 min at 180 °C.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Finishing",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "For a glaze: mix icing sugar with a little orange juice.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-2-1",
+              "text": "Or for a syrup: heat the juice of 1 orange with 50 g sugar.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

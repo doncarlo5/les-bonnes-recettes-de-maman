@@ -1,0 +1,397 @@
+{
+  "slug": "papillotes-de-cabillaud",
+  "heroImageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "plat",
+    "sale"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Papillotes de cabillaud",
+      "author": "Maman",
+      "description": "Papillotes de cabillaud au citron et aux herbes, accompagnées d’une sauce au beurre blanc polonais.",
+      "yieldLabel": "",
+      "servings": null,
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "papier sulfurisé",
+        "agrafeuse",
+        "saucier SEB",
+        "fourchette"
+      ],
+      "ingredients": [
+        {
+          "name": "cabillaud",
+          "quantity": "",
+          "unit": "",
+          "notes": "quantité non précisée",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "jus de citron",
+          "quantity": "1",
+          "unit": "c. à café",
+          "notes": "pour les papillotes",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "huile d’olive",
+          "quantity": "1",
+          "unit": "c. à café",
+          "notes": "pour les papillotes",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "sel",
+          "quantity": "",
+          "unit": "",
+          "notes": "à convenance",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "poivre",
+          "quantity": "",
+          "unit": "",
+          "notes": "à convenance",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "persil ou coriandre",
+          "quantity": "",
+          "unit": "",
+          "notes": "à convenance",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "œuf dur",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "moutarde",
+          "quantity": "1",
+          "unit": "c. à café",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "beurre",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "jus de citron",
+          "quantity": "1",
+          "unit": "c. à s.",
+          "notes": "pour la sauce",
+          "id": "ingredient-main-9"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Papillotes",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Déposer le cabillaud sur du papier sulfurisé. Ajouter 1 cuillère à café de jus de citron et 1 cuillère à café d’huile d’olive, puis assaisonner de sel, de poivre et de persil ou de coriandre.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Fermer la papillote avec l’agrafeuse en maintenant les agrafes éloignées des aliments.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-3",
+              "text": "Enfourner 30 min à 180 °C.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Sauce au beurre blanc polonais",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Écraser très finement l’œuf dur à la fourchette.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-1-1",
+              "text": "Le mettre dans le saucier SEB avec le sel, le poivre, la moutarde et 1 c. à s. de jus de citron.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            },
+            {
+              "id": "step-1-2",
+              "text": "Régler le saucier SEB en position 2 pour une cuisson douce, puis ajouter progressivement le beurre en petits morceaux.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-1-3",
+              "text": "Laisser tourner le saucier SEB pendant 12 min, puis servir la sauce avec les papillotes de cabillaud.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "La quantité de cabillaud n’est pas précisée sur la fiche manuscrite.",
+        "La sauce donne environ 1 bol."
+      ]
+    },
+    "en": {
+      "title": "Cod Parcels",
+      "author": "Maman",
+      "description": "Oven-baked cod parcels served with Polish-style butter sauce.",
+      "yieldLabel": "",
+      "servings": null,
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "parchment paper",
+        "stapler",
+        "SEB sauce maker",
+        "fork"
+      ],
+      "ingredients": [
+        {
+          "name": "cod",
+          "quantity": "",
+          "unit": "",
+          "notes": "quantity not specified",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "lemon juice",
+          "quantity": "1",
+          "unit": "tsp",
+          "notes": "for the parcels",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "olive oil",
+          "quantity": "1",
+          "unit": "tsp",
+          "notes": "for the parcels",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "salt",
+          "quantity": "",
+          "unit": "",
+          "notes": "to taste",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "pepper",
+          "quantity": "",
+          "unit": "",
+          "notes": "to taste",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "parsley or cilantro",
+          "quantity": "",
+          "unit": "",
+          "notes": "to taste",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "hard-boiled egg",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "mustard",
+          "quantity": "1",
+          "unit": "tsp",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "butter",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "lemon juice",
+          "quantity": "1",
+          "unit": "tbsp",
+          "notes": "for the sauce",
+          "id": "ingredient-main-9"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Parcels",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Place the cod on parchment paper. Add 1 tsp lemon juice and 1 tsp olive oil, then season with salt, pepper and parsley or cilantro.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Close the parcel with the stapler, keeping the staples away from the food.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-3",
+              "text": "Bake for 30 min at 180 °C.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Polish-Style Butter Sauce",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Mash the hard-boiled egg very finely with a fork.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-1-1",
+              "text": "Place it in the SEB sauce maker with the salt, pepper, mustard and 1 tbsp lemon juice.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            },
+            {
+              "id": "step-1-2",
+              "text": "Set the SEB sauce maker to position 2 for gentle cooking, then gradually add the butter in small pieces.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-1-3",
+              "text": "Leave the SEB sauce maker running for 12 min, then serve the sauce with the cod parcels.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "The handwritten recipe does not specify the amount of cod.",
+        "The sauce makes about 1 bowl."
+      ]
+    }
+  }
+}

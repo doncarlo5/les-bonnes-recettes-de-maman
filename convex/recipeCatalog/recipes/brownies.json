@@ -1,0 +1,347 @@
+{
+  "slug": "brownies",
+  "heroImageUrl": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "dessert",
+    "sucre"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Brownies",
+      "author": "Maman",
+      "description": "Brownies au chocolat noir et aux noix, fondants à cœur.",
+      "yieldLabel": "",
+      "servings": null,
+      "prepTime": "",
+      "cookTime": "20 min",
+      "restTime": "2 h 35",
+      "totalTime": "",
+      "timeLabel": "20 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 moule rectangulaire de 25 × 18 cm ou 1 moule carré équivalent",
+        "papier sulfurisé"
+      ],
+      "ingredients": [
+        {
+          "name": "chocolat noir",
+          "quantity": "250",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "sucre",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "beurre",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "sucre vanillé",
+          "quantity": "1",
+          "unit": "sachet",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "farine",
+          "quantity": "60",
+          "unit": "g",
+          "notes": "tamisée",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "œufs",
+          "quantity": "3",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "sel",
+          "quantity": "1",
+          "unit": "pincée",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "noix",
+          "quantity": "60",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-7"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 180 °C et chemiser le moule de papier sulfurisé.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Faire fondre le chocolat noir avec le beurre.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Ajouter le sucre et le sucre vanillé, puis mélanger.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Battre les œufs en omelette avec la pincée de sel, puis les incorporer au mélange au chocolat.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Ajouter la farine tamisée et les noix, puis mélanger jusqu’à obtenir une pâte homogène.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Cuisson",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Verser la pâte dans le moule et cuire 20 min à 180 °C.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Repos et démoulage",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "Après la cuisson, laisser les brownies reposer 5 min dans le four éteint.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-2-1",
+              "text": "Sortir du four et laisser refroidir 30 min.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-2-2",
+              "text": "Placer au réfrigérateur pendant 2 h, puis démouler.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Brownies",
+      "author": "Maman",
+      "description": "Dark chocolate and walnut brownies with a soft, fudgy center.",
+      "yieldLabel": "",
+      "servings": null,
+      "prepTime": "",
+      "cookTime": "20 min",
+      "restTime": "2 h 35",
+      "totalTime": "",
+      "timeLabel": "20 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 rectangular 25 × 18 cm baking pan or equivalent square pan",
+        "parchment paper"
+      ],
+      "ingredients": [
+        {
+          "name": "dark chocolate",
+          "quantity": "250",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "sugar",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "butter",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "vanilla sugar",
+          "quantity": "1",
+          "unit": "packet",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "flour",
+          "quantity": "60",
+          "unit": "g",
+          "notes": "sifted",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "eggs",
+          "quantity": "3",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "salt",
+          "quantity": "1",
+          "unit": "pinch",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "walnuts",
+          "quantity": "60",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-7"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 180 °C and line the baking pan with parchment paper.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Melt the dark chocolate with the butter.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Add the sugar and vanilla sugar, then mix.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Beat the eggs with the pinch of salt, then fold them into the chocolate mixture.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Add the sifted flour and walnuts, then mix until combined.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Baking",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Pour the batter into the pan and bake for 20 min at 180 °C.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Resting and Unmolding",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "After baking, leave the brownies in the switched-off oven for 5 min.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-2-1",
+              "text": "Remove from the oven and leave to cool for 30 min.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-2-2",
+              "text": "Refrigerate for 2 h, then unmold.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

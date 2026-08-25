@@ -1,0 +1,350 @@
+{
+  "slug": "osso-buco",
+  "heroImageUrl": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "referenceServings": 4,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "plat",
+    "sale"
+  ],
+  "legacyCategoryLabels": [
+    "cocotte-minute"
+  ],
+  "translations": {
+    "fr": {
+      "title": "Osso buco",
+      "author": "Maman",
+      "description": "Osso buco de jarret de veau aux tomates, carottes, vin blanc et bouquet garni.",
+      "yieldLabel": "4 personnes",
+      "servings": {
+        "quantity": 4,
+        "unit": "personnes"
+      },
+      "prepTime": "",
+      "cookTime": "45 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "45 min",
+      "temperature": "feu doux",
+      "equipment": [
+        "1 cocotte-minute"
+      ],
+      "ingredients": [
+        {
+          "name": "jarret de veau",
+          "quantity": "4",
+          "unit": "tranches",
+          "notes": "environ 200 g chacune",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "huile",
+          "quantity": "10",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "ail",
+          "quantity": "3",
+          "unit": "gousses",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "oignons",
+          "quantity": "2",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "tomates concassées",
+          "quantity": "1",
+          "unit": "boîte de 400 g",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "carottes",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "vin blanc",
+          "quantity": "20",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "bouquet garni",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "farine",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "sel",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "poivre",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-10"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Fariner la viande.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Faire dorer sur toutes les faces dans la cocotte avec un fond d’huile.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Ajouter les carottes coupées en rondelles épaisses, les oignons émincés et l’ail haché.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Ajouter les tomates et le vin blanc.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Saler, poivrer et ajouter le bouquet garni.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Cuire 45 min à feu doux après rotation de la soupape.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Osso Buco",
+      "author": "Maman",
+      "description": "Veal shank osso buco with tomatoes, carrots, white wine and a bouquet garni.",
+      "yieldLabel": "4 people",
+      "servings": {
+        "quantity": 4,
+        "unit": "people"
+      },
+      "prepTime": "",
+      "cookTime": "45 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "45 min",
+      "temperature": "low heat",
+      "equipment": [
+        "1 pressure cooker"
+      ],
+      "ingredients": [
+        {
+          "name": "veal shank",
+          "quantity": "4",
+          "unit": "slices",
+          "notes": "about 200 g each",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "oil",
+          "quantity": "10",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "garlic",
+          "quantity": "3",
+          "unit": "cloves",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "onions",
+          "quantity": "2",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "crushed tomatoes",
+          "quantity": "1",
+          "unit": "400 g can",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "carrots",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "white wine",
+          "quantity": "20",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "bouquet garni",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "flour",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "salt",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "pepper",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-10"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Dust the meat with flour.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Brown on all sides in the casserole with a little oil.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Add the carrots cut into thick slices, sliced onions and chopped garlic.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Add the tomatoes and white wine.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Season with salt and pepper and add the bouquet garni.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Cook over low heat for 45 min after the pressure valve turns.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

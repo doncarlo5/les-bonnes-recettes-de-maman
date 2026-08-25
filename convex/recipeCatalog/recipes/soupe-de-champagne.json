@@ -1,0 +1,208 @@
+{
+  "slug": "soupe-de-champagne",
+  "heroImageUrl": "/images/recipes/soupe-de-champagne.png",
+  "defaultLocale": "fr",
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "sucre"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Soupe de champagne",
+      "author": "Fabrice",
+      "description": "Cocktail pétillant au crémant de Loire, Cointreau, Pulco Citron et sirop de sucre de canne, à servir très frais.",
+      "yieldLabel": "Environ 1 litre",
+      "servings": null,
+      "prepTime": "5 min",
+      "cookTime": "",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "5 min",
+      "temperature": "",
+      "equipment": [],
+      "ingredients": [
+        {
+          "name": "crémant de Loire",
+          "quantity": "75",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "Cointreau",
+          "quantity": "10",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "Pulco Citron",
+          "quantity": "10",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "Canadou",
+          "quantity": "5 à 7",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "glaçons",
+          "quantity": "",
+          "unit": "",
+          "notes": "selon besoin",
+          "id": "ingredient-main-4"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Placer tous les ingrédients au réfrigérateur à l’avance afin qu’ils soient bien frais.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Dans un saladier, mélanger le Cointreau, le Pulco Citron et le Canadou.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Au dernier moment, ajouter le crémant de Loire.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Ajouter des glaçons, remuer délicatement et servir aussitôt, très frais.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Champagne Punch",
+      "author": "Fabrice",
+      "description": "Sparkling cocktail with Loire Valley Crémant, Cointreau, Pulco Citron and cane sugar syrup, served very cold.",
+      "yieldLabel": "About 1 litre",
+      "servings": null,
+      "prepTime": "5 min",
+      "cookTime": "",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "5 min",
+      "temperature": "",
+      "equipment": [],
+      "ingredients": [
+        {
+          "name": "Loire Valley Crémant",
+          "quantity": "75",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "Cointreau",
+          "quantity": "10",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "Pulco Citron",
+          "quantity": "10",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "Canadou",
+          "quantity": "5 to 7",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "ice cubes",
+          "quantity": "",
+          "unit": "",
+          "notes": "as needed",
+          "id": "ingredient-main-4"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Chill all the ingredients in advance so they are very cold.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "In a punch bowl, combine the Cointreau, Pulco Citron and Canadou.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "At the last moment, add the Loire Valley Crémant.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Add ice cubes, stir gently and serve immediately, very cold.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

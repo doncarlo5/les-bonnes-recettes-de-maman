@@ -1,0 +1,253 @@
+{
+  "slug": "gateau-au-chocolat",
+  "heroImageUrl": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "referenceServings": 6,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "dessert",
+    "sucre"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Gâteau au chocolat",
+      "author": "Dominique",
+      "description": "Gâteau au chocolat simple avec blancs montés en neige.",
+      "yieldLabel": "",
+      "servings": null,
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 moule à gâteau"
+      ],
+      "ingredients": [
+        {
+          "name": "sucre",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "chocolat",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "œufs",
+          "quantity": "4",
+          "unit": "",
+          "notes": "blancs en neige",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "beurre",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "farine",
+          "quantity": "2",
+          "unit": "c. à s.",
+          "notes": "rases",
+          "id": "ingredient-main-4"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Faire fondre le chocolat avec le beurre.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Mélanger le sucre et les jaunes d’œufs.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Ajouter le chocolat et la farine, puis incorporer délicatement les blancs en neige.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Verser la pâte dans le moule.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Cuisson",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Cuire à four moyen pendant 30 min, à 180 °C.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Chocolate Cake",
+      "author": "Dominique",
+      "description": "Simple chocolate cake folded with whipped egg whites.",
+      "yieldLabel": "",
+      "servings": null,
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 cake pan"
+      ],
+      "ingredients": [
+        {
+          "name": "sugar",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "chocolate",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "eggs",
+          "quantity": "4",
+          "unit": "",
+          "notes": "whipped egg whites",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "butter",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "flour",
+          "quantity": "2",
+          "unit": "tbsp",
+          "notes": "level",
+          "id": "ingredient-main-4"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Melt the chocolate with the butter.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Mix the sugar and egg yolks.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Add the chocolate and flour, then gently fold in the whipped egg whites.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Pour the batter into the pan.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Baking",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Bake in a medium oven for 30 min at 180 °C.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

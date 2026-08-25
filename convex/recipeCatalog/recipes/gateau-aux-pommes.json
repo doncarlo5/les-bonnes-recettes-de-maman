@@ -1,0 +1,452 @@
+{
+  "slug": "gateau-aux-pommes",
+  "heroImageUrl": "https://images.unsplash.com/photo-1568571780765-9276ac8b75a2?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "referenceServings": 6,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "dessert",
+    "sucre"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Gâteau aux pommes",
+      "author": "Virginie",
+      "description": "Gâteau aux pommes avec une pâte simple et une crème versée en cours de cuisson.",
+      "yieldLabel": "6 personnes",
+      "servings": {
+        "quantity": 6,
+        "unit": "personnes"
+      },
+      "prepTime": "25 min",
+      "cookTime": "40 min",
+      "restTime": "",
+      "totalTime": "1 h 05",
+      "timeLabel": "1 h 05",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 moule à manqué",
+        "1 casserole"
+      ],
+      "ingredients": [
+        {
+          "name": "farine",
+          "quantity": "10",
+          "unit": "c. à s.",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "sucre",
+          "quantity": "8",
+          "unit": "c. à s.",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "lait",
+          "quantity": "6",
+          "unit": "c. à s.",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "huile",
+          "quantity": "4",
+          "unit": "c. à s.",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "pommes",
+          "quantity": "4",
+          "unit": "belles",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "œuf",
+          "quantity": "2",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "sel",
+          "quantity": "2",
+          "unit": "pincées",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "levure",
+          "quantity": "1",
+          "unit": "paquet",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "beurre",
+          "quantity": "80",
+          "unit": "g",
+          "notes": "crème",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "sucre",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "crème",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "œuf",
+          "quantity": "1",
+          "unit": "",
+          "notes": "crème",
+          "id": "ingredient-main-10"
+        },
+        {
+          "name": "vanille",
+          "quantity": "",
+          "unit": "",
+          "notes": "crème",
+          "id": "ingredient-main-11"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Mélanger la farine, le sucre, la levure et le sel.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Ajouter le lait, les œufs et l’huile.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Travailler le tout.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-4",
+              "text": "Verser dans un moule à manqué garni de tranches de pommes.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Enfourner à 180 °C pendant 25 min.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Crème",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Faire fondre le beurre dans une casserole.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-1-1",
+              "text": "Ajouter le sucre, l’œuf et la vanille.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                },
+                {
+                  "ingredientId": "ingredient-main-11"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Suite de la cuisson",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "Au bout de 25 min, quand le gâteau commence à monter et à dorer, verser la crème sur le gâteau et poursuivre la cuisson 15 min.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Conservation",
+          "steps": [
+            {
+              "id": "step-3-0",
+              "text": "Ce gâteau se conserve 3 à 4 jours.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Apple Cake",
+      "author": "Virginie",
+      "description": "Apple cake with a simple batter and a cream poured over partway through baking.",
+      "yieldLabel": "6 people",
+      "servings": {
+        "quantity": 6,
+        "unit": "people"
+      },
+      "prepTime": "25 min",
+      "cookTime": "40 min",
+      "restTime": "",
+      "totalTime": "1 h 05",
+      "timeLabel": "1 h 05",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 round cake pan",
+        "1 saucepan"
+      ],
+      "ingredients": [
+        {
+          "name": "flour",
+          "quantity": "10",
+          "unit": "tbsp",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "sugar",
+          "quantity": "8",
+          "unit": "tbsp",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "milk",
+          "quantity": "6",
+          "unit": "tbsp",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "oil",
+          "quantity": "4",
+          "unit": "tbsp",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "apples",
+          "quantity": "4",
+          "unit": "large",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "egg",
+          "quantity": "2",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "salt",
+          "quantity": "2",
+          "unit": "pinches",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "baking powder",
+          "quantity": "1",
+          "unit": "packet",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "butter",
+          "quantity": "80",
+          "unit": "g",
+          "notes": "cream",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "sugar",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "cream",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "egg",
+          "quantity": "1",
+          "unit": "",
+          "notes": "cream",
+          "id": "ingredient-main-10"
+        },
+        {
+          "name": "vanilla",
+          "quantity": "",
+          "unit": "",
+          "notes": "cream",
+          "id": "ingredient-main-11"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Mix the flour, sugar, baking powder and salt.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Add the milk, eggs and oil.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Work everything together.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-4",
+              "text": "Pour into a round cake pan lined with apple slices.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-5",
+              "text": "Bake at 180 °C for 25 min.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Cream",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Melt the butter in a saucepan.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-1-1",
+              "text": "Add the sugar, egg and vanilla.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                },
+                {
+                  "ingredientId": "ingredient-main-11"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Continuing the Baking",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "After 25 min, when the cake begins to rise and brown, pour the cream over it and bake for another 15 min.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Storage",
+          "steps": [
+            {
+              "id": "step-3-0",
+              "text": "This cake keeps for 3 to 4 days.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

@@ -1,0 +1,336 @@
+{
+  "slug": "gougeres",
+  "heroImageUrl": "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "sale"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Gougères",
+      "author": "Maman",
+      "description": "Gougères au comté, poivre et noix de muscade.",
+      "yieldLabel": "Environ 20 gougères",
+      "servings": {
+        "quantity": 20,
+        "unit": "environ"
+      },
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "190 °C",
+      "equipment": [
+        "1 casserole",
+        "1 plaque de cuisson"
+      ],
+      "ingredients": [
+        {
+          "name": "beurre",
+          "quantity": "80",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "comté râpé",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "+ pour déco",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "farine",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "eau",
+          "quantity": "25",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "œufs",
+          "quantity": "4",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "sel",
+          "quantity": "1",
+          "unit": "c. à c.",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "poivre",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "noix de muscade",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-7"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 190 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Faire fondre le beurre dans l’eau avec le sel.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Quand ça mousse, ajouter la farine tamisée.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Laisser 2 min dans la casserole pour l’évaporation de l’eau.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Ajouter le poivre et la muscade, puis les œufs 1 à 1, et enfin le fromage râpé.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Faire des petits tas sur une plaque et mettre un peu de comté pour décorer.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Cuisson",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Cuire 30 min à 190 °C.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Gougères",
+      "author": "Maman",
+      "description": "Comté gougères with pepper and nutmeg.",
+      "yieldLabel": "About 20 gougères",
+      "servings": {
+        "quantity": 20,
+        "unit": "about"
+      },
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "190 °C",
+      "equipment": [
+        "1 saucepan",
+        "1 baking sheet"
+      ],
+      "ingredients": [
+        {
+          "name": "butter",
+          "quantity": "80",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "grated Comté",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "+ extra for decoration",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "flour",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "water",
+          "quantity": "25",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "eggs",
+          "quantity": "4",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "salt",
+          "quantity": "1",
+          "unit": "tsp",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "pepper",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "nutmeg",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-7"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 190 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Melt the butter in the water with the salt.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "When it foams, add the sifted flour.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Leave in the saucepan for 2 min so the water evaporates.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Add the pepper and nutmeg, then the eggs one by one, and finally the grated cheese.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Make small mounds on a baking sheet and add a little Comté for decoration.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Baking",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Bake for 30 min at 190 °C.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

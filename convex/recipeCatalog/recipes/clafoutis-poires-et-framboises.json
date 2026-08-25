@@ -1,0 +1,334 @@
+{
+  "slug": "clafoutis-poires-et-framboises",
+  "heroImageUrl": "https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "referenceServings": 6,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "dessert",
+    "sucre"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Clafoutis poires et framboises",
+      "author": "Maman",
+      "description": "Clafoutis aux poires, avec quelques framboises facultatives.",
+      "yieldLabel": "",
+      "servings": null,
+      "prepTime": "",
+      "cookTime": "45 à 50 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "45 à 50 min",
+      "temperature": "200 °C puis 180 °C",
+      "equipment": [],
+      "ingredients": [
+        {
+          "name": "sucre",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "farine",
+          "quantity": "80",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "amandes en poudre",
+          "quantity": "40",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "sel",
+          "quantity": "1",
+          "unit": "pincée",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "cannelle",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "œufs",
+          "quantity": "3",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "crème",
+          "quantity": "20",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "lait",
+          "quantity": "20",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "framboises",
+          "quantity": "quelques",
+          "unit": "",
+          "notes": "facultatif",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "poires",
+          "quantity": "2 à 3",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-9"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Allumer le four à 200 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Mélanger le sucre, la farine, les amandes en poudre, le sel et la cannelle.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Ajouter ensuite 3 œufs, 20 cl de crème et 20 cl de lait.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Mixer le tout.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-4",
+              "text": "Mettre les poires dans le moule, puis verser la pâte.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Cuisson",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Cuire 10 min à 200 °C puis 35 à 40 min à 180 °C.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Pear and Raspberry Clafoutis",
+      "author": "Maman",
+      "description": "Pear clafoutis with a few optional raspberries.",
+      "yieldLabel": "",
+      "servings": null,
+      "prepTime": "",
+      "cookTime": "45 to 50 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "45 to 50 min",
+      "temperature": "200 °C puis 180 °C",
+      "equipment": [],
+      "ingredients": [
+        {
+          "name": "sugar",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "flour",
+          "quantity": "80",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "ground almonds",
+          "quantity": "40",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "salt",
+          "quantity": "1",
+          "unit": "pinch",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "cinnamon",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "eggs",
+          "quantity": "3",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "cream",
+          "quantity": "20",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "milk",
+          "quantity": "20",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "raspberries",
+          "quantity": "a few",
+          "unit": "",
+          "notes": "optional",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "pears",
+          "quantity": "2 to 3",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-9"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Turn the oven on to 200 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Mix the sugar, flour, ground almonds, salt and cinnamon.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Then add 3 eggs, 20 cl cream and 20 cl milk.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Blend everything.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-4",
+              "text": "Place the pears in the pan, then pour in the batter.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Baking",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Bake 10 min at 200 °C, then 35 to 40 min at 180 °C.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

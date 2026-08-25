@@ -1,0 +1,493 @@
+{
+  "slug": "cookies-aux-pepites-de-chocolat-et-fleur-de-sel",
+  "heroImageUrl": "/images/recipes/cookies-aux-pepites-de-chocolat-et-fleur-de-sel.png",
+  "defaultLocale": "fr",
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "dessert",
+    "sucre"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Cookies aux pépites de chocolat et fleur de sel",
+      "author": "Julien",
+      "description": "Gros cookies aux pépites de chocolat, croustillants sur les bords, moelleux au centre et relevés d’une touche de fleur de sel.",
+      "yieldLabel": "Environ 20 gros cookies",
+      "servings": null,
+      "prepTime": "≈ 40 min",
+      "cookTime": "10 min",
+      "restTime": "",
+      "totalTime": "≈ 1 h",
+      "timeLabel": "≈ 1 h",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 plaque de cuisson"
+      ],
+      "ingredients": [
+        {
+          "name": "beurre",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "sucre roux",
+          "quantity": "270",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "sucre en poudre",
+          "quantity": "80",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "farine",
+          "quantity": "350",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "bicarbonate alimentaire",
+          "quantity": "1",
+          "unit": "c. à café",
+          "notes": "facultatif",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "levure chimique",
+          "quantity": "1",
+          "unit": "c. à café",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "sel",
+          "quantity": "1/2",
+          "unit": "c. à café",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "gros œuf",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "gousse de vanille",
+          "quantity": "1/4",
+          "unit": "",
+          "notes": "graines uniquement",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "chocolat noir",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "grossièrement haché",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "fleur de sel",
+          "quantity": "",
+          "unit": "",
+          "notes": "pour parsemer",
+          "id": "ingredient-main-10"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation de la pâte",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Dans un bol, mélanger la farine, le bicarbonate, la levure chimique et le sel.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Faire fondre le beurre à feu moyen, puis le verser dans un grand bol.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Ajouter le sucre roux et le sucre en poudre au beurre fondu, puis mélanger jusqu’à obtenir une préparation homogène.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Incorporer l’œuf et les graines de vanille jusqu’à obtenir une texture lisse et brillante.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Ajouter les ingrédients secs en deux fois avec une cuillère en bois, en mélangeant juste assez pour les incorporer.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-5",
+              "text": "Ajouter le chocolat noir grossièrement haché et mélanger une dernière fois sans trop travailler la pâte.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Repos",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Couvrir le bol et placer la pâte au réfrigérateur pendant 30 min.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Cuisson",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "Préchauffer le four à 180 °C et recouvrir une plaque de papier cuisson.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-2-1",
+              "text": "Former de grosses boules de pâte avec une cuillère à glace ou une cuillère à soupe, puis les espacer largement sur la plaque.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-2-2",
+              "text": "Saupoudrer chaque boule d’une petite pincée de fleur de sel.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-10"
+                }
+              ]
+            },
+            {
+              "id": "step-2-3",
+              "text": "Enfourner pour 8 min, sortir la plaque et la taper légèrement sur le plan de travail pour aider les cookies à s’étaler.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-2-4",
+              "text": "Poursuivre la cuisson 2 min, puis taper de nouveau la plaque à la sortie du four.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Refroidissement",
+          "steps": [
+            {
+              "id": "step-3-0",
+              "text": "Déposer les cookies sur une grille et les laisser reposer au moins 10 min avant de les conserver ou de les déguster.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Chocolate Chip Cookies with Fleur de Sel",
+      "author": "Julien",
+      "description": "Large chocolate chip cookies with crisp edges, soft centers and a touch of fleur de sel.",
+      "yieldLabel": "About 20 large cookies",
+      "servings": null,
+      "prepTime": "≈ 40 min",
+      "cookTime": "10 min",
+      "restTime": "",
+      "totalTime": "≈ 1 h",
+      "timeLabel": "≈ 1 h",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 baking sheet"
+      ],
+      "ingredients": [
+        {
+          "name": "butter",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "brown sugar",
+          "quantity": "270",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "granulated sugar",
+          "quantity": "80",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "flour",
+          "quantity": "350",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "baking soda",
+          "quantity": "1",
+          "unit": "tsp",
+          "notes": "optional",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "baking powder",
+          "quantity": "1",
+          "unit": "tsp",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "salt",
+          "quantity": "1/2",
+          "unit": "tsp",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "large egg",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "vanilla bean",
+          "quantity": "1/4",
+          "unit": "",
+          "notes": "seeds only",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "dark chocolate",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "roughly chopped",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "fleur de sel",
+          "quantity": "",
+          "unit": "",
+          "notes": "for sprinkling",
+          "id": "ingredient-main-10"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparing the Dough",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "In a bowl, combine the flour, baking soda, baking powder and salt.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Melt the butter over medium heat, then pour it into a large bowl.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Add the brown sugar and granulated sugar to the melted butter, then mix until smooth.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Mix in the egg and vanilla seeds until smooth and glossy.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Add the dry ingredients in two batches with a wooden spoon, mixing only until incorporated.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-5",
+              "text": "Add the roughly chopped dark chocolate and mix once more without overworking the dough.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Resting",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Cover the bowl and chill the dough for 30 min.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Baking",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "Preheat the oven to 180 °C and line a baking sheet with parchment paper.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-2-1",
+              "text": "Shape the dough into large balls with an ice cream scoop or tablespoon, spacing them well apart on the baking sheet.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-2-2",
+              "text": "Sprinkle each ball with a small pinch of fleur de sel.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-10"
+                }
+              ]
+            },
+            {
+              "id": "step-2-3",
+              "text": "Bake for 8 min, remove the baking sheet and tap it lightly on the counter to help the cookies spread.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-2-4",
+              "text": "Bake for another 2 min, then tap the baking sheet again after removing it from the oven.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Cooling",
+          "steps": [
+            {
+              "id": "step-3-0",
+              "text": "Transfer the cookies to a rack and let them rest for at least 10 min before storing or serving.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

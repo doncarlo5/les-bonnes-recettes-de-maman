@@ -1,0 +1,220 @@
+{
+  "slug": "mayonnaise",
+  "heroImageUrl": "/images/recipes/mayonnaise.png",
+  "defaultLocale": "fr",
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "sale"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Mayonnaise",
+      "author": "Louis",
+      "description": "Mayonnaise maison à la moutarde de Dijon, montée au mixeur avec de l’huile de tournesol et assaisonnée de vinaigre balsamique.",
+      "yieldLabel": "Un petit bol",
+      "servings": null,
+      "prepTime": "5 min",
+      "cookTime": "",
+      "restTime": "",
+      "totalTime": "5 min",
+      "timeLabel": "5 min",
+      "temperature": "",
+      "equipment": [
+        "1 mixeur"
+      ],
+      "ingredients": [
+        {
+          "name": "moutarde de Dijon",
+          "quantity": "2",
+          "unit": "c. à café",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "jaune d’œuf",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "huile de tournesol",
+          "quantity": "10",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "vinaigre balsamique",
+          "quantity": "quelques gouttes",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "sel",
+          "quantity": "",
+          "unit": "",
+          "notes": "à convenance",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "poivre",
+          "quantity": "",
+          "unit": "",
+          "notes": "à convenance",
+          "id": "ingredient-main-5"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Mettre la moutarde de Dijon et le jaune d’œuf dans le bol du mixeur, puis mixer.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Continuer à mixer en versant progressivement l’huile de tournesol en un petit filet, jusqu’à obtenir une mayonnaise bien émulsionnée.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Ajouter quelques gouttes de vinaigre balsamique, puis saler et poivrer à convenance. Mixer une dernière fois pour homogénéiser.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "Pour une mayonnaise bien fraîche, la laisser reposer 30 min au réfrigérateur avant de servir."
+      ]
+    },
+    "en": {
+      "title": "Mayonnaise",
+      "author": "Louis",
+      "description": "Homemade Dijon mustard mayonnaise blended with sunflower oil and seasoned with balsamic vinegar.",
+      "yieldLabel": "One small bowl",
+      "servings": null,
+      "prepTime": "5 min",
+      "cookTime": "",
+      "restTime": "",
+      "totalTime": "5 min",
+      "timeLabel": "5 min",
+      "temperature": "",
+      "equipment": [
+        "1 blender"
+      ],
+      "ingredients": [
+        {
+          "name": "Dijon mustard",
+          "quantity": "2",
+          "unit": "tsp",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "egg yolk",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "sunflower oil",
+          "quantity": "10",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "balsamic vinegar",
+          "quantity": "a few drops",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "salt",
+          "quantity": "",
+          "unit": "",
+          "notes": "to taste",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "pepper",
+          "quantity": "",
+          "unit": "",
+          "notes": "to taste",
+          "id": "ingredient-main-5"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Place the Dijon mustard and egg yolk in the blender bowl, then blend.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Keep blending while gradually pouring in the sunflower oil in a thin stream, until the mayonnaise is well emulsified.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Add a few drops of balsamic vinegar, then season with salt and pepper to taste. Blend once more until smooth.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "For a well-chilled mayonnaise, refrigerate it for 30 min before serving."
+      ]
+    }
+  }
+}

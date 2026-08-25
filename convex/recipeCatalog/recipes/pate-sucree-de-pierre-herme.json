@@ -1,0 +1,298 @@
+{
+  "slug": "pate-sucree-de-pierre-herme",
+  "heroImageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "dessert",
+    "sucre"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Pâte sucrée de Pierre Hermé",
+      "author": "Pierre Hermé",
+      "description": "Pâte sucrée sablée pour tartes, à base de beurre pommade, sucre glace et poudre d’amandes.",
+      "yieldLabel": "Environ 500 g de pâte",
+      "servings": null,
+      "prepTime": "",
+      "cookTime": "",
+      "restTime": "2 à 3 h au réfrigérateur, idéalement 1 nuit",
+      "totalTime": "2 à 3 h de repos, hors préparation",
+      "timeLabel": "2 à 3 h de repos, hors préparation",
+      "temperature": "",
+      "equipment": [
+        "1 rouleau à pâtisserie"
+      ],
+      "ingredients": [
+        {
+          "name": "beurre à température ambiante",
+          "quantity": "140",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "sucre glace",
+          "quantity": "75",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "farine T55",
+          "quantity": "250",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "poudre d’amandes",
+          "quantity": "25",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "œuf",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "sel",
+          "quantity": "1",
+          "unit": "pincée",
+          "notes": "",
+          "id": "ingredient-main-5"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Dans un saladier, mettre le beurre pommade.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Ajouter le sucre glace et mélanger vigoureusement à l’aide d’une cuillère en bois pour obtenir une texture homogène.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Verser l’œuf légèrement battu, la pincée de sel, la poudre d’amandes et la farine tamisée.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Mélanger grossièrement à l’aide de la cuillère en bois.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Placer la pâte sur le plan de travail.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-5",
+              "text": "Avec la paume de la main, fraiser légèrement pour obtenir une pâte homogène.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-6",
+              "text": "Former une boule.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-7",
+              "text": "Placer la boule entre 2 feuilles de papier sulfurisé et l’abaisser sur une épaisseur de 3 à 4 mm.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-8",
+              "text": "Mettre au frigo 2 à 3 h, idéalement 1 nuit.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Pierre Hermé's Sweet Tart Dough",
+      "author": "Pierre Hermé",
+      "description": "Sweet shortcrust tart dough made with softened butter, icing sugar and almond flour.",
+      "yieldLabel": "About 500 g of dough",
+      "servings": null,
+      "prepTime": "",
+      "cookTime": "",
+      "restTime": "2 to 3 h in the refrigerator, ideally overnight",
+      "totalTime": "2 to 3 h resting, excluding preparation",
+      "timeLabel": "2 to 3 h resting, excluding preparation",
+      "temperature": "",
+      "equipment": [
+        "1 rolling pin"
+      ],
+      "ingredients": [
+        {
+          "name": "butter at room temperature",
+          "quantity": "140",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "icing sugar",
+          "quantity": "75",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "T55 flour",
+          "quantity": "250",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "almond flour",
+          "quantity": "25",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "egg",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "salt",
+          "quantity": "1",
+          "unit": "pinch",
+          "notes": "",
+          "id": "ingredient-main-5"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Place the softened butter in a mixing bowl.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Add the icing sugar and mix vigorously with a wooden spoon until smooth.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Add the lightly beaten egg, pinch of salt, almond flour and sifted flour.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Mix roughly with the wooden spoon.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-4",
+              "text": "Place the dough on the work surface.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-5",
+              "text": "With the palm of your hand, smear the dough lightly until homogeneous.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-6",
+              "text": "Form a ball.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-7",
+              "text": "Place the ball between 2 sheets of parchment paper and roll it out to 3 to 4 mm thick.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-8",
+              "text": "Refrigerate for 2 to 3 h, ideally overnight.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

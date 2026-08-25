@@ -1,0 +1,466 @@
+{
+  "slug": "cocotte-de-cabillaud-aux-courgettes-et-curry",
+  "heroImageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "referenceServings": 6,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "plat",
+    "sale"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Cocotte de cabillaud aux courgettes et curry",
+      "author": "Maman",
+      "description": "Cocottes de cabillaud aux courgettes, curry, crème liquide et parmesan.",
+      "yieldLabel": "6 personnes",
+      "servings": {
+        "quantity": 6,
+        "unit": "personnes"
+      },
+      "prepTime": "20 min",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "50 min",
+      "timeLabel": "50 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 poêle",
+        "6 petites cocottes"
+      ],
+      "ingredients": [
+        {
+          "name": "filet de cabillaud sans peau et sans arêtes",
+          "quantity": "500",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "courgettes",
+          "quantity": "900",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "sel",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "poivre du moulin",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "oignon",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "huile d’olive",
+          "quantity": "1",
+          "unit": "c. à s.",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "persil",
+          "quantity": "1/2",
+          "unit": "bouquet",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "curry en poudre",
+          "quantity": "1",
+          "unit": "c. à c.",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "parmesan râpé",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "crème liquide",
+          "quantity": "25",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-9"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Peler l’oignon et l’émincer.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Peler les courgettes et les couper en petits cubes.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Hacher le persil.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Couper les filets de cabillaud en morceaux.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Dans une poêle, faire revenir l’oignon émincé avec les courgettes sur feu moyen pendant 10 min environ.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Saler, poivrer, saupoudrer de curry et ajouter le persil haché.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-0-6",
+              "text": "Mélanger et poursuivre la cuisson quelques minutes.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-7",
+              "text": "Retirer du feu, ajouter les morceaux de filet de cabillaud aux courgettes et mélanger.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-8",
+              "text": "Préchauffer le four à 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-9",
+              "text": "Répartir la préparation dans les cocottes.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-10",
+              "text": "Arroser de crème liquide et saupoudrer de parmesan.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Finition",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Glisser au four pendant 15 à 20 min environ.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-1-1",
+              "text": "Servir dès la sortie du four.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Cod, Zucchini and Curry Cocottes",
+      "author": "Maman",
+      "description": "Small cocottes of cod with zucchini, curry, cream and parmesan.",
+      "yieldLabel": "6 people",
+      "servings": {
+        "quantity": 6,
+        "unit": "people"
+      },
+      "prepTime": "20 min",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "50 min",
+      "timeLabel": "50 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 frying pan",
+        "6 small cocottes"
+      ],
+      "ingredients": [
+        {
+          "name": "skinless, boneless cod fillet",
+          "quantity": "500",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "zucchini",
+          "quantity": "900",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "salt",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "freshly ground pepper",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "onion",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "olive oil",
+          "quantity": "1",
+          "unit": "tbsp",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "parsley",
+          "quantity": "1/2",
+          "unit": "bunch",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "curry powder",
+          "quantity": "1",
+          "unit": "tsp",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "grated parmesan",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "heavy cream",
+          "quantity": "25",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-9"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Peel and slice the onion.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Peel the zucchini and cut into small cubes.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Chop the parsley.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Cut the cod fillets into pieces.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "In a skillet, sauté the sliced onion with the zucchini over medium heat for about 10 min.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Season with salt and pepper, sprinkle with curry and add the chopped parsley.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-0-6",
+              "text": "Mix and continue cooking for a few minutes.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-7",
+              "text": "Remove from the heat, add the cod pieces to the zucchini and mix.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-8",
+              "text": "Preheat the oven to 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-9",
+              "text": "Divide the mixture among the cocottes.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-10",
+              "text": "Drizzle with cream and sprinkle with parmesan.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Finishing",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Bake for about 15 to 20 min.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-1-1",
+              "text": "Serve straight from the oven.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

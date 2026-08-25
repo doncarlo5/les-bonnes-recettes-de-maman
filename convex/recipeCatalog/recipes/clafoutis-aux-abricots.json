@@ -1,0 +1,449 @@
+{
+  "slug": "clafoutis-aux-abricots",
+  "heroImageUrl": "/images/recipes/clafoutis-aux-abricots.png",
+  "defaultLocale": "fr",
+  "referenceServings": 6,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "dessert",
+    "sucre"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Clafoutis aux abricots",
+      "author": "Maman",
+      "description": "Clafoutis aux abricots et à la poudre d’amandes, moelleux et légèrement doré.",
+      "yieldLabel": "6 personnes",
+      "servings": {
+        "quantity": 6,
+        "unit": "personnes"
+      },
+      "prepTime": "",
+      "cookTime": "35 à 40 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "35 à 40 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 plat à gratin ou 1 moule de 24 cm"
+      ],
+      "ingredients": [
+        {
+          "name": "abricots",
+          "quantity": "500 à 600",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "œufs",
+          "quantity": "3",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "sucre",
+          "quantity": "80",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "farine",
+          "quantity": "60",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "poudre d’amandes",
+          "quantity": "40",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "lait demi-écrémé",
+          "quantity": "250",
+          "unit": "ml",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "extrait de vanille",
+          "quantity": "1",
+          "unit": "c. à café",
+          "notes": "ou les graines d’une demi-gousse",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "sel",
+          "quantity": "1",
+          "unit": "pincée",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "beurre",
+          "quantity": "20",
+          "unit": "g",
+          "notes": "pour le moule, ou un peu d’huile",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "sucre roux",
+          "quantity": "1",
+          "unit": "c. à s.",
+          "notes": "facultatif, pour caraméliser légèrement le dessus",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "amandes effilées",
+          "quantity": "quelques",
+          "unit": "",
+          "notes": "facultatif",
+          "id": "ingredient-main-10"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Beurrer un plat à gratin ou un moule d’environ 24 cm.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Laver les abricots, les couper en deux et retirer les noyaux. Les disposer dans le plat, face coupée vers le haut.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Mélanger les œufs avec le sucre jusqu’à obtenir une préparation homogène.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Ajouter la farine, la poudre d’amandes et la pincée de sel.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Verser progressivement le lait en fouettant pour obtenir une pâte lisse, puis ajouter la vanille.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-6",
+              "text": "Verser la préparation sur les abricots.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Finition facultative",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Pour un dessus légèrement caramélisé, saupoudrer de sucre roux et, si souhaité, de quelques amandes effilées.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Cuisson",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "Enfourner 35 à 40 min, jusqu’à ce que le dessus soit bien doré et que le centre soit juste pris.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Dégustation",
+          "steps": [
+            {
+              "id": "step-3-0",
+              "text": "Laisser tiédir 15 à 20 min avant de servir. Le clafoutis est excellent tiède, mais aussi froid après quelques heures au réfrigérateur.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "Si les abricots sont un peu acides, les saupoudrer d’une cuillère à soupe de sucre avant de verser la pâte. Cela équilibre leur saveur sans rendre le clafoutis trop sucré."
+      ]
+    },
+    "en": {
+      "title": "Apricot Clafoutis",
+      "author": "Maman",
+      "description": "Soft, lightly browned apricot clafoutis made with almond flour.",
+      "yieldLabel": "6 people",
+      "servings": {
+        "quantity": 6,
+        "unit": "people"
+      },
+      "prepTime": "",
+      "cookTime": "35 to 40 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "35 to 40 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 baking dish or 1 24 cm round pan"
+      ],
+      "ingredients": [
+        {
+          "name": "apricots",
+          "quantity": "500 to 600",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "eggs",
+          "quantity": "3",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "sugar",
+          "quantity": "80",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "flour",
+          "quantity": "60",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "almond flour",
+          "quantity": "40",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "semi-skimmed milk",
+          "quantity": "250",
+          "unit": "ml",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "vanilla extract",
+          "quantity": "1",
+          "unit": "tsp",
+          "notes": "or the seeds from half a vanilla bean",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "salt",
+          "quantity": "1",
+          "unit": "pinch",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "butter",
+          "quantity": "20",
+          "unit": "g",
+          "notes": "for the pan, or use a little oil",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "brown sugar",
+          "quantity": "1",
+          "unit": "tbsp",
+          "notes": "optional, to lightly caramelize the top",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "sliced almonds",
+          "quantity": "a few",
+          "unit": "",
+          "notes": "optional",
+          "id": "ingredient-main-10"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Butter a baking dish or a pan about 24 cm in diameter.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Wash the apricots, halve and pit them. Arrange them in the dish, cut side up.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Whisk the eggs with the sugar until evenly combined.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Add the flour, almond flour and pinch of salt.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Gradually pour in the milk while whisking until the batter is smooth, then add the vanilla.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-6",
+              "text": "Pour the batter over the apricots.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Optional Finishing",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "For a lightly caramelized top, sprinkle with brown sugar and, if desired, a few sliced almonds.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Baking",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "Bake for 35 to 40 min, until the top is golden brown and the center is just set.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Serving",
+          "steps": [
+            {
+              "id": "step-3-0",
+              "text": "Let cool for 15 to 20 min before serving. The clafoutis is excellent warm or chilled for a few hours in the refrigerator.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "If the apricots are a little tart, sprinkle them with one tablespoon of sugar before pouring in the batter. This balances their flavor without making the clafoutis too sweet."
+      ]
+    }
+  }
+}

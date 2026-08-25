@@ -1,0 +1,445 @@
+{
+  "slug": "macaron-tante-maria",
+  "heroImageUrl": "https://images.unsplash.com/photo-1569864358642-9d1684040f43?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "referenceServings": 8,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "dessert",
+    "sucre"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Macaron tante Maria",
+      "author": "Tante Maria",
+      "description": "Gâteau macaron aux blancs d’œufs, amandes et extrait d’amande amère, servi avec une crème anglaise à la vanille.",
+      "yieldLabel": "8 personnes",
+      "servings": {
+        "quantity": 8,
+        "unit": "personnes"
+      },
+      "prepTime": "",
+      "cookTime": "45 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "45 min",
+      "temperature": "140 °C",
+      "equipment": [
+        "1 batteur électrique",
+        "1 casserole"
+      ],
+      "ingredients": [
+        {
+          "name": "blancs d’œufs",
+          "quantity": "6",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "sucre fin",
+          "quantity": "340",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "amandes",
+          "quantity": "340",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "levure",
+          "quantity": "1",
+          "unit": "pincée",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "extrait d’amande amère",
+          "quantity": "1",
+          "unit": "c. à c.",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "jaunes d’œufs",
+          "quantity": "6",
+          "unit": "",
+          "notes": "pour la crème anglaise, jaunes restant après le macaron",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "lait",
+          "quantity": "50",
+          "unit": "cl",
+          "notes": "pour la crème anglaise",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "sucre fin",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "pour la crème anglaise",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "Maïzena",
+          "quantity": "1",
+          "unit": "c. à café très rase",
+          "notes": "pour la crème anglaise",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "gousse de vanille",
+          "quantity": "1",
+          "unit": "",
+          "notes": "pour la crème anglaise ; à défaut, utiliser de l’extrait de vanille selon le dosage du flacon",
+          "id": "ingredient-main-9"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation du macaron",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 140 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Battre les blancs en neige très ferme.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Tourner avec le sucre 5 min au batteur électrique.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Ajouter ensuite les amandes, la levure et l’extrait d’amande amère.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Cuisson",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Cuire à four doux, 140 °C, pendant 45 min.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Crème anglaise à la vanille",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "Fendre la gousse de vanille et gratter les graines.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            },
+            {
+              "id": "step-2-1",
+              "text": "Faire bouillir 50 cl de lait avec la gousse, les graines de vanille et 1 c. à café très rase de Maïzena.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            },
+            {
+              "id": "step-2-2",
+              "text": "Mélanger 6 jaunes d’œufs avec 100 g de sucre fin.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-2-3",
+              "text": "Retirer la gousse, puis verser progressivement le lait bouillant sur les jaunes en remuant.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            },
+            {
+              "id": "step-2-4",
+              "text": "Remettre dans la casserole et faire épaissir la crème 1 à 2 min à feu doux, sans la laisser bouillir.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-2-5",
+              "text": "Laisser refroidir et servir la crème anglaise bien fraîche à côté du macaron.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "Variante au café : remplacer la vanille par 2 c. à c. d’extrait de café, ajoutées hors du feu."
+      ]
+    },
+    "en": {
+      "title": "Aunt Maria's Macaron Cake",
+      "author": "Tante Maria",
+      "description": "Macaron-style almond cake made with egg whites and bitter almond extract, served with vanilla custard.",
+      "yieldLabel": "8 people",
+      "servings": {
+        "quantity": 8,
+        "unit": "people"
+      },
+      "prepTime": "",
+      "cookTime": "45 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "45 min",
+      "temperature": "140 °C",
+      "equipment": [
+        "1 electric mixer",
+        "1 saucepan"
+      ],
+      "ingredients": [
+        {
+          "name": "egg whites",
+          "quantity": "6",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "caster sugar",
+          "quantity": "340",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "almonds",
+          "quantity": "340",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "baking powder",
+          "quantity": "1",
+          "unit": "pinch",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "bitter almond extract",
+          "quantity": "1",
+          "unit": "tsp",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "egg yolks",
+          "quantity": "6",
+          "unit": "",
+          "notes": "for the custard, using the yolks left from the macaron cake",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "milk",
+          "quantity": "50",
+          "unit": "cl",
+          "notes": "for the custard",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "caster sugar",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "for the custard",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "cornstarch",
+          "quantity": "1",
+          "unit": "very level tsp",
+          "notes": "for the custard",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "vanilla bean",
+          "quantity": "1",
+          "unit": "",
+          "notes": "for the custard; if unavailable, use vanilla extract according to the bottle directions",
+          "id": "ingredient-main-9"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Macaron Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 140 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Whip the egg whites until very stiff.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Beat with the sugar for 5 min using an electric mixer.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Then add the almonds, baking powder and bitter almond extract.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Baking",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Bake in a low oven at 140 °C for 45 min.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Vanilla Custard",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "Split the vanilla bean and scrape out the seeds.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            },
+            {
+              "id": "step-2-1",
+              "text": "Bring 50 cl milk to a boil with the vanilla pod, seeds and 1 very level tsp cornstarch.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            },
+            {
+              "id": "step-2-2",
+              "text": "Mix 6 egg yolks with 100 g caster sugar.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-2-3",
+              "text": "Remove the vanilla pod, then gradually pour the hot milk over the yolks while stirring.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            },
+            {
+              "id": "step-2-4",
+              "text": "Return to the saucepan and thicken over low heat for 1 to 2 min without letting it boil.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-2-5",
+              "text": "Let the custard cool, chill it well and serve it alongside the macaron cake.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "Coffee variation: replace the vanilla with 2 tsp coffee extract, added off the heat."
+      ]
+    }
+  }
+}

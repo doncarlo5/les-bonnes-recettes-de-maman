@@ -1,0 +1,239 @@
+{
+  "slug": "pate-feuilletee-maman",
+  "heroImageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "sucre",
+    "sale"
+  ],
+  "legacyCategoryLabels": [
+    "pâte de base"
+  ],
+  "translations": {
+    "fr": {
+      "title": "Pâte feuilletée Maman",
+      "author": "Maman",
+      "description": "Pâte feuilletée maison à base de farine, margarine Astra, sel et eau.",
+      "yieldLabel": "Environ 1,3 kg de pâte",
+      "servings": null,
+      "prepTime": "",
+      "cookTime": "",
+      "restTime": "15 min",
+      "totalTime": "15 min de repos, hors préparation",
+      "timeLabel": "15 min de repos, hors préparation",
+      "temperature": "",
+      "equipment": [
+        "1 rouleau à pâtisserie"
+      ],
+      "ingredients": [
+        {
+          "name": "farine",
+          "quantity": "750",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "Astra",
+          "quantity": "500",
+          "unit": "g",
+          "notes": "margarine",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "sel",
+          "quantity": "2",
+          "unit": "c. à c.",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "eau",
+          "quantity": "1",
+          "unit": "verre",
+          "notes": "environ 20 cl, à ajouter progressivement",
+          "id": "ingredient-main-3"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Mettre la farine sur le plan de travail.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Réserver 70 g de margarine. Mettre le reste de la margarine en morceaux dans un puits formé au centre de la farine, puis ajouter le sel.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Malaxer en ajoutant progressivement l’eau, jusqu’à obtenir une pâte homogène.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Étaler la pâte au rouleau, puis répartir les 70 g de margarine réservés sur toute la surface.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Effectuer un premier tour simple : replier un tiers de la pâte vers le centre, puis rabattre l’autre tiers par-dessus.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-5",
+              "text": "Étaler de nouveau la pâte, puis effectuer une seconde fois le même pliage en trois.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-6",
+              "text": "Laisser reposer 15 min avant utilisation.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Mom's Puff Pastry",
+      "author": "Maman",
+      "description": "Homemade puff pastry made with flour, Astra margarine, salt and water.",
+      "yieldLabel": "About 1.3 kg of dough",
+      "servings": null,
+      "prepTime": "",
+      "cookTime": "",
+      "restTime": "15 min",
+      "totalTime": "15 min resting, excluding preparation",
+      "timeLabel": "15 min resting, excluding preparation",
+      "temperature": "",
+      "equipment": [
+        "1 rolling pin"
+      ],
+      "ingredients": [
+        {
+          "name": "flour",
+          "quantity": "750",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "Astra margarine",
+          "quantity": "500",
+          "unit": "g",
+          "notes": "margarine",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "salt",
+          "quantity": "2",
+          "unit": "tsp",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "water",
+          "quantity": "1",
+          "unit": "glass",
+          "notes": "about 20 cl, added gradually",
+          "id": "ingredient-main-3"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Place the flour on the work surface.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Reserve 70 g margarine. Put the remaining margarine in pieces into a well in the flour, then add the salt.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Knead while gradually adding the water, until the dough is smooth.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Roll out the dough, then spread the reserved 70 g margarine over the entire surface.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Make the first single turn: fold one third of the dough toward the center, then fold the other third over it.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-5",
+              "text": "Roll out the dough again, then repeat the same letter fold a second time.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-6",
+              "text": "Let rest for 15 min before using.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

@@ -1,0 +1,302 @@
+{
+  "slug": "vacherin",
+  "heroImageUrl": "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "referenceServings": 8,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "dessert",
+    "sucre"
+  ],
+  "legacyCategoryLabels": [
+    "sans cuisson"
+  ],
+  "translations": {
+    "fr": {
+      "title": "Vacherin",
+      "author": "Maman",
+      "description": "Dessert glacé en moule couronne à base d’œufs, crème fraîche et meringues.",
+      "yieldLabel": "8 personnes",
+      "servings": {
+        "quantity": 8,
+        "unit": "personnes"
+      },
+      "prepTime": "20 min",
+      "cookTime": "",
+      "restTime": "3 h au congélateur",
+      "totalTime": "3 h 20",
+      "timeLabel": "3 h 20",
+      "temperature": "",
+      "equipment": [
+        "1 moule en couronne"
+      ],
+      "ingredients": [
+        {
+          "name": "huile",
+          "quantity": "un peu",
+          "unit": "",
+          "notes": "pour le moule",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "œufs",
+          "quantity": "4",
+          "unit": "",
+          "notes": "blancs et jaunes séparés",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "sucre semoule",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "sucre glace",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "crème fraîche épaisse",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "extrait de vanille",
+          "quantity": "1",
+          "unit": "c. à c.",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "meringues",
+          "quantity": "2",
+          "unit": "grosses",
+          "notes": "",
+          "id": "ingredient-main-6"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Huiler le moule en couronne.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Battre énergiquement les jaunes d’œufs et le sucre semoule jusqu’à ce que le mélange blanchisse.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Ajouter l’extrait de vanille et la crème.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Battre les blancs en neige en ajoutant à la fin le sucre glace.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Ajouter délicatement les blancs à la préparation et verser la moitié dans le moule.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-5",
+              "text": "Déposer les meringues grossièrement écrasées, puis terminer par le reste de la préparation.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-6",
+              "text": "Faire congeler 3 h.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-7",
+              "text": "Pour démouler, tremper le moule quelques secondes dans l’eau tiède.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Vacherin",
+      "author": "Maman",
+      "description": "Frozen ring-mold dessert made with eggs, crème fraîche and meringues.",
+      "yieldLabel": "8 people",
+      "servings": {
+        "quantity": 8,
+        "unit": "people"
+      },
+      "prepTime": "20 min",
+      "cookTime": "",
+      "restTime": "3 h in the freezer",
+      "totalTime": "3 h 20",
+      "timeLabel": "3 h 20",
+      "temperature": "",
+      "equipment": [
+        "1 ring mold"
+      ],
+      "ingredients": [
+        {
+          "name": "oil",
+          "quantity": "a little",
+          "unit": "",
+          "notes": "for the pan",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "eggs",
+          "quantity": "4",
+          "unit": "",
+          "notes": "whites and yolks separated",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "granulated sugar",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "icing sugar",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "thick crème fraîche",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "vanilla extract",
+          "quantity": "1",
+          "unit": "tsp",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "meringues",
+          "quantity": "2",
+          "unit": "large",
+          "notes": "",
+          "id": "ingredient-main-6"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Oil the ring mold.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Beat the egg yolks and granulated sugar vigorously until the mixture turns pale.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Add the vanilla extract and cream.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Whip the egg whites, adding the icing sugar at the end.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Gently fold the whites into the mixture and pour half into the mold.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-5",
+              "text": "Add the roughly crushed meringues, then finish with the remaining mixture.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-6",
+              "text": "Freeze for 3 h.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-7",
+              "text": "To unmold, dip the mold in warm water for a few seconds.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}
