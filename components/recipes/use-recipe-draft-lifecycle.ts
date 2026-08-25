@@ -25,6 +25,10 @@ import {
 } from "./recipe-form-schema";
 import type { EditableRecipe } from "./types";
 import type { Id } from "@/convex/_generated/dataModel";
+import {
+  createRecipeImageRevisionSession,
+  type RecipeImageRevisionSession,
+} from "./recipe-main-image-acquisition";
 
 export type SaveRecipeState = {
   type: "idle" | "success" | "validation" | "error" | "conflict";
@@ -365,10 +369,6 @@ export function useRecipeDraftLifecycle({
     return savePayload(payload, force);
   }
 
-  async function prepareRevisionedMutation() {
-    return revisionRef.current;
-  }
-
   async function deleteRecipe() {
     if (!selectedSlug || isPending) return;
     await beginDestructiveOperation();
@@ -427,6 +427,13 @@ export function useRecipeDraftLifecycle({
     setSyncState("conflict");
   }
 
+  const imageRevisionSession: RecipeImageRevisionSession =
+    createRecipeImageRevisionSession({
+      getExpectedRevision: () => revisionRef.current,
+      acceptSnapshot: (snapshot) => handleImageRevision(snapshot.revision),
+      registerConflict: handleImageConflict,
+    });
+
   async function replaceConflict() {
     const saved = await saveCurrentDraft(true);
     if (!saved || !conflictRetryRef.current) return;
@@ -455,10 +462,8 @@ export function useRecipeDraftLifecycle({
     isPublic,
     savePayload,
     saveCurrentDraft,
-    prepareRevisionedMutation,
+    imageRevisionSession,
     deleteRecipe,
-    handleImageRevision,
-    handleImageConflict,
     replaceConflict,
     reloadLatest,
     resetSyncState: () => setSyncState("idle"),
