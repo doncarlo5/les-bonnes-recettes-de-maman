@@ -3,10 +3,9 @@
 import {
   useCallback,
   useEffect,
-  useEffectEvent,
   useLayoutEffect,
-  useRef,
   useState,
+  useSyncExternalStore,
 } from "react";
 import type {
   UseFormClearErrors,
@@ -14,50 +13,26 @@ import type {
   UseFormReset,
   UseFormSetError,
 } from "react-hook-form";
+import type { Id } from "@/convex/_generated/dataModel";
 import type { Locale } from "@/i18n/config";
+import {
+  createBrowserRecipeDraftSyncEnvironment,
+  createFetchRecipeDraftSyncTransport,
+  RecipeDraftSyncSession,
+  type RecipeFormMode,
+  type SaveRecipeState,
+  type SyncState,
+} from "./recipe-draft-sync-session";
+import { toFormValues } from "./recipe-draft-form-values";
 import type {
   RecipeDraftFormInput,
   RecipeDraftPayload,
 } from "./recipe-form-schema";
-import {
-  compatibleRecipeDraftSchema,
-  partitionRecipeServerErrors,
-} from "./recipe-form-schema";
+import { partitionRecipeServerErrors } from "./recipe-form-schema";
 import type { EditableRecipe } from "./types";
-import type { Id } from "@/convex/_generated/dataModel";
-import {
-  createRecipeImageRevisionSession,
-  type RecipeImageRevisionSession,
-} from "./recipe-main-image-acquisition";
 
-export type SaveRecipeState = {
-  type: "idle" | "success" | "validation" | "error" | "conflict";
-  message: string;
-  slug?: string;
-  revision?: number;
-  publishedRevision?: number;
-  isPublic?: boolean;
-  savedAt?: number;
-  latestRevision?: number;
-  fieldErrors?: Record<string, string>;
-  formError?: string;
-  draft?: RecipeDraftPayload;
-};
-
-export type SyncState =
-  | "idle"
-  | "saving"
-  | "saved"
-  | "offline"
-  | "error"
-  | "conflict";
-export type RecipeFormMode = "create" | "update";
-type LocaleKey = "fr" | "en";
-
-const initialState: SaveRecipeState = {
-  type: "idle",
-  message: "Choisis une recette ou cree un brouillon.",
-};
+export type { RecipeFormMode, SaveRecipeState, SyncState };
+export { cloneRecipe, toFormValues } from "./recipe-draft-form-values";
 
 type LifecycleOptions = {
   locale: Locale;
@@ -94,496 +69,130 @@ export function useRecipeDraftLifecycle({
   onCreated,
   onDeleted,
 }: LifecycleOptions) {
-  const [state, setState] = useState<SaveRecipeState>(initialState);
-  const [isPending, setIsPending] = useState(false);
-  const [syncState, setSyncState] = useState<SyncState>("idle");
-  const [revision, setRevision] = useState(initialRecipe?.revision ?? 0);
-  const [isPublic, setIsPublic] = useState(
-    initialRecipe?.status === "published",
-  );
-  const [hasPendingImageChanges, setHasPendingImageChanges] = useState(false);
-  const revisionRef = useRef(initialRecipe?.revision ?? 0);
-  const saveInFlightRef = useRef(false);
-  const queuedPayloadRef = useRef<RecipeDraftPayload | null>(null);
-  const queuedForceRef = useRef(false);
-  const queuedSaveWaitersRef = useRef<Array<(saved: boolean) => void>>([]);
-  const saveIdleWaitersRef = useRef<Array<() => void>>([]);
-  const conflictRetryRef = useRef<((revision: number) => Promise<void>) | null>(
-    null,
-  );
-  const savePayloadRef = useRef<
-    ((payload: RecipeDraftPayload, force?: boolean) => Promise<boolean>) | null
-  >(null);
-  const lastSavedPayloadRef = useRef<string | null>(null);
-  const loadedRecipeSlugRef = useRef(initialRecipe?.slug ?? "");
-  if (lastSavedPayloadRef.current === null) {
-    lastSavedPayloadRef.current = draftFingerprint(
-      initialRecipe ? toFormValues(initialRecipe) : getValues(),
-    );
-  }
-
-  const savePayload = useCallback(
-    async (payload: RecipeDraftPayload, force = false) => {
-      if (saveInFlightRef.current) {
-        queuedPayloadRef.current = payload;
-        queuedForceRef.current ||= force;
-        return new Promise<boolean>((resolve) =>
-          queuedSaveWaitersRef.current.push(resolve),
-        );
-      }
-
-      const normalized = normalizePayload(payload);
-      const recipePayload = JSON.stringify(normalized);
-      const fingerprint = draftFingerprint(normalized);
-      if (!force && fingerprint === lastSavedPayloadRef.current) return true;
-
-      if (typeof navigator !== "undefined" && !navigator.onLine) {
-        if (selectedSlug)
-          persistRecovery(selectedSlug, normalized, revisionRef.current);
-        setSyncState("offline");
-        return false;
-      }
-
-      saveInFlightRef.current = true;
-      setIsPending(true);
-      setSyncState("saving");
-      let saved = false;
-      try {
-        const response = await fetch("/api/admin/recipes/save", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            locale,
-            mode,
-            slug: selectedSlug,
-            recipePayload,
-            expectedRevision: revisionRef.current,
-            ...(mode === "create" && sourceIdeaId ? { sourceIdeaId } : {}),
-            force,
-          }),
-        });
-        const data = (await response.json()) as SaveRecipeState;
-        setState(data);
-        if (response.status === 409 || data.type === "conflict") {
-          conflictRetryRef.current = null;
-          setSyncState("conflict");
-          return false;
-        }
-        if (!response.ok || data.type !== "success" || !data.slug) {
-          if (data.type === "validation") {
-            clearErrors();
-            const { fields, hasUnmappedPath } = partitionRecipeServerErrors(
-              data.fieldErrors ?? {},
-            );
-            for (const [fieldPath, message] of fields) {
-              setError(fieldPath, {
-                type: "server",
-                message,
-              });
+  const [session] = useState(
+    () =>
+      new RecipeDraftSyncSession({
+        transport: createFetchRecipeDraftSyncTransport(),
+        environment: createBrowserRecipeDraftSyncEnvironment(),
+        context: { locale, mode, selectedSlug, sourceIdeaId },
+        initialDraft: initialRecipe
+          ? toFormValues(initialRecipe)
+          : (getValues() as RecipeDraftPayload),
+        initialRevision: initialRecipe?.revision ?? 0,
+        initialIsPublic: initialRecipe?.status === "published",
+        loadedRecipeSlug: initialRecipe?.slug ?? "",
+        selectedRecipe: selectedRecipe
+          ? {
+              slug: selectedRecipe.slug,
+              revision: selectedRecipe.revision,
+              isPublic: selectedRecipe.status === "published",
+              draft: toFormValues(selectedRecipe),
             }
-            if (data.formError || fields.length === 0 || hasUnmappedPath) {
-              setError("root.server", {
-                type: "server",
-                message: data.formError ?? data.message,
-              });
-            }
-            const firstField = fields[0]?.[0];
-            if (firstField) onFieldError(firstField);
-          } else {
-            setError("root.server", { type: "server", message: data.message });
+          : undefined,
+      }),
+  );
+  const snapshot = useSyncExternalStore(
+    session.subscribe,
+    session.getSnapshot,
+    session.getSnapshot,
+  );
+
+  useEffect(() => session.connect(), [session]);
+
+  useEffect(() => {
+    session.updateContext({
+      context: { locale, mode, selectedSlug, sourceIdeaId },
+      selectedRecipe: selectedRecipe
+        ? {
+            slug: selectedRecipe.slug,
+            revision: selectedRecipe.revision,
+            isPublic: selectedRecipe.status === "published",
+            draft: toFormValues(selectedRecipe),
           }
-          setSyncState("error");
-          return false;
-        }
-
-        const nextRevision = data.revision ?? revisionRef.current;
-        revisionRef.current = nextRevision;
-        setRevision(nextRevision);
-        lastSavedPayloadRef.current = fingerprint;
-        setHasPendingImageChanges(false);
-        if (typeof data.isPublic === "boolean") {
-          setIsPublic(data.isPublic);
-        }
-        clearErrors("root.server");
-        localStorage.removeItem(recoveryKey(data.slug));
-        localStorage.removeItem(pendingImageKey(data.slug));
-        setSyncState("saved");
-        if (mode === "create") onCreated(data.slug);
-        saved = true;
-      } catch {
-        if (selectedSlug)
-          persistRecovery(selectedSlug, normalized, revisionRef.current);
-        setSyncState(
-          typeof navigator !== "undefined" && !navigator.onLine
-            ? "offline"
-            : "error",
-        );
-        setState({
-          type: "error",
-          message: "Impossible d'enregistrer cette recette.",
-        });
-      } finally {
-        saveInFlightRef.current = false;
-        setIsPending(false);
-        const queued = queuedPayloadRef.current;
-        const queuedForce = queuedForceRef.current;
-        const waiters = queuedSaveWaitersRef.current;
-        queuedPayloadRef.current = null;
-        queuedForceRef.current = false;
-        queuedSaveWaitersRef.current = [];
-        if (queued && savePayloadRef.current) {
-          const queuedSaved = await savePayloadRef.current(queued, queuedForce);
-          saved = saved && queuedSaved;
-          for (const resolve of waiters) resolve(queuedSaved);
-        } else {
-          for (const resolve of waiters) resolve(saved);
-        }
-        if (!saveInFlightRef.current && !queuedPayloadRef.current) {
-          const idleWaiters = saveIdleWaitersRef.current;
-          saveIdleWaitersRef.current = [];
-          for (const resolve of idleWaiters) resolve();
-        }
-      }
-      return saved;
-    },
-    [
-      clearErrors,
-      locale,
-      mode,
-      onCreated,
-      onFieldError,
-      selectedSlug,
-      sourceIdeaId,
-      setError,
-    ],
-  );
+        : undefined,
+    });
+  }, [locale, mode, selectedRecipe, selectedSlug, session, sourceIdeaId]);
 
   useLayoutEffect(() => {
-    savePayloadRef.current = savePayload;
-  }, [savePayload]);
+    if (!watchedValues) return;
+    session.observeDraft(watchedValues as RecipeDraftPayload);
+  }, [session, watchedValues]);
 
   useEffect(() => {
-    if (!selectedSlug) return;
-    const recovered = localStorage.getItem(recoveryKey(selectedSlug));
-    if (!recovered) return;
-    try {
-      const parsed = JSON.parse(recovered) as {
-        payload?: unknown;
-        revision?: number;
-      };
-      const recoveredPayload = compatibleRecipeDraftSchema.safeParse(
-        parsed.payload,
+    if (snapshot.recoveredDraft) reset(snapshot.recoveredDraft);
+  }, [reset, snapshot.recoveredDraft]);
+
+  useEffect(() => {
+    if (snapshot.createdSlug) onCreated(snapshot.createdSlug);
+  }, [onCreated, snapshot.createdSlug]);
+
+  useEffect(() => {
+    if (snapshot.deleted) onDeleted();
+  }, [onDeleted, snapshot.deleted]);
+
+  useEffect(() => {
+    const result = snapshot.formResult;
+    if (!result) return;
+    if (result.type === "success") {
+      clearErrors("root.server");
+      return;
+    }
+    if (result.type === "validation") {
+      clearErrors();
+      const { fields, hasUnmappedPath } = partitionRecipeServerErrors(
+        result.fieldErrors ?? {},
       );
-      if (recoveredPayload.success) {
-        reset(recoveredPayload.data);
-        queueMicrotask(() => {
-          if (parsed.revision === revisionRef.current) {
-            setSyncState("offline");
-          } else {
-            setState({
-              type: "conflict",
-              message:
-                "Une récupération locale repose sur une révision plus ancienne.",
-              latestRevision: revisionRef.current,
-            });
-            setSyncState("conflict");
-          }
+      for (const [fieldPath, message] of fields) {
+        setError(fieldPath, { type: "server", message });
+      }
+      if (result.formError || fields.length === 0 || hasUnmappedPath) {
+        setError("root.server", {
+          type: "server",
+          message: result.formError ?? result.message,
         });
       }
-    } catch {
-      localStorage.removeItem(recoveryKey(selectedSlug));
+      const firstField = fields[0]?.[0];
+      if (firstField) onFieldError(firstField);
+      return;
     }
-  }, [reset, selectedSlug]);
-
-  const retryOnlineSave = useEffectEvent(() => {
-    if (syncState === "offline") void saveCurrentDraft();
-  });
-  useEffect(() => {
-    const retry = () => retryOnlineSave();
-    window.addEventListener("online", retry);
-    return () => window.removeEventListener("online", retry);
-  }, []);
-
-  const persistPendingNavigation = useEffectEvent(() => {
-    if (!selectedSlug) return;
-    const values = getValues();
-    if (draftFingerprint(values) !== lastSavedPayloadRef.current) {
-      persistRecovery(selectedSlug, values, revisionRef.current);
+    if (result.type === "error") {
+      setError("root.server", { type: "server", message: result.message });
     }
-  });
-  useEffect(() => {
-    const persist = () => persistPendingNavigation();
-    window.addEventListener("pagehide", persist);
-    window.addEventListener("popstate", persist);
-    return () => {
-      window.removeEventListener("pagehide", persist);
-      window.removeEventListener("popstate", persist);
-    };
-  }, []);
+  }, [clearErrors, onFieldError, setError, snapshot.formResult]);
 
-  useEffect(() => {
-    if (!selectedRecipe || selectedRecipe.slug !== selectedSlug) return;
-    const hasStoredPendingImage =
-      localStorage.getItem(pendingImageKey(selectedRecipe.slug)) ===
-      String(selectedRecipe.revision);
-    queueMicrotask(() => setHasPendingImageChanges(hasStoredPendingImage));
-    if (
-      selectedRecipe.slug !== loadedRecipeSlugRef.current ||
-      selectedRecipe.revision > revisionRef.current
-    ) {
-      queueMicrotask(() => setIsPublic(selectedRecipe.status === "published"));
-      const values = toFormValues(selectedRecipe);
-      reset(values);
-      loadedRecipeSlugRef.current = selectedRecipe.slug;
-      revisionRef.current = selectedRecipe.revision;
-      setRevision(selectedRecipe.revision);
-      lastSavedPayloadRef.current = draftFingerprint(values);
-    }
-    if (hasStoredPendingImage) {
-      lastSavedPayloadRef.current = "pending-image-change";
-    }
-  }, [getValues, reset, selectedRecipe, selectedSlug]);
+  const saveCurrentDraft = useCallback(
+    async (force = false) => {
+      const payload = await validateDraft();
+      if (!payload) {
+        session.recordValidationFailure(getValues() as RecipeDraftPayload);
+        return false;
+      }
+      return session.save(payload, force);
+    },
+    [getValues, session, validateDraft],
+  );
 
-  function waitForSaveIdle() {
-    if (!saveInFlightRef.current) return Promise.resolve();
-    return new Promise<void>((resolve) =>
-      saveIdleWaitersRef.current.push(resolve),
-    );
-  }
-
-  async function beginDestructiveOperation() {
-    queuedPayloadRef.current = null;
-    for (const resolve of queuedSaveWaitersRef.current) resolve(false);
-    queuedSaveWaitersRef.current = [];
-    await waitForSaveIdle();
-  }
-
-  async function saveCurrentDraft(force = false) {
+  const replaceConflict = useCallback(async () => {
     const payload = await validateDraft();
     if (!payload) {
-      if (selectedSlug)
-        persistRecovery(selectedSlug, getValues(), revisionRef.current);
-      setSyncState("error");
+      session.recordValidationFailure(getValues() as RecipeDraftPayload);
       return false;
     }
-    return savePayload(payload, force);
-  }
-
-  async function deleteRecipe() {
-    if (!selectedSlug || isPending) return;
-    await beginDestructiveOperation();
-    setIsPending(true);
-    try {
-      const response = await fetch("/api/admin/recipes/delete", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          slug: selectedSlug,
-          expectedRevision: revisionRef.current,
-        }),
-      });
-      const data = (await response.json()) as SaveRecipeState;
-      setState(data);
-      if (!response.ok) {
-        setSyncState(response.status === 409 ? "conflict" : "error");
-        return;
-      }
-      localStorage.removeItem(recoveryKey(selectedSlug));
-      localStorage.removeItem(pendingImageKey(selectedSlug));
-      setSyncState("idle");
-      onDeleted();
-    } catch {
-      setState({
-        type: "error",
-        message: "Impossible de supprimer cette recette.",
-      });
-      setSyncState("error");
-    } finally {
-      setIsPending(false);
-    }
-  }
-
-  function handleImageRevision(nextRevision: number) {
-    revisionRef.current = nextRevision;
-    setRevision(nextRevision);
-    lastSavedPayloadRef.current = "pending-image-change";
-    setHasPendingImageChanges(true);
-    if (selectedSlug) {
-      localStorage.setItem(pendingImageKey(selectedSlug), String(nextRevision));
-    }
-    setSyncState("idle");
-  }
-
-  function handleImageConflict(
-    latestRevision?: number,
-    retry?: (revision: number) => Promise<void>,
-  ) {
-    conflictRetryRef.current = retry ?? null;
-    setState({
-      type: "conflict",
-      message: "Ce brouillon a été modifié ailleurs.",
-      latestRevision,
-    });
-    setSyncState("conflict");
-  }
-
-  const imageRevisionSession: RecipeImageRevisionSession =
-    createRecipeImageRevisionSession({
-      getExpectedRevision: () => revisionRef.current,
-      acceptSnapshot: (snapshot) => handleImageRevision(snapshot.revision),
-      registerConflict: handleImageConflict,
-    });
-
-  async function replaceConflict() {
-    const saved = await saveCurrentDraft(true);
-    if (!saved || !conflictRetryRef.current) return;
-    const retry = conflictRetryRef.current;
-    conflictRetryRef.current = null;
-    await retry(revisionRef.current);
-  }
-
-  function reloadLatest() {
-    if (selectedSlug) localStorage.removeItem(recoveryKey(selectedSlug));
-    window.location.reload();
-  }
-
-  const hasUnsavedChanges =
-    hasPendingImageChanges ||
-    (Boolean(watchedValues) &&
-      draftFingerprint(watchedValues as RecipeDraftPayload) !==
-        lastSavedPayloadRef.current);
+    return session.replaceConflict(payload);
+  }, [getValues, session, validateDraft]);
 
   return {
-    state,
-    isPending,
-    syncState,
-    hasUnsavedChanges,
-    revision,
-    isPublic,
-    savePayload,
+    state: snapshot.state,
+    isPending: snapshot.isPending,
+    syncState: snapshot.syncState,
+    hasUnsavedChanges: snapshot.hasUnsavedChanges,
+    revision: snapshot.revision,
+    isPublic: snapshot.isPublic,
     saveCurrentDraft,
-    imageRevisionSession,
-    deleteRecipe,
+    imageRevisionSession: session.imageRevisionSession,
+    deleteRecipe: session.deleteRecipe,
     replaceConflict,
-    reloadLatest,
-    resetSyncState: () => setSyncState("idle"),
+    reloadLatest: session.reloadLatest,
+    resetSyncState: session.resetSyncState,
   };
-}
-
-function recoveryKey(slug: string) {
-  return `recipe-admin-draft:v1:${slug}`;
-}
-
-function pendingImageKey(slug: string) {
-  return `recipe-admin-pending-image:v1:${slug}`;
-}
-
-function persistRecovery(
-  slug: string,
-  payload: RecipeDraftFormInput,
-  revision: number,
-) {
-  localStorage.setItem(
-    recoveryKey(slug),
-    JSON.stringify({ payload, revision }),
-  );
-}
-
-export function toFormValues(recipe: EditableRecipe): RecipeDraftPayload {
-  return cloneRecipe({
-    defaultLocale: recipe.defaultLocale,
-    referenceServings: recipe.referenceServings,
-    relatedRecipeSlugs: recipe.relatedRecipeSlugs,
-    translations: recipe.translations,
-    categories: recipe.categories,
-    legacyCategoryLabels: recipe.legacyCategoryLabels,
-  });
-}
-
-export function normalizePayload(
-  value: RecipeDraftPayload,
-): RecipeDraftPayload {
-  return {
-    ...value,
-    relatedRecipeSlugs: [
-      ...new Set(
-        value.relatedRecipeSlugs.flatMap((slug) =>
-          slug.trim() ? [slug.trim()] : [],
-        ),
-      ),
-    ],
-    categories: [...new Set(value.categories ?? [])],
-    legacyCategoryLabels: (value.legacyCategoryLabels ?? []).flatMap((label) =>
-      label.trim() ? [label.trim()] : [],
-    ),
-    translations: {
-      fr: normalizeLocalizedRecipe(value.translations.fr),
-      en: normalizeLocalizedRecipe(value.translations.en),
-    },
-  };
-}
-
-function draftFingerprint(value: RecipeDraftPayload) {
-  const normalized = normalizePayload(value);
-  return JSON.stringify({
-    defaultLocale: normalized.defaultLocale,
-    referenceServings: normalized.referenceServings,
-    relatedRecipeSlugs: normalized.relatedRecipeSlugs,
-    translations: normalized.translations,
-    categories: normalized.categories,
-    legacyCategoryLabels: normalized.legacyCategoryLabels,
-  });
-}
-
-function normalizeLocalizedRecipe(
-  recipe: RecipeDraftPayload["translations"][LocaleKey],
-) {
-  return {
-    ...recipe,
-    yieldLabel: recipe.yieldLabel.trim(),
-    equipment: recipe.equipment.flatMap((item) =>
-      item.trim() ? [item.trim()] : [],
-    ),
-    ingredients: recipe.ingredients.map((ingredient) => ({
-      id: ingredient.id,
-      name: ingredient.name.trim(),
-      quantity: ingredient.quantity.trim(),
-      unit: ingredient.unit.trim(),
-      notes: ingredient.notes.trim(),
-    })),
-    sections: recipe.sections.map((section) => ({
-      title: section.title.trim(),
-      steps: section.steps.flatMap((step) =>
-        step.text.trim()
-          ? [{
-              ...step,
-              text: step.text.trim(),
-              ingredientUses: step.ingredientUses.map((use) => {
-                const quantity = use.amount?.quantity.trim() ?? "";
-                const unit = use.amount?.unit.trim() ?? "";
-                return {
-                  ingredientId: use.ingredientId,
-                  ...(quantity || unit ? { amount: { quantity, unit } } : {}),
-                };
-              }),
-            }]
-          : [],
-      ),
-    })),
-    subRecipes: recipe.subRecipes.map((subRecipe) => ({
-      title: subRecipe.title.trim(),
-      ingredients: subRecipe.ingredients.map((ingredient) => ({
-        id: ingredient.id,
-        name: ingredient.name.trim(),
-        quantity: ingredient.quantity.trim(),
-        unit: ingredient.unit.trim(),
-        notes: ingredient.notes.trim(),
-      })),
-    })),
-    notes: recipe.notes.flatMap((note) => (note.trim() ? [note.trim()] : [])),
-  };
-}
-
-export function cloneRecipe(recipe: RecipeDraftPayload): RecipeDraftPayload {
-  return structuredClone(recipe);
 }

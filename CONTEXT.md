@@ -87,6 +87,10 @@ _Avoid_: Statut du brouillon, publication, recette active
 Version privée et modifiable d'une Recette, enregistrée au fil de l'édition et sans effet sur la Version publiée avant approbation.
 _Avoid_: Modifications, révision, copie temporaire
 
+**Session de synchronisation du Brouillon de travail**:
+Période pendant laquelle les changements locaux d'un Brouillon de travail sont rapprochés de sa version enregistrée, y compris après une interruption de connexion ou une modification concurrente. Elle ne constitue ni un Brouillon distinct ni une source de contenu.
+_Avoid_: Autosauvegarde, Brouillon local, session d'édition
+
 **État de préparation**:
 Évaluation éditoriale qui distingue ce qui bloque la publication d'une Recette des recommandations facultatives.
 _Avoid_: Validation technique, statut de formulaire
