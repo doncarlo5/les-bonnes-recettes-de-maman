@@ -38,7 +38,10 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { Skeleton } from "@/components/ui/skeleton";
-import type { RecipeImageRevisionSession } from "./recipe-main-image-acquisition";
+import {
+  formatRecipeImageLicense,
+  type RecipeImageRevisionSession,
+} from "./recipe-main-image-acquisition";
 import type { EditableRecipe, Recipe } from "./types";
 import { useRecipeMainImageAcquisition } from "./use-recipe-main-image-acquisition";
 
@@ -461,20 +464,8 @@ function ImageCreditLine({
         rel="noreferrer"
         className="content-link text-primary"
       >
-        {formatLicense(imageCredit)}
+        {formatRecipeImageLicense(imageCredit)}
       </a>
     </p>
   );
-}
-
-function formatLicense({
-  license,
-  licenseVersion,
-}: {
-  license: string;
-  licenseVersion: string;
-}) {
-  return [license ? `CC ${license.toUpperCase()}` : "", licenseVersion]
-    .filter(Boolean)
-    .join(" ");
 }

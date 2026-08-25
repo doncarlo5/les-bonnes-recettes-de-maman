@@ -34,22 +34,32 @@ export function createRecipeImageRevisionSession({
     retry: (expectedRevision: number) => Promise<void>,
   ) => void;
 }): RecipeImageRevisionSession {
-  return {
-    async run(operation) {
-      try {
-        const snapshot = await operation(getExpectedRevision());
-        acceptSnapshot(snapshot);
-        return snapshot;
-      } catch (error) {
-        if (error instanceof RecipeImageConflictError) {
-          registerConflict(error.latestRevision, async (expectedRevision) => {
-            const snapshot = await operation(expectedRevision);
-            acceptSnapshot(snapshot);
-          });
-        }
-        throw error;
+  async function execute(
+    operation: (expectedRevision: number) => Promise<RecipeImageMutation>,
+    expectedRevision: number,
+  ): Promise<RecipeImageMutation> {
+    try {
+      const snapshot = await operation(expectedRevision);
+      acceptSnapshot(snapshot);
+      return snapshot;
+    } catch (error) {
+      if (error instanceof RecipeImageConflictError) {
+        registerConflict(error.latestRevision, async (nextRevision) => {
+          try {
+            await execute(operation, nextRevision);
+          } catch (retryError) {
+            if (!(retryError instanceof RecipeImageConflictError)) {
+              throw retryError;
+            }
+          }
+        });
       }
-    },
+      throw error;
+    }
+  }
+
+  return {
+    run: (operation) => execute(operation, getExpectedRevision()),
   };
 }
 
@@ -338,20 +348,21 @@ export class RecipeMainImageAcquisition {
     expectedRevision: number,
   ) {
     if (!this.recipe) throw new Error("RECIPE_NOT_FOUND");
+    const slug = this.recipe.slug;
     this.setStatus("loading", "Upload de l’image…");
-    const uploadUrl = await this.transport.createUploadUrl();
-    const storageId = await this.transport.uploadLocalFile(uploadUrl, file);
-    try {
-      return await this.transport.associateStoredImage({
-        slug: this.recipe.slug,
-        storageId,
-        expectedRevision,
-      });
-    } catch (error) {
-      const recovered = await this.recoverStoredImage(storageId);
-      if (recovered) return recovered;
-      throw error;
-    }
+    return this.acquireAndAssociateStoredImage({
+      acquireStorageId: async () => {
+        const uploadUrl = await this.transport.createUploadUrl();
+        return this.transport.uploadLocalFile(uploadUrl, file);
+      },
+      associateImage: (storageId) =>
+        this.transport.associateStoredImage({
+          slug,
+          storageId,
+          expectedRevision,
+        }),
+      cleanupFailure: "surface",
+    });
   }
 
   private async useUnsplashAtRevision(
@@ -373,23 +384,44 @@ export class RecipeMainImageAcquisition {
     expectedRevision: number,
   ) {
     if (!this.recipe) throw new Error("RECIPE_NOT_FOUND");
+    const slug = this.recipe.slug;
     this.setStatus("loading", "Import de l’image Openverse dans Convex…");
-    const storageId = await this.transport.importOpenverseImage(photo.imageUrl);
+    return this.acquireAndAssociateStoredImage({
+      acquireStorageId: () =>
+        this.transport.importOpenverseImage(photo.imageUrl),
+      associateImage: (storageId) =>
+        this.transport.associateOpenverseImage({
+          slug,
+          storageId,
+          photo,
+          expectedRevision,
+        }),
+      cleanupFailure: "preserve-association-error",
+    });
+  }
+
+  private async acquireAndAssociateStoredImage({
+    acquireStorageId,
+    associateImage,
+    cleanupFailure,
+  }: {
+    acquireStorageId: () => Promise<Id<"_storage">>;
+    associateImage: (
+      storageId: Id<"_storage">,
+    ) => Promise<RecipeImageMutation>;
+    cleanupFailure: "surface" | "preserve-association-error";
+  }) {
+    const storageId = await acquireStorageId();
     try {
-      return await this.transport.associateOpenverseImage({
-        slug: this.recipe.slug,
-        storageId,
-        photo,
-        expectedRevision,
-      });
-    } catch (error) {
+      return await associateImage(storageId);
+    } catch (associationError) {
       try {
         const recovered = await this.recoverStoredImage(storageId);
         if (recovered) return recovered;
-      } catch {
-        // Keep the actionable association error visible; cleanup can be retried.
+      } catch (cleanupError) {
+        if (cleanupFailure === "surface") throw cleanupError;
       }
-      throw error;
+      throw associationError;
     }
   }
 
@@ -441,7 +473,7 @@ export class RecipeMainImageAcquisition {
       source: provider,
       previewUrl: source.previewUrl,
       title: source.title,
-      detail: `${source.creator} · ${formatLicense(source)}`,
+      detail: `${source.creator} · ${formatRecipeImageLicense(source)}`,
     } satisfies RecipeImageCandidate;
   }
 
@@ -712,7 +744,7 @@ function isUnsplashPhoto(photo: CandidateSource): photo is UnsplashPhoto {
   return "photographerName" in photo;
 }
 
-function formatLicense({
+export function formatRecipeImageLicense({
   license,
   licenseVersion,
 }: {
