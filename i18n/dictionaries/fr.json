@@ -15,7 +15,7 @@
     "title": "Que voulez-vous ajouter ?",
     "description": "Commencez une recette complète ou gardez simplement une idée pour plus tard.",
     "fullTitle": "Écrire la recette complète",
-    "fullDescription": "Ouvrir un brouillon privé dans l’administration.",
+    "fullDescription": "Commencer une recette privée dans l’administration.",
     "ideaTitle": "Laisser une idée",
     "ideaDescription": "Noter une envie, un souvenir ou un lien en quelques secondes."
   },
@@ -62,7 +62,7 @@
     "commentPlural": "{count} commentaires",
     "reset": "Réinitialiser",
     "addRecipeTitle": "Ajouter une recette",
-    "addRecipeDescription": "Créer un nouveau brouillon",
+    "addRecipeDescription": "Créer une nouvelle recette",
     "noResultsTitle": "Aucune recette trouvée",
     "noResultsDescription": "Essaie une autre recherche ou retire un filtre pour retrouver plus de recettes."
   },
@@ -108,7 +108,7 @@
     "adminDescription": "Transformez une idée rapide en recette, ou retirez-la du carnet partagé.",
     "adminQuickAdd": "Ajouter une idée rapide",
     "adminCreateRecipe": "Créer la recette",
-    "adminLinkedDraft": "Brouillon en cours",
+    "adminLinkedDraft": "Recette à compléter",
     "adminLoadError": "Impossible de charger les idées.",
     "adminDeleteError": "Impossible de supprimer cette idée.",
     "adminEmpty": "Aucune idée dans cette section.",
@@ -181,7 +181,7 @@
       "reactionError": "Impossible d’enregistrer cette réaction. Réessayez.",
       "adminEyebrow": "Modération",
       "adminTitle": "Commentaires de la recette",
-      "adminDescription": "Ces contributions sont publiques et indépendantes du brouillon éditorial.",
+      "adminDescription": "Ces contributions sont publiques et indépendantes des modifications privées.",
       "adminEmpty": "Aucun commentaire pour cette recette.",
       "adminLoadError": "Impossible de charger les commentaires.",
       "adminDeleteError": "Impossible de supprimer ce commentaire."

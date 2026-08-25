@@ -5,38 +5,37 @@ import {
   adminUnauthorizedResponse,
   getRecipeAdminAccess,
 } from "@/lib/recipe-admin-auth";
-import { revalidateRecipePaths } from "@/lib/recipe-admin-revalidate";
-import {
-  slugMutationSuccessSchema,
-  unpublishRecipeRequestSchema,
-} from "@/lib/recipe-admin-contracts";
 import {
   parseJsonRequest,
   recipeMutationErrorResponse,
 } from "@/lib/recipe-admin-route-errors";
+import {
+  recipeVisibilityRequestSchema,
+  visibilityMutationSuccessSchema,
+} from "@/lib/recipe-admin-contracts";
+import { revalidateRecipePaths } from "@/lib/recipe-admin-revalidate";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   const access = await getRecipeAdminAccess();
   if (!access.ok) return adminUnauthorizedResponse(access);
-  const parsed = await parseJsonRequest(request, unpublishRecipeRequestSchema);
+  const parsed = await parseJsonRequest(request, recipeVisibilityRequestSchema);
   if (!parsed.ok) return parsed.response;
-  const { slug } = parsed.data;
 
   try {
-    await fetchMutation(api.recipes.unpublish, {
-      slug,
+    const result = await fetchMutation(api.recipes.setVisibility, {
+      ...parsed.data,
       adminPassword: access.adminPassword,
     });
-    revalidateRecipePaths(slug);
+    revalidateRecipePaths(parsed.data.slug);
     return Response.json(
-      slugMutationSuccessSchema.parse({ type: "success", slug }),
+      visibilityMutationSuccessSchema.parse({ type: "success", ...result }),
     );
   } catch (error) {
     return recipeMutationErrorResponse(
       error,
-      "Impossible de retirer cette recette du site.",
+      "Impossible de modifier la visibilité de cette recette.",
     );
   }
 }

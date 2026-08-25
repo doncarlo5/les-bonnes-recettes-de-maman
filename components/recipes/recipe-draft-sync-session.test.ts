@@ -89,6 +89,9 @@ function transport(
         slug: "tarte-au-citron",
       },
     }),
+    publish: vi.fn().mockResolvedValue(success(4)),
+    discard: vi.fn().mockResolvedValue(success(4)),
+    setVisibility: vi.fn().mockResolvedValue(success(4)),
     ...overrides,
   };
 }
@@ -144,6 +147,8 @@ function session({
   browser = environment(),
   initialDraft = draft(),
   revision = 3,
+  publishedRevision = -1,
+  isPublic = false,
   mode = "update" as const,
   slug = "tarte-au-citron",
 }: {
@@ -151,6 +156,8 @@ function session({
   browser?: RecipeDraftSyncEnvironment;
   initialDraft?: RecipeDraftPayload;
   revision?: number;
+  publishedRevision?: number;
+  isPublic?: boolean;
   mode?: "create" | "update";
   slug?: string;
 } = {}) {
@@ -164,7 +171,8 @@ function session({
     },
     initialDraft,
     initialRevision: revision,
-    initialIsPublic: false,
+    initialPublishedRevision: publishedRevision,
+    initialIsPublic: isPublic,
     loadedRecipeSlug: slug,
   });
 }
@@ -178,6 +186,102 @@ function deferred<T>() {
 }
 
 describe("RecipeDraftSyncSession", () => {
+  test("publishes only after the latest private save has completed", async () => {
+    const adapter = transport({
+      save: vi.fn().mockResolvedValue(success(4)),
+      publish: vi.fn().mockResolvedValue({
+        ...success(4),
+        data: {
+          ...success(4).data,
+          publishedRevision: 4,
+        },
+      }),
+    });
+    const sync = session({ adapter });
+    const changed = draft("Version prête");
+    sync.observeDraft(changed);
+
+    await expect(sync.publish(changed)).resolves.toBe(true);
+
+    expect(adapter.save).toHaveBeenCalledOnce();
+    expect(adapter.publish).toHaveBeenCalledWith({
+      slug: "tarte-au-citron",
+      expectedRevision: 4,
+    });
+    expect(sync.getSnapshot()).toMatchObject({
+      revision: 4,
+      publishedRevision: 4,
+      isPublic: true,
+    });
+  });
+
+  test("never queues a publication while offline", async () => {
+    const browser = environment({ online: false });
+    const adapter = transport();
+    const sync = session({ adapter, browser });
+
+    await expect(sync.publish(draft("Version hors ligne"))).resolves.toBe(false);
+    browser.setOnline(true);
+
+    expect(adapter.publish).not.toHaveBeenCalled();
+    expect(sync.getSnapshot().state.message).toContain("confirme à nouveau");
+  });
+
+  test("keeps a hidden published recipe hidden after publishing edits", async () => {
+    const adapter = transport({
+      save: vi.fn().mockResolvedValue(success(5)),
+      publish: vi.fn().mockResolvedValue({
+        ...success(5),
+        data: { ...success(5).data, publishedRevision: 5 },
+      }),
+    });
+    const sync = session({
+      adapter,
+      revision: 4,
+      publishedRevision: 4,
+      isPublic: false,
+    });
+
+    await expect(sync.publish(draft("Archive corrigée"))).resolves.toBe(true);
+    expect(sync.getSnapshot().isPublic).toBe(false);
+  });
+
+  test("publishes after explicitly replacing a conflicting remote version", async () => {
+    const adapter = transport({
+      save: vi
+        .fn()
+        .mockResolvedValueOnce({
+          ok: false,
+          status: 409,
+          data: {
+            type: "conflict",
+            message: "Conflit",
+            latestRevision: 8,
+          },
+        })
+        .mockResolvedValueOnce(success(9)),
+      publish: vi.fn().mockResolvedValue({
+        ...success(9),
+        data: { ...success(9).data, publishedRevision: 9 },
+      }),
+    });
+    const sync = session({ adapter });
+    const changed = draft("Version locale prioritaire");
+
+    await expect(sync.save(changed)).resolves.toBe(false);
+    await expect(sync.replaceConflict(changed)).resolves.toBe(true);
+
+    expect(adapter.publish).toHaveBeenCalledWith({
+      slug: "tarte-au-citron",
+      expectedRevision: 9,
+    });
+    expect(sync.getSnapshot()).toMatchObject({
+      syncState: "saved",
+      publishedRevision: 9,
+      isPublic: true,
+    });
+  });
+
   test("skips a semantically identical draft", async () => {
     const adapter = transport();
     const sync = session({ adapter });
@@ -276,6 +380,7 @@ describe("RecipeDraftSyncSession", () => {
       selectedRecipe: {
         slug: "cake-au-citron",
         revision: 8,
+        publishedRevision: 8,
         isPublic: true,
         draft: draft("Cake enregistré"),
       },
@@ -316,6 +421,7 @@ describe("RecipeDraftSyncSession", () => {
       selectedRecipe: {
         slug: "cake-au-citron",
         revision: 8,
+        publishedRevision: -1,
         isPublic: false,
         draft: draft("Cake enregistré"),
       },
@@ -349,6 +455,7 @@ describe("RecipeDraftSyncSession", () => {
       selectedRecipe: {
         slug: "cake-au-citron",
         revision: 8,
+        publishedRevision: -1,
         isPublic: false,
         draft: draft("Cake enregistré"),
       },
@@ -518,6 +625,7 @@ describe("RecipeDraftSyncSession", () => {
       selectedRecipe: {
         slug: "cake-au-citron",
         revision: 8,
+        publishedRevision: -1,
         isPublic: false,
         draft: draft("Cake enregistré"),
       },

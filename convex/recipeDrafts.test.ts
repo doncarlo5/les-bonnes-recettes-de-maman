@@ -718,8 +718,9 @@ describe("recipe working drafts", () => {
       locale: "fr",
       slug: "mayonnaise",
     });
-    await t.mutation(api.recipes.unpublish, {
+    await t.mutation(api.recipes.setVisibility, {
       slug: "mayonnaise",
+      visible: false,
       adminPassword: password,
     });
 
@@ -1093,7 +1094,7 @@ describe("recipe working drafts", () => {
     });
   });
 
-  test("publishes a ready recipe atomically when saving from the simple editor", async () => {
+  test("keeps a ready save private until publication is explicitly confirmed", async () => {
     const t = convexTest(schema, modules);
     const created = await t.mutation(api.recipes.create, {
       recipe: recipe("Première version"),
@@ -1110,11 +1111,18 @@ describe("recipe working drafts", () => {
         categories: changed.categories,
       },
       expectedRevision: created.revision,
-      publishIfReady: true,
       adminPassword: password,
     });
 
-    expect(saved).toMatchObject({ revision: 1, publishedRevision: 1 });
+    expect(saved).toMatchObject({ revision: 1, publishedRevision: -1 });
+    await expect(
+      t.query(api.recipes.getBySlug, { locale: "fr", slug: created.slug }),
+    ).resolves.toBeNull();
+    await t.mutation(api.recipes.publishDraft, {
+      slug: created.slug,
+      expectedRevision: saved.revision,
+      adminPassword: password,
+    });
     await expect(
       t.query(api.recipes.getBySlug, {
         locale: "fr",
@@ -1141,7 +1149,6 @@ describe("recipe working drafts", () => {
         categories: initial.categories,
       },
       expectedRevision: created.revision,
-      publishIfReady: true,
       adminPassword: password,
     });
 
@@ -1172,7 +1179,6 @@ describe("recipe working drafts", () => {
         categories: initial.categories,
       },
       expectedRevision: created.revision,
-      publishIfReady: true,
       adminPassword: password,
     });
 
@@ -1434,8 +1440,9 @@ describe("recipe working drafts", () => {
           adminPassword: "wrong-password",
         }),
       () =>
-        t.mutation(api.recipes.unpublish, {
+        t.mutation(api.recipes.setVisibility, {
           slug: "missing",
+          visible: false,
           adminPassword: "wrong-password",
         }),
       () =>
@@ -1794,8 +1801,9 @@ describe("recipe working drafts", () => {
       expectedRevision: 0,
       adminPassword: password,
     });
-    await t.mutation(api.recipes.unpublish, {
+    await t.mutation(api.recipes.setVisibility, {
       slug: created.slug,
+      visible: false,
       adminPassword: password,
     });
 
@@ -1811,6 +1819,51 @@ describe("recipe working drafts", () => {
       adminPassword: password,
     });
     expect(editing?.title).toBe("À retirer");
+  });
+
+  test("publishing edits preserves a deliberately hidden recipe", async () => {
+    const t = convexTest(schema, modules);
+    const created = await t.mutation(api.recipes.create, {
+      recipe: recipe("Archive privée"),
+      adminPassword: password,
+    });
+    await t.mutation(api.recipes.publishDraft, {
+      slug: created.slug,
+      expectedRevision: 0,
+      adminPassword: password,
+    });
+    await t.mutation(api.recipes.setVisibility, {
+      slug: created.slug,
+      visible: false,
+      adminPassword: password,
+    });
+    const changed = recipe("Archive privée corrigée");
+    const saved = await t.mutation(api.recipes.saveDraft, {
+      slug: created.slug,
+      recipe: changed,
+      expectedRevision: 0,
+      adminPassword: password,
+    });
+    await t.mutation(api.recipes.publishDraft, {
+      slug: created.slug,
+      expectedRevision: saved.revision,
+      adminPassword: password,
+    });
+
+    await expect(
+      t.query(api.recipes.getBySlug, { locale: "fr", slug: created.slug }),
+    ).resolves.toBeNull();
+    await expect(
+      t.query(api.recipes.getForEditing, {
+        locale: "fr",
+        slug: created.slug,
+        adminPassword: password,
+      }),
+    ).resolves.toMatchObject({
+      title: "Archive privée corrigée",
+      publishedRevision: saved.revision,
+      isPublic: false,
+    });
   });
 
   test("retains an approved baseline when unpublishing a legacy recipe", async () => {
@@ -1840,8 +1893,9 @@ describe("recipe working drafts", () => {
         status: "published",
       });
     });
-    await t.mutation(api.recipes.unpublish, {
+    await t.mutation(api.recipes.setVisibility, {
       slug: "archive-approuvee",
+      visible: false,
       adminPassword: password,
     });
     const editing = await t.query(api.recipes.getForEditing, {

@@ -126,7 +126,7 @@ export function AdminRecipeImagePanel({
         <div className="grid content-start gap-3">
           {!recipe ? (
             <div className="rounded-lg border border-border bg-card p-4 text-sm font-bold text-muted-foreground">
-              Sauvegarde ce brouillon avant d&apos;ajouter une image principale.
+              Donne d&apos;abord un titre à la recette avant d&apos;ajouter une image principale.
             </div>
           ) : null}
 

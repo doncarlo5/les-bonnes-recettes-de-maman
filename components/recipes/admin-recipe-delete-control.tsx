@@ -43,7 +43,7 @@ export function DeleteRecipeControl({
         <AlertDialogHeader>
           <AlertDialogTitle>Supprimer « {recipe.title} » ?</AlertDialogTitle>
           <AlertDialogDescription>
-            Cette action est irréversible. La version publiée, le brouillon,
+            Cette action est irréversible. La version publiée, les modifications privées,
             les images et les commentaires associés seront supprimés.
           </AlertDialogDescription>
         </AlertDialogHeader>

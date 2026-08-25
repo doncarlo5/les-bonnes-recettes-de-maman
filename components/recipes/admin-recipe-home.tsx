@@ -113,14 +113,14 @@ export function AdminRecipeHome({
                   value === "all"
                     ? "Toutes"
                     : value === "draft"
-                      ? "Brouillons"
+                      ? "À compléter"
                       : "Publiées"
                 }
               >
                 {value === "all"
                   ? "Toutes"
                   : value === "draft"
-                    ? "Brouillons"
+                    ? "À compléter"
                     : "Publiées"}
               </ToggleGroupItem>
             ))}

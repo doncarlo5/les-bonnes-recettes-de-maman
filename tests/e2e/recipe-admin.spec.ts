@@ -51,9 +51,9 @@ async function mockRecipeApi(page: Page) {
         },
       });
     }
-    if (url.pathname.endsWith("/unpublish"))
+    if (url.pathname.endsWith("/visibility"))
       return route.fulfill({
-        json: { type: "success", slug: "tarte-de-demonstration" },
+        json: { type: "success", slug: "tarte-de-demonstration", isPublic: false },
       });
     if (url.pathname.endsWith("/unsplash-hero-image")) {
       return route.fulfill({
@@ -272,31 +272,17 @@ test("admin creation chooser and idea conversion preserve the private source con
   await expect(page.getByLabel("Titre français")).toHaveValue("");
 });
 
-test("the save bar only appears for unsaved changes and disappears after saving", async ({
+test("changes are saved privately after a short pause", async ({
   page,
 }) => {
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
 
-  const saveBar = page.getByRole("region", {
-    name: "Enregistrement de la recette",
-  });
-  await expect(saveBar).toHaveCount(0);
-
-  await page.getByLabel("Description").fill("Une modification manuelle.");
-  await expect(saveBar).toBeVisible();
-  const saveButton = saveBar.getByRole("button", {
-    name: "Enregistrer les modifications",
-  });
-  await expect(saveButton).toBeVisible();
-  const box = await saveButton.boundingBox();
-  expect(box?.height).toBeGreaterThanOrEqual(44);
-
   const saveRequest = page.waitForRequest((request) =>
     request.url().endsWith("/api/admin/recipes/save"),
   );
-  await saveButton.click();
+  await page.getByLabel("Description").fill("Une modification manuelle.");
   await saveRequest;
-  await expect(saveBar).toHaveCount(0);
+  await expect(page.getByText("Enregistré", { exact: true })).toBeVisible();
 });
 
 test("a pending image save survives a reload", async ({ page }, testInfo) => {
@@ -314,13 +300,8 @@ test("a pending image save survives a reload", async ({ page }, testInfo) => {
   const saveRequest = page.waitForRequest((request) =>
     request.url().endsWith("/api/admin/recipes/save"),
   );
-  await page
-    .getByRole("button", { name: "Enregistrer les modifications" })
-    .click();
+  await page.getByRole("button", { name: "Publier les modifications" }).click();
   await saveRequest;
-  await expect(
-    page.getByRole("button", { name: "Enregistrer les modifications" }),
-  ).toHaveCount(0);
   expect(
     await page.evaluate(() =>
       localStorage.getItem(
@@ -345,7 +326,7 @@ test("legacy photo and essentials links normalize to the combined workspace", as
   }
 });
 
-test("structurally invalid fields block manual save and revalidate while correcting", async ({
+test("structurally invalid fields block publication and revalidate while correcting", async ({
   page,
 }) => {
   let saveRequests = 0;
@@ -357,7 +338,7 @@ test("structurally invalid fields block manual save and revalidate while correct
   await title.fill("x".repeat(201));
   await title.blur();
   await expect(title).toHaveAttribute("aria-invalid", "true");
-  await page.getByRole("button", { name: "Enregistrer les modifications" }).click();
+  await page.getByRole("button", { name: "Publier les modifications" }).click();
   expect(saveRequests).toBe(0);
 
   const saved = page.waitForRequest((request) =>
@@ -365,7 +346,6 @@ test("structurally invalid fields block manual save and revalidate while correct
   );
   await title.fill("Titre corrigé");
   await expect(title).toHaveAttribute("aria-invalid", "false");
-  await page.getByRole("button", { name: "Enregistrer les modifications" }).click();
   await saved;
 });
 
@@ -388,7 +368,6 @@ test("server field errors return to the combined workspace", async ({
   );
 
   await page.getByLabel("Titre").fill("Titre envoyé au serveur");
-  await page.getByRole("button", { name: "Enregistrer les modifications" }).click();
   await expect(
     page.getByText("Ce titre est refusé par le serveur."),
   ).toBeVisible();
@@ -412,11 +391,11 @@ test("editor toolbar keeps context and language controls together", async ({
   expect(box?.height).toBeLessThanOrEqual(maximumHeight);
 });
 
-test("guided editor previews the draft in either language", async ({
+test("guided editor previews the recipe in either language", async ({
   page,
 }) => {
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
-  const preview = page.getByRole("button", { name: "Prévisualiser le brouillon" });
+  const preview = page.getByRole("button", { name: "Prévisualiser la recette" });
   await expect(preview).toBeVisible();
   await page.getByRole("button", { name: "Anglais" }).click();
   await expect(
@@ -424,7 +403,7 @@ test("guided editor previews the draft in either language", async ({
   ).toHaveAttribute("href", "/en/recettes/tarte-de-demonstration");
   await preview.click();
   await expect(page).toHaveURL(/mode=preview/);
-  await expect(page.getByText("Aperçu du brouillon")).toBeVisible();
+  await expect(page.getByText("Aperçu avant publication")).toBeVisible();
   await expect(page.getByRole("heading", { name: "Demo tart" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Comments" })).toHaveCount(0);
   await page.getByRole("button", { name: "Retour à l’édition" }).click();
@@ -434,8 +413,6 @@ test("guided editor previews the draft in either language", async ({
 
 test("yield is edited as one independent localized field", async ({ page }) => {
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
-  await page.getByRole("button", { name: /Retour à la recette/ }).click();
-  await page.getByRole("button", { name: "Détails" }).click();
 
   const frenchYield = page.getByLabel("Quantité obtenue");
   await expect(frenchYield).toHaveValue("6 personnes");
@@ -446,7 +423,6 @@ test("yield is edited as one independent localized field", async ({ page }) => {
     request.url().endsWith("/api/admin/recipes/save"),
   );
   await frenchYield.fill("Environ 20 gougères");
-  await page.getByRole("button", { name: "Enregistrer les modifications" }).click();
   await saveRequest;
 
   await page.getByRole("button", { name: "Anglais" }).click();
@@ -500,14 +476,14 @@ test("desktop internet image search displays its result cards", async ({
   await expect(
     page
       .getByRole("main")
-      .getByText("Image associée. Enregistre les modifications pour la publier."),
+      .getByText("Image associée en privé. Publie les modifications quand tout est prêt."),
   ).toBeVisible();
   await expect(
     page
       .getByRole("region", { name: /Notifications/ })
       .getByText("Image principale remplacée."),
   ).toBeVisible();
-  expect(mutationOrder).toEqual(["image"]);
+  expect(mutationOrder).toContain("image");
   expect(
     await page.evaluate(() =>
       localStorage.getItem(
@@ -515,10 +491,11 @@ test("desktop internet image search displays its result cards", async ({
       ),
     ),
   ).not.toBeNull();
-  await page.getByRole("button", { name: "Enregistrer les modifications" }).click();
-  await expect(
-    page.getByRole("button", { name: "Enregistrer les modifications" }),
-  ).toHaveCount(0);
+  const publishRequest = page.waitForRequest((request) =>
+    request.url().endsWith("/api/admin/recipes/publish"),
+  );
+  await page.getByRole("button", { name: "Publier les modifications" }).click();
+  await publishRequest;
   await expect
     .poll(() =>
       page.evaluate(() =>
@@ -528,18 +505,12 @@ test("desktop internet image search displays its result cards", async ({
       ),
     )
     .toBeNull();
-  expect(mutationOrder).toEqual(["image", "save"]);
-  expect(saveBodies[0]).toMatchObject({ expectedRevision: 4, force: false });
+  expect(mutationOrder).toContain("save");
+  expect(saveBodies.at(-1)).toMatchObject({ force: false });
 
   await page.getByLabel("Titre").fill("Tarte enregistrée une seconde fois");
-  await page
-    .getByRole("button", { name: "Enregistrer les modifications" })
-    .click();
-  await expect(
-    page.getByRole("button", { name: "Enregistrer les modifications" }),
-  ).toHaveCount(0);
-  expect(mutationOrder).toEqual(["image", "save", "save"]);
-  expect(saveBodies[1]).toMatchObject({ expectedRevision: 5, force: false });
+  await expect.poll(() => saveBodies.length).toBeGreaterThanOrEqual(2);
+  expect(saveBodies.at(-1)).toMatchObject({ force: false });
 });
 
 test("malformed image association responses clean up uploaded storage", async ({
@@ -722,52 +693,39 @@ test("semantic typography stays readable at every supported width", async ({
   expect(titleLayout.title).toBe(longTitle);
 });
 
-test("mobile workspaces preserve unsaved changes while navigating sections", async ({
+test("mobile workspace keeps the whole recipe on one autosaved page", async ({
   page,
 }, testInfo) => {
   test.skip(!testInfo.project.name.startsWith("mobile-"));
   await page.getByPlaceholder("Rechercher une recette").fill("démonstration");
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
-  await expect(page).toHaveURL(/section=info/);
   let saveRequests = 0;
   page.on("request", (request) => {
     if (request.url().endsWith("/api/admin/recipes/save")) saveRequests += 1;
   });
-  await page.getByLabel("Description").fill("Une description à enregistrer.");
-  await expect(
-    page.getByRole("button", { name: "Enregistrer les modifications" }),
-  ).toBeVisible();
-  await page.getByRole("button", { name: /Retour à la recette/ }).click();
-  await page.getByRole("button", { name: /Ingrédients/ }).click();
-  await expect(page).toHaveURL(/section=ingredients/);
-  await expect(
-    page.getByRole("button", { name: "Enregistrer les modifications" }),
-  ).toBeVisible();
-  await page.getByRole("button", { name: /Retour à la recette/ }).click();
-  await page.getByRole("button", { name: /Informations principales/ }).click();
-  await expect(page.getByLabel("Description")).toHaveValue(
-    "Une description à enregistrer.",
-  );
-  expect(saveRequests).toBe(0);
   const saveRequest = page.waitForRequest((request) =>
     request.url().endsWith("/api/admin/recipes/save"),
   );
-  await page.getByRole("button", { name: "Enregistrer les modifications" }).click();
+  await page.getByLabel("Description").fill("Une description à enregistrer.");
+  await expect(page.getByLabel("Quantité obtenue")).toBeVisible();
+  await expect(page.locator("summary").filter({ hasText: "Compléments" })).toBeVisible();
   await saveRequest;
-  await expect(
-    page.getByRole("button", { name: "Enregistrer les modifications" }),
-  ).toHaveCount(0);
+  await expect(page.getByLabel("Description")).toHaveValue(
+    "Une description à enregistrer.",
+  );
+  expect(saveRequests).toBe(1);
 });
 
-test("mobile sorting supports keyboard handles and manual saving", async ({
+test("mobile sorting supports keyboard handles and autosaving", async ({
   page,
 }, testInfo) => {
   test.skip(!testInfo.project.name.startsWith("mobile-"));
   const pageErrors: Error[] = [];
   page.on("pageerror", (error) => pageErrors.push(error));
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
-  await page.getByRole("button", { name: /Retour à la recette/ }).click();
-  await page.getByRole("button", { name: /Ingrédients/ }).click();
+  const saved = page.waitForRequest((request) =>
+    request.url().endsWith("/api/admin/recipes/save"),
+  );
   const handle = page.getByRole("button", { name: /Déplacer 200 g Farine/ });
   await handle.focus();
   await page.keyboard.press("Space", { delay: 100 });
@@ -776,10 +734,7 @@ test("mobile sorting supports keyboard handles and manual saving", async ({
   await page.waitForTimeout(100);
   await page.keyboard.press("Space", { delay: 100 });
   await expect(page.getByText(/déplacé en position 2/)).toBeAttached();
-  await page.getByRole("button", { name: "Enregistrer les modifications" }).click();
-  await expect(
-    page.getByRole("button", { name: "Enregistrer les modifications" }),
-  ).toHaveCount(0);
+  await saved;
   expect(pageErrors).toEqual([]);
 });
 
@@ -788,9 +743,6 @@ test("mobile section editor remains usable above the software keyboard", async (
 }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile-390");
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
-  await page.getByRole("button", { name: /Retour à la recette/ }).click();
-  await page.getByRole("button", { name: /Préparation/ }).click();
-  await expect(page).toHaveURL(/section=preparation/);
   await page
     .getByRole("button", { name: /^Préparation \d+ étapes?$/ })
     .click();
@@ -818,22 +770,22 @@ test("mobile section editor remains usable above the software keyboard", async (
   expect(doneBox?.height).toBeGreaterThanOrEqual(44);
 });
 
-test("mobile editor keeps manual save and language controls available while typing", async ({
+test("mobile editor keeps publication and language controls available while typing", async ({
   page,
 }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile-390");
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
 
-  const save = page.getByRole("button", {
-    name: "Enregistrer les modifications",
+  const publish = page.getByRole("button", {
+    name: "Publier les modifications",
   });
   const language = page.getByRole("group", { name: "Langue du contenu" });
   const title = page.getByLabel("Titre");
-  await expect(save).toHaveCount(0);
+  await expect(publish).toBeVisible();
   await expect(language).toBeVisible();
 
   await title.fill("Titre modifié sur mobile");
-  await expect(save).toBeVisible();
+  await expect(publish).toBeVisible();
   await expect(language).toBeVisible();
 });
 
@@ -842,8 +794,6 @@ test("mobile step editing shows one compact action bar above the keyboard", asyn
 }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile-390");
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
-  await page.getByRole("button", { name: /Retour à la recette/ }).click();
-  await page.getByRole("button", { name: /Préparation/ }).click();
   await page
     .getByRole("button", { name: /^Préparation \d+ étapes?$/ })
     .click();
@@ -876,8 +826,6 @@ test("an editor can associate main and sub-recipe ingredients with a step", asyn
   page,
 }) => {
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
-  await page.getByRole("button", { name: /Retour à la recette/ }).click();
-  await page.getByRole("button", { name: /Préparation/ }).click();
   await page.getByRole("button", { name: /^Préparation \d+ étapes?$/ }).click();
 
   const drawer = page.locator('[data-slot="drawer-content"]');
@@ -921,27 +869,10 @@ test("mobile creation and every focused workspace remain navigable", async ({
     timeout: 10_000,
   });
 
-  await page.getByRole("button", { name: /Retour à la recette/ }).click();
-  for (const section of [
-    "info",
-    "details",
-    "ingredients",
-    "preparation",
-    "notes",
-    "translation",
-  ]) {
-    const labels: Record<string, RegExp> = {
-      info: /Informations principales/,
-      details: /Détails/,
-      ingredients: /Ingrédients/,
-      preparation: /Préparation/,
-      notes: /^Notes/,
-      translation: /Traduction/,
-    };
-    await page.getByRole("button", { name: labels[section] }).first().click();
-    await expect(page).toHaveURL(new RegExp(`section=${section}`));
-    await page.getByRole("button", { name: /Retour à la recette/ }).click();
-  }
+  await expect(page.locator("summary").filter({ hasText: "Essentiel" })).toBeVisible();
+  await expect(page.locator("summary").filter({ hasText: "Recette" })).toBeVisible();
+  await expect(page.locator("summary").filter({ hasText: "Compléments" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Publier les modifications" })).toBeVisible();
 });
 
 test("browser back returns to the recipe list", async ({ page }, testInfo) => {
@@ -957,11 +888,9 @@ test("offline recovery and typed conflicts surface in the shared sync UI", async
 }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile-390");
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
-  await expect(page).toHaveURL(/section=info/);
   await expect(page.getByLabel("Auteur")).toBeVisible();
   await page.context().setOffline(true);
   await page.getByLabel("Auteur").fill("Autrice hors ligne");
-  await page.getByRole("button", { name: "Enregistrer les modifications" }).click();
   await expect(page.getByText("Hors ligne")).toBeVisible();
   expect(
     await page.evaluate(() =>
@@ -977,19 +906,18 @@ test("offline recovery and typed conflicts surface in the shared sync UI", async
       status: 409,
       json: {
         type: "conflict",
-        message: "Ce brouillon a été modifié ailleurs.",
+        message: "Cette recette a été modifiée ailleurs.",
         latestRevision: 12,
       },
     }),
   );
   await page.getByLabel("Description").fill("Déclenche un conflit.");
-  await page.getByRole("button", { name: "Enregistrer les modifications" }).click();
   await expect(
     page.getByText("Modifications sur un autre appareil"),
   ).toBeVisible();
   await page.unroute("**/api/admin/recipes/save");
   await mockRecipeApi(page);
-  await page.getByRole("button", { name: "Remplacer", exact: true }).click();
+  await page.getByRole("button", { name: "Publier quand même", exact: true }).click();
   await expect(page.getByText("Enregistré")).toBeVisible();
 });
 
@@ -997,7 +925,6 @@ test("deleting a recipe requires confirmation and returns to the recipe list", a
   page,
 }) => {
   await page.getByRole("button", { name: /Tarte de démonstration/ }).click();
-  await page.getByRole("button", { name: /Retour à la recette/ }).click();
 
   const deleteButton = page.getByRole("button", {
     name: "Supprimer la recette",

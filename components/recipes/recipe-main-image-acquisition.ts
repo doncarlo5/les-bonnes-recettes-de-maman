@@ -162,7 +162,7 @@ const initialStatus = {
 
 const unavailableStatus = {
   type: "idle" as const,
-  message: "Sauvegarde ce brouillon avant d'ajouter une image principale.",
+  message: "Donne d'abord un titre à la recette avant d'ajouter une image principale.",
 };
 
 export class RecipeImageConflictError extends Error {
@@ -447,7 +447,7 @@ export class RecipeMainImageAcquisition {
       isDialogOpen: false,
       status: {
         type: "success",
-        message: "Image associée. Enregistre les modifications pour la publier.",
+        message: "Image associée en privé. Publie les modifications quand tout est prêt.",
       },
     });
     this.notifySuccess("Image principale remplacée.");

@@ -37,6 +37,7 @@ export type RecipeDraftSyncSnapshot = {
   isPending: boolean;
   syncState: SyncState;
   revision: number;
+  publishedRevision: number;
   isPublic: boolean;
   hasUnsavedChanges: boolean;
   recoveredDraft?: RecipeDraftPayload;
@@ -58,6 +59,21 @@ export type RecipeDraftSyncTransport = {
     slug: string;
     expectedRevision: number;
   }): Promise<{ ok: boolean; status: number; data: SaveRecipeState }>;
+  publish(input: { slug: string; expectedRevision: number }): Promise<{
+    ok: boolean;
+    status: number;
+    data: SaveRecipeState;
+  }>;
+  discard(input: { slug: string; expectedRevision: number }): Promise<{
+    ok: boolean;
+    status: number;
+    data: SaveRecipeState;
+  }>;
+  setVisibility(input: { slug: string; visible: boolean }): Promise<{
+    ok: boolean;
+    status: number;
+    data: SaveRecipeState;
+  }>;
 };
 
 export type RecipeDraftSyncEnvironment = {
@@ -80,6 +96,7 @@ type RecipeDraftSyncContext = {
 type SelectedRecipeSnapshot = {
   slug: string;
   revision: number;
+  publishedRevision: number;
   isPublic: boolean;
   draft: RecipeDraftPayload;
 };
@@ -92,7 +109,7 @@ type QueuedSave = {
 
 const initialState: SaveRecipeState = {
   type: "idle",
-  message: "Choisis une recette ou cree un brouillon.",
+  message: "Choisis une recette ou crée-en une nouvelle.",
 };
 
 export class RecipeDraftSyncSession {
@@ -120,6 +137,7 @@ export class RecipeDraftSyncSession {
     context,
     initialDraft,
     initialRevision,
+    initialPublishedRevision,
     initialIsPublic,
     loadedRecipeSlug,
     selectedRecipe,
@@ -129,6 +147,7 @@ export class RecipeDraftSyncSession {
     context: RecipeDraftSyncContext;
     initialDraft: RecipeDraftPayload;
     initialRevision: number;
+    initialPublishedRevision: number;
     initialIsPublic: boolean;
     loadedRecipeSlug: string;
     selectedRecipe?: SelectedRecipeSnapshot;
@@ -145,6 +164,7 @@ export class RecipeDraftSyncSession {
       isPending: false,
       syncState: "idle",
       revision: initialRevision,
+      publishedRevision: initialPublishedRevision,
       isPublic: initialIsPublic,
       hasUnsavedChanges: false,
       deleted: false,
@@ -220,6 +240,7 @@ export class RecipeDraftSyncSession {
           this.lastSavedFingerprint = draftFingerprint(this.currentDraft);
           this.patchSnapshot({
             revision: 0,
+            publishedRevision: -1,
             isPublic: false,
             hasUnsavedChanges: false,
           });
@@ -229,6 +250,7 @@ export class RecipeDraftSyncSession {
         this.lastSavedFingerprint = draftFingerprint(this.currentDraft);
         this.patchSnapshot({
           revision: 0,
+          publishedRevision: -1,
           isPublic: false,
           hasUnsavedChanges: false,
         });
@@ -258,6 +280,7 @@ export class RecipeDraftSyncSession {
     }
 
     const normalized = normalizePayload(payload);
+    this.currentDraft = normalized;
     const fingerprint = draftFingerprint(normalized);
     if (!force && fingerprint === this.lastSavedFingerprint) return true;
 
@@ -297,7 +320,7 @@ export class RecipeDraftSyncSession {
       const data = response.data;
       this.patchSnapshot({ state: data, formResult: data });
       if (response.status === 409 || data.type === "conflict") {
-        this.conflictRetry = null;
+        this.registerPublicationRetry();
         this.patchSnapshot({ syncState: "conflict" });
         return false;
       }
@@ -321,6 +344,8 @@ export class RecipeDraftSyncSession {
       this.environment.removeItem(pendingImageKey(data.slug));
       this.patchSnapshot({
         revision: nextRevision,
+        publishedRevision:
+          data.publishedRevision ?? this.snapshot.publishedRevision,
         isPublic:
           typeof data.isPublic === "boolean"
             ? data.isPublic
@@ -375,6 +400,149 @@ export class RecipeDraftSyncSession {
     }
     this.patchSnapshot({ syncState: "error" });
   }
+
+  async publish(payload: RecipeDraftPayload, force = false): Promise<boolean> {
+    if (!this.context.selectedSlug || this.destructiveOperationPending) {
+      return false;
+    }
+    if (!this.environment.isOnline()) {
+      this.persistCurrentDraft();
+      this.patchSnapshot({
+        state: {
+          type: "error",
+          message: "Reconnecte-toi, puis confirme à nouveau la publication.",
+        },
+        syncState: "offline",
+      });
+      return false;
+    }
+
+    const saved = await this.save(payload, force);
+    if (!saved || !this.environment.isOnline()) return false;
+    const wasNeverPublished = this.snapshot.publishedRevision < 0;
+    const operationGeneration = this.contextGeneration;
+    this.patchSnapshot({ isPending: true });
+    try {
+      const response = await this.transport.publish({
+        slug: this.context.selectedSlug,
+        expectedRevision: this.snapshot.revision,
+      });
+      if (operationGeneration !== this.contextGeneration) return false;
+      const data = response.data;
+      this.patchSnapshot({ state: data, formResult: data });
+      if (!response.ok || data.type !== "success") {
+        if (response.status === 409 || data.type === "conflict") {
+          this.registerPublicationRetry();
+        }
+        this.patchSnapshot({
+          syncState: response.status === 409 ? "conflict" : "error",
+        });
+        return false;
+      }
+      const publishedRevision =
+        data.publishedRevision ?? data.revision ?? this.snapshot.revision;
+      this.environment.removeItem(pendingImageKey(this.context.selectedSlug));
+      this.patchSnapshot({
+        revision: data.revision ?? this.snapshot.revision,
+        publishedRevision,
+        isPublic: wasNeverPublished ? true : this.snapshot.isPublic,
+        syncState: "saved",
+      });
+      return true;
+    } catch {
+      if (operationGeneration !== this.contextGeneration) return false;
+      this.patchSnapshot({
+        state: {
+          type: "error",
+          message: "Impossible de publier les modifications.",
+        },
+        syncState: this.environment.isOnline() ? "error" : "offline",
+      });
+      return false;
+    } finally {
+      this.patchSnapshot({ isPending: false });
+    }
+  }
+
+  discard = async (): Promise<boolean> => {
+    if (!this.context.selectedSlug || this.destructiveOperationPending) {
+      return false;
+    }
+    this.destructiveOperationPending = true;
+    this.patchSnapshot({ isPending: true });
+    try {
+      this.cancelQueuedSave();
+      await this.waitForSaveIdle();
+      const response = await this.transport.discard({
+        slug: this.context.selectedSlug,
+        expectedRevision: this.snapshot.revision,
+      });
+      const data = response.data;
+      this.patchSnapshot({ state: data, formResult: data });
+      if (!response.ok || data.type !== "success" || !data.draft) {
+        this.patchSnapshot({
+          syncState: response.status === 409 ? "conflict" : "error",
+        });
+        return false;
+      }
+      this.currentDraft = data.draft;
+      this.lastSavedFingerprint = draftFingerprint(data.draft);
+      this.environment.removeItem(recoveryKey(this.context.selectedSlug));
+      this.environment.removeItem(pendingImageKey(this.context.selectedSlug));
+      const revision = data.revision ?? this.snapshot.revision;
+      this.patchSnapshot({
+        recoveredDraft: data.draft,
+        revision,
+        publishedRevision: data.publishedRevision ?? revision,
+        hasUnsavedChanges: false,
+        syncState: "saved",
+      });
+      return true;
+    } catch {
+      this.patchSnapshot({
+        state: {
+          type: "error",
+          message: "Impossible de revenir à la version publiée.",
+        },
+        syncState: "error",
+      });
+      return false;
+    } finally {
+      this.destructiveOperationPending = false;
+      this.patchSnapshot({ isPending: false });
+    }
+  };
+
+  setVisibility = async (visible: boolean): Promise<boolean> => {
+    if (!this.context.selectedSlug || this.destructiveOperationPending) {
+      return false;
+    }
+    this.patchSnapshot({ isPending: true });
+    try {
+      const response = await this.transport.setVisibility({
+        slug: this.context.selectedSlug,
+        visible,
+      });
+      this.patchSnapshot({ state: response.data, formResult: response.data });
+      if (!response.ok || response.data.type !== "success") {
+        this.patchSnapshot({ syncState: "error" });
+        return false;
+      }
+      this.patchSnapshot({ isPublic: visible, syncState: "saved" });
+      return true;
+    } catch {
+      this.patchSnapshot({
+        state: {
+          type: "error",
+          message: "Impossible de modifier la visibilité.",
+        },
+        syncState: "error",
+      });
+      return false;
+    } finally {
+      this.patchSnapshot({ isPending: false });
+    }
+  };
 
   deleteRecipe = async (): Promise<boolean> => {
     if (!this.context.selectedSlug || this.destructiveOperationPending) {
@@ -456,6 +624,7 @@ export class RecipeDraftSyncSession {
       this.patchSnapshot({
         recoveredDraft: recipe.draft,
         revision: recipe.revision,
+        publishedRevision: recipe.publishedRevision,
         isPublic: recipe.isPublic,
       });
     }
@@ -527,11 +696,17 @@ export class RecipeDraftSyncSession {
     this.patchSnapshot({
       state: {
         type: "conflict",
-        message: "Ce brouillon a été modifié ailleurs.",
+        message: "Cette recette a été modifiée ailleurs.",
         latestRevision,
       },
       syncState: "conflict",
     });
+  }
+
+  private registerPublicationRetry() {
+    this.conflictRetry = async () => {
+      await this.publish(this.currentDraft);
+    };
   }
 
   private persistCurrentDraft() {
@@ -610,6 +785,42 @@ export function createFetchRecipeDraftSyncTransport(
     async deleteRecipe(input) {
       const response = await fetcher("/api/admin/recipes/delete", {
         method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+      });
+      return {
+        ok: response.ok,
+        status: response.status,
+        data: (await response.json()) as SaveRecipeState,
+      };
+    },
+    async publish(input) {
+      const response = await fetcher("/api/admin/recipes/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+      });
+      return {
+        ok: response.ok,
+        status: response.status,
+        data: (await response.json()) as SaveRecipeState,
+      };
+    },
+    async discard(input) {
+      const response = await fetcher("/api/admin/recipes/discard-draft", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+      });
+      return {
+        ok: response.ok,
+        status: response.status,
+        data: (await response.json()) as SaveRecipeState,
+      };
+    },
+    async setVisibility(input) {
+      const response = await fetcher("/api/admin/recipes/visibility", {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(input),
       });

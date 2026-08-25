@@ -75,9 +75,13 @@ Elle ne signifie pas date de publication ni derniere modification.
 _Avoid_: Date de publication, date de mise a jour
 
 **Version publiée**:
-Dernier contenu d'une Recette explicitement approuvé par une publication.
+Dernier contenu d'une Recette explicitement approuvé par l'action de publier les modifications.
 Sa Visibilité publique peut être suspendue sans effacer cette version, et elle peut coexister avec un Brouillon de travail plus récent.
 _Avoid_: Version active, recette en ligne
+
+**Publication de recette**:
+Approbation éditoriale explicite qui remplace la Version publiée par le Brouillon de travail synchronisé. La première Publication de recette active la Visibilité publique; les suivantes la préservent, y compris lorsqu'elle est suspendue.
+_Avoid_: Enregistrement, synchronisation, mise en ligne automatique
 
 **Visibilité publique**:
 État qui indique si la Version publiée d'une Recette est actuellement exposée dans le carnet public.
@@ -94,6 +98,10 @@ _Avoid_: Autosauvegarde, Brouillon local, session d'édition
 **État de préparation**:
 Évaluation éditoriale qui distingue ce qui bloque la publication d'une Recette des recommandations facultatives.
 _Avoid_: Validation technique, statut de formulaire
+
+**Recette à compléter**:
+Recette dont l'État de préparation contient encore au moins un blocage et qui ne peut donc pas recevoir une nouvelle Version publiée.
+_Avoid_: Brouillon, recette incomplète, travail en cours
 
 **Écart de publication**:
 Situation où le Brouillon de travail diffère de la Version publiée et nécessite une nouvelle publication pour devenir public.

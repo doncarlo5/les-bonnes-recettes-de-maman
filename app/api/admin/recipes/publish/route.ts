@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     if (message.includes("RECIPE_NOT_READY")) {
       return validationResponse(
         {},
-        "La recette française n'est pas encore prête à publier.",
+        "La recette n'est pas encore prête à publier.",
       );
     }
     return recipeMutationErrorResponse(

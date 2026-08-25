@@ -28,7 +28,10 @@ import type {
   RecipeDraftFormInput,
   RecipeDraftPayload,
 } from "./recipe-form-schema";
-import { partitionRecipeServerErrors } from "./recipe-form-schema";
+import {
+  editableRecipeDraftSchema,
+  partitionRecipeServerErrors,
+} from "./recipe-form-schema";
 import type { EditableRecipe } from "./types";
 
 export type { RecipeFormMode, SaveRecipeState, SyncState };
@@ -79,12 +82,14 @@ export function useRecipeDraftLifecycle({
           ? toFormValues(initialRecipe)
           : (getValues() as RecipeDraftPayload),
         initialRevision: initialRecipe?.revision ?? 0,
+        initialPublishedRevision: initialRecipe?.publishedRevision ?? -1,
         initialIsPublic: initialRecipe?.status === "published",
         loadedRecipeSlug: initialRecipe?.slug ?? "",
         selectedRecipe: selectedRecipe
           ? {
               slug: selectedRecipe.slug,
               revision: selectedRecipe.revision,
+              publishedRevision: selectedRecipe.publishedRevision,
               isPublic: selectedRecipe.status === "published",
               draft: toFormValues(selectedRecipe),
             }
@@ -106,6 +111,7 @@ export function useRecipeDraftLifecycle({
         ? {
             slug: selectedRecipe.slug,
             revision: selectedRecipe.revision,
+            publishedRevision: selectedRecipe.publishedRevision,
             isPublic: selectedRecipe.status === "published",
             draft: toFormValues(selectedRecipe),
           }
@@ -117,6 +123,20 @@ export function useRecipeDraftLifecycle({
     if (!watchedValues) return;
     session.observeDraft(watchedValues as RecipeDraftPayload);
   }, [session, watchedValues]);
+
+  useEffect(() => {
+    if (!watchedValues || snapshot.syncState === "conflict") return;
+    const parsed = editableRecipeDraftSchema.safeParse(watchedValues);
+    if (!parsed.success) return;
+    if (
+      mode === "create" &&
+      !parsed.data.translations.fr.title.trim()
+    ) return;
+    const timer = window.setTimeout(() => {
+      void session.save(parsed.data);
+    }, 1_000);
+    return () => window.clearTimeout(timer);
+  }, [mode, session, snapshot.syncState, watchedValues]);
 
   useEffect(() => {
     if (snapshot.recoveredDraft) reset(snapshot.recoveredDraft);
@@ -181,14 +201,27 @@ export function useRecipeDraftLifecycle({
     return session.replaceConflict(payload);
   }, [getValues, session, validateDraft]);
 
+  const publishCurrentDraft = useCallback(async () => {
+    const payload = await validateDraft();
+    if (!payload) {
+      session.recordValidationFailure(getValues() as RecipeDraftPayload);
+      return false;
+    }
+    return session.publish(payload, snapshot.syncState === "conflict");
+  }, [getValues, session, snapshot.syncState, validateDraft]);
+
   return {
     state: snapshot.state,
     isPending: snapshot.isPending,
     syncState: snapshot.syncState,
     hasUnsavedChanges: snapshot.hasUnsavedChanges,
     revision: snapshot.revision,
+    publishedRevision: snapshot.publishedRevision,
     isPublic: snapshot.isPublic,
     saveCurrentDraft,
+    publishCurrentDraft,
+    revertToPublished: session.discard,
+    setVisibility: session.setVisibility,
     imageRevisionSession: session.imageRevisionSession,
     deleteRecipe: session.deleteRecipe,
     replaceConflict,
