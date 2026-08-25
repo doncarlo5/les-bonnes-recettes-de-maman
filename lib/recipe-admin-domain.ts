@@ -1,5 +1,8 @@
 import { isValidReferenceServings } from "./recipe-servings";
-import type { RecipeCategory } from "./recipe-categories";
+import {
+  RECIPE_CATEGORIES,
+  type RecipeCategory,
+} from "./recipe-categories";
 
 export const RECIPE_FIELD_LIMITS = {
   title: 200,
@@ -303,6 +306,56 @@ export function assertRecipeDraftLimits(value: RecipeDraftContentLike) {
     assertLength(ingredient.quantity, shortValue);
     assertLength(ingredient.unit, shortValue);
     assertLength(ingredient.notes, longText);
+  }
+}
+
+export function assertRecipeDraftBounds(value: RecipeDraftContentLike) {
+  assertRecipeDraftLimits(value);
+  if (
+    value.categories.length > RECIPE_CATEGORIES.length ||
+    (value.legacyCategoryLabels?.length ?? 0) > 50 ||
+    value.relatedRecipeSlugs.length > 20
+  ) {
+    throw new Error("RECIPE_LIMIT_EXCEEDED");
+  }
+  for (const localized of Object.values(value.translations)) {
+    if (
+      localized.ingredients.length > 200 ||
+      localized.equipment.length > 50 ||
+      localized.sections.length > 50 ||
+      localized.subRecipes.length > 25 ||
+      localized.notes.length > 100 ||
+      localized.sections.some((section) => section.steps.length > 100) ||
+      localized.sections.some((section) =>
+        section.steps.some(
+          (step) =>
+            typeof step !== "string" && step.ingredientUses.length > 200,
+        ),
+      ) ||
+      localized.subRecipes.some(
+        (subRecipe) => subRecipe.ingredients.length > 100,
+      )
+    ) {
+      throw new Error("RECIPE_LIMIT_EXCEEDED");
+    }
+  }
+  assertRecipeDraftBytes(value);
+}
+
+export function assertRecipeImageLimits(
+  heroImageUrl: string,
+  imageCredit?: { provider: string; [key: string]: string },
+) {
+  if (heroImageUrl.length > RECIPE_FIELD_LIMITS.url) {
+    throw new Error("RECIPE_LIMIT_EXCEEDED");
+  }
+  if (!imageCredit) return;
+  for (const [key, value] of Object.entries(imageCredit)) {
+    if (key === "provider") continue;
+    const maximum = key.toLowerCase().includes("url")
+      ? RECIPE_FIELD_LIMITS.url
+      : RECIPE_FIELD_LIMITS.creditText;
+    if (value.length > maximum) throw new Error("RECIPE_LIMIT_EXCEEDED");
   }
 }
 

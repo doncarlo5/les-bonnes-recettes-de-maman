@@ -1,7 +1,8 @@
 /// <reference types="vite/client" />
 
 import { convexTest } from "convex-test";
-import { describe, expect, test, vi } from "vitest";
+import type { FunctionReturnType } from "convex/server";
+import { describe, expect, expectTypeOf, test, vi } from "vitest";
 import { api, internal } from "./_generated/api";
 import schema from "./schema";
 import type { Id } from "./_generated/dataModel";
@@ -92,6 +93,24 @@ async function uploadRecipeImage(t: ReturnType<typeof convexTest>) {
 }
 
 describe("recipe working drafts", () => {
+  test("catalog mutation return contracts remain stable", () => {
+    type CatalogSyncResult = {
+      inserted: number;
+      updated: number;
+      total: number;
+    };
+
+    expectTypeOf<FunctionReturnType<typeof api.recipes.seed>>().toEqualTypeOf<
+      CatalogSyncResult
+    >();
+    expectTypeOf<
+      FunctionReturnType<typeof api.recipes.syncProductionRecipe>
+    >().toEqualTypeOf<CatalogSyncResult>();
+    expectTypeOf<
+      FunctionReturnType<typeof api.recipes.syncProduction>
+    >().toEqualTypeOf<CatalogSyncResult & { removed: number }>();
+  });
+
   test("legacy saves preserve existing step ingredient metadata", async () => {
     const t = convexTest(schema, modules);
     const content = recipe("Associations préservées");
@@ -343,6 +362,32 @@ describe("recipe working drafts", () => {
     await expect(
       t.query(api.recipes.getBySlug, { locale: "fr", slug: "mayonnaise" }),
     ).resolves.toMatchObject({ title: "Mayonnaise", author: "Louis" });
+    const stored = await t.run((ctx) =>
+      ctx.db
+        .query("recipes")
+        .withIndex("by_slug", (q) => q.eq("slug", "mayonnaise"))
+        .unique(),
+    );
+    expect(stored).toMatchObject({
+      status: "published",
+      tags: ["sale"],
+      translations: {
+        fr: {
+          servings: null,
+          sections: [
+            {
+              steps: expect.any(Array),
+              stepDetails: expect.any(Array),
+            },
+          ],
+        },
+      },
+    });
+    expect(stored?.translations.fr.sections[0]?.steps).toEqual(
+      stored?.translations.fr.sections[0]?.stepDetails?.map(
+        (step) => step.text,
+      ),
+    );
     await expect(
       t.query(api.recipes.getBySlug, { locale: "fr", slug: "amandin" }),
     ).resolves.toBeNull();
@@ -376,6 +421,29 @@ describe("recipe working drafts", () => {
     await expect(
       t.query(api.recipes.getBySlug, { locale: "fr", slug: "amandin" }),
     ).resolves.toMatchObject({ title: "Titre éditorial préservé" });
+  });
+
+  test("re-seeding validates preserved draft values before writing", async () => {
+    const t = convexTest(schema, modules);
+    await t.mutation(api.recipes.seed, {
+      adminPassword: password,
+      slug: "mayonnaise",
+    });
+    await t.run(async (ctx) => {
+      const seeded = await ctx.db
+        .query("recipes")
+        .withIndex("by_slug", (q) => q.eq("slug", "mayonnaise"))
+        .unique();
+      if (!seeded) throw new Error("seed fixture missing");
+      await ctx.db.patch(seeded._id, { referenceServings: -1 });
+    });
+
+    await expect(
+      t.mutation(api.recipes.seed, {
+        adminPassword: password,
+        slug: "mayonnaise",
+      }),
+    ).rejects.toThrow("RECIPE_LIMIT_EXCEEDED");
   });
 
   test("targeted production sync publishes only the requested recipe", async () => {

@@ -1,6 +1,5 @@
 import { v } from "convex/values";
 import { paginationOptsValidator } from "convex/server";
-import { internal } from "./_generated/api";
 import {
   mutation,
   query,
@@ -8,17 +7,15 @@ import {
   type QueryCtx,
 } from "./_generated/server";
 import type { Doc, Id } from "./_generated/dataModel";
-import {
-  recipeCatalog,
-  selectCatalogRecipes,
-  type CatalogRecipe,
-} from "./recipeCatalog";
+import { materializeRecipeCatalog } from "./recipeCatalog/materialization";
+import { deleteRecipeRecord } from "./recipeDeletion";
 import {
   assertRecipeDraftBytes,
+  assertRecipeDraftBounds,
   assertRecipeDraftLimits,
+  assertRecipeImageLimits,
   getPublicationState,
   getRecipeReadiness,
-  RECIPE_FIELD_LIMITS,
   type RecipeDraftContentLike,
 } from "../lib/recipe-admin-domain";
 import { resolveYieldLabel } from "../lib/recipe-yield";
@@ -32,7 +29,6 @@ import {
 import { legacyIngredientId, legacyStepId } from "../lib/recipe-item-ids";
 import {
   completeLinkedIdea,
-  detachLinkedIdea,
   linkIdeaToRecipe,
   reopenLinkedIdea,
 } from "./recipeIdeas";
@@ -169,34 +165,6 @@ const openverseImageCreditValidator = v.object({
   attribution: v.string(),
   alt: v.string(),
 });
-
-const storedRecipeCatalog = recipeCatalog.map(toStoredCatalogRecipe);
-
-const referenceServingsResetSlugs = new Set([
-  "amandin",
-  "banana-bread-du-kona-inn",
-  "cake-au-chevre-et-courgettes",
-  "cake-chevre-noix-olives",
-  "cake-moelleux-au-citron-de-pierre-herme",
-  "cake-orange",
-  "clafoutis-poires-et-framboises",
-  "coulants-au-chocolat",
-  "crumble-aux-pommes-du-verger",
-  "flan-au-lait-concentre-sucre-nestle",
-  "gateau-au-chocolat",
-  "gateau-aux-pommes",
-  "pain-de-poisson",
-  "tarte-aux-amandes-et-confiture-de-framboises",
-  "tiramisu",
-  "vacherin",
-  "veloute-de-courgettes",
-]);
-const categoryResetSlugs = new Set([
-  "osso-buco",
-  "pate-feuilletee-maman",
-  "vacherin",
-]);
-const obsoleteRecipeSlugs = ["moka"] as const;
 
 export const list = query({
   args: {
@@ -666,7 +634,7 @@ export const deleteRecipe = mutation({
       throw new Error(`RECIPE_DRAFT_CONFLICT:${currentRevision}`);
     }
 
-    await removeRecipeBySlugIfPresent(ctx, recipe.slug);
+    await deleteRecipeRecord(ctx, recipe.slug);
 
     return { slug: recipe.slug };
   },
@@ -872,12 +840,10 @@ export const seed = mutation({
   },
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
-
-    const selectedRecipes = selectCatalogRecipes(args.slug).map(
-      toStoredCatalogRecipe,
-    );
-
-    return syncSeedRecipes(ctx, selectedRecipes, false);
+    return materializeRecipeCatalog(ctx, {
+      slug: args.slug,
+      publish: false,
+    });
   },
 });
 
@@ -885,16 +851,7 @@ export const syncProduction = mutation({
   args: { adminPassword: v.string() },
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
-    const [result, removals] = await Promise.all([
-      syncSeedRecipes(ctx, storedRecipeCatalog, true),
-      Promise.all(
-        obsoleteRecipeSlugs.map((slug) =>
-          removeRecipeBySlugIfPresent(ctx, slug),
-        ),
-      ),
-    ]);
-    const removed = removals.filter(Boolean).length;
-    return { ...result, removed };
+    return materializeRecipeCatalog(ctx, { publish: true });
   },
 });
 
@@ -905,270 +862,12 @@ export const syncProductionRecipe = mutation({
   },
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
-    const selectedRecipes = selectCatalogRecipes(args.slug).map(
-      toStoredCatalogRecipe,
-    );
-
-    return syncSeedRecipes(ctx, selectedRecipes, true);
+    return materializeRecipeCatalog(ctx, {
+      slug: args.slug,
+      publish: true,
+    });
   },
 });
-
-async function syncSeedRecipes(
-  ctx: MutationCtx,
-  selectedRecipes: readonly (typeof storedRecipeCatalog)[number][],
-  publish: boolean,
-) {
-  const changes = await Promise.all(
-    selectedRecipes.map(async (recipe) => {
-      const existing = await ctx.db
-        .query("recipes")
-        .withIndex("by_slug", (q) => q.eq("slug", recipe.slug))
-        .unique();
-
-      if (!existing) {
-        assertStoredRecipeBytes(recipe);
-        await ctx.db.insert("recipes", recipe);
-        return "inserted" as const;
-      }
-
-      const draft = await getRecipeDraft(ctx, existing._id);
-      const source = draft ?? existing;
-      const resetReferenceServings =
-        publish || referenceServingsResetSlugs.has(recipe.slug);
-      const referenceServings = resetReferenceServings
-        ? recipe.referenceServings
-        : (source.referenceServings ?? recipe.referenceServings);
-      const resetCategories = publish || categoryResetSlugs.has(recipe.slug);
-      const categoryFields = resolveRecipeCategories(
-        resetCategories
-          ? {
-              categories: recipe.categories,
-              legacyCategoryLabels: recipe.legacyCategoryLabels,
-            }
-          : {
-              categories: recipe.categories,
-              legacyCategoryLabels: [
-                ...recipe.legacyCategoryLabels,
-                ...(source.legacyCategoryLabels ?? []),
-              ],
-              tags: source.tags,
-            },
-      );
-      const seededContent = {
-        defaultLocale: recipe.defaultLocale,
-        relatedRecipeSlugs: recipe.relatedRecipeSlugs,
-        translations: recipe.translations,
-        ...categoryFields,
-        tags: toLegacyTags(
-          categoryFields.categories,
-          categoryFields.legacyCategoryLabels,
-        ),
-        ...(referenceServings !== undefined ? { referenceServings } : {}),
-      };
-      const publishedPatch = {
-        heroImageStorageId: source.heroImageStorageId,
-        heroImageUrl: source.heroImageUrl,
-        imageCredit: source.imageCredit,
-        defaultLocale: recipe.defaultLocale,
-        referenceServings,
-        relatedRecipeSlugs: recipe.relatedRecipeSlugs,
-        translations: recipe.translations,
-        ...categoryFields,
-        tags: toLegacyTags(
-          categoryFields.categories,
-          categoryFields.legacyCategoryLabels,
-        ),
-        status: "published" as const,
-      };
-      if (
-        publish &&
-        matchesPublishedSeed(existing, publishedPatch) &&
-        (!draft || matchesPublishedDraft(draft, publishedPatch))
-      ) {
-        return "unchanged" as const;
-      }
-      const revision = (draft?.revision ?? 0) + 1;
-      const updatedAt = Date.now();
-      const nextDraft = {
-        recipeId: existing._id,
-        heroImageUrl: source.heroImageUrl,
-        ...(source.heroImageStorageId
-          ? { heroImageStorageId: source.heroImageStorageId }
-          : {}),
-        ...(source.imageCredit ? { imageCredit: source.imageCredit } : {}),
-        ...seededContent,
-        revision,
-        publishedRevision: publish
-          ? revision
-          : (draft?.publishedRevision ??
-            (existing.status === "published" ? 0 : -1)),
-        updatedAt,
-      };
-
-      assertProspectiveDraft(nextDraft, existing.slug);
-      if (publish) {
-        assertStoredRecipeBytes({ ...existing, ...publishedPatch });
-        await ctx.db.patch(existing._id, publishedPatch);
-      }
-      if (draft) await ctx.db.replace(draft._id, nextDraft);
-      else await ctx.db.insert("recipeDrafts", nextDraft);
-      return "updated" as const;
-    }),
-  );
-
-  return {
-    inserted: changes.filter((change) => change === "inserted").length,
-    updated: changes.filter((change) => change === "updated").length,
-    total: selectedRecipes.length,
-  };
-}
-
-function toStoredCatalogRecipe(source: CatalogRecipe) {
-  return {
-    ...source,
-    translations: toStoredTranslations(source.translations),
-    tags: toLegacyTags(source.categories, source.legacyCategoryLabels),
-    status: "published" as const,
-  };
-}
-
-function matchesPublishedSeed(
-  recipe: RecipeDoc,
-  expected: Pick<
-    RecipeDoc,
-    | "heroImageStorageId"
-    | "heroImageUrl"
-    | "imageCredit"
-    | "defaultLocale"
-    | "referenceServings"
-    | "relatedRecipeSlugs"
-    | "translations"
-    | "categories"
-    | "legacyCategoryLabels"
-    | "tags"
-    | "status"
-  >,
-) {
-  return sameJson(
-    {
-      heroImageStorageId: recipe.heroImageStorageId,
-      heroImageUrl: recipe.heroImageUrl,
-      imageCredit: recipe.imageCredit,
-      defaultLocale: recipe.defaultLocale,
-      referenceServings: recipe.referenceServings,
-      relatedRecipeSlugs: recipe.relatedRecipeSlugs,
-      translations: recipe.translations,
-      categories: recipe.categories,
-      legacyCategoryLabels: recipe.legacyCategoryLabels,
-      tags: recipe.tags,
-      status: recipe.status,
-    },
-    expected,
-  );
-}
-
-function matchesPublishedDraft(
-  draft: RecipeDraftDoc,
-  expected: Pick<
-    RecipeDoc,
-    | "heroImageStorageId"
-    | "heroImageUrl"
-    | "imageCredit"
-    | "defaultLocale"
-    | "referenceServings"
-    | "relatedRecipeSlugs"
-    | "translations"
-    | "categories"
-    | "legacyCategoryLabels"
-    | "tags"
-  >,
-) {
-  const {
-    heroImageStorageId,
-    heroImageUrl,
-    imageCredit,
-    defaultLocale,
-    referenceServings,
-    relatedRecipeSlugs,
-    translations,
-    categories,
-    legacyCategoryLabels,
-    tags,
-  } = expected;
-  return (
-    draft.revision === draft.publishedRevision &&
-    sameJson(
-      {
-        heroImageStorageId: draft.heroImageStorageId,
-        heroImageUrl: draft.heroImageUrl,
-        imageCredit: draft.imageCredit,
-        defaultLocale: draft.defaultLocale,
-        referenceServings: draft.referenceServings,
-        relatedRecipeSlugs: draft.relatedRecipeSlugs,
-        translations: draft.translations,
-        categories: draft.categories,
-        legacyCategoryLabels: draft.legacyCategoryLabels,
-        tags: draft.tags,
-      },
-      {
-        heroImageStorageId,
-        heroImageUrl,
-        imageCredit,
-        defaultLocale,
-        referenceServings,
-        relatedRecipeSlugs,
-        translations,
-        categories,
-        legacyCategoryLabels,
-        tags,
-      },
-    )
-  );
-}
-
-function sameJson(left: unknown, right: unknown) {
-  return JSON.stringify(sortJson(left)) === JSON.stringify(sortJson(right));
-}
-
-function sortJson(value: unknown): unknown {
-  if (Array.isArray(value)) return value.map(sortJson);
-  if (value && typeof value === "object") {
-    return Object.fromEntries(
-      Object.entries(value)
-        .filter(([, item]) => item !== undefined)
-        .sort(([left], [right]) => left.localeCompare(right))
-        .map(([key, item]) => [key, sortJson(item)]),
-    );
-  }
-  return value;
-}
-
-async function removeRecipeBySlugIfPresent(ctx: MutationCtx, slug: string) {
-  const recipe = await ctx.db
-    .query("recipes")
-    .withIndex("by_slug", (q) => q.eq("slug", slug))
-    .unique();
-  if (!recipe) return false;
-
-  await detachLinkedIdea(ctx, recipe._id);
-  const draft = await getRecipeDraft(ctx, recipe._id);
-  const storageIds = new Set(
-    [recipe.heroImageStorageId, draft?.heroImageStorageId].filter(
-      (storageId): storageId is Id<"_storage"> => storageId !== undefined,
-    ),
-  );
-  if (draft) await ctx.db.delete(draft._id);
-  await ctx.db.delete(recipe._id);
-  await Promise.all(
-    [...storageIds].map((storageId) => deleteStorageIfOrphaned(ctx, storageId)),
-  );
-  await ctx.scheduler.runAfter(
-    0,
-    internal.commentMaintenance.cleanupRecipeComments,
-    { recipeId: recipe._id },
-  );
-  return true;
-}
 
 async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
   if (!recipe.translations || !recipe.defaultLocale) {
@@ -1694,17 +1393,7 @@ async function deleteStorageIfOrphaned(
 }
 
 function assertImagePatchLimits(patch: DraftImagePatch) {
-  if (patch.heroImageUrl.length > RECIPE_FIELD_LIMITS.url) {
-    throw new Error("RECIPE_LIMIT_EXCEEDED");
-  }
-  if (!patch.imageCredit) return;
-  for (const [key, value] of Object.entries(patch.imageCredit)) {
-    if (key === "provider") continue;
-    const maximum = key.toLowerCase().includes("url")
-      ? RECIPE_FIELD_LIMITS.url
-      : RECIPE_FIELD_LIMITS.creditText;
-    if (value.length > maximum) throw new Error("RECIPE_LIMIT_EXCEEDED");
-  }
+  assertRecipeImageLimits(patch.heroImageUrl, patch.imageCredit);
 }
 
 function assertProspectiveDraft(
@@ -1818,38 +1507,7 @@ async function publishDraftSnapshot(
 }
 
 function assertRecipeBounds(recipe: RecipeDraftContentLike) {
-  assertRecipeDraftLimits(recipe);
-  if (
-    recipe.categories.length > RECIPE_CATEGORIES.length ||
-    (recipe.legacyCategoryLabels?.length ?? 0) > 50
-  ) {
-    throw new Error("RECIPE_LIMIT_EXCEEDED");
-  }
-  for (const localized of Object.values(recipe.translations)) {
-    if (
-      localized.ingredients.length > 200 ||
-      localized.equipment.length > 50 ||
-      localized.sections.length > 50 ||
-      localized.subRecipes.length > 25 ||
-      localized.notes.length > 100 ||
-      localized.sections.some((section) => section.steps.length > 100) ||
-      localized.sections.some((section) =>
-        section.steps.some(
-          (step) =>
-            typeof step !== "string" && step.ingredientUses.length > 200,
-        ),
-      ) ||
-      localized.subRecipes.some(
-        (subRecipe) => subRecipe.ingredients.length > 100,
-      )
-    ) {
-      throw new Error("RECIPE_LIMIT_EXCEEDED");
-    }
-  }
-  if (recipe.relatedRecipeSlugs.length > 20) {
-    throw new Error("RECIPE_LIMIT_EXCEEDED");
-  }
-  assertRecipeDraftBytes(recipe);
+  assertRecipeDraftBounds(recipe);
 }
 
 function toStoredCategoryFields(source: {
