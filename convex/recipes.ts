@@ -11,10 +11,11 @@ import { materializeRecipeCatalog } from "./recipeCatalog/materialization";
 import { deleteRecipeRecord } from "./recipeDeletion";
 import {
   assertRecipeDraftBytes,
+  assertRecipeDraftBounds,
   assertRecipeDraftLimits,
+  assertRecipeImageLimits,
   getPublicationState,
   getRecipeReadiness,
-  RECIPE_FIELD_LIMITS,
   type RecipeDraftContentLike,
 } from "../lib/recipe-admin-domain";
 import { resolveYieldLabel } from "../lib/recipe-yield";
@@ -1392,17 +1393,7 @@ async function deleteStorageIfOrphaned(
 }
 
 function assertImagePatchLimits(patch: DraftImagePatch) {
-  if (patch.heroImageUrl.length > RECIPE_FIELD_LIMITS.url) {
-    throw new Error("RECIPE_LIMIT_EXCEEDED");
-  }
-  if (!patch.imageCredit) return;
-  for (const [key, value] of Object.entries(patch.imageCredit)) {
-    if (key === "provider") continue;
-    const maximum = key.toLowerCase().includes("url")
-      ? RECIPE_FIELD_LIMITS.url
-      : RECIPE_FIELD_LIMITS.creditText;
-    if (value.length > maximum) throw new Error("RECIPE_LIMIT_EXCEEDED");
-  }
+  assertRecipeImageLimits(patch.heroImageUrl, patch.imageCredit);
 }
 
 function assertProspectiveDraft(
@@ -1516,38 +1507,7 @@ async function publishDraftSnapshot(
 }
 
 function assertRecipeBounds(recipe: RecipeDraftContentLike) {
-  assertRecipeDraftLimits(recipe);
-  if (
-    recipe.categories.length > RECIPE_CATEGORIES.length ||
-    (recipe.legacyCategoryLabels?.length ?? 0) > 50
-  ) {
-    throw new Error("RECIPE_LIMIT_EXCEEDED");
-  }
-  for (const localized of Object.values(recipe.translations)) {
-    if (
-      localized.ingredients.length > 200 ||
-      localized.equipment.length > 50 ||
-      localized.sections.length > 50 ||
-      localized.subRecipes.length > 25 ||
-      localized.notes.length > 100 ||
-      localized.sections.some((section) => section.steps.length > 100) ||
-      localized.sections.some((section) =>
-        section.steps.some(
-          (step) =>
-            typeof step !== "string" && step.ingredientUses.length > 200,
-        ),
-      ) ||
-      localized.subRecipes.some(
-        (subRecipe) => subRecipe.ingredients.length > 100,
-      )
-    ) {
-      throw new Error("RECIPE_LIMIT_EXCEEDED");
-    }
-  }
-  if (recipe.relatedRecipeSlugs.length > 20) {
-    throw new Error("RECIPE_LIMIT_EXCEEDED");
-  }
-  assertRecipeDraftBytes(recipe);
+  assertRecipeDraftBounds(recipe);
 }
 
 function toStoredCategoryFields(source: {

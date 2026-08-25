@@ -2,11 +2,10 @@ import type { Doc } from "../_generated/dataModel";
 import type { MutationCtx } from "../_generated/server";
 import {
   assertRecipeDraftBytes,
-  assertRecipeDraftLimits,
-  RECIPE_FIELD_LIMITS,
+  assertRecipeDraftBounds,
+  assertRecipeImageLimits,
 } from "../../lib/recipe-admin-domain";
 import {
-  RECIPE_CATEGORIES,
   resolveRecipeCategories,
   toLegacyTags,
 } from "../../lib/recipe-categories";
@@ -16,10 +15,21 @@ import { recipeCatalog, type CatalogRecipe } from "./index";
 type RecipeDoc = Doc<"recipes">;
 type RecipeDraftDoc = Doc<"recipeDrafts">;
 
-type CatalogMaterializationRequest = {
-  slug?: string;
-  publish: boolean;
+type CatalogSyncResult = {
+  inserted: number;
+  updated: number;
+  total: number;
 };
+
+type FullCatalogSyncResult = CatalogSyncResult & { removed: number };
+
+type SeedCatalogRequest = { slug?: string; publish: false };
+type TargetedCatalogSyncRequest = { slug: string; publish: true };
+type FullCatalogSyncRequest = { slug?: undefined; publish: true };
+type CatalogMaterializationRequest =
+  | SeedCatalogRequest
+  | TargetedCatalogSyncRequest
+  | FullCatalogSyncRequest;
 
 const referenceServingsResetSlugs = new Set([
   "amandin",
@@ -52,10 +62,22 @@ const obsoleteRecipeSlugs = ["moka"] as const;
 const storedRecipeCatalog = recipeCatalog.map(toStoredCatalogRecipe);
 type StoredCatalogRecipe = (typeof storedRecipeCatalog)[number];
 
+export function materializeRecipeCatalog(
+  ctx: MutationCtx,
+  request: SeedCatalogRequest,
+): Promise<CatalogSyncResult>;
+export function materializeRecipeCatalog(
+  ctx: MutationCtx,
+  request: TargetedCatalogSyncRequest,
+): Promise<CatalogSyncResult>;
+export function materializeRecipeCatalog(
+  ctx: MutationCtx,
+  request: FullCatalogSyncRequest,
+): Promise<FullCatalogSyncResult>;
 export async function materializeRecipeCatalog(
   ctx: MutationCtx,
   request: CatalogMaterializationRequest,
-) {
+): Promise<CatalogSyncResult | FullCatalogSyncResult> {
   const selectedRecipes = selectStoredCatalogRecipes(request.slug);
   const result = await synchronizeCatalogRecipes(
     ctx,
@@ -325,60 +347,24 @@ function matchesPublishedDraft(
 function assertMaterializedDraft(
   recipe: StoredCatalogRecipe,
   draft: {
+    referenceServings?: number;
+    relatedRecipeSlugs: string[];
+    categories: StoredCatalogRecipe["categories"];
+    legacyCategoryLabels: string[];
     heroImageUrl: string;
     imageCredit?: RecipeDraftDoc["imageCredit"];
     [key: string]: unknown;
   },
 ) {
-  assertRecipeDraftLimits(recipe);
-  assertCatalogCollectionLimits(recipe);
-  assertImageLimits(draft.heroImageUrl, draft.imageCredit);
+  assertRecipeDraftBounds({
+    ...recipe,
+    referenceServings: draft.referenceServings,
+    relatedRecipeSlugs: draft.relatedRecipeSlugs,
+    categories: draft.categories,
+    legacyCategoryLabels: draft.legacyCategoryLabels,
+  });
+  assertRecipeImageLimits(draft.heroImageUrl, draft.imageCredit);
   assertRecipeDraftBytes(draft);
-}
-
-function assertCatalogCollectionLimits(recipe: StoredCatalogRecipe) {
-  if (
-    recipe.categories.length > RECIPE_CATEGORIES.length ||
-    recipe.legacyCategoryLabels.length > 50 ||
-    recipe.relatedRecipeSlugs.length > 20
-  ) {
-    throw new Error("RECIPE_LIMIT_EXCEEDED");
-  }
-  for (const localized of Object.values(recipe.translations)) {
-    if (
-      localized.ingredients.length > 200 ||
-      localized.equipment.length > 50 ||
-      localized.sections.length > 50 ||
-      localized.subRecipes.length > 25 ||
-      localized.notes.length > 100 ||
-      localized.sections.some((section) => section.steps.length > 100) ||
-      localized.sections.some((section) =>
-        section.stepDetails.some((step) => step.ingredientUses.length > 200),
-      ) ||
-      localized.subRecipes.some(
-        (subRecipe) => subRecipe.ingredients.length > 100,
-      )
-    ) {
-      throw new Error("RECIPE_LIMIT_EXCEEDED");
-    }
-  }
-}
-
-function assertImageLimits(
-  heroImageUrl: string,
-  imageCredit: RecipeDraftDoc["imageCredit"] | undefined,
-) {
-  if (heroImageUrl.length > RECIPE_FIELD_LIMITS.url) {
-    throw new Error("RECIPE_LIMIT_EXCEEDED");
-  }
-  if (!imageCredit) return;
-  for (const [key, value] of Object.entries(imageCredit)) {
-    if (key === "provider") continue;
-    const maximum = key.toLowerCase().includes("url")
-      ? RECIPE_FIELD_LIMITS.url
-      : RECIPE_FIELD_LIMITS.creditText;
-    if (value.length > maximum) throw new Error("RECIPE_LIMIT_EXCEEDED");
-  }
 }
 
 function sameJson(left: unknown, right: unknown) {
