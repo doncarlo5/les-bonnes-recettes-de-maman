@@ -272,7 +272,7 @@ describe("bilingual recipe catalog", () => {
       { name: "sel", quantity: "3", unit: "g", notes: "" },
       {
         name: "noix de pécan hachées",
-        quantity: "30",
+        quantity: "40",
         unit: "g",
         notes: "",
       },
@@ -315,7 +315,7 @@ describe("bilingual recipe catalog", () => {
       { name: "salt", quantity: "3", unit: "g", notes: "" },
       {
         name: "chopped pecans",
-        quantity: "30",
+        quantity: "40",
         unit: "g",
         notes: "",
       },
