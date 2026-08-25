@@ -1,0 +1,373 @@
+{
+  "slug": "sauce-bolognaise",
+  "heroImageUrl": "/images/recipes/sauce-bolognaise.png",
+  "defaultLocale": "fr",
+  "relatedRecipeSlugs": [
+    "lasagnes"
+  ],
+  "categories": [
+    "plat",
+    "sale"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Sauce bolognaise",
+      "author": "Maman",
+      "description": "Sauce bolognaise familiale au bœuf haché, jambon, tomates, ail, oignon, persil et herbes de Provence.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "40 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "40 min",
+      "temperature": "feu doux",
+      "equipment": [
+        "1 poêle"
+      ],
+      "ingredients": [
+        {
+          "name": "bœuf haché",
+          "quantity": "500",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "jambon",
+          "quantity": "2",
+          "unit": "tranches",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "pulpe de tomates en conserve",
+          "quantity": "400",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "purée de tomates",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "oignon",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "ail",
+          "quantity": "1",
+          "unit": "gousse",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "persil",
+          "quantity": "1",
+          "unit": "bouquet",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "carotte",
+          "quantity": "1",
+          "unit": "",
+          "notes": "facultatif",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "herbes de Provence",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "sel",
+          "quantity": "",
+          "unit": "",
+          "notes": "à convenance",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "poivre",
+          "quantity": "",
+          "unit": "",
+          "notes": "à convenance",
+          "id": "ingredient-main-10"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Éplucher l’ail et l’oignon.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Faire chauffer un fond d’huile dans une poêle. Ajouter l’oignon, l’ail et le persil hachés ainsi que la carotte coupée en très petits dés, puis faire revenir à feu doux.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Ajouter le bœuf haché et le jambon, puis faire dorer une dizaine de minutes.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Ajouter la pulpe et la purée de tomates.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Saler, poivrer et ajouter les herbes de Provence.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Laisser mijoter à demi-couvert pendant environ 30 min.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "Cette sauce peut notamment servir à préparer des lasagnes."
+      ]
+    },
+    "en": {
+      "title": "Bolognese Sauce",
+      "author": "Maman",
+      "description": "Family-style Bolognese sauce with ground beef, ham, tomatoes, garlic, onion, parsley and Herbes de Provence.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "40 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "40 min",
+      "temperature": "low heat",
+      "equipment": [
+        "1 frying pan"
+      ],
+      "ingredients": [
+        {
+          "name": "ground beef",
+          "quantity": "500",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "ham",
+          "quantity": "2",
+          "unit": "slices",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "canned tomato pulp",
+          "quantity": "400",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "tomato purée",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "onion",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "garlic",
+          "quantity": "1",
+          "unit": "clove",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "parsley",
+          "quantity": "1",
+          "unit": "bunch",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "carrot",
+          "quantity": "1",
+          "unit": "",
+          "notes": "optional",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "Herbes de Provence",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "salt",
+          "quantity": "",
+          "unit": "",
+          "notes": "to taste",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "pepper",
+          "quantity": "",
+          "unit": "",
+          "notes": "to taste",
+          "id": "ingredient-main-10"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Peel the garlic and onion.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Heat a little oil in a frying pan. Add the onion, garlic and chopped parsley along with the carrot cut into very small dice, then cook gently over low heat.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Add the ground beef and ham, then brown for about 10 minutes.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Add the tomato pulp and tomato purée.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Season with salt and pepper, then add the Herbes de Provence.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Simmer partially covered for about 30 minutes.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "This sauce can notably be used to make lasagna."
+      ]
+    }
+  }
+}

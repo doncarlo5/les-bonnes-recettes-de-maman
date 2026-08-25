@@ -1,0 +1,269 @@
+{
+  "slug": "amandin",
+  "heroImageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "referenceServings": 6,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "dessert",
+    "sucre"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Amandin",
+      "author": "Maman",
+      "description": "Gâteau aux amandes, citron et blancs montés en neige, avec glaçage citron facultatif.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "35 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "35 min",
+      "temperature": "160 °C",
+      "equipment": [
+        "1 moule à gâteau"
+      ],
+      "ingredients": [
+        {
+          "name": "sucre",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "œufs",
+          "quantity": "4",
+          "unit": "",
+          "notes": "blancs et jaunes séparés",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "amandes en poudre",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "citron",
+          "quantity": "1/2",
+          "unit": "",
+          "notes": "jus + zeste",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "sucre glace",
+          "quantity": "",
+          "unit": "",
+          "notes": "selon besoin, pour le glaçage facultatif",
+          "id": "ingredient-main-4"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 160 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Séparer les blancs d’œufs des jaunes.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Ajouter le sucre dans les jaunes, puis la poudre d’amandes, puis le jus de 1/2 citron et le zeste.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Monter les blancs en neige et les ajouter délicatement au mélange aux amandes.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Cuisson",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Cuire 35 min à 160 °C.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Glaçage facultatif",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "Mélanger un peu de jus de citron avec du sucre glace et déposer sur le gâteau refroidi.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Amandin Almond Cake",
+      "author": "Maman",
+      "description": "Almond and lemon cake folded with whipped egg whites, with an optional lemon glaze.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "35 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "35 min",
+      "temperature": "160 °C",
+      "equipment": [
+        "1 cake pan"
+      ],
+      "ingredients": [
+        {
+          "name": "sugar",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "eggs",
+          "quantity": "4",
+          "unit": "",
+          "notes": "whites and yolks separated",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "ground almonds",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "lemon",
+          "quantity": "1/2",
+          "unit": "",
+          "notes": "juice + zest",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "icing sugar",
+          "quantity": "",
+          "unit": "",
+          "notes": "as needed, for the optional glaze",
+          "id": "ingredient-main-4"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 160 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Separate the egg whites from the yolks.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Add the sugar to the yolks, then the almond flour, then the juice of 1/2 lemon and the zest.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Whip the egg whites and gently fold them into the almond mixture.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Baking",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Bake for 35 min at 160 °C.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Optional Glaze",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "Mix a little lemon juice with icing sugar and spread over the cooled cake.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

@@ -1,0 +1,273 @@
+{
+  "slug": "smoothie-banane-et-fruits-rouges",
+  "heroImageUrl": "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "referenceServings": 1,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "sucre"
+  ],
+  "legacyCategoryLabels": [
+    "boisson",
+    "petit déjeuner",
+    "sans cuisson"
+  ],
+  "translations": {
+    "fr": {
+      "title": "Smoothie banane et fruits rouges",
+      "author": "Alexia",
+      "description": "Smoothie onctueux à la banane, aux fruits rouges, au fromage blanc, aux graines de chia et aux flocons d’avoine.",
+      "yieldLabel": "1 personne",
+      "prepTime": "5 min",
+      "cookTime": "",
+      "restTime": "",
+      "totalTime": "5 min",
+      "timeLabel": "5 min",
+      "temperature": "",
+      "equipment": [
+        "1 mixeur"
+      ],
+      "ingredients": [
+        {
+          "name": "lait",
+          "quantity": "2",
+          "unit": "tasses à café",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "fromage blanc",
+          "quantity": "2",
+          "unit": "c. à s.",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "banane",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "miel",
+          "quantity": "1",
+          "unit": "c. à café",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "graines de chia",
+          "quantity": "1",
+          "unit": "c. à café",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "flocons d’avoine",
+          "quantity": "1 à 2",
+          "unit": "c. à s.",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "fruits rouges",
+          "quantity": "2 à 3",
+          "unit": "tasses à café",
+          "notes": "frais ou surgelés : framboises, cerises, fraises, myrtilles, mûres…",
+          "id": "ingredient-main-6"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Peler la banane et la couper en morceaux.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Verser d’abord le lait dans le mixeur, puis ajouter le fromage blanc, la banane, le miel, les graines de chia et les flocons d’avoine, dans cet ordre.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Ajouter les fruits rouges en dernier, puis mixer environ 1 min, jusqu’à obtenir une texture lisse et onctueuse.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Ajouter un peu de lait si le smoothie est trop épais, puis servir immédiatement.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "Les fruits rouges surgelés sont très durs, comme des glaçons. Toujours mettre les ingrédients mous dans le mixeur en premier et les fruits congelés en dernier afin de ne pas forcer sur l’appareil."
+      ]
+    },
+    "en": {
+      "title": "Banana and Berry Smoothie",
+      "author": "Alexia",
+      "description": "Creamy banana and berry smoothie with fromage blanc, chia seeds and rolled oats.",
+      "yieldLabel": "1 person",
+      "prepTime": "5 min",
+      "cookTime": "",
+      "restTime": "",
+      "totalTime": "5 min",
+      "timeLabel": "5 min",
+      "temperature": "",
+      "equipment": [
+        "1 blender"
+      ],
+      "ingredients": [
+        {
+          "name": "milk",
+          "quantity": "2",
+          "unit": "small coffee cups",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "fromage blanc",
+          "quantity": "2",
+          "unit": "tbsp",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "banana",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "honey",
+          "quantity": "1",
+          "unit": "tsp",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "chia seeds",
+          "quantity": "1",
+          "unit": "tsp",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "rolled oats",
+          "quantity": "1 to 2",
+          "unit": "tbsp",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "mixed berries",
+          "quantity": "2 to 3",
+          "unit": "small coffee cups",
+          "notes": "fresh or frozen: raspberries, cherries, strawberries, blueberries, blackberries…",
+          "id": "ingredient-main-6"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Peel the banana and cut it into pieces.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Pour the milk into the blender first, then add the fromage blanc, banana, honey, chia seeds and rolled oats, in that order.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Add the mixed berries last, then blend for about 1 min, until smooth and creamy.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Add a little milk if the smoothie is too thick, then serve immediately.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "Frozen berries are very hard, like ice cubes. Always put the soft ingredients in the blender first and the frozen fruit in last to avoid straining the appliance."
+      ]
+    }
+  }
+}

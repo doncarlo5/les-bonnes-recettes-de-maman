@@ -1,0 +1,363 @@
+{
+  "slug": "pain-de-poisson",
+  "heroImageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "referenceServings": 6,
+  "relatedRecipeSlugs": [
+    "mayonnaise"
+  ],
+  "categories": [
+    "plat",
+    "sale"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Pain de poisson",
+      "author": "Zabelh",
+      "description": "Pain de poisson au concentré de tomate, crème fraîche et œufs, servi froid avec mayonnaise maison.",
+      "yieldLabel": "",
+      "prepTime": "30 min",
+      "cookTime": "50 à 55 min",
+      "restTime": "Jusqu’à complet refroidissement",
+      "totalTime": "1 h 20 à 1 h 25, hors refroidissement",
+      "timeLabel": "1 h 20 à 1 h 25, hors refroidissement",
+      "temperature": "th. 7 / 210 °C",
+      "equipment": [
+        "1 moule à cake",
+        "1 plat pour bain-marie"
+      ],
+      "ingredients": [
+        {
+          "name": "poisson",
+          "quantity": "800",
+          "unit": "g",
+          "notes": "mélange de poissons surgelés sans arêtes",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "concentré de tomate",
+          "quantity": "1/2",
+          "unit": "petite boîte",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "crème fraîche",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "œufs",
+          "quantity": "4",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "Maïzena",
+          "quantity": "1",
+          "unit": "c. à s.",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "beurre",
+          "quantity": "",
+          "unit": "",
+          "notes": "pour le moule",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "sel",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "poivre",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-7"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préparer un moule à cake avec du papier sulfurisé au fond.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Cuire le mélange de poissons surgelés dans un court-bouillon prêt à l’emploi, environ 10 à 15 min, puis bien l’égoutter.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Mélanger dans une jatte le concentré, les œufs, la crème et la Maïzena diluée.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Ajouter le sel et le poivre, puis goûter pour vérifier l’assaisonnement.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Ajouter le poisson dans la jatte et mélanger le tout au robot jusqu’à obtenir la consistance souhaitée.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Préchauffer le four à 210 °C (th. 7).",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-6",
+              "text": "Verser le tout dans le moule beurré.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-7",
+              "text": "Cuire au bain-marie dans un four à th. 7 pendant 40 min.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-8",
+              "text": "Vérifier la cuisson avec un couteau ; le dessus doit être légèrement doré.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-9",
+              "text": "Laisser complètement refroidir avant de démouler, puis réserver au réfrigérateur jusqu’au service.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Service",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Servir froid avec une mayonnaise maison et garnir de salade autour du plat.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Fish Loaf",
+      "author": "Zabelh",
+      "description": "Fish loaf with tomato paste, crème fraîche and eggs, served cold with homemade mayonnaise.",
+      "yieldLabel": "",
+      "prepTime": "30 min",
+      "cookTime": "50 to 55 min",
+      "restTime": "Until completely cool",
+      "totalTime": "1 h 20 to 1 h 25, excluding cooling",
+      "timeLabel": "1 h 20 to 1 h 25, excluding cooling",
+      "temperature": "th. 7 / 210 °C",
+      "equipment": [
+        "1 loaf pan",
+        "1 roasting dish for the water bath"
+      ],
+      "ingredients": [
+        {
+          "name": "fish",
+          "quantity": "800",
+          "unit": "g",
+          "notes": "frozen boneless fish mix",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "tomato paste",
+          "quantity": "1/2",
+          "unit": "small can",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "crème fraîche",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "eggs",
+          "quantity": "4",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "cornstarch",
+          "quantity": "1",
+          "unit": "tbsp",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "butter",
+          "quantity": "",
+          "unit": "",
+          "notes": "for the pan",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "salt",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "pepper",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-7"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Prepare a loaf pan with parchment paper on the bottom.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Poach the frozen fish mix in prepared court-bouillon for about 10 to 15 min, then drain well.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "In a bowl, mix the tomato paste, eggs, cream and diluted cornstarch.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Add salt and pepper, then taste to check the seasoning.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Add the fish to the bowl and process until the desired consistency is reached.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Preheat the oven to 210 °C (gas mark 7).",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-6",
+              "text": "Pour everything into the buttered pan.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-7",
+              "text": "Bake in a water bath in a th. 7 oven for 40 min.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-8",
+              "text": "Check doneness with a knife; the top should be lightly browned.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-9",
+              "text": "Let cool completely before unmolding, then refrigerate until serving.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Serving",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Serve cold with homemade mayonnaise and arrange salad around the platter.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

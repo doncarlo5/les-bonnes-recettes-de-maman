@@ -1,0 +1,340 @@
+{
+  "slug": "salade-de-lentilles",
+  "heroImageUrl": "/images/recipes/salade-de-lentilles.png",
+  "defaultLocale": "fr",
+  "referenceServings": 4,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "plat",
+    "sale"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Salade de lentilles",
+      "author": "Maman",
+      "description": "Salade de lentilles vertes aux tomates cerises, feta, oignon rouge et persil, assaisonnée d’une vinaigrette citronnée.",
+      "yieldLabel": "4 personnes",
+      "prepTime": "5 min",
+      "cookTime": "20 min",
+      "restTime": "",
+      "totalTime": "25 min",
+      "timeLabel": "25 min",
+      "temperature": "",
+      "equipment": [
+        "1 casserole",
+        "1 petit bol",
+        "1 saladier"
+      ],
+      "ingredients": [
+        {
+          "name": "citron",
+          "quantity": "1/2",
+          "unit": "",
+          "notes": "jus et zeste",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "huile d’olive",
+          "quantity": "60",
+          "unit": "ml",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "ail",
+          "quantity": "1/2",
+          "unit": "gousse",
+          "notes": "hachée",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "origan",
+          "quantity": "1/2",
+          "unit": "c. à s.",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "lentilles vertes",
+          "quantity": "320",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "oignon rouge",
+          "quantity": "1/2",
+          "unit": "",
+          "notes": "émincé",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "tomates cerises",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "coupées en tout petits morceaux",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "persil",
+          "quantity": "4",
+          "unit": "c. à s.",
+          "notes": "haché",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "feta",
+          "quantity": "80",
+          "unit": "g",
+          "notes": "émiettée",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "sel",
+          "quantity": "",
+          "unit": "",
+          "notes": "à convenance",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "poivre",
+          "quantity": "",
+          "unit": "",
+          "notes": "à convenance",
+          "id": "ingredient-main-10"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Cuire les lentilles selon les indications de l’emballage. Les égoutter, les rincer et les laisser refroidir.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Pendant ce temps, préparer la vinaigrette : dans un petit bol, fouetter le jus et le zeste du demi-citron avec l’huile d’olive, l’ail, l’origan, du sel et du poivre. Réserver.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Couper les tomates cerises en tout petits morceaux. Dans un saladier, les mélanger avec les lentilles, le persil, l’oignon rouge et la feta. Arroser de vinaigrette et mélanger délicatement.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "Ajouter le jus de citron avec parcimonie : en trop grande quantité, il risquerait de masquer la saveur des autres ingrédients.",
+        "Pour ma version habituelle, je remplace la vinaigrette citronnée par du vinaigre balsamique, de l’huile d’olive et du sel.",
+        "J’ajoute 2 œufs et parfois, selon ce que j’ai sous la main, quelques dés de courgette, de concombre et/ou de carotte, coupés en très petits morceaux."
+      ]
+    },
+    "en": {
+      "title": "Lentil Salad",
+      "author": "Maman",
+      "description": "Green lentil salad with cherry tomatoes, feta, red onion and parsley, dressed with a lemon vinaigrette.",
+      "yieldLabel": "4 people",
+      "prepTime": "5 min",
+      "cookTime": "20 min",
+      "restTime": "",
+      "totalTime": "25 min",
+      "timeLabel": "25 min",
+      "temperature": "",
+      "equipment": [
+        "1 saucepan",
+        "1 small bowl",
+        "1 salad bowl"
+      ],
+      "ingredients": [
+        {
+          "name": "lemon",
+          "quantity": "1/2",
+          "unit": "",
+          "notes": "juice and zest",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "olive oil",
+          "quantity": "60",
+          "unit": "ml",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "garlic",
+          "quantity": "1/2",
+          "unit": "clove",
+          "notes": "minced",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "oregano",
+          "quantity": "1/2",
+          "unit": "tbsp",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "green lentils",
+          "quantity": "320",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "red onion",
+          "quantity": "1/2",
+          "unit": "",
+          "notes": "thinly sliced",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "cherry tomatoes",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "cut into very small pieces",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "parsley",
+          "quantity": "4",
+          "unit": "tbsp",
+          "notes": "chopped",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "feta",
+          "quantity": "80",
+          "unit": "g",
+          "notes": "crumbled",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "salt",
+          "quantity": "",
+          "unit": "",
+          "notes": "to taste",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "pepper",
+          "quantity": "",
+          "unit": "",
+          "notes": "to taste",
+          "id": "ingredient-main-10"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Cook the lentils according to the package directions. Drain, rinse and leave to cool.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Meanwhile, make the vinaigrette: in a small bowl, whisk the juice and zest of half a lemon with the olive oil, garlic, oregano, salt and pepper. Set aside.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Cut the cherry tomatoes into very small pieces. In a salad bowl, combine them with the lentils, parsley, red onion and feta. Add the vinaigrette and toss gently.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "Add the lemon juice sparingly: too much could overpower the flavors of the other ingredients.",
+        "For my usual version, I replace the lemon vinaigrette with balsamic vinegar, olive oil and salt.",
+        "I add 2 eggs and sometimes, depending on what I have on hand, a few cubes of zucchini, cucumber and/or carrot, cut into very small pieces."
+      ]
+    }
+  }
+}

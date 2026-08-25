@@ -1,0 +1,510 @@
+{
+  "slug": "cake-moelleux-au-citron-de-pierre-herme",
+  "heroImageUrl": "https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "referenceServings": 6,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "dessert",
+    "sucre"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Cake moelleux au citron de Pierre Hermé",
+      "author": "Pierre Hermé",
+      "description": "Cake moelleux au citron imbibé d’un sirop citronné.",
+      "yieldLabel": "1 cake",
+      "prepTime": "10 min",
+      "cookTime": "60 min",
+      "restTime": "",
+      "totalTime": "1 h 10 min",
+      "timeLabel": "1 h 10 min",
+      "temperature": "165 °C",
+      "equipment": [
+        "1 moule à cake"
+      ],
+      "ingredients": [
+        {
+          "name": "farine",
+          "quantity": "190",
+          "unit": "g",
+          "notes": "pour le cake",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "levure chimique",
+          "quantity": "1/2",
+          "unit": "c. à c.",
+          "notes": "pour le cake",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "zeste de citron",
+          "quantity": "1",
+          "unit": "gros citron",
+          "notes": "ou 2 petits",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "sucre",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "pour le cake",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "œufs",
+          "quantity": "3",
+          "unit": "",
+          "notes": "pour le cake",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "crème liquide",
+          "quantity": "10",
+          "unit": "cl",
+          "notes": "pour le cake",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "rhum",
+          "quantity": "2",
+          "unit": "c. à s.",
+          "notes": "pour le cake",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "sel",
+          "quantity": "1",
+          "unit": "pincée",
+          "notes": "pour le cake",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "beurre fondu et refroidi",
+          "quantity": "65",
+          "unit": "g",
+          "notes": "pour le cake",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "eau",
+          "quantity": "75",
+          "unit": "g",
+          "notes": "pour le sirop",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "sucre",
+          "quantity": "30",
+          "unit": "g",
+          "notes": "pour le sirop",
+          "id": "ingredient-main-10"
+        },
+        {
+          "name": "jus de citron",
+          "quantity": "3",
+          "unit": "c. à s.",
+          "notes": "pour le sirop",
+          "id": "ingredient-main-11"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 165 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Mélanger le zeste de citron avec le sucre.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Ajouter les œufs 1 à 1 et bien mélanger.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Ajouter la crème fraîche.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Ajouter le rhum et le sel.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Mélanger la farine et la levure.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-6",
+              "text": "Ajouter la farine et la levure en plusieurs fois au mélange.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-7",
+              "text": "Ajouter le beurre et mélanger.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-8",
+              "text": "Beurrer et fariner le moule à cake.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-9",
+              "text": "Verser la préparation et cuire environ 60 min.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-10",
+              "text": "Préparer le sirop : porter à ébullition l’eau et le sucre.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                }
+              ]
+            },
+            {
+              "id": "step-0-11",
+              "text": "Ajouter le jus de citron hors du feu.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-11"
+                }
+              ]
+            },
+            {
+              "id": "step-0-12",
+              "text": "Sortir le cake du four et l’imbiber de sirop.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-13",
+              "text": "Laisser refroidir sur une grille avant de déguster.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Pierre Hermé's Moist Lemon Cake",
+      "author": "Pierre Hermé",
+      "description": "Moist lemon loaf cake soaked with lemon syrup.",
+      "yieldLabel": "1 loaf",
+      "prepTime": "10 min",
+      "cookTime": "60 min",
+      "restTime": "",
+      "totalTime": "1 h 10 min",
+      "timeLabel": "1 h 10 min",
+      "temperature": "165 °C",
+      "equipment": [
+        "1 loaf pan"
+      ],
+      "ingredients": [
+        {
+          "name": "flour",
+          "quantity": "190",
+          "unit": "g",
+          "notes": "for the cake",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "baking powder",
+          "quantity": "1/2",
+          "unit": "tsp",
+          "notes": "for the cake",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "lemon zest",
+          "quantity": "1",
+          "unit": "large lemon",
+          "notes": "or 2 small ones",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "sugar",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "for the cake",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "eggs",
+          "quantity": "3",
+          "unit": "",
+          "notes": "for the cake",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "heavy cream",
+          "quantity": "10",
+          "unit": "cl",
+          "notes": "for the cake",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "rum",
+          "quantity": "2",
+          "unit": "tbsp",
+          "notes": "for the cake",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "salt",
+          "quantity": "1",
+          "unit": "pinch",
+          "notes": "for the cake",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "melted and cooled butter",
+          "quantity": "65",
+          "unit": "g",
+          "notes": "for the cake",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "water",
+          "quantity": "75",
+          "unit": "g",
+          "notes": "for the syrup",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "sugar",
+          "quantity": "30",
+          "unit": "g",
+          "notes": "for the syrup",
+          "id": "ingredient-main-10"
+        },
+        {
+          "name": "lemon juice",
+          "quantity": "3",
+          "unit": "tbsp",
+          "notes": "for the syrup",
+          "id": "ingredient-main-11"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 165 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Rub the lemon zest into the sugar.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Add the eggs one at a time, mixing well.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Add the crème fraîche.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-4",
+              "text": "Add the rum and salt.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Mix the flour and baking powder.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-6",
+              "text": "Add the flour and baking powder to the mixture in several additions.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-7",
+              "text": "Add the butter and mix.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-8",
+              "text": "Butter and flour the loaf pan.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-9",
+              "text": "Pour in the batter and bake for about 60 min.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-10",
+              "text": "Prepare the syrup: bring the water and sugar to a boil.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                }
+              ]
+            },
+            {
+              "id": "step-0-11",
+              "text": "Off the heat, add the lemon juice.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-11"
+                }
+              ]
+            },
+            {
+              "id": "step-0-12",
+              "text": "Remove the cake from the oven and soak it with syrup.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-13",
+              "text": "Let cool on a rack before serving.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

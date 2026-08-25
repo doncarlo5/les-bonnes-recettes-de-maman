@@ -1,0 +1,353 @@
+{
+  "slug": "crumble-aux-pommes-du-verger",
+  "heroImageUrl": "https://images.unsplash.com/photo-1601000937859-3031d2be1caa?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "referenceServings": 6,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "dessert",
+    "sucre"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Crumble aux pommes du verger",
+      "author": "Maman",
+      "description": "Crumble aux pommes, cassonade, poudre d’amandes, cannelle et calvados.",
+      "yieldLabel": "4 à 6 personnes",
+      "prepTime": "15 min",
+      "cookTime": "35 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "35 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 plat à gratin"
+      ],
+      "ingredients": [
+        {
+          "name": "pommes",
+          "quantity": "1,2",
+          "unit": "kg",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "farine semi-complète",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "beurre salé tempéré",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "découpé en petits dés",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "beurre",
+          "quantity": "20",
+          "unit": "g",
+          "notes": "pour le plat",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "cassonade en poudre",
+          "quantity": "120",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "poudre d’amandes",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "cannelle en poudre",
+          "quantity": "1",
+          "unit": "c. à c.",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "calvados",
+          "quantity": "4",
+          "unit": "c. à s.",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "sel",
+          "quantity": "1",
+          "unit": "pincée",
+          "notes": "",
+          "id": "ingredient-main-8"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Éplucher les pommes, les couper en 4, ôter le cœur et les pépins, puis les détailler en tranches épaisses.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Les déposer dans une assiette creuse et les arroser de calvados.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Dans un grand bol, mélanger la farine, la poudre d’amandes, la cannelle, la cassonade et le beurre.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Ajouter la pincée de sel. Remuer délicatement.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Beurrer le plat et disposer les tranches de pommes parfumées au calvados.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-0-6",
+              "text": "Les couvrir du mélange farine-poudre d’amandes-beurre-cassonade et mettre au four pendant 35 min environ.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-7",
+              "text": "Déguster le crumble tiède ou froid.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Orchard Apple Crumble",
+      "author": "Maman",
+      "description": "Apple crumble with brown sugar, almond flour, cinnamon and calvados.",
+      "yieldLabel": "4 to 6 people",
+      "prepTime": "15 min",
+      "cookTime": "35 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "35 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 baking dish"
+      ],
+      "ingredients": [
+        {
+          "name": "apples",
+          "quantity": "1,2",
+          "unit": "kg",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "semi-wholemeal flour",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "salted butter, at room temperature",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "cut into small cubes",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "butter",
+          "quantity": "20",
+          "unit": "g",
+          "notes": "for the dish",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "brown sugar",
+          "quantity": "120",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "almond flour",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "ground cinnamon",
+          "quantity": "1",
+          "unit": "tsp",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "calvados",
+          "quantity": "4",
+          "unit": "tbsp",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "salt",
+          "quantity": "1",
+          "unit": "pinch",
+          "notes": "",
+          "id": "ingredient-main-8"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Peel the apples, quarter them, remove the core and seeds, then cut into thick slices.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Place them in a deep plate and drizzle with calvados.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "In a large bowl, mix the flour, almond flour, cinnamon, brown sugar and butter.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Add the pinch of salt. Stir gently.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Butter the dish and arrange the calvados-flavored apple slices.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-0-6",
+              "text": "Cover with the flour-almond-butter-brown sugar mixture and bake for about 35 min.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-7",
+              "text": "Serve the crumble warm or cold.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

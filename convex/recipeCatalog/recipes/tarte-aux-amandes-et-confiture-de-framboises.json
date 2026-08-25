@@ -1,0 +1,322 @@
+{
+  "slug": "tarte-aux-amandes-et-confiture-de-framboises",
+  "heroImageUrl": "https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "referenceServings": 6,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "dessert",
+    "sucre"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Tarte aux amandes et confiture de framboises",
+      "author": "Maman",
+      "description": "Tarte sur pâte sablée, garnie de confiture de framboises et d’une préparation aux amandes.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "30 à 35 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 à 35 min",
+      "temperature": "160 °C",
+      "equipment": [],
+      "ingredients": [
+        {
+          "name": "pâte sablée",
+          "quantity": "1",
+          "unit": "",
+          "notes": "Pierre Hermé ou autre",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "beurre",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "ramolli",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "sucre",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "amandes en poudre",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "œufs",
+          "quantity": "2",
+          "unit": "",
+          "notes": "blancs et jaunes séparés",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "confiture de framboises",
+          "quantity": "2 à 3",
+          "unit": "c. à s.",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "amandes effilées grillées",
+          "quantity": "",
+          "unit": "",
+          "notes": "pour le décor",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "sucre glace",
+          "quantity": "",
+          "unit": "",
+          "notes": "pour le décor",
+          "id": "ingredient-main-7"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 160 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Mélanger le beurre ramolli avec le sucre et les jaunes d’œufs.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Ajouter les amandes, puis les blancs d’œufs montés en neige.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Étaler la confiture sur la pâte, puis ajouter le mélange aux amandes.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Cuisson",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Cuire 30 à 35 min à 160 °C.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Décor",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "Décorer avec des amandes effilées grillées et du sucre glace.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Almond Tart with Raspberry Jam",
+      "author": "Maman",
+      "description": "Shortcrust tart filled with raspberry jam and an almond mixture.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "30 to 35 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 to 35 min",
+      "temperature": "160 °C",
+      "equipment": [],
+      "ingredients": [
+        {
+          "name": "shortcrust pastry",
+          "quantity": "1",
+          "unit": "",
+          "notes": "Pierre Hermé or another one",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "butter",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "softened",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "sugar",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "ground almonds",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "eggs",
+          "quantity": "2",
+          "unit": "",
+          "notes": "whites and yolks separated",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "raspberry jam",
+          "quantity": "2 to 3",
+          "unit": "tbsp",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "toasted sliced almonds",
+          "quantity": "",
+          "unit": "",
+          "notes": "for decoration",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "icing sugar",
+          "quantity": "",
+          "unit": "",
+          "notes": "for decoration",
+          "id": "ingredient-main-7"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 160 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Mix the softened butter with the sugar and egg yolks.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Add the almonds, then the whipped egg whites.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Spread the jam over the pastry, then add the almond mixture.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Baking",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Bake for 30 to 35 min at 160 °C.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Decoration",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "Decorate with toasted sliced almonds and icing sugar.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

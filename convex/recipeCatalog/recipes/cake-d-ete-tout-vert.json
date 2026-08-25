@@ -1,0 +1,424 @@
+{
+  "slug": "cake-d-ete-tout-vert",
+  "heroImageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "sale"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Cake d’été tout vert",
+      "author": "Maman",
+      "description": "Cake salé aux herbes, pesto ou tapenade verte, gruyère et noisettes.",
+      "yieldLabel": "1 moule tablette ou 12 mini cakes",
+      "prepTime": "",
+      "cookTime": "30 à 40 min selon le format",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 à 40 min selon le format",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 moule à cake ou 12 moules à mini-cakes"
+      ],
+      "ingredients": [
+        {
+          "name": "persil",
+          "quantity": "1",
+          "unit": "bouquet",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "ciboulette",
+          "quantity": "1",
+          "unit": "beau bouquet",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "farine",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "levure",
+          "quantity": "1",
+          "unit": "sachet",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "œufs",
+          "quantity": "3",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "lait",
+          "quantity": "10",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "huile d’olive",
+          "quantity": "7",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "gruyère râpé",
+          "quantity": "80",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "tapenade verte ou pesto vert",
+          "quantity": "4",
+          "unit": "c. à s.",
+          "notes": "",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "noisettes concassées",
+          "quantity": "120",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "sel",
+          "quantity": "",
+          "unit": "",
+          "notes": "selon le goût",
+          "id": "ingredient-main-10"
+        },
+        {
+          "name": "poivre",
+          "quantity": "",
+          "unit": "",
+          "notes": "selon le goût",
+          "id": "ingredient-main-11"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Poser le moule, beurré si pas en silicone, sur la plaque alu perforée.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-2",
+              "text": "Laver et égoutter les herbes, les ciseler ou les couper à l’éminceur.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Dans un cul-de-poule, mélanger la farine et la levure.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Ajouter les œufs, puis le lait, l’huile et le gruyère, bien mélanger.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Terminer par les herbes, la tapenade ou le pesto, les noisettes, et assaisonner si nécessaire.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            },
+            {
+              "id": "step-0-6",
+              "text": "Verser dans le moule à cake, puis enfourner pendant environ 40 min pour un grand cake ou 30 min pour des petits.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-7",
+              "text": "La lame du couteau doit ressortir sèche.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-8",
+              "text": "Laisser refroidir et démouler.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Service",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Accompagner d’une salade verte.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "Meilleur préparé la veille."
+      ]
+    },
+    "en": {
+      "title": "Green Summer Loaf Cake",
+      "author": "Maman",
+      "description": "Savory herb loaf with green pesto or tapenade, Gruyère and hazelnuts.",
+      "yieldLabel": "1 tablet pan or 12 mini loaves",
+      "prepTime": "",
+      "cookTime": "30 to 40 min depending on size",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 to 40 min depending on size",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 loaf pan or 12 mini-loaf molds"
+      ],
+      "ingredients": [
+        {
+          "name": "parsley",
+          "quantity": "1",
+          "unit": "bunch",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "chives",
+          "quantity": "1",
+          "unit": "large bunch",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "flour",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "baking powder",
+          "quantity": "1",
+          "unit": "packet",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "eggs",
+          "quantity": "3",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "milk",
+          "quantity": "10",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "olive oil",
+          "quantity": "7",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "grated Gruyère",
+          "quantity": "80",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "green tapenade or green pesto",
+          "quantity": "4",
+          "unit": "tbsp",
+          "notes": "",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "chopped hazelnuts",
+          "quantity": "120",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "salt",
+          "quantity": "",
+          "unit": "",
+          "notes": "to taste",
+          "id": "ingredient-main-10"
+        },
+        {
+          "name": "pepper",
+          "quantity": "",
+          "unit": "",
+          "notes": "to taste",
+          "id": "ingredient-main-11"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Place the pan, buttered if it is not silicone, on the perforated aluminum tray.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-2",
+              "text": "Wash and drain the herbs, then snip or slice them finely.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "In a mixing bowl, combine the flour and baking powder.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Add the eggs, then the milk, oil and Gruyère, mixing well.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Finish with the herbs, tapenade or pesto, hazelnuts, and season if needed.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            },
+            {
+              "id": "step-0-6",
+              "text": "Pour into the loaf pan, then bake for about 40 min for a large loaf or 30 min for small ones.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-7",
+              "text": "A knife blade should come out dry.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-8",
+              "text": "Let cool and unmold.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Serving",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Serve with a green salad.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "Best prepared the day before."
+      ]
+    }
+  }
+}

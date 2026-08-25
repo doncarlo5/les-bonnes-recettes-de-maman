@@ -28,8 +28,9 @@ n’est pas nécessaire pour les besoins recensés.
 
 ## Correspondance avec les données actuelles
 
-`convex/recettes.json` contient 47 occurrences et 30 libellés uniques, que l’on
-peut ramener à ces familles :
+Les champs `translations.fr.equipment` des fichiers
+`convex/recipeCatalog/recipes/*.json` contiennent 52 occurrences et 30 libellés
+uniques, que l’on peut ramener à ces familles :
 
 | Libellés français | Icône Hugeicons Free proposée |
 |---|---|

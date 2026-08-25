@@ -1,0 +1,329 @@
+{
+  "slug": "coulants-au-chocolat",
+  "heroImageUrl": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "referenceServings": 5,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "dessert",
+    "sucre"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Coulants au chocolat",
+      "author": "Maman",
+      "description": "Petits coulants au chocolat noir à servir tièdes avec une boule de glace vanille.",
+      "yieldLabel": "Environ 5 coulants",
+      "prepTime": "",
+      "cookTime": "10 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "10 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "5 empreintes à muffins"
+      ],
+      "ingredients": [
+        {
+          "name": "chocolat noir",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "œufs",
+          "quantity": "2",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "farine",
+          "quantity": "25",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "beurre",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "sucre semoule",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "glace à la vanille",
+          "quantity": "5",
+          "unit": "boules",
+          "notes": "facultatif, pour le service",
+          "id": "ingredient-main-5"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 180 °C.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Faire fondre le beurre et le chocolat 2 min au micro-ondes.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Mélanger les œufs, le sucre et la farine.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Verser cette préparation dans le mélange beurre-chocolat.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Répartir dans 5 empreintes à muffins, en forme de petits cupcakes.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Cuisson",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Cuire 10 min à four chaud à 180 °C.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Service",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "Laisser tiédir, puis passer délicatement une cuillère à soupe entre chaque coulant et son moule pour le démouler sans le casser.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-2-1",
+              "text": "Servir chaque coulant tiède avec une boule de glace à la vanille.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "Cette recette donne plutôt 5 coulants que 6."
+      ]
+    },
+    "en": {
+      "title": "Chocolate Lava Cakes",
+      "author": "Maman",
+      "description": "Small dark-chocolate lava cakes served warm with a scoop of vanilla ice cream.",
+      "yieldLabel": "About 5 lava cakes",
+      "prepTime": "",
+      "cookTime": "10 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "10 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "5 muffin cups"
+      ],
+      "ingredients": [
+        {
+          "name": "dark chocolate",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "eggs",
+          "quantity": "2",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "flour",
+          "quantity": "25",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "butter",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "granulated sugar",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "vanilla ice cream",
+          "quantity": "5",
+          "unit": "scoops",
+          "notes": "optional, for serving",
+          "id": "ingredient-main-5"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Melt the butter and chocolate for 2 min in the microwave.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Mix the eggs, sugar and flour.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Pour this mixture into the butter-chocolate mixture.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Divide among 5 muffin cups.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Baking",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Bake for 10 min in a hot oven at 180 °C.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Serving",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "Let cool until warm, then gently slide a tablespoon between each lava cake and its cup to unmold it without breaking it.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-2-1",
+              "text": "Serve each lava cake warm with a scoop of vanilla ice cream.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "This recipe makes closer to 5 lava cakes than 6."
+      ]
+    }
+  }
+}

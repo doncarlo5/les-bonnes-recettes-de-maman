@@ -1,0 +1,332 @@
+{
+  "slug": "pates-carbonara",
+  "heroImageUrl": "/images/recipes/pates-carbonara.png",
+  "defaultLocale": "fr",
+  "referenceServings": 2,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "plat",
+    "sale"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Pâtes carbonara",
+      "author": "Antoine",
+      "description": "Pâtes carbonara familiales aux œufs entiers, parmesan et lardons fumés, liées avec un peu d’eau de cuisson si nécessaire.",
+      "yieldLabel": "2 personnes",
+      "prepTime": "5 min",
+      "cookTime": "15 min",
+      "restTime": "",
+      "totalTime": "20 min",
+      "timeLabel": "20 min",
+      "temperature": "",
+      "equipment": [
+        "1 grande casserole",
+        "1 poêle",
+        "1 bol",
+        "1 verre"
+      ],
+      "ingredients": [
+        {
+          "name": "spaghettis",
+          "quantity": "250",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "lardons fumés",
+          "quantity": "125",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "œufs",
+          "quantity": "2",
+          "unit": "",
+          "notes": "entiers, sans séparer les blancs des jaunes",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "parmesan râpé",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "plus un peu pour servir",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "eau de cuisson des pâtes",
+          "quantity": "un peu",
+          "unit": "",
+          "notes": "à réserver au cas où la sauce est trop sèche",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "sel",
+          "quantity": "",
+          "unit": "",
+          "notes": "à convenance",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "poivre",
+          "quantity": "",
+          "unit": "",
+          "notes": "à convenance",
+          "id": "ingredient-main-6"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Faire cuire les pâtes dans une grande casserole d’eau bouillante salée selon les indications du paquet.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Pendant ce temps, faire dorer les lardons fumés dans une poêle.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Dans un bol, battre les œufs entiers avec le parmesan et du poivre. Saler très légèrement, car les lardons fumés et le parmesan le sont déjà.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Avant d’égoutter les pâtes, réserver un verre d’eau de cuisson. Égoutter les pâtes sans les assécher, puis les remettre dans la casserole chaude hors du feu.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Ajouter aussitôt les lardons, puis verser le mélange aux œufs et au parmesan. Remuer sans arrêt afin que la chaleur résiduelle nappe les pâtes sans brouiller les œufs.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Si la sauce est trop sèche, ajouter un peu d’eau de cuisson réservée. Servir immédiatement avec un peu de parmesan et de poivre.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Pasta Carbonara",
+      "author": "Antoine",
+      "description": "Family-style pasta carbonara with whole eggs, parmesan and smoked bacon, loosened with a little pasta cooking water if needed.",
+      "yieldLabel": "2 people",
+      "prepTime": "5 min",
+      "cookTime": "15 min",
+      "restTime": "",
+      "totalTime": "20 min",
+      "timeLabel": "20 min",
+      "temperature": "",
+      "equipment": [
+        "1 large saucepan",
+        "1 frying pan",
+        "1 bowl",
+        "1 glass"
+      ],
+      "ingredients": [
+        {
+          "name": "spaghetti",
+          "quantity": "250",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "smoked bacon lardons",
+          "quantity": "125",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "eggs",
+          "quantity": "2",
+          "unit": "",
+          "notes": "whole, without separating the whites and yolks",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "grated parmesan",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "plus extra for serving",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "pasta cooking water",
+          "quantity": "a little",
+          "unit": "",
+          "notes": "reserve in case the sauce is too dry",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "salt",
+          "quantity": "",
+          "unit": "",
+          "notes": "to taste",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "pepper",
+          "quantity": "",
+          "unit": "",
+          "notes": "to taste",
+          "id": "ingredient-main-6"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Cook the pasta in a large saucepan of salted boiling water according to the package directions.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Meanwhile, brown the smoked bacon lardons in a frying pan.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "In a bowl, beat the whole eggs with the parmesan and pepper. Add only a little salt, as the smoked bacon and parmesan are already salty.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Before draining the pasta, reserve a glass of cooking water. Drain the pasta without drying it out, then return it to the hot saucepan off the heat.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Immediately add the smoked bacon, then pour in the egg and parmesan mixture. Stir continuously so the residual heat coats the pasta without scrambling the eggs.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "If the sauce is too dry, add a little reserved cooking water. Serve immediately with extra parmesan and pepper.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

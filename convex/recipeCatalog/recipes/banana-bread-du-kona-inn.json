@@ -1,0 +1,439 @@
+{
+  "slug": "banana-bread-du-kona-inn",
+  "heroImageUrl": "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "dessert",
+    "sucre"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Banana bread",
+      "author": "Mary McHale",
+      "description": "Banana bread moelleux aux bananes bien mûres.",
+      "yieldLabel": "1 cake",
+      "prepTime": "20 min",
+      "cookTime": "45 à 60 min",
+      "restTime": "",
+      "totalTime": "1 h 05 à 1 h 20",
+      "timeLabel": "1 h 05 à 1 h 20",
+      "temperature": "175 °C",
+      "equipment": [
+        "1 moule à cake"
+      ],
+      "ingredients": [
+        {
+          "name": "sucre blanc",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "beurre",
+          "quantity": "115",
+          "unit": "g",
+          "notes": "ramolli",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "bananes bien mûres",
+          "quantity": "325 à 350",
+          "unit": "g",
+          "notes": "écrasées, environ 3 à 4 bananes selon leur taille",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "œufs",
+          "quantity": "2",
+          "unit": "",
+          "notes": "bien battus",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "farine T45",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "bicarbonate de soude",
+          "quantity": "1",
+          "unit": "c. à café",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "sel",
+          "quantity": "3",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "noix de pécan hachées",
+          "quantity": "30",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "cannelle",
+          "quantity": "1",
+          "unit": "pincée",
+          "notes": "",
+          "id": "ingredient-main-8"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 175 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Battre le beurre ramolli avec le sucre jusqu’à obtenir un mélange clair, léger et mousseux.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Ajouter les bananes écrasées et les œufs battus, puis mélanger jusqu’à obtenir une pâte homogène.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Dans un autre saladier, mélanger la farine T45, le bicarbonate de soude et le sel. Tamiser idéalement les ingrédients secs plusieurs fois, puis les incorporer à la préparation à la banane sans trop travailler la pâte.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Incorporer les noix de pécan hachées et la pincée de cannelle à la pâte.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Cuisson",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Verser la pâte dans 1 moule à cake légèrement graissé.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-1-1",
+              "text": "Cuire 45 à 60 min, jusqu’à ce que le centre soit ferme et qu’une lame de couteau ou un cure-dent ressorte propre ou presque propre.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-1-2",
+              "text": "Laisser refroidir 10 min dans le moule, puis démouler sur une grille.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Conservation",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "Ce banana bread se congèle très bien.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Garniture croustillante aux noix (facultative)",
+          "steps": [
+            {
+              "id": "step-3-0",
+              "text": "Mélanger 60 g de noix de pécan hachées, 2 c. à s. de cassonade foncée et 1/2 c. à café de cannelle.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-3-1",
+              "text": "Verser la moitié de la pâte dans le moule et parsemer une partie du mélange aux noix.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-3-2",
+              "text": "Ajouter le reste de pâte, parsemer le reste du mélange sur le dessus et presser légèrement.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Banana Bread",
+      "author": "Mary McHale",
+      "description": "Moist banana bread made with very ripe bananas.",
+      "yieldLabel": "1 loaf",
+      "prepTime": "20 min",
+      "cookTime": "45 to 60 min",
+      "restTime": "",
+      "totalTime": "1 h 05 to 1 h 20",
+      "timeLabel": "1 h 05 to 1 h 20",
+      "temperature": "175 °C",
+      "equipment": [
+        "1 loaf pan"
+      ],
+      "ingredients": [
+        {
+          "name": "white sugar",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "butter",
+          "quantity": "115",
+          "unit": "g",
+          "notes": "softened",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "very ripe bananas",
+          "quantity": "325 to 350",
+          "unit": "g",
+          "notes": "mashed, about 3 to 4 bananas depending on their size",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "eggs",
+          "quantity": "2",
+          "unit": "",
+          "notes": "well beaten",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "T45 flour",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "baking soda",
+          "quantity": "1",
+          "unit": "tsp",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "salt",
+          "quantity": "3",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "chopped pecans",
+          "quantity": "30",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "cinnamon",
+          "quantity": "1",
+          "unit": "pinch",
+          "notes": "",
+          "id": "ingredient-main-8"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 175 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Beat the softened butter and sugar until light and fluffy.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Add the mashed bananas and beaten eggs, then mix until smooth.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "In another bowl, combine the T45 flour, baking soda and salt. Sift the dry ingredients, ideally several times, then fold them into the banana mixture without overmixing.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Fold the chopped pecans and pinch of cinnamon into the batter.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Baking",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Pour the batter into 1 lightly greased loaf pan.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-1-1",
+              "text": "Bake for 45 to 60 min, until the center is firm and a knife or toothpick inserted into it comes out clean or almost clean.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-1-2",
+              "text": "Let cool in the pan for 10 min, then unmold onto a rack.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Storage",
+          "steps": [
+            {
+              "id": "step-2-0",
+              "text": "This banana bread freezes very well.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Crunchy Pecan Topping (Optional)",
+          "steps": [
+            {
+              "id": "step-3-0",
+              "text": "Mix 60 g chopped pecans, 2 tbsp dark brown sugar and 1/2 tsp cinnamon.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-3-1",
+              "text": "Pour half the batter into the pan and sprinkle with some of the pecan mixture.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-3-2",
+              "text": "Add the remaining batter, sprinkle the rest of the pecan mixture on top and press it in lightly.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

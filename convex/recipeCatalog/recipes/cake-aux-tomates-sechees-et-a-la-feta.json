@@ -1,0 +1,391 @@
+{
+  "slug": "cake-aux-tomates-sechees-et-a-la-feta",
+  "heroImageUrl": "/images/recipes/cake-aux-tomates-sechees-et-a-la-feta.png",
+  "defaultLocale": "fr",
+  "referenceServings": 6,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "sale"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Cake aux tomates séchées et à la feta",
+      "author": "Alexia",
+      "description": "Cake salé moelleux aux tomates séchées, à la feta, au basilic et au gruyère.",
+      "yieldLabel": "6 personnes",
+      "prepTime": "15 min",
+      "cookTime": "40 min",
+      "restTime": "",
+      "totalTime": "55 min",
+      "timeLabel": "55 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 saladier",
+        "1 moule à cake"
+      ],
+      "ingredients": [
+        {
+          "name": "gruyère râpé",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "huile",
+          "quantity": "6",
+          "unit": "cl",
+          "notes": "huile du bocal de tomates séchées de préférence, sinon huile d’olive",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "levure chimique",
+          "quantity": "1",
+          "unit": "sachet",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "farine",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "tomates séchées",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "coupées en petits morceaux",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "feta",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "coupée en dés",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "œufs",
+          "quantity": "3",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "lait",
+          "quantity": "12",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "basilic",
+          "quantity": "1",
+          "unit": "bouquet",
+          "notes": "ciselé",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "sel",
+          "quantity": "",
+          "unit": "",
+          "notes": "à convenance",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "poivre",
+          "quantity": "",
+          "unit": "",
+          "notes": "à convenance",
+          "id": "ingredient-main-10"
+        },
+        {
+          "name": "beurre",
+          "quantity": "un peu",
+          "unit": "",
+          "notes": "pour le moule",
+          "id": "ingredient-main-11"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Dans un saladier, mélanger la farine et la levure chimique.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Ajouter les œufs, le lait et l’huile, puis bien mélanger.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Incorporer les tomates séchées coupées en petits morceaux, le basilic ciselé, la feta coupée en dés et le gruyère râpé.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Ajouter le sel et le poivre, puis mélanger de nouveau.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Graisser le moule à cake avec le beurre, y verser la pâte et enfourner pour 40 min.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-11"
+                }
+              ]
+            },
+            {
+              "id": "step-0-6",
+              "text": "Laisser refroidir avant de démouler et de déguster.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "Pour l’huile, utiliser de préférence celle du bocal de tomates séchées ; à défaut, utiliser de l’huile d’olive."
+      ]
+    },
+    "en": {
+      "title": "Sun-Dried Tomato and Feta Loaf",
+      "author": "Alexia",
+      "description": "Moist savory loaf with sun-dried tomatoes, feta, basil and Gruyère.",
+      "yieldLabel": "6 people",
+      "prepTime": "15 min",
+      "cookTime": "40 min",
+      "restTime": "",
+      "totalTime": "55 min",
+      "timeLabel": "55 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 salad bowl",
+        "1 loaf pan"
+      ],
+      "ingredients": [
+        {
+          "name": "grated Gruyère",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "oil",
+          "quantity": "6",
+          "unit": "cl",
+          "notes": "preferably oil from the sun-dried tomato jar, otherwise olive oil",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "baking powder",
+          "quantity": "1",
+          "unit": "packet",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "flour",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "sun-dried tomatoes",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "cut into small pieces",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "feta",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "diced",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "eggs",
+          "quantity": "3",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "milk",
+          "quantity": "12",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "basil",
+          "quantity": "1",
+          "unit": "bunch",
+          "notes": "finely sliced",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "salt",
+          "quantity": "",
+          "unit": "",
+          "notes": "to taste",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "pepper",
+          "quantity": "",
+          "unit": "",
+          "notes": "to taste",
+          "id": "ingredient-main-10"
+        },
+        {
+          "name": "butter",
+          "quantity": "a little",
+          "unit": "",
+          "notes": "for the pan",
+          "id": "ingredient-main-11"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "In a mixing bowl, combine the flour and baking powder.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Add the eggs, milk and oil, then mix well.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Fold in the chopped sun-dried tomatoes, finely sliced basil, diced feta and grated Gruyère.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Add the salt and pepper, then mix again.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Grease the loaf pan with the butter, pour in the batter and bake for 40 min.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-11"
+                }
+              ]
+            },
+            {
+              "id": "step-0-6",
+              "text": "Let cool before unmolding and serving.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "For the oil, preferably use the oil from the sun-dried tomato jar; otherwise, use olive oil."
+      ]
+    }
+  }
+}

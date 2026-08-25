@@ -1,0 +1,347 @@
+{
+  "slug": "cake-chevre-noix-olives",
+  "heroImageUrl": "https://images.unsplash.com/photo-1543353071-10c8ba85a904?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "referenceServings": 6,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "sale"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Cake chèvre / noix / olives",
+      "author": "Maman",
+      "description": "Cake salé au chèvre, noix, olives et comté râpé.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "180 °C",
+      "equipment": [],
+      "ingredients": [
+        {
+          "name": "farine",
+          "quantity": "175",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "œufs",
+          "quantity": "3",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "huile d’olive",
+          "quantity": "2",
+          "unit": "c. à s.",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "comté râpé",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "chèvre",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "lait",
+          "quantity": "1",
+          "unit": "petit verre",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "noix",
+          "quantity": "70",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "olives entières",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "sel",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "poivre",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "levure",
+          "quantity": "1/2",
+          "unit": "sachet",
+          "notes": "",
+          "id": "ingredient-main-10"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Mélanger les œufs, la farine, la levure, le sel et le poivre.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Ajouter petit à petit l’huile et le lait chaud avec le fromage râpé.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Ajouter le chèvre écrasé, les noix et les olives.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Cuisson",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Cuire 30 min à 180 °C.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Goat Cheese, Walnut and Olive Loaf",
+      "author": "Maman",
+      "description": "Savory loaf with goat cheese, walnuts, olives and grated Comté.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "180 °C",
+      "equipment": [],
+      "ingredients": [
+        {
+          "name": "flour",
+          "quantity": "175",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "eggs",
+          "quantity": "3",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "olive oil",
+          "quantity": "2",
+          "unit": "tbsp",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "grated Comté",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "goat cheese",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "milk",
+          "quantity": "1",
+          "unit": "small glass",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "walnuts",
+          "quantity": "70",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "whole olives",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "salt",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "pepper",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "baking powder",
+          "quantity": "1/2",
+          "unit": "packet",
+          "notes": "",
+          "id": "ingredient-main-10"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Mix the eggs, flour, baking powder, salt and pepper.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Gradually add the oil and warm milk with the grated cheese.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Add the mashed goat cheese, walnuts and olives.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Baking",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Bake for 30 min at 180 °C.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

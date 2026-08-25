@@ -1,0 +1,411 @@
+{
+  "slug": "cake-au-chevre-et-courgettes",
+  "heroImageUrl": "https://images.unsplash.com/photo-1543353071-10c8ba85a904?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "referenceServings": 6,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "sale"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Cake au chèvre et courgettes",
+      "author": "Mimi",
+      "description": "Cake salé au chèvre, courgette, gruyère râpé et cerfeuil.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "45 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "45 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 moule à cake"
+      ],
+      "ingredients": [
+        {
+          "name": "œufs",
+          "quantity": "3",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "farine",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "levure",
+          "quantity": "1",
+          "unit": "sachet",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "huile de tournesol",
+          "quantity": "8",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "lait entier",
+          "quantity": "12,5",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "gruyère râpé",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "chèvre bûche",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "courgette",
+          "quantity": "1",
+          "unit": "belle",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "huile d’olive",
+          "quantity": "2",
+          "unit": "c. à s.",
+          "notes": "",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "cerfeuil",
+          "quantity": "1",
+          "unit": "bouquet",
+          "notes": "",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "sel",
+          "quantity": "2",
+          "unit": "pincées",
+          "notes": "",
+          "id": "ingredient-main-10"
+        },
+        {
+          "name": "poivre",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-11"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Préchauffer le four à 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Faire rissoler la courgette coupée en rondelles dans l’huile d’olive pendant 15 min, puis disposer sur du sopalin.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Fouetter les œufs, la farine, la levure, le sel et le poivre.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                },
+                {
+                  "ingredientId": "ingredient-main-11"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Incorporer petit à petit l’huile et le lait chauffé.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Ajouter le gruyère râpé et mélanger.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Incorporer les courgettes, le chèvre coupé en morceaux et le cerfeuil ciselé.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            },
+            {
+              "id": "step-0-6",
+              "text": "Mélanger le tout et mettre dans un moule non graissé.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Cuisson",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Cuire 45 min à 180 °C.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Goat Cheese and Zucchini Loaf",
+      "author": "Mimi",
+      "description": "Savory loaf with goat cheese, zucchini, grated Gruyère and chervil.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "45 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "45 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 loaf pan"
+      ],
+      "ingredients": [
+        {
+          "name": "eggs",
+          "quantity": "3",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "flour",
+          "quantity": "150",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "baking powder",
+          "quantity": "1",
+          "unit": "packet",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "sunflower oil",
+          "quantity": "8",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "whole milk",
+          "quantity": "12,5",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "grated Gruyère",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "goat cheese log",
+          "quantity": "200",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "zucchini",
+          "quantity": "1",
+          "unit": "large",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "olive oil",
+          "quantity": "2",
+          "unit": "tbsp",
+          "notes": "",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "chervil",
+          "quantity": "1",
+          "unit": "bunch",
+          "notes": "",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "salt",
+          "quantity": "2",
+          "unit": "pinches",
+          "notes": "",
+          "id": "ingredient-main-10"
+        },
+        {
+          "name": "pepper",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-11"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Preheat the oven to 180 °C.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-1",
+              "text": "Brown the sliced zucchini in olive oil for 15 min, then place on paper towels.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Whisk the eggs, flour, baking powder, salt and pepper.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                },
+                {
+                  "ingredientId": "ingredient-main-11"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Gradually incorporate the oil and warmed milk.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Add the grated Gruyère and mix.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-0-5",
+              "text": "Fold in the zucchini, goat cheese pieces and chopped chervil.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            },
+            {
+              "id": "step-0-6",
+              "text": "Mix everything and place in an ungreased pan.",
+              "ingredientUses": []
+            }
+          ]
+        },
+        {
+          "title": "Baking",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Bake for 45 min at 180 °C.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

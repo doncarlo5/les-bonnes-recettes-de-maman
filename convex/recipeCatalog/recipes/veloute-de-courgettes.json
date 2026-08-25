@@ -1,0 +1,286 @@
+{
+  "slug": "veloute-de-courgettes",
+  "heroImageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "referenceServings": 6,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "plat",
+    "sale"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Velouté de courgettes",
+      "author": "Jeanine",
+      "description": "Velouté de courgettes avec pomme de terre, ail, oignon, crème fraîche et fromage fondu.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "15 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "15 min",
+      "temperature": "",
+      "equipment": [],
+      "ingredients": [
+        {
+          "name": "petites courgettes",
+          "quantity": "1",
+          "unit": "kg",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "pomme de terre",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "ail",
+          "quantity": "1",
+          "unit": "gousse",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "oignon",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "crème fraîche liquide",
+          "quantity": "25",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "Vache qui rit / Kiri",
+          "quantity": "2",
+          "unit": "portions",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "thym",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "sel",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "poivre",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "muscade",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "eau",
+          "quantity": "50",
+          "unit": "cl",
+          "notes": "pour la cuisson",
+          "id": "ingredient-main-10"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Préparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Faire cuire tous ces légumes dans 50 cl d’eau avec du sel et le thym.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Laisser mijoter 15 min puis mixer.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-2",
+              "text": "Ajouter le fromage fondu et la crème, puis poivrer et ajouter la muscade selon le goût.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    },
+    "en": {
+      "title": "Zucchini Velouté",
+      "author": "Jeanine",
+      "description": "Zucchini velouté with potato, garlic, onion, crème fraîche and processed cheese.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "15 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "15 min",
+      "temperature": "",
+      "equipment": [],
+      "ingredients": [
+        {
+          "name": "small zucchini",
+          "quantity": "1",
+          "unit": "kg",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "potato",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "garlic",
+          "quantity": "1",
+          "unit": "clove",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "onion",
+          "quantity": "1",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "liquid crème fraîche",
+          "quantity": "25",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "Laughing Cow / Kiri cheese",
+          "quantity": "2",
+          "unit": "servings",
+          "notes": "",
+          "id": "ingredient-main-5"
+        },
+        {
+          "name": "thyme",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-6"
+        },
+        {
+          "name": "salt",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-7"
+        },
+        {
+          "name": "pepper",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-8"
+        },
+        {
+          "name": "nutmeg",
+          "quantity": "",
+          "unit": "",
+          "notes": "",
+          "id": "ingredient-main-9"
+        },
+        {
+          "name": "water",
+          "quantity": "50",
+          "unit": "cl",
+          "notes": "for cooking",
+          "id": "ingredient-main-10"
+        }
+      ],
+      "sections": [
+        {
+          "title": "Preparation",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Cook all the vegetables in 50 cl water with the salt and thyme.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Simmer for 15 min, then blend.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-0-2",
+              "text": "Add the processed cheese and cream, then season with pepper and nutmeg to taste.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": []
+    }
+  }
+}

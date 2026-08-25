@@ -8,8 +8,11 @@ import {
   type QueryCtx,
 } from "./_generated/server";
 import type { Doc, Id } from "./_generated/dataModel";
-import rawRecipes from "./recettes.json";
-import { toSeedRecipe, type SourceRecipe } from "./recipeTranslations";
+import {
+  recipeCatalog,
+  selectCatalogRecipes,
+  type CatalogRecipe,
+} from "./recipeCatalog";
 import {
   assertRecipeDraftBytes,
   assertRecipeDraftLimits,
@@ -167,7 +170,8 @@ const openverseImageCreditValidator = v.object({
   alt: v.string(),
 });
 
-const recipes = (rawRecipes as SourceRecipe[]).map(toSeedRecipe);
+const storedRecipeCatalog = recipeCatalog.map(toStoredCatalogRecipe);
+
 const referenceServingsResetSlugs = new Set([
   "amandin",
   "banana-bread-du-kona-inn",
@@ -869,12 +873,9 @@ export const seed = mutation({
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
 
-    const selectedRecipes = args.slug
-      ? recipes.filter((recipe) => recipe.slug === args.slug)
-      : recipes;
-    if (args.slug && selectedRecipes.length === 0) {
-      throw new Error("RECIPE_NOT_FOUND");
-    }
+    const selectedRecipes = selectCatalogRecipes(args.slug).map(
+      toStoredCatalogRecipe,
+    );
 
     return syncSeedRecipes(ctx, selectedRecipes, false);
   },
@@ -885,7 +886,7 @@ export const syncProduction = mutation({
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
     const [result, removals] = await Promise.all([
-      syncSeedRecipes(ctx, recipes, true),
+      syncSeedRecipes(ctx, storedRecipeCatalog, true),
       Promise.all(
         obsoleteRecipeSlugs.map((slug) =>
           removeRecipeBySlugIfPresent(ctx, slug),
@@ -904,12 +905,9 @@ export const syncProductionRecipe = mutation({
   },
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
-    const selectedRecipes = recipes.filter(
-      (recipe) => recipe.slug === args.slug,
+    const selectedRecipes = selectCatalogRecipes(args.slug).map(
+      toStoredCatalogRecipe,
     );
-    if (selectedRecipes.length === 0) {
-      throw new Error("RECIPE_NOT_FOUND");
-    }
 
     return syncSeedRecipes(ctx, selectedRecipes, true);
   },
@@ -917,7 +915,7 @@ export const syncProductionRecipe = mutation({
 
 async function syncSeedRecipes(
   ctx: MutationCtx,
-  selectedRecipes: typeof recipes,
+  selectedRecipes: readonly (typeof storedRecipeCatalog)[number][],
   publish: boolean,
 ) {
   const changes = await Promise.all(
@@ -1022,6 +1020,15 @@ async function syncSeedRecipes(
     inserted: changes.filter((change) => change === "inserted").length,
     updated: changes.filter((change) => change === "updated").length,
     total: selectedRecipes.length,
+  };
+}
+
+function toStoredCatalogRecipe(source: CatalogRecipe) {
+  return {
+    ...source,
+    translations: toStoredTranslations(source.translations),
+    tags: toLegacyTags(source.categories, source.legacyCategoryLabels),
+    status: "published" as const,
   };
 }
 

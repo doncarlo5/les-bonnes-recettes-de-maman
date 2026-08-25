@@ -1,28 +1,65 @@
+import { readdirSync } from "node:fs";
 import { describe, expect, test } from "vitest";
-import rawRecipes from "./recettes.json";
-import {
-  localizeRecipe,
-  toSeedRecipe,
-  type SourceRecipe,
-} from "./recipeTranslations";
+import { recipeCatalog } from "./recipeCatalog";
+import { rawRecipeCatalog } from "./recipeCatalog/rawCatalog";
+import { loadCatalogSources } from "./recipeCatalog/validation";
 
-const recipes = rawRecipes as SourceRecipe[];
+const recipes = recipeCatalog;
 
-describe("recipe yield localization", () => {
-  test("keeps every legacy yield without losing its wording", () => {
+describe("bilingual recipe catalog", () => {
+  test("keeps the generated manifest aligned with every recipe filename", () => {
+    const filenames = readdirSync(
+      new URL("./recipeCatalog/recipes", import.meta.url),
+    )
+      .filter((filename) => filename.endsWith(".json"))
+      .sort();
+
+    expect(Object.keys(rawRecipeCatalog)).toEqual(
+      filenames.map((filename) => filename.replace(/\.json$/, "")),
+    );
+    expect(
+      Object.values(rawRecipeCatalog).map(({ sourcePath }) => sourcePath),
+    ).toEqual(
+      filenames.map((filename) => `./recipes/${filename}`),
+    );
+  });
+
+  test("rejects an index slug that disagrees with its recipe filename", () => {
+    const [entry] = Object.values(rawRecipeCatalog);
+
+    expect(() =>
+      loadCatalogSources({ "not-the-indexed-slug": entry }),
+    ).toThrow(
+      "Catalog index slug not-the-indexed-slug does not match file slug amandin",
+    );
+  });
+
+  test("rejects an embedded slug that disagrees with its index and filename", () => {
+    const [entry] = Object.values(rawRecipeCatalog);
+
+    expect(() =>
+      loadCatalogSources({
+        "not-the-embedded-slug": {
+          ...entry,
+          sourcePath: "./recipes/not-the-embedded-slug.json",
+        },
+      }),
+    ).toThrow(
+      "Catalog index slug not-the-embedded-slug contains recipe amandin",
+    );
+  });
+
+  test("loads every recipe with explicit French and English content", () => {
     for (const recipe of recipes) {
-      const french = localizeRecipe(recipe, "fr");
-      const english = localizeRecipe(recipe, "en");
+      const french = recipe.translations.fr;
+      const english = recipe.translations.en;
 
+      expect(french.title).not.toBe("");
+      expect(english.title).not.toBe("");
+      expect(french.description).not.toBe("");
+      expect(english.description).not.toBe("");
       expect(french.yieldLabel).toBeTypeOf("string");
       expect(english.yieldLabel).toBeTypeOf("string");
-      if (recipe.yieldLabel) {
-        expect(french.yieldLabel).toBe(recipe.yieldLabel);
-      } else if (recipe.servings && recipe.slug !== "gougeres") {
-        expect(french.yieldLabel).toBe(
-          `${recipe.servings.quantity} ${recipe.servings.unit}`.trim(),
-        );
-      }
     }
   });
 
@@ -30,7 +67,7 @@ describe("recipe yield localization", () => {
     const gougeres = recipes.find((recipe) => recipe.slug === "gougeres");
     expect(gougeres).toBeDefined();
 
-    const seeded = toSeedRecipe(gougeres!);
+    const seeded = gougeres!;
     expect(seeded.translations.fr.yieldLabel).toBe("Environ 20 gougères");
     expect(seeded.translations.en.yieldLabel).toBe("About 20 gougères");
   });
@@ -41,8 +78,8 @@ describe("recipe yield localization", () => {
     );
     expect(source).toBeDefined();
 
-    const seeded = toSeedRecipe(source!);
-    expect(seeded.tags).toEqual(["sucre"]);
+    const seeded = source!;
+    expect(seeded.categories).toEqual(["sucre"]);
     expect(seeded.heroImageUrl).toBe("/images/recipes/soupe-de-champagne.png");
     expect(seeded.referenceServings).toBeUndefined();
 
@@ -51,7 +88,6 @@ describe("recipe yield localization", () => {
       author: "Fabrice",
       yieldLabel: "Environ 1 litre",
       prepTime: "5 min",
-      servings: null,
     });
     expect(
       seeded.translations.fr.ingredients.map(({ name, quantity, unit }) => ({
@@ -66,14 +102,16 @@ describe("recipe yield localization", () => {
       { name: "Canadou", quantity: "5 à 7", unit: "cl" },
       { name: "glaçons", quantity: "", unit: "" },
     ]);
-    expect(seeded.translations.fr.sections[0]?.steps).toEqual([
+    expect(
+      seeded.translations.fr.sections[0]?.steps.map(({ text }) => text),
+    ).toEqual([
       "Placer tous les ingrédients au réfrigérateur à l’avance afin qu’ils soient bien frais.",
       "Dans un saladier, mélanger le Cointreau, le Pulco Citron et le Canadou.",
       "Au dernier moment, ajouter le crémant de Loire.",
       "Ajouter des glaçons, remuer délicatement et servir aussitôt, très frais.",
     ]);
 
-    const liquidIngredients = source!.ingredients.slice(0, 4);
+    const liquidIngredients = source!.translations.fr.ingredients.slice(0, 4);
     const fixedVolume = liquidIngredients
       .slice(0, 3)
       .reduce((total, ingredient) => total + Number(ingredient.quantity), 0);
@@ -89,7 +127,6 @@ describe("recipe yield localization", () => {
       author: "Fabrice",
       yieldLabel: "About 1 litre",
       prepTime: "5 min",
-      servings: null,
     });
     expect(
       seeded.translations.en.ingredients.map(({ name, quantity }) => ({
@@ -103,7 +140,9 @@ describe("recipe yield localization", () => {
       { name: "Canadou", quantity: "5 to 7" },
       { name: "ice cubes", quantity: "" },
     ]);
-    expect(seeded.translations.en.sections[0]?.steps).toEqual([
+    expect(
+      seeded.translations.en.sections[0]?.steps.map(({ text }) => text),
+    ).toEqual([
       "Chill all the ingredients in advance so they are very cold.",
       "In a punch bowl, combine the Cointreau, Pulco Citron and Canadou.",
       "At the last moment, add the Loire Valley Crémant.",
@@ -118,7 +157,7 @@ describe("recipe yield localization", () => {
     );
     expect(source).toBeDefined();
 
-    const seeded = toSeedRecipe(source!);
+    const seeded = source!;
     expect(seeded).toMatchObject({
       slug: "cookies-aux-pepites-de-chocolat-et-fleur-de-sel",
       heroImageUrl:
@@ -136,7 +175,6 @@ describe("recipe yield localization", () => {
       cookTime: "10 min",
       totalTime: "≈ 1 h",
       temperature: "180 °C",
-      servings: null,
     });
     expect(seeded.translations.en).toMatchObject({
       title: "Chocolate Chip Cookies with Fleur de Sel",
@@ -148,7 +186,6 @@ describe("recipe yield localization", () => {
       cookTime: "10 min",
       totalTime: "≈ 1 h",
       temperature: "180 °C",
-      servings: null,
     });
     expect(
       seeded.translations.en.ingredients.map(({ name, notes }) => ({
@@ -175,7 +212,9 @@ describe("recipe yield localization", () => {
       "Cooling",
     ]);
     expect(
-      seeded.translations.en.sections.flatMap(({ steps }) => steps),
+      seeded.translations.en.sections.flatMap(({ steps }) =>
+        steps.map(({ text }) => text),
+      ),
     ).toEqual([
       "In a bowl, combine the flour, baking soda, baking powder and salt.",
       "Melt the butter over medium heat, then pour it into a large bowl.",
@@ -199,13 +238,12 @@ describe("recipe yield localization", () => {
     );
     expect(source).toBeDefined();
 
-    const seeded = toSeedRecipe(source!);
+    const seeded = source!;
     expect(seeded.referenceServings).toBeUndefined();
     expect(seeded.translations.fr).toMatchObject({
       title: "Banana bread",
       author: "Mary McHale",
       yieldLabel: "1 cake",
-      servings: null,
       prepTime: "20 min",
       cookTime: "45 à 60 min",
       temperature: "175 °C",
@@ -257,7 +295,6 @@ describe("recipe yield localization", () => {
       title: "Banana Bread",
       author: "Mary McHale",
       yieldLabel: "1 loaf",
-      servings: null,
     });
     expect(
       seeded.translations.en.ingredients.map(
@@ -297,7 +334,9 @@ describe("recipe yield localization", () => {
       "Crunchy Pecan Topping (Optional)",
     ]);
     expect(
-      seeded.translations.en.sections.flatMap(({ steps }) => steps),
+      seeded.translations.en.sections.flatMap(({ steps }) =>
+        steps.map(({ text }) => text),
+      ),
     ).toEqual([
       "Preheat the oven to 175 °C.",
       "Beat the softened butter and sugar until light and fluffy.",
@@ -318,7 +357,7 @@ describe("recipe yield localization", () => {
     const source = recipes.find((recipe) => recipe.slug === "mayonnaise");
     expect(source).toBeDefined();
 
-    const seeded = toSeedRecipe(source!);
+    const seeded = source!;
     expect(seeded).toMatchObject({
       slug: "mayonnaise",
       heroImageUrl: "/images/recipes/mayonnaise.png",
@@ -334,7 +373,6 @@ describe("recipe yield localization", () => {
       prepTime: "5 min",
       cookTime: "",
       totalTime: "5 min",
-      servings: null,
     });
     expect(
       seeded.translations.fr.ingredients.map(
@@ -371,7 +409,6 @@ describe("recipe yield localization", () => {
       prepTime: "5 min",
       cookTime: "",
       totalTime: "5 min",
-      servings: null,
     });
     expect(
       seeded.translations.en.ingredients.map(
@@ -390,7 +427,9 @@ describe("recipe yield localization", () => {
       { name: "salt", quantity: "", unit: "", notes: "to taste" },
       { name: "pepper", quantity: "", unit: "", notes: "to taste" },
     ]);
-    expect(seeded.translations.en.sections[0]?.steps).toEqual([
+    expect(
+      seeded.translations.en.sections[0]?.steps.map(({ text }) => text),
+    ).toEqual([
       "Place the Dijon mustard and egg yolk in the blender bowl, then blend.",
       "Keep blending while gradually pouring in the sunflower oil in a thin stream, until the mayonnaise is well emulsified.",
       "Add a few drops of balsamic vinegar, then season with salt and pepper to taste. Blend once more until smooth.",
@@ -406,7 +445,7 @@ describe("recipe yield localization", () => {
     );
     expect(source).toBeDefined();
 
-    const seeded = toSeedRecipe(source!);
+    const seeded = source!;
     expect(seeded).toMatchObject({
       slug: "clafoutis-aux-abricots",
       categories: ["dessert", "sucre"],
@@ -420,7 +459,6 @@ describe("recipe yield localization", () => {
       cookTime: "35 à 40 min",
       temperature: "180 °C",
       equipment: ["1 plat à gratin ou 1 moule de 24 cm"],
-      servings: { quantity: 6, unit: "personnes" },
     });
     expect(seeded.translations.en).toMatchObject({
       title: "Apricot Clafoutis",
@@ -431,7 +469,6 @@ describe("recipe yield localization", () => {
       cookTime: "35 to 40 min",
       temperature: "180 °C",
       equipment: ["1 baking dish or 1 24 cm round pan"],
-      servings: { quantity: 6, unit: "people" },
     });
     expect(
       seeded.translations.en.ingredients.map(
@@ -476,7 +513,9 @@ describe("recipe yield localization", () => {
       },
     ]);
     expect(
-      seeded.translations.en.sections.flatMap(({ steps }) => steps),
+      seeded.translations.en.sections.flatMap(({ steps }) =>
+        steps.map(({ text }) => text),
+      ),
     ).toEqual([
       "Preheat the oven to 180 °C.",
       "Butter a baking dish or a pan about 24 cm in diameter.",
@@ -495,10 +534,11 @@ describe("recipe yield localization", () => {
     const source = recipes.find((recipe) => recipe.slug === "sauce-bolognaise");
     expect(source).toBeDefined();
 
-    const seeded = toSeedRecipe(source!);
+    const seeded = source!;
     expect(seeded).toMatchObject({
       slug: "sauce-bolognaise",
       heroImageUrl: "/images/recipes/sauce-bolognaise.png",
+      relatedRecipeSlugs: ["lasagnes"],
       categories: ["plat", "sale"],
       legacyCategoryLabels: [],
     });
@@ -509,7 +549,6 @@ describe("recipe yield localization", () => {
       cookTime: "40 min",
       temperature: "feu doux",
       equipment: ["1 poêle"],
-      servings: null,
     });
     expect(seeded.translations.en).toMatchObject({
       title: "Bolognese Sauce",
@@ -517,7 +556,6 @@ describe("recipe yield localization", () => {
       cookTime: "40 min",
       temperature: "low heat",
       equipment: ["1 frying pan"],
-      servings: null,
     });
     expect(
       seeded.translations.en.ingredients.map(
@@ -526,8 +564,8 @@ describe("recipe yield localization", () => {
     ).toEqual([
       { name: "ground beef", quantity: "500", unit: "g", notes: "" },
       { name: "ham", quantity: "2", unit: "slices", notes: "" },
-      { name: "canned tomatoes", quantity: "1", unit: "can", notes: "" },
-      { name: "tomato passata", quantity: "1", unit: "", notes: "" },
+      { name: "canned tomato pulp", quantity: "400", unit: "g", notes: "" },
+      { name: "tomato purée", quantity: "200", unit: "g", notes: "" },
       { name: "onion", quantity: "1", unit: "", notes: "" },
       { name: "garlic", quantity: "1", unit: "clove", notes: "" },
       { name: "parsley", quantity: "1", unit: "bunch", notes: "" },
@@ -536,14 +574,87 @@ describe("recipe yield localization", () => {
       { name: "salt", quantity: "", unit: "", notes: "to taste" },
       { name: "pepper", quantity: "", unit: "", notes: "to taste" },
     ]);
-    expect(seeded.translations.en.sections[0]?.steps).toEqual([
+    expect(
+      seeded.translations.en.sections[0]?.steps.map(({ text }) => text),
+    ).toEqual([
       "Peel the garlic and onion.",
-      "Heat a little oil in a frying pan. Add the onion, garlic and chopped parsley, then cook gently over low heat.",
+      "Heat a little oil in a frying pan. Add the onion, garlic and chopped parsley along with the carrot cut into very small dice, then cook gently over low heat.",
       "Add the ground beef and ham, then brown for about 10 minutes.",
-      "Add the canned tomatoes and tomato passata.",
+      "Add the tomato pulp and tomato purée.",
       "Season with salt and pepper, then add the Herbes de Provence.",
       "Simmer partially covered for about 30 minutes.",
     ]);
+    for (const locale of ["fr", "en"] as const) {
+      const steps = seeded.translations[locale].sections[0]!.steps;
+      expect(steps[3]!.ingredientUses).toEqual([
+        { ingredientId: "ingredient-main-2" },
+        { ingredientId: "ingredient-main-3" },
+      ]);
+      expect(steps[4]!.ingredientUses).toEqual([
+        { ingredientId: "ingredient-main-8" },
+        { ingredientId: "ingredient-main-9" },
+        { ingredientId: "ingredient-main-10" },
+      ]);
+    }
+    expect(seeded.translations.en.notes).toEqual([
+      "This sauce can notably be used to make lasagna.",
+    ]);
+  });
+
+  test("localizes Maman's classic and vegetarian lasagna recipes", () => {
+    const classic = recipes.find((recipe) => recipe.slug === "lasagnes");
+    const vegetarian = recipes.find(
+      (recipe) => recipe.slug === "lasagnes-vegetariennes",
+    );
+    expect(classic).toBeDefined();
+    expect(vegetarian).toBeDefined();
+
+    const seededClassic = classic!;
+    expect(seededClassic).toMatchObject({
+      slug: "lasagnes",
+      heroImageUrl: "/images/recipes/lasagnes.png",
+      relatedRecipeSlugs: ["sauce-bolognaise", "lasagnes-vegetariennes"],
+      categories: ["plat", "sale"],
+    });
+    expect(seededClassic.translations.en).toMatchObject({
+      title: "Lasagna",
+      description:
+        "Family-style lasagna with Bolognese sauce, béchamel and grated cheeses.",
+      yieldLabel: "1 dish",
+      cookTime: "30 min",
+      temperature: "200 °C",
+      equipment: ["1 baking dish"],
+    });
+    expect(
+      seededClassic.translations.en.ingredients.map(({ name }) => name),
+    ).toEqual([
+      "béchamel",
+      "Bolognese sauce",
+      "lasagna sheets",
+      "grated Gruyère",
+      "grated parmesan",
+    ]);
+
+    const seededVegetarian = vegetarian!;
+    expect(seededVegetarian).toMatchObject({
+      slug: "lasagnes-vegetariennes",
+      heroImageUrl: "/images/recipes/lasagnes-vegetariennes.png",
+      relatedRecipeSlugs: ["lasagnes"],
+      categories: ["plat", "sale"],
+    });
+    expect(seededVegetarian.translations.en).toMatchObject({
+      title: "Vegetarian Lasagna",
+      description:
+        "Vegetarian lasagna with ratatouille, béchamel and grated cheeses.",
+      yieldLabel: "1 dish",
+    });
+    expect(
+      seededVegetarian.translations.en.sections[0]?.steps.map(
+        ({ text }) => text,
+      ),
+    ).toContain(
+      "Use a ratatouille that is not too liquid so the lasagna holds together well.",
+    );
   });
 
   test("localizes Maman's lentil salad for four people", () => {
@@ -552,7 +663,7 @@ describe("recipe yield localization", () => {
     );
     expect(source).toBeDefined();
 
-    const seeded = toSeedRecipe(source!);
+    const seeded = source!;
     expect(seeded).toMatchObject({
       slug: "salade-de-lentilles",
       heroImageUrl: "/images/recipes/salade-de-lentilles.png",
@@ -567,7 +678,6 @@ describe("recipe yield localization", () => {
       prepTime: "5 min",
       cookTime: "20 min",
       totalTime: "25 min",
-      servings: { quantity: 4, unit: "personnes" },
     });
     expect(seeded.translations.en).toMatchObject({
       title: "Lentil Salad",
@@ -576,7 +686,6 @@ describe("recipe yield localization", () => {
         "Green lentil salad with cherry tomatoes, feta, red onion and parsley, dressed with a lemon vinaigrette.",
       yieldLabel: "4 people",
       equipment: ["1 saucepan", "1 small bowl", "1 salad bowl"],
-      servings: { quantity: 4, unit: "people" },
     });
     expect(
       seeded.translations.en.ingredients.map(
@@ -620,7 +729,9 @@ describe("recipe yield localization", () => {
       { name: "salt", quantity: "", unit: "", notes: "to taste" },
       { name: "pepper", quantity: "", unit: "", notes: "to taste" },
     ]);
-    expect(seeded.translations.en.sections[0]?.steps).toEqual([
+    expect(
+      seeded.translations.en.sections[0]?.steps.map(({ text }) => text),
+    ).toEqual([
       "Cook the lentils according to the package directions. Drain, rinse and leave to cool.",
       "Meanwhile, make the vinaigrette: in a small bowl, whisk the juice and zest of half a lemon with the olive oil, garlic, oregano, salt and pepper. Set aside.",
       "Cut the cherry tomatoes into very small pieces. In a salad bowl, combine them with the lentils, parsley, red onion and feta. Add the vinaigrette and toss gently.",
@@ -636,7 +747,7 @@ describe("recipe yield localization", () => {
     const source = recipes.find((recipe) => recipe.slug === "brownies");
     expect(source).toBeDefined();
 
-    const seeded = toSeedRecipe(source!);
+    const seeded = source!;
     expect(seeded).toMatchObject({
       slug: "brownies",
       categories: ["dessert", "sucre"],
@@ -653,7 +764,6 @@ describe("recipe yield localization", () => {
         "1 moule rectangulaire de 25 × 18 cm ou 1 moule carré équivalent",
         "papier sulfurisé",
       ],
-      servings: null,
     });
     expect(seeded.translations.en).toMatchObject({
       title: "Brownies",
@@ -667,7 +777,6 @@ describe("recipe yield localization", () => {
         "1 rectangular 25 × 18 cm baking pan or equivalent square pan",
         "parchment paper",
       ],
-      servings: null,
     });
     expect(
       seeded.translations.en.ingredients.map(
@@ -684,7 +793,9 @@ describe("recipe yield localization", () => {
       { name: "walnuts", quantity: "60", unit: "g", notes: "" },
     ]);
     expect(
-      seeded.translations.en.sections.flatMap(({ steps }) => steps),
+      seeded.translations.en.sections.flatMap(({ steps }) =>
+        steps.map(({ text }) => text),
+      ),
     ).toEqual([
       "Preheat the oven to 180 °C and line the baking pan with parchment paper.",
       "Melt the dark chocolate with the butter.",
@@ -704,7 +815,7 @@ describe("recipe yield localization", () => {
     );
     expect(source).toBeDefined();
 
-    const seeded = toSeedRecipe(source!);
+    const seeded = source!;
     expect(seeded).toMatchObject({
       slug: "papillotes-de-cabillaud",
       categories: ["plat", "sale"],
@@ -716,13 +827,7 @@ describe("recipe yield localization", () => {
       author: "Maman",
       cookTime: "30 min",
       temperature: "180 °C",
-      equipment: [
-        "papier sulfurisé",
-        "agrafeuse",
-        "saucier SEB",
-        "fourchette",
-      ],
-      servings: null,
+      equipment: ["papier sulfurisé", "agrafeuse", "saucier SEB", "fourchette"],
     });
     expect(seeded.translations.fr.ingredients[1]?.unit).toBe("c. à café");
     expect(seeded.translations.fr.ingredients[7]?.unit).toBe("c. à café");
@@ -733,13 +838,7 @@ describe("recipe yield localization", () => {
         "Oven-baked cod parcels served with Polish-style butter sauce.",
       cookTime: "30 min",
       temperature: "180 °C",
-      equipment: [
-        "parchment paper",
-        "stapler",
-        "SEB sauce maker",
-        "fork",
-      ],
-      servings: null,
+      equipment: ["parchment paper", "stapler", "SEB sauce maker", "fork"],
     });
     expect(
       seeded.translations.en.ingredients.map(
@@ -778,7 +877,9 @@ describe("recipe yield localization", () => {
       },
     ]);
     expect(
-      seeded.translations.en.sections.flatMap(({ steps }) => steps),
+      seeded.translations.en.sections.flatMap(({ steps }) =>
+        steps.map(({ text }) => text),
+      ),
     ).toEqual([
       "Preheat the oven to 180 °C.",
       "Place the cod on parchment paper. Add 1 tsp lemon juice and 1 tsp olive oil, then season with salt, pepper and parsley or cilantro.",
@@ -799,7 +900,7 @@ describe("recipe yield localization", () => {
     const source = recipes.find((recipe) => recipe.slug === "pain-de-poisson");
     expect(source).toBeDefined();
 
-    const seeded = toSeedRecipe(source!);
+    const seeded = source!;
     expect(seeded.relatedRecipeSlugs).toEqual(["mayonnaise"]);
     expect(seeded.translations.fr).toMatchObject({
       restTime: "Jusqu’à complet refroidissement",
@@ -812,12 +913,10 @@ describe("recipe yield localization", () => {
   });
 
   test("localizes Maman's pasta carbonara for two people", () => {
-    const source = recipes.find(
-      (recipe) => recipe.slug === "pates-carbonara",
-    );
+    const source = recipes.find((recipe) => recipe.slug === "pates-carbonara");
     expect(source).toBeDefined();
 
-    const seeded = toSeedRecipe(source!);
+    const seeded = source!;
     expect(seeded).toMatchObject({
       slug: "pates-carbonara",
       heroImageUrl: "/images/recipes/pates-carbonara.png",
@@ -831,20 +930,13 @@ describe("recipe yield localization", () => {
       prepTime: "5 min",
       cookTime: "15 min",
       totalTime: "20 min",
-      servings: { quantity: 2, unit: "personnes" },
     });
     expect(seeded.translations.en).toMatchObject({
       title: "Pasta Carbonara",
       author: "Antoine",
       description:
         "Family-style pasta carbonara with whole eggs, parmesan and smoked bacon, loosened with a little pasta cooking water if needed.",
-      equipment: [
-        "1 large saucepan",
-        "1 frying pan",
-        "1 bowl",
-        "1 glass",
-      ],
-      servings: { quantity: 2, unit: "people" },
+      equipment: ["1 large saucepan", "1 frying pan", "1 bowl", "1 glass"],
     });
     expect(
       seeded.translations.en.ingredients.map(
@@ -880,7 +972,9 @@ describe("recipe yield localization", () => {
       { name: "pepper", quantity: "", unit: "", notes: "to taste" },
     ]);
     expect(
-      seeded.translations.en.sections.flatMap(({ steps }) => steps),
+      seeded.translations.en.sections.flatMap(({ steps }) =>
+        steps.map(({ text }) => text),
+      ),
     ).toEqual([
       "Cook the pasta in a large saucepan of salted boiling water according to the package directions.",
       "Meanwhile, brown the smoked bacon lardons in a frying pan.",
@@ -897,11 +991,10 @@ describe("recipe yield localization", () => {
     );
     expect(source).toBeDefined();
 
-    const seeded = toSeedRecipe(source!);
+    const seeded = source!;
     expect(seeded).toMatchObject({
       slug: "cake-aux-tomates-sechees-et-a-la-feta",
-      heroImageUrl:
-        "/images/recipes/cake-aux-tomates-sechees-et-a-la-feta.png",
+      heroImageUrl: "/images/recipes/cake-aux-tomates-sechees-et-a-la-feta.png",
       categories: ["sale"],
       legacyCategoryLabels: [],
       referenceServings: 6,
@@ -914,7 +1007,6 @@ describe("recipe yield localization", () => {
       totalTime: "55 min",
       temperature: "180 °C",
       equipment: ["1 saladier", "1 moule à cake"],
-      servings: { quantity: 6, unit: "personnes" },
     });
     expect(seeded.translations.en).toMatchObject({
       title: "Sun-Dried Tomato and Feta Loaf",
@@ -922,7 +1014,6 @@ describe("recipe yield localization", () => {
       description:
         "Moist savory loaf with sun-dried tomatoes, feta, basil and Gruyère.",
       equipment: ["1 salad bowl", "1 loaf pan"],
-      servings: { quantity: 6, unit: "people" },
     });
     expect(seeded.translations.en.ingredients[1]).toMatchObject({
       name: "oil",
