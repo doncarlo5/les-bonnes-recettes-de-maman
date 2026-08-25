@@ -343,6 +343,32 @@ describe("recipe working drafts", () => {
     await expect(
       t.query(api.recipes.getBySlug, { locale: "fr", slug: "mayonnaise" }),
     ).resolves.toMatchObject({ title: "Mayonnaise", author: "Louis" });
+    const stored = await t.run((ctx) =>
+      ctx.db
+        .query("recipes")
+        .withIndex("by_slug", (q) => q.eq("slug", "mayonnaise"))
+        .unique(),
+    );
+    expect(stored).toMatchObject({
+      status: "published",
+      tags: ["sale"],
+      translations: {
+        fr: {
+          servings: null,
+          sections: [
+            {
+              steps: expect.any(Array),
+              stepDetails: expect.any(Array),
+            },
+          ],
+        },
+      },
+    });
+    expect(stored?.translations.fr.sections[0]?.steps).toEqual(
+      stored?.translations.fr.sections[0]?.stepDetails?.map(
+        (step) => step.text,
+      ),
+    );
     await expect(
       t.query(api.recipes.getBySlug, { locale: "fr", slug: "amandin" }),
     ).resolves.toBeNull();
