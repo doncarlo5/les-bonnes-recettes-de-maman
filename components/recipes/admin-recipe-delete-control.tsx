@@ -20,25 +20,33 @@ export function DeleteRecipeControl({
   recipe,
   isPending,
   onDelete,
+  variant = "button",
+  open,
+  onOpenChange,
 }: {
   recipe: EditableRecipe;
   isPending: boolean;
   onDelete: () => void;
+  variant?: "button" | "hidden";
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }) {
   return (
-    <AlertDialog>
-      <AlertDialogTrigger
-        render={
-          <Button
-            type="button"
-            variant="outline"
-            disabled={isPending}
-            className="min-h-11 rounded-xl border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive"
-          />
-        }
-      >
-        <Trash2 /> Supprimer la recette
-      </AlertDialogTrigger>
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      {variant === "button" ? (
+        <AlertDialogTrigger
+          render={
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isPending}
+              className="min-h-11 rounded-xl border-destructive/30 text-destructive hover:bg-destructive/10 hover:text-destructive"
+            />
+          }
+        >
+          <Trash2 /> Supprimer la recette
+        </AlertDialogTrigger>
+      ) : null}
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Supprimer « {recipe.title} » ?</AlertDialogTitle>

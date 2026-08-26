@@ -583,6 +583,8 @@ export const discardDraft = mutation({
       revision,
       publishedRevision: revision,
       savedAt,
+      heroImageUrl: recipe.heroImageUrl,
+      imageCredit: recipe.imageCredit,
       draft: {
         defaultLocale: recipe.defaultLocale,
         referenceServings: getReferenceServings(recipe),

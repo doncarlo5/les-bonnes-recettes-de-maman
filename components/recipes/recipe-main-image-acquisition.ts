@@ -20,12 +20,14 @@ export type RecipeImageRevisionSession = {
   run(
     operation: (expectedRevision: number) => Promise<RecipeImageMutation>,
   ): Promise<RecipeImageMutation | null>;
+  waitForIdle(): Promise<void>;
 };
 
 export function createRecipeImageRevisionSession({
   getExpectedRevision,
   acceptSnapshot,
   registerConflict,
+  setPending = () => {},
 }: {
   getExpectedRevision: () => number;
   acceptSnapshot: (snapshot: RecipeImageMutation) => void;
@@ -33,7 +35,11 @@ export function createRecipeImageRevisionSession({
     latestRevision: number | undefined,
     retry: (expectedRevision: number) => Promise<void>,
   ) => void;
+  setPending?: (pending: boolean) => void;
 }): RecipeImageRevisionSession {
+  let operationsInFlight = 0;
+  let idleWaiters: Array<() => void> = [];
+
   async function execute(
     operation: (expectedRevision: number) => Promise<RecipeImageMutation>,
     expectedRevision: number,
@@ -59,7 +65,25 @@ export function createRecipeImageRevisionSession({
   }
 
   return {
-    run: (operation) => execute(operation, getExpectedRevision()),
+    async run(operation) {
+      operationsInFlight += 1;
+      if (operationsInFlight === 1) setPending(true);
+      try {
+        return await execute(operation, getExpectedRevision());
+      } finally {
+        operationsInFlight -= 1;
+        if (operationsInFlight === 0) {
+          setPending(false);
+          const waiters = idleWaiters;
+          idleWaiters = [];
+          for (const resolve of waiters) resolve();
+        }
+      }
+    },
+    waitForIdle: () =>
+      operationsInFlight === 0
+        ? Promise.resolve()
+        : new Promise<void>((resolve) => idleWaiters.push(resolve)),
   };
 }
 
@@ -207,11 +231,15 @@ export class RecipeMainImageAcquisition {
     this.revisionSession = revisionSession;
     if (recipe?.slug === this.recipe?.slug) {
       this.recipe = recipe;
-      if (!this.state.preview.url && recipe?.heroImageUrl) {
+      if (
+        this.state.status.type !== "loading" &&
+        (this.state.preview.url !== (recipe?.heroImageUrl ?? "") ||
+          this.state.preview.credit !== recipe?.imageCredit)
+      ) {
         this.patchState({
           preview: {
-            url: recipe.heroImageUrl,
-            credit: recipe.imageCredit,
+            url: recipe?.heroImageUrl ?? "",
+            credit: recipe?.imageCredit,
           },
         });
       }

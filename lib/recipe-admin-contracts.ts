@@ -174,6 +174,8 @@ export const saveRecipeSuccessSchema = z.strictObject({
 
 export const discardRecipeSuccessSchema = revisionMutationSuccessSchema.extend({
   draft: compatibleRecipeDraftSchema,
+  heroImageUrl: z.string(),
+  imageCredit: recipeImageCreditSchema.optional(),
 });
 
 export const uploadUrlSuccessSchema = z.strictObject({

@@ -1,10 +1,11 @@
 import { describe, expect, test, vi } from "vitest";
 import {
-  RecipeDraftSyncSession,
-  type RecipeDraftSyncEnvironment,
-  type RecipeDraftSyncTransport,
+  createFetchRecipeEditingTransport,
+  RecipeEditingSession,
+  type RecipeEditingEnvironment,
+  type RecipeEditingTransport,
   type SaveRecipeState,
-} from "./recipe-draft-sync-session";
+} from "./recipe-editing-session";
 import { RecipeImageConflictError } from "./recipe-main-image-acquisition";
 import type { RecipeDraftPayload } from "./recipe-form-schema";
 
@@ -76,8 +77,8 @@ function success(
 }
 
 function transport(
-  overrides: Partial<RecipeDraftSyncTransport> = {},
-): RecipeDraftSyncTransport {
+  overrides: Partial<RecipeEditingTransport> = {},
+): RecipeEditingTransport {
   return {
     save: vi.fn().mockResolvedValue(success(4)),
     deleteRecipe: vi.fn().mockResolvedValue({
@@ -96,7 +97,7 @@ function transport(
   };
 }
 
-type TestEnvironment = RecipeDraftSyncEnvironment & {
+type TestEnvironment = RecipeEditingEnvironment & {
   entries: Map<string, string>;
   setOnline(value: boolean): void;
   leave(): void;
@@ -152,8 +153,8 @@ function session({
   mode = "update" as const,
   slug = "tarte-au-citron",
 }: {
-  adapter?: RecipeDraftSyncTransport;
-  browser?: RecipeDraftSyncEnvironment;
+    adapter?: RecipeEditingTransport;
+    browser?: RecipeEditingEnvironment;
   initialDraft?: RecipeDraftPayload;
   revision?: number;
   publishedRevision?: number;
@@ -161,7 +162,7 @@ function session({
   mode?: "create" | "update";
   slug?: string;
 } = {}) {
-  return new RecipeDraftSyncSession({
+  return new RecipeEditingSession({
     transport: adapter,
     environment: browser,
     context: {
@@ -185,7 +186,7 @@ function deferred<T>() {
   return { promise, resolve };
 }
 
-describe("RecipeDraftSyncSession", () => {
+describe("RecipeEditingSession", () => {
   test("publishes only after the latest private save has completed", async () => {
     const adapter = transport({
       save: vi.fn().mockResolvedValue(success(4)),
@@ -212,6 +213,40 @@ describe("RecipeDraftSyncSession", () => {
       revision: 4,
       publishedRevision: 4,
       isPublic: true,
+    });
+  });
+
+  test("waits for an in-flight image revision before publishing", async () => {
+    const imageResponse = deferred<{
+      revision: number;
+      heroImageUrl: string;
+    }>();
+    const adapter = transport({
+      save: vi.fn().mockResolvedValue(success(5)),
+      publish: vi.fn().mockResolvedValue({
+        ...success(5),
+        data: { ...success(5).data, publishedRevision: 5 },
+      }),
+    });
+    const sync = session({ adapter });
+    const imageChange = sync.imageRevisionSession.run(
+      () => imageResponse.promise,
+    );
+
+    const publication = sync.publish(draft());
+    await Promise.resolve();
+    expect(adapter.publish).not.toHaveBeenCalled();
+    expect(sync.getSnapshot().isPending).toBe(true);
+
+    imageResponse.resolve({ revision: 4, heroImageUrl: "/hero.jpg" });
+    await expect(imageChange).resolves.toMatchObject({ revision: 4 });
+    await expect(publication).resolves.toBe(true);
+    expect(adapter.save).toHaveBeenCalledWith(
+      expect.objectContaining({ expectedRevision: 4 }),
+    );
+    expect(adapter.publish).toHaveBeenCalledWith({
+      slug: "tarte-au-citron",
+      expectedRevision: 5,
     });
   });
 
@@ -519,6 +554,54 @@ describe("RecipeDraftSyncSession", () => {
     disconnect();
   });
 
+  test("flushes a valid dirty draft with keepalive when leaving", async () => {
+    const browser = environment();
+    const adapter = transport();
+    const sync = session({ browser, adapter });
+    const disconnect = sync.connect();
+    sync.observeDraft(draft("Version à sauvegarder avant de partir"));
+
+    browser.leave();
+
+    await vi.waitFor(() => expect(adapter.save).toHaveBeenCalledOnce());
+    expect(adapter.save).toHaveBeenCalledWith(
+      expect.objectContaining({ keepalive: true }),
+    );
+    disconnect();
+  });
+
+  test("returns the restored published image when discarding changes", async () => {
+    const restored = draft("Version publiée");
+    const adapter = transport({
+      discard: vi.fn().mockResolvedValue({
+        ok: true,
+        status: 200,
+        data: {
+          type: "success",
+          message: "Restaurée",
+          slug: "tarte-au-citron",
+          revision: 7,
+          publishedRevision: 7,
+          draft: restored,
+          heroImageUrl: "/published.jpg",
+        },
+      }),
+    });
+    const sync = session({ adapter, revision: 6, publishedRevision: 3 });
+
+    await expect(sync.discard()).resolves.toBe(true);
+
+    expect(sync.getSnapshot()).toMatchObject({
+      revision: 7,
+      publishedRevision: 7,
+      restoredImage: {
+        slug: "tarte-au-citron",
+        revision: 7,
+        heroImageUrl: "/published.jpg",
+      },
+    });
+  });
+
   test("keeps registering image retries across consecutive conflicts", async () => {
     const adapter = transport({
       save: vi
@@ -675,4 +758,27 @@ describe("RecipeDraftSyncSession", () => {
       expectedRevision: 1,
     });
   });
+});
+
+test("the browser transport keeps leave saves alive without changing the API body", async () => {
+  const fetcher = vi.fn().mockResolvedValue(
+    new Response(JSON.stringify(success(4).data), { status: 200 }),
+  );
+  const adapter = createFetchRecipeEditingTransport(
+    fetcher as unknown as typeof fetch,
+  );
+
+  await adapter.save({
+    locale: "fr",
+    mode: "update",
+    slug: "tarte-au-citron",
+    recipePayload: JSON.stringify(draft()),
+    expectedRevision: 3,
+    force: false,
+    keepalive: true,
+  });
+
+  const init = fetcher.mock.calls[0][1] as RequestInit;
+  expect(init.keepalive).toBe(true);
+  expect(JSON.parse(String(init.body))).not.toHaveProperty("keepalive");
 });

@@ -199,7 +199,7 @@ export function AdminRecipeIdeas({
               <p className="whitespace-pre-wrap text-sm font-semibold text-foreground/85">{idea.text}</p>
               <footer className="mt-auto flex flex-wrap items-center gap-2 border-t border-border pt-3">
                 {idea.linkedRecipe ? (
-                  <Link href={`/${locale}/admin/recettes?slug=${idea.linkedRecipe.slug}&section=info`} className={buttonVariants({ size: "sm", variant: "outline" })}>
+                  <Link href={`/${locale}/admin/recettes?slug=${idea.linkedRecipe.slug}`} className={buttonVariants({ size: "sm", variant: "outline" })}>
                     <NotebookPen /> {labels.adminLinkedDraft}
                   </Link>
                 ) : idea.state === "outstanding" ? (

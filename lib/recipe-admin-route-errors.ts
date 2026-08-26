@@ -73,7 +73,7 @@ export function recipeMutationErrorResponse(error: unknown, fallback: string) {
     return Response.json(
       mutationErrorSchema.parse({
         type: "conflict",
-        message: "Ce brouillon a été modifié ailleurs.",
+        message: "Cette recette a été modifiée ailleurs.",
         latestRevision: Number.isFinite(latestRevision)
           ? latestRevision
           : undefined,
@@ -88,7 +88,7 @@ export function recipeMutationErrorResponse(error: unknown, fallback: string) {
     return Response.json(
       mutationErrorSchema.parse({
         type: "error",
-        message: "Le brouillon dépasse les limites autorisées.",
+        message: "La recette dépasse les limites autorisées.",
       }),
       { status: 400 },
     );

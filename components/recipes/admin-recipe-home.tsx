@@ -41,10 +41,15 @@ export function AdminRecipeHome({
   onSelect: (slug: string) => void;
 }) {
   const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState<"all" | "draft" | "published">("all");
+  const [filter, setFilter] = useState<"all" | "incomplete" | "visible">(
+    "all",
+  );
   const normalizedQuery = query.trim().toLocaleLowerCase(locale);
   const visibleRecipes = recipes.filter((recipe) => {
-    const matchesFilter = filter === "all" || recipe.status === filter;
+    const matchesFilter =
+      filter === "all" ||
+      (filter === "incomplete" && recipe.readiness.blockers.length > 0) ||
+      (filter === "visible" && recipe.isPublic);
     const haystack =
       `${recipe.title} ${recipe.slug} ${recipe.categories.join(" ")}`.toLocaleLowerCase(
         locale,
@@ -104,7 +109,7 @@ export function AdminRecipeHome({
             className="mt-2 grid w-full grid-cols-3"
             aria-label="Filtrer les recettes"
           >
-            {(["all", "draft", "published"] as const).map((value) => (
+            {(["all", "incomplete", "visible"] as const).map((value) => (
               <ToggleGroupItem
                 key={value}
                 value={value}
@@ -112,16 +117,16 @@ export function AdminRecipeHome({
                 aria-label={
                   value === "all"
                     ? "Toutes"
-                    : value === "draft"
+                    : value === "incomplete"
                       ? "À compléter"
-                      : "Publiées"
+                      : "Visibles"
                 }
               >
                 {value === "all"
                   ? "Toutes"
-                  : value === "draft"
+                  : value === "incomplete"
                     ? "À compléter"
-                    : "Publiées"}
+                    : "Visibles"}
               </ToggleGroupItem>
             ))}
           </ToggleGroup>

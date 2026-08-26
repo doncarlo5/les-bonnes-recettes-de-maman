@@ -16,13 +16,13 @@ import type {
 import type { Id } from "@/convex/_generated/dataModel";
 import type { Locale } from "@/i18n/config";
 import {
-  createBrowserRecipeDraftSyncEnvironment,
-  createFetchRecipeDraftSyncTransport,
-  RecipeDraftSyncSession,
+  createBrowserRecipeEditingEnvironment,
+  createFetchRecipeEditingTransport,
+  RecipeEditingSession,
   type RecipeFormMode,
   type SaveRecipeState,
   type SyncState,
-} from "./recipe-draft-sync-session";
+} from "./recipe-editing-session";
 import { toFormValues } from "./recipe-draft-form-values";
 import type {
   RecipeDraftFormInput,
@@ -33,6 +33,7 @@ import {
   partitionRecipeServerErrors,
 } from "./recipe-form-schema";
 import type { EditableRecipe } from "./types";
+import type { RecipeImageMutation } from "./recipe-main-image-acquisition";
 
 export type { RecipeFormMode, SaveRecipeState, SyncState };
 export { cloneRecipe, toFormValues } from "./recipe-draft-form-values";
@@ -53,6 +54,9 @@ type LifecycleOptions = {
   onFieldError: (field: string) => void;
   onCreated: (slug: string) => void;
   onDeleted: () => void;
+  onRestoredImage: (
+    image: RecipeImageMutation & { slug: string },
+  ) => void;
 };
 
 export function useRecipeDraftLifecycle({
@@ -71,12 +75,13 @@ export function useRecipeDraftLifecycle({
   onFieldError,
   onCreated,
   onDeleted,
+  onRestoredImage,
 }: LifecycleOptions) {
   const [session] = useState(
     () =>
-      new RecipeDraftSyncSession({
-        transport: createFetchRecipeDraftSyncTransport(),
-        environment: createBrowserRecipeDraftSyncEnvironment(),
+      new RecipeEditingSession({
+        transport: createFetchRecipeEditingTransport(),
+        environment: createBrowserRecipeEditingEnvironment(),
         context: { locale, mode, selectedSlug, sourceIdeaId },
         initialDraft: initialRecipe
           ? toFormValues(initialRecipe)
@@ -210,6 +215,13 @@ export function useRecipeDraftLifecycle({
     return session.publish(payload, snapshot.syncState === "conflict");
   }, [getValues, session, snapshot.syncState, validateDraft]);
 
+  const revertToPublished = useCallback(async () => {
+    const reverted = await session.discard();
+    const restoredImage = session.getSnapshot().restoredImage;
+    if (reverted && restoredImage) onRestoredImage(restoredImage);
+    return reverted;
+  }, [onRestoredImage, session]);
+
   return {
     state: snapshot.state,
     isPending: snapshot.isPending,
@@ -220,7 +232,7 @@ export function useRecipeDraftLifecycle({
     isPublic: snapshot.isPublic,
     saveCurrentDraft,
     publishCurrentDraft,
-    revertToPublished: session.discard,
+    revertToPublished,
     setVisibility: session.setVisibility,
     imageRevisionSession: session.imageRevisionSession,
     deleteRecipe: session.deleteRecipe,

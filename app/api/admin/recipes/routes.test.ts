@@ -474,6 +474,7 @@ describe("recipe admin route contracts", () => {
       revision: 5,
       publishedRevision: 5,
       savedAt: 2345,
+      heroImageUrl: "/published.jpg",
       draft: payload,
     });
     const response = await discardRecipe(
@@ -483,6 +484,7 @@ describe("recipe admin route contracts", () => {
     expect(await response.json()).toMatchObject({
       revision: 5,
       publishedRevision: 5,
+      heroImageUrl: "/published.jpg",
       draft: { translations: { fr: { title: "Tarte mobile" } } },
     });
   });
