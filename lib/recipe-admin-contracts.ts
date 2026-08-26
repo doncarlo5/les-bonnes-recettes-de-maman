@@ -25,7 +25,10 @@ export const revisionedRecipeRequestSchema = z.strictObject({
   expectedRevision: revision,
 });
 
-export const unpublishRecipeRequestSchema = z.strictObject({ slug });
+export const recipeVisibilityRequestSchema = z.strictObject({
+  slug,
+  visible: z.boolean(),
+});
 
 export const saveRecipeRequestSchema = z
   .strictObject({
@@ -155,6 +158,10 @@ export const revisionMutationSuccessSchema = slugMutationSuccessSchema.extend({
   savedAt: z.number(),
 });
 
+export const visibilityMutationSuccessSchema = slugMutationSuccessSchema.extend({
+  isPublic: z.boolean(),
+});
+
 export const saveRecipeSuccessSchema = z.strictObject({
   type: z.literal("success"),
   message: z.string(),
@@ -167,6 +174,8 @@ export const saveRecipeSuccessSchema = z.strictObject({
 
 export const discardRecipeSuccessSchema = revisionMutationSuccessSchema.extend({
   draft: compatibleRecipeDraftSchema,
+  heroImageUrl: z.string(),
+  imageCredit: recipeImageCreditSchema.optional(),
 });
 
 export const uploadUrlSuccessSchema = z.strictObject({

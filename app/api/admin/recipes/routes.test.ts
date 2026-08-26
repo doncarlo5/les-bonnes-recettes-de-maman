@@ -50,7 +50,7 @@ import { POST as setHeroImage } from "./hero-image/route";
 import { POST as setUnsplashImage } from "./unsplash-hero-image/route";
 import { POST as setOpenverseImage } from "./openverse-hero-image/route";
 import { POST as publishRecipe } from "./publish/route";
-import { POST as unpublishRecipe } from "./unpublish/route";
+import { POST as setRecipeVisibility } from "./visibility/route";
 import { DELETE as deleteRecipe } from "./delete/route";
 import { POST as cleanupImage } from "./cleanup-image/route";
 import { POST as accessAdmin } from "./access/route";
@@ -127,7 +127,7 @@ describe("recipe admin route contracts", () => {
       setOpenverseImage(malformedRequest() as never),
       cleanupImage(malformedRequest() as never),
       publishRecipe(malformedRequest() as never),
-      unpublishRecipe(malformedRequest() as never),
+      setRecipeVisibility(malformedRequest() as never),
       deleteRecipe(malformedRequest() as never),
       accessAdmin(malformedRequest() as never),
       createIdea(malformedRequest() as never),
@@ -174,7 +174,7 @@ describe("recipe admin route contracts", () => {
       expect.objectContaining({
         slug: "tarte-mobile",
         expectedRevision: 3,
-        publishIfReady: true,
+        preserveStepIngredientUses: { fr: true, en: true },
       }),
     );
   });
@@ -474,6 +474,7 @@ describe("recipe admin route contracts", () => {
       revision: 5,
       publishedRevision: 5,
       savedAt: 2345,
+      heroImageUrl: "/published.jpg",
       draft: payload,
     });
     const response = await discardRecipe(
@@ -483,6 +484,7 @@ describe("recipe admin route contracts", () => {
     expect(await response.json()).toMatchObject({
       revision: 5,
       publishedRevision: 5,
+      heroImageUrl: "/published.jpg",
       draft: { translations: { fr: { title: "Tarte mobile" } } },
     });
   });
@@ -516,14 +518,15 @@ describe("recipe admin route contracts", () => {
     ).toBe(400);
   });
 
-  test("unpublish has an explicit success contract", async () => {
-    fetchMutation.mockResolvedValue({ slug: "tarte-mobile" });
-    const response = await unpublishRecipe(
-      request({ slug: "tarte-mobile" }) as never,
+  test("visibility has an explicit success contract", async () => {
+    fetchMutation.mockResolvedValue({ slug: "tarte-mobile", isPublic: false });
+    const response = await setRecipeVisibility(
+      request({ slug: "tarte-mobile", visible: false }) as never,
     );
     expect(await response.json()).toEqual({
       type: "success",
       slug: "tarte-mobile",
+      isPublic: false,
     });
   });
 

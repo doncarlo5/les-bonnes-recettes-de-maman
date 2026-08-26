@@ -2,6 +2,7 @@ import type { Id } from "@/convex/_generated/dataModel";
 import type { Locale } from "@/i18n/config";
 import { compatibleRecipeDraftSchema } from "./recipe-form-schema";
 import type { RecipeDraftPayload } from "./recipe-form-schema";
+import type { Recipe } from "./types";
 import {
   createRecipeImageRevisionSession,
   type RecipeImageRevisionSession,
@@ -19,6 +20,8 @@ export type SaveRecipeState = {
   fieldErrors?: Record<string, string>;
   formError?: string;
   draft?: RecipeDraftPayload;
+  heroImageUrl?: string;
+  imageCredit?: Recipe["imageCredit"];
 };
 
 export type SyncState =
@@ -31,20 +34,27 @@ export type SyncState =
 
 export type RecipeFormMode = "create" | "update";
 
-export type RecipeDraftSyncSnapshot = {
+export type RecipeEditingSnapshot = {
   state: SaveRecipeState;
   formResult?: SaveRecipeState;
   isPending: boolean;
   syncState: SyncState;
   revision: number;
+  publishedRevision: number;
   isPublic: boolean;
   hasUnsavedChanges: boolean;
   recoveredDraft?: RecipeDraftPayload;
+  restoredImage?: {
+    slug: string;
+    revision: number;
+    heroImageUrl: string;
+    imageCredit?: Recipe["imageCredit"];
+  };
   createdSlug?: string;
   deleted: boolean;
 };
 
-export type RecipeDraftSyncTransport = {
+export type RecipeEditingTransport = {
   save(input: {
     locale: Locale;
     mode: RecipeFormMode;
@@ -53,14 +63,30 @@ export type RecipeDraftSyncTransport = {
     expectedRevision: number;
     sourceIdeaId?: Id<"recipeIdeas">;
     force: boolean;
+    keepalive?: boolean;
   }): Promise<{ ok: boolean; status: number; data: SaveRecipeState }>;
   deleteRecipe(input: {
     slug: string;
     expectedRevision: number;
   }): Promise<{ ok: boolean; status: number; data: SaveRecipeState }>;
+  publish(input: { slug: string; expectedRevision: number }): Promise<{
+    ok: boolean;
+    status: number;
+    data: SaveRecipeState;
+  }>;
+  discard(input: { slug: string; expectedRevision: number }): Promise<{
+    ok: boolean;
+    status: number;
+    data: SaveRecipeState;
+  }>;
+  setVisibility(input: { slug: string; visible: boolean }): Promise<{
+    ok: boolean;
+    status: number;
+    data: SaveRecipeState;
+  }>;
 };
 
-export type RecipeDraftSyncEnvironment = {
+export type RecipeEditingEnvironment = {
   isOnline(): boolean;
   getItem(key: string): string | null;
   setItem(key: string, value: string): void;
@@ -70,7 +96,7 @@ export type RecipeDraftSyncEnvironment = {
   reload(): void;
 };
 
-type RecipeDraftSyncContext = {
+type RecipeEditingContext = {
   locale: Locale;
   mode: RecipeFormMode;
   selectedSlug: string;
@@ -80,6 +106,7 @@ type RecipeDraftSyncContext = {
 type SelectedRecipeSnapshot = {
   slug: string;
   revision: number;
+  publishedRevision: number;
   isPublic: boolean;
   draft: RecipeDraftPayload;
 };
@@ -87,17 +114,18 @@ type SelectedRecipeSnapshot = {
 type QueuedSave = {
   payload: RecipeDraftPayload;
   force: boolean;
+  keepalive: boolean;
   waiters: Array<(saved: boolean) => void>;
 };
 
 const initialState: SaveRecipeState = {
   type: "idle",
-  message: "Choisis une recette ou cree un brouillon.",
+  message: "Choisis une recette ou crée-en une nouvelle.",
 };
 
-export class RecipeDraftSyncSession {
+export class RecipeEditingSession {
   private readonly listeners = new Set<() => void>();
-  private context: RecipeDraftSyncContext;
+  private context: RecipeEditingContext;
   private currentDraft: RecipeDraftPayload;
   private lastSavedFingerprint: string;
   private loadedRecipeSlug: string;
@@ -107,10 +135,11 @@ export class RecipeDraftSyncSession {
   private saveIdleWaiters: Array<() => void> = [];
   private conflictRetry: ((revision: number) => Promise<void>) | null = null;
   private destructiveOperationPending = false;
+  private imageOperationPending = false;
   private disconnectEnvironment: (() => void) | null = null;
   private selectedRecipe?: SelectedRecipeSnapshot;
   private contextGeneration = 0;
-  private snapshot: RecipeDraftSyncSnapshot;
+  private snapshot: RecipeEditingSnapshot;
 
   readonly imageRevisionSession: RecipeImageRevisionSession;
 
@@ -120,15 +149,17 @@ export class RecipeDraftSyncSession {
     context,
     initialDraft,
     initialRevision,
+    initialPublishedRevision,
     initialIsPublic,
     loadedRecipeSlug,
     selectedRecipe,
   }: {
-    transport: RecipeDraftSyncTransport;
-    environment: RecipeDraftSyncEnvironment;
-    context: RecipeDraftSyncContext;
+    transport: RecipeEditingTransport;
+    environment: RecipeEditingEnvironment;
+    context: RecipeEditingContext;
     initialDraft: RecipeDraftPayload;
     initialRevision: number;
+    initialPublishedRevision: number;
     initialIsPublic: boolean;
     loadedRecipeSlug: string;
     selectedRecipe?: SelectedRecipeSnapshot;
@@ -145,6 +176,7 @@ export class RecipeDraftSyncSession {
       isPending: false,
       syncState: "idle",
       revision: initialRevision,
+      publishedRevision: initialPublishedRevision,
       isPublic: initialIsPublic,
       hasUnsavedChanges: false,
       deleted: false,
@@ -154,12 +186,16 @@ export class RecipeDraftSyncSession {
       acceptSnapshot: (image) => this.acceptImageRevision(image.revision),
       registerConflict: (latestRevision, retry) =>
         this.registerConflict(latestRevision, retry),
+      setPending: (pending) => {
+        this.imageOperationPending = pending;
+        this.refreshPendingState();
+      },
     });
     this.refreshUnsavedState();
   }
 
-  private readonly transport: RecipeDraftSyncTransport;
-  private readonly environment: RecipeDraftSyncEnvironment;
+  private readonly transport: RecipeEditingTransport;
+  private readonly environment: RecipeEditingEnvironment;
 
   getSnapshot = () => this.snapshot;
 
@@ -179,6 +215,7 @@ export class RecipeDraftSyncSession {
     });
     const unsubscribeLeaving = this.environment.subscribeLeaving(() => {
       this.persistCurrentDraft();
+      this.flushCurrentDraftBeforeLeaving();
     });
     this.disconnectEnvironment = () => {
       unsubscribeOnline();
@@ -192,7 +229,7 @@ export class RecipeDraftSyncSession {
     context,
     selectedRecipe,
   }: {
-    context: RecipeDraftSyncContext;
+    context: RecipeEditingContext;
     selectedRecipe?: SelectedRecipeSnapshot;
   }) {
     const slugChanged = context.selectedSlug !== this.context.selectedSlug;
@@ -206,6 +243,7 @@ export class RecipeDraftSyncSession {
       this.patchSnapshot({
         state: initialState,
         recoveredDraft: undefined,
+        restoredImage: undefined,
         createdSlug: undefined,
         deleted: false,
         formResult: undefined,
@@ -220,6 +258,7 @@ export class RecipeDraftSyncSession {
           this.lastSavedFingerprint = draftFingerprint(this.currentDraft);
           this.patchSnapshot({
             revision: 0,
+            publishedRevision: -1,
             isPublic: false,
             hasUnsavedChanges: false,
           });
@@ -229,6 +268,7 @@ export class RecipeDraftSyncSession {
         this.lastSavedFingerprint = draftFingerprint(this.currentDraft);
         this.patchSnapshot({
           revision: 0,
+          publishedRevision: -1,
           isPublic: false,
           hasUnsavedChanges: false,
         });
@@ -243,21 +283,27 @@ export class RecipeDraftSyncSession {
     this.refreshUnsavedState();
   }
 
-  async save(payload: RecipeDraftPayload, force = false): Promise<boolean> {
+  async save(
+    payload: RecipeDraftPayload,
+    force = false,
+    keepalive = false,
+  ): Promise<boolean> {
     if (this.destructiveOperationPending) return false;
     if (this.saveInFlight) {
       return new Promise<boolean>((resolve) => {
         if (this.queuedSave) {
           this.queuedSave.payload = payload;
           this.queuedSave.force ||= force;
+          this.queuedSave.keepalive ||= keepalive;
           this.queuedSave.waiters.push(resolve);
         } else {
-          this.queuedSave = { payload, force, waiters: [resolve] };
+          this.queuedSave = { payload, force, keepalive, waiters: [resolve] };
         }
       });
     }
 
     const normalized = normalizePayload(payload);
+    this.currentDraft = normalized;
     const fingerprint = draftFingerprint(normalized);
     if (!force && fingerprint === this.lastSavedFingerprint) return true;
 
@@ -292,12 +338,13 @@ export class RecipeDraftSyncSession {
             ? operationContext.sourceIdeaId
             : undefined,
         force,
+        keepalive,
       });
       if (operationGeneration !== this.contextGeneration) return false;
       const data = response.data;
       this.patchSnapshot({ state: data, formResult: data });
       if (response.status === 409 || data.type === "conflict") {
-        this.conflictRetry = null;
+        this.registerPublicationRetry();
         this.patchSnapshot({ syncState: "conflict" });
         return false;
       }
@@ -321,6 +368,8 @@ export class RecipeDraftSyncSession {
       this.environment.removeItem(pendingImageKey(data.slug));
       this.patchSnapshot({
         revision: nextRevision,
+        publishedRevision:
+          data.publishedRevision ?? this.snapshot.publishedRevision,
         isPublic:
           typeof data.isPublic === "boolean"
             ? data.isPublic
@@ -350,16 +399,21 @@ export class RecipeDraftSyncSession {
       });
     } finally {
       this.saveInFlight = false;
-      this.patchSnapshot({ isPending: false });
+      this.refreshPendingState();
       const queued = this.queuedSave;
       this.queuedSave = null;
       if (queued && !this.destructiveOperationPending) {
-        const queuedSaved = await this.save(queued.payload, queued.force);
+        const queuedSaved = await this.save(
+          queued.payload,
+          queued.force,
+          queued.keepalive,
+        );
         saved = saved && queuedSaved;
         for (const resolve of queued.waiters) resolve(queuedSaved);
       } else if (queued) {
         for (const resolve of queued.waiters) resolve(false);
       }
+      this.refreshPendingState();
       this.resolveIdleWaiters();
     }
     return saved;
@@ -376,6 +430,159 @@ export class RecipeDraftSyncSession {
     this.patchSnapshot({ syncState: "error" });
   }
 
+  async publish(payload: RecipeDraftPayload, force = false): Promise<boolean> {
+    if (!this.context.selectedSlug || this.destructiveOperationPending) {
+      return false;
+    }
+    if (!this.environment.isOnline()) {
+      this.persistCurrentDraft();
+      this.patchSnapshot({
+        state: {
+          type: "error",
+          message: "Reconnecte-toi, puis confirme à nouveau la publication.",
+        },
+        syncState: "offline",
+      });
+      return false;
+    }
+
+    this.currentDraft = payload;
+    await this.imageRevisionSession.waitForIdle();
+    if (!this.environment.isOnline()) return false;
+    const saved = await this.save(this.currentDraft, force);
+    if (!saved || !this.environment.isOnline()) return false;
+    const wasNeverPublished = this.snapshot.publishedRevision < 0;
+    const operationGeneration = this.contextGeneration;
+    this.patchSnapshot({ isPending: true });
+    try {
+      const response = await this.transport.publish({
+        slug: this.context.selectedSlug,
+        expectedRevision: this.snapshot.revision,
+      });
+      if (operationGeneration !== this.contextGeneration) return false;
+      const data = response.data;
+      this.patchSnapshot({ state: data, formResult: data });
+      if (!response.ok || data.type !== "success") {
+        if (response.status === 409 || data.type === "conflict") {
+          this.registerPublicationRetry();
+        }
+        this.patchSnapshot({
+          syncState: response.status === 409 ? "conflict" : "error",
+        });
+        return false;
+      }
+      const publishedRevision =
+        data.publishedRevision ?? data.revision ?? this.snapshot.revision;
+      this.environment.removeItem(pendingImageKey(this.context.selectedSlug));
+      this.patchSnapshot({
+        revision: data.revision ?? this.snapshot.revision,
+        publishedRevision,
+        isPublic: wasNeverPublished ? true : this.snapshot.isPublic,
+        syncState: "saved",
+      });
+      return true;
+    } catch {
+      if (operationGeneration !== this.contextGeneration) return false;
+      this.patchSnapshot({
+        state: {
+          type: "error",
+          message: "Impossible de publier les modifications.",
+        },
+        syncState: this.environment.isOnline() ? "error" : "offline",
+      });
+      return false;
+    } finally {
+      this.refreshPendingState();
+    }
+  }
+
+  discard = async (): Promise<boolean> => {
+    if (!this.context.selectedSlug || this.destructiveOperationPending) {
+      return false;
+    }
+    this.destructiveOperationPending = true;
+    this.patchSnapshot({ isPending: true });
+    try {
+      this.cancelQueuedSave();
+      await this.waitForSaveIdle();
+      await this.imageRevisionSession.waitForIdle();
+      const response = await this.transport.discard({
+        slug: this.context.selectedSlug,
+        expectedRevision: this.snapshot.revision,
+      });
+      const data = response.data;
+      this.patchSnapshot({ state: data, formResult: data });
+      if (!response.ok || data.type !== "success" || !data.draft) {
+        this.patchSnapshot({
+          syncState: response.status === 409 ? "conflict" : "error",
+        });
+        return false;
+      }
+      this.currentDraft = data.draft;
+      this.lastSavedFingerprint = draftFingerprint(data.draft);
+      this.environment.removeItem(recoveryKey(this.context.selectedSlug));
+      this.environment.removeItem(pendingImageKey(this.context.selectedSlug));
+      const revision = data.revision ?? this.snapshot.revision;
+      this.patchSnapshot({
+        recoveredDraft: data.draft,
+        restoredImage: {
+          slug: this.context.selectedSlug,
+          revision,
+          heroImageUrl: data.heroImageUrl ?? "",
+          imageCredit: data.imageCredit,
+        },
+        revision,
+        publishedRevision: data.publishedRevision ?? revision,
+        hasUnsavedChanges: false,
+        syncState: "saved",
+      });
+      return true;
+    } catch {
+      this.patchSnapshot({
+        state: {
+          type: "error",
+          message: "Impossible de revenir à la version publiée.",
+        },
+        syncState: "error",
+      });
+      return false;
+    } finally {
+      this.destructiveOperationPending = false;
+      this.refreshPendingState();
+    }
+  };
+
+  setVisibility = async (visible: boolean): Promise<boolean> => {
+    if (!this.context.selectedSlug || this.destructiveOperationPending) {
+      return false;
+    }
+    this.patchSnapshot({ isPending: true });
+    try {
+      const response = await this.transport.setVisibility({
+        slug: this.context.selectedSlug,
+        visible,
+      });
+      this.patchSnapshot({ state: response.data, formResult: response.data });
+      if (!response.ok || response.data.type !== "success") {
+        this.patchSnapshot({ syncState: "error" });
+        return false;
+      }
+      this.patchSnapshot({ isPublic: visible, syncState: "saved" });
+      return true;
+    } catch {
+      this.patchSnapshot({
+        state: {
+          type: "error",
+          message: "Impossible de modifier la visibilité.",
+        },
+        syncState: "error",
+      });
+      return false;
+    } finally {
+      this.refreshPendingState();
+    }
+  };
+
   deleteRecipe = async (): Promise<boolean> => {
     if (!this.context.selectedSlug || this.destructiveOperationPending) {
       return false;
@@ -386,6 +593,7 @@ export class RecipeDraftSyncSession {
     try {
       this.cancelQueuedSave();
       await this.waitForSaveIdle();
+      await this.imageRevisionSession.waitForIdle();
       if (operationGeneration !== this.contextGeneration) return false;
       const expectedRevision = this.snapshot.revision;
       this.patchSnapshot({ isPending: true });
@@ -417,7 +625,7 @@ export class RecipeDraftSyncSession {
       return false;
     } finally {
       this.destructiveOperationPending = false;
-      this.patchSnapshot({ isPending: false });
+      this.refreshPendingState();
     }
   };
 
@@ -456,6 +664,7 @@ export class RecipeDraftSyncSession {
       this.patchSnapshot({
         recoveredDraft: recipe.draft,
         revision: recipe.revision,
+        publishedRevision: recipe.publishedRevision,
         isPublic: recipe.isPublic,
       });
     }
@@ -527,11 +736,17 @@ export class RecipeDraftSyncSession {
     this.patchSnapshot({
       state: {
         type: "conflict",
-        message: "Ce brouillon a été modifié ailleurs.",
+        message: "Cette recette a été modifiée ailleurs.",
         latestRevision,
       },
       syncState: "conflict",
     });
+  }
+
+  private registerPublicationRetry() {
+    this.conflictRetry = async () => {
+      await this.publish(this.currentDraft);
+    };
   }
 
   private persistCurrentDraft() {
@@ -544,6 +759,16 @@ export class RecipeDraftSyncSession {
       this.currentDraft,
       this.snapshot.revision,
     );
+  }
+
+  private flushCurrentDraftBeforeLeaving() {
+    if (!this.context.selectedSlug || !this.environment.isOnline()) return;
+    if (draftFingerprint(this.currentDraft) === this.lastSavedFingerprint) {
+      return;
+    }
+    const parsed = compatibleRecipeDraftSchema.safeParse(this.currentDraft);
+    if (!parsed.success) return;
+    void this.save(parsed.data, false, true);
   }
 
   private persistRecovery(
@@ -585,21 +810,33 @@ export class RecipeDraftSyncSession {
     for (const resolve of waiters) resolve();
   }
 
-  private patchSnapshot(patch: Partial<RecipeDraftSyncSnapshot>) {
+  private refreshPendingState() {
+    const isPending =
+      this.saveInFlight ||
+      this.destructiveOperationPending ||
+      this.imageOperationPending;
+    if (isPending !== this.snapshot.isPending) {
+      this.patchSnapshot({ isPending });
+    }
+  }
+
+  private patchSnapshot(patch: Partial<RecipeEditingSnapshot>) {
     this.snapshot = { ...this.snapshot, ...patch };
     for (const listener of this.listeners) listener();
   }
 }
 
-export function createFetchRecipeDraftSyncTransport(
+export function createFetchRecipeEditingTransport(
   fetcher: typeof fetch = fetch,
-): RecipeDraftSyncTransport {
+): RecipeEditingTransport {
   return {
     async save(input) {
+      const { keepalive, ...requestBody } = input;
       const response = await fetcher("/api/admin/recipes/save", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(input),
+        body: JSON.stringify(requestBody),
+        keepalive,
       });
       return {
         ok: response.ok,
@@ -619,10 +856,46 @@ export function createFetchRecipeDraftSyncTransport(
         data: (await response.json()) as SaveRecipeState,
       };
     },
+    async publish(input) {
+      const response = await fetcher("/api/admin/recipes/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+      });
+      return {
+        ok: response.ok,
+        status: response.status,
+        data: (await response.json()) as SaveRecipeState,
+      };
+    },
+    async discard(input) {
+      const response = await fetcher("/api/admin/recipes/discard-draft", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+      });
+      return {
+        ok: response.ok,
+        status: response.status,
+        data: (await response.json()) as SaveRecipeState,
+      };
+    },
+    async setVisibility(input) {
+      const response = await fetcher("/api/admin/recipes/visibility", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+      });
+      return {
+        ok: response.ok,
+        status: response.status,
+        data: (await response.json()) as SaveRecipeState,
+      };
+    },
   };
 }
 
-export function createBrowserRecipeDraftSyncEnvironment(): RecipeDraftSyncEnvironment {
+export function createBrowserRecipeEditingEnvironment(): RecipeEditingEnvironment {
   return {
     isOnline: () =>
       typeof navigator === "undefined" || navigator.onLine,

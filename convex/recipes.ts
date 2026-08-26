@@ -407,7 +407,6 @@ export const saveDraft = mutation({
     recipe: draftContentValidator,
     expectedRevision: v.number(),
     force: v.optional(v.boolean()),
-    publishIfReady: v.optional(v.boolean()),
     preserveStepIngredientUses: v.optional(v.union(
       v.boolean(),
       v.object({ fr: v.boolean(), en: v.boolean() }),
@@ -500,24 +499,13 @@ export const saveDraft = mutation({
 
     const savedDraft = await ctx.db.get(draftId);
     if (!savedDraft) throw new Error("RECIPE_DRAFT_NOT_FOUND");
-    let publishedRevision = savedDraft.publishedRevision;
-    let isPublic = existing.status === "published";
-    if (
-      args.publishIfReady &&
-      await canAutoPublishDraft(ctx, savedDraft, existing.slug)
-    ) {
-      await publishDraftSnapshot(ctx, existing, savedDraft, savedAt);
-      publishedRevision = revision;
-      isPublic = true;
-    }
-
     return {
       recipeId: existing._id,
       slug: existing.slug,
       title: args.recipe.translations[args.recipe.defaultLocale].title,
       revision,
-      publishedRevision,
-      isPublic,
+      publishedRevision: savedDraft.publishedRevision,
+      isPublic: existing.status === "published",
       savedAt,
     };
   },
@@ -595,6 +583,8 @@ export const discardDraft = mutation({
       revision,
       publishedRevision: revision,
       savedAt,
+      heroImageUrl: recipe.heroImageUrl,
+      imageCredit: recipe.imageCredit,
       draft: {
         defaultLocale: recipe.defaultLocale,
         referenceServings: getReferenceServings(recipe),
@@ -606,16 +596,28 @@ export const discardDraft = mutation({
   },
 });
 
-export const unpublish = mutation({
-  args: { slug: v.string(), adminPassword: v.string() },
+export const setVisibility = mutation({
+  args: {
+    slug: v.string(),
+    visible: v.boolean(),
+    adminPassword: v.string(),
+  },
   handler: async (ctx, args) => {
     assertRecipeAdminPassword(args.adminPassword);
     const recipe = await getRecipeBySlug(ctx, args.slug);
-    await ensureRecipeDraft(ctx, recipe);
-    assertStoredRecipeBytes({ ...recipe, status: "draft" });
-    await ctx.db.patch(recipe._id, { status: "draft" });
-    await reopenLinkedIdea(ctx, recipe._id);
-    return { slug: recipe.slug };
+    const draft = await ensureRecipeDraft(ctx, recipe);
+    if (args.visible && draft.publishedRevision < 0) {
+      throw new Error("RECIPE_HAS_NO_PUBLISHED_VERSION");
+    }
+    const status = args.visible ? "published" : "draft";
+    assertStoredRecipeBytes({ ...recipe, status });
+    await ctx.db.patch(recipe._id, { status });
+    if (args.visible) {
+      await completeLinkedIdea(ctx, recipe._id);
+    } else {
+      await reopenLinkedIdea(ctx, recipe._id);
+    }
+    return { slug: recipe.slug, isPublic: args.visible };
   },
 });
 
@@ -1450,19 +1452,6 @@ function isDraftReadyForPublication(draft: RecipeDraftDoc, slug: string) {
   ).blockers.length === 0;
 }
 
-async function canAutoPublishDraft(
-  ctx: MutationCtx,
-  draft: RecipeDraftDoc,
-  recipeSlug: string,
-) {
-  if (!isDraftReadyForPublication(draft, recipeSlug)) return false;
-  const relatedRecipeSlugs = normalizeRelatedRecipeSlugs(
-    draft.relatedRecipeSlugs ?? [],
-  );
-  if (relatedRecipeSlugs.includes(recipeSlug)) return false;
-  return relatedRecipesArePublished(ctx, relatedRecipeSlugs);
-}
-
 async function publishDraftSnapshot(
   ctx: MutationCtx,
   recipe: RecipeDoc,
@@ -1485,7 +1474,7 @@ async function publishDraftSnapshot(
     relatedRecipeSlugs,
     translations: draft.translations,
     ...toStoredCategoryFields(resolveRecipeCategories(draft)),
-    status: "published",
+    status: draft.publishedRevision < 0 ? "published" : recipe.status,
   } as const;
   assertStoredRecipeBytes({ ...recipe, ...publishedPatch });
   await ctx.db.patch(recipe._id, publishedPatch);
@@ -1503,7 +1492,9 @@ async function publishDraftSnapshot(
     recipe.heroImageStorageId,
     draft.heroImageStorageId,
   );
-  await completeLinkedIdea(ctx, recipe._id);
+  if (draft.publishedRevision < 0 || recipe.status === "published") {
+    await completeLinkedIdea(ctx, recipe._id);
+  }
 }
 
 function assertRecipeBounds(recipe: RecipeDraftContentLike) {
@@ -1590,13 +1581,6 @@ async function assertRelatedRecipesPublishable(
   if (invalidSlug) {
     throw new Error(`RECIPE_RELATED_RECIPE_NOT_FOUND:${invalidSlug}`);
   }
-}
-
-async function relatedRecipesArePublished(
-  ctx: MutationCtx,
-  relatedSlugs: readonly string[],
-) {
-  return (await firstUnavailableRelatedRecipe(ctx, relatedSlugs)) === null;
 }
 
 async function firstUnavailableRelatedRecipe(

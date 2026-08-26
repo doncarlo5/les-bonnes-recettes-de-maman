@@ -112,7 +112,7 @@ export const editableRecipeDraftSchema = editableRecipeDraftObject.superRefine(
     } catch {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Le brouillon dépasse la taille maximale autorisée.",
+        message: "La recette dépasse la taille maximale autorisée.",
         path: [],
       });
     }

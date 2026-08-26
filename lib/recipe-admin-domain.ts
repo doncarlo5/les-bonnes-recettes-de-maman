@@ -197,6 +197,14 @@ export function getRecipeReadiness(
       "fr",
       "translations.fr.sections.0.title",
     ),
+    readinessItem(
+      !translationEn,
+      "en-translation",
+      "Complète le titre, la description et les ingrédients en anglais.",
+      "translation",
+      "en",
+      "translations.en.title",
+    ),
   ].filter((item): item is ReadinessItem => item !== null);
 
   const warnings = [
@@ -207,14 +215,6 @@ export function getRecipeReadiness(
       "info",
       "fr",
       "heroImageUrl",
-    ),
-    readinessWarning(
-      !translationEn,
-      "en-translation",
-      "La traduction anglaise est encore incomplète.",
-      "translation",
-      "en",
-      "translations.en.title",
     ),
   ].filter((item): item is ReadinessItem => item !== null);
 

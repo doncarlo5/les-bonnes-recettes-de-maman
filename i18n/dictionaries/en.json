@@ -15,7 +15,7 @@
     "title": "What would you like to add?",
     "description": "Start a complete recipe or simply save an idea for later.",
     "fullTitle": "Write the full recipe",
-    "fullDescription": "Open a private draft in the admin workspace.",
+    "fullDescription": "Start a private recipe in the admin workspace.",
     "ideaTitle": "Leave an idea",
     "ideaDescription": "Save a craving, memory, or link in a few seconds."
   },
@@ -62,7 +62,7 @@
     "commentPlural": "{count} comments",
     "reset": "Reset",
     "addRecipeTitle": "Add a recipe",
-    "addRecipeDescription": "Create a new draft",
+    "addRecipeDescription": "Create a new recipe",
     "noResultsTitle": "No recipes found",
     "noResultsDescription": "Try another search or remove a filter to bring more recipes back."
   },
@@ -108,7 +108,7 @@
     "adminDescription": "Turn a quick idea into a recipe, or remove it from the shared notebook.",
     "adminQuickAdd": "Add a quick idea",
     "adminCreateRecipe": "Create recipe",
-    "adminLinkedDraft": "Draft in progress",
+    "adminLinkedDraft": "Recipe to complete",
     "adminLoadError": "Ideas could not be loaded.",
     "adminDeleteError": "This idea could not be deleted.",
     "adminEmpty": "No ideas in this section.",
@@ -181,7 +181,7 @@
       "reactionError": "This reaction could not be saved. Please try again.",
       "adminEyebrow": "Moderation",
       "adminTitle": "Recipe comments",
-      "adminDescription": "These contributions are public and independent from the editorial draft.",
+      "adminDescription": "These contributions are public and independent from private changes.",
       "adminEmpty": "No comments for this recipe.",
       "adminLoadError": "Comments could not be loaded.",
       "adminDeleteError": "This comment could not be deleted."

@@ -35,6 +35,7 @@ const openversePhoto = {
 function revisionSession(revision = 4): RecipeImageRevisionSession {
   return {
     run: async (operation) => operation(revision),
+    waitForIdle: () => Promise.resolve(),
   };
 }
 
@@ -66,6 +67,21 @@ function transport(
 }
 
 describe("RecipeMainImageAcquisition", () => {
+  test("refreshes the preview when the same recipe is restored", () => {
+    const acquisition = new RecipeMainImageAcquisition(
+      transport(),
+      recipe,
+      revisionSession(),
+    );
+
+    acquisition.updateContext(
+      { ...recipe, heroImageUrl: "/published.jpg" },
+      revisionSession(7),
+    );
+
+    expect(acquisition.getSnapshot().preview.url).toBe("/published.jpg");
+  });
+
   test("normalizes both providers while preserving a partial search failure", async () => {
     const adapter = transport({
       searchUnsplash: vi.fn().mockResolvedValue([
@@ -265,7 +281,7 @@ describe("createFetchRecipeMainImageTransport", () => {
       new Response(
         JSON.stringify({
           type: "conflict",
-          message: "Ce brouillon a été modifié ailleurs.",
+          message: "Cette recette a été modifiée ailleurs.",
           latestRevision: 12,
         }),
         { status: 409 },
@@ -288,7 +304,7 @@ describe("createFetchRecipeMainImageTransport", () => {
         },
         expectedRevision: 11,
       }),
-    ).rejects.toMatchObject<Partial<RecipeImageConflictError>>({
+    ).rejects.toMatchObject({
       name: "RecipeImageConflictError",
       latestRevision: 12,
     });

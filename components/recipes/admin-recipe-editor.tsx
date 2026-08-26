@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -18,10 +17,7 @@ import {
   type UseFormRegister,
   type UseFormReturn,
 } from "react-hook-form";
-import {
-  getRecipeReadiness,
-  type RecipeReadiness,
-} from "@/lib/recipe-admin-domain";
+import { getRecipeReadiness } from "@/lib/recipe-admin-domain";
 import {
   MAX_REFERENCE_SERVINGS,
   MIN_REFERENCE_SERVINGS,
@@ -30,24 +26,17 @@ import {
   ArrowLeft,
   ArrowDown,
   ArrowUp,
-  BookOpen,
-  Camera,
   Check,
-  ChevronRight,
   CirclePlus,
-  Clock3,
   Cloud,
   CloudOff,
   Eye,
   ExternalLink,
-  House,
-  Languages,
-  ListChecks,
   ListPlus,
   MessageSquare,
+  MoreHorizontal,
   NotebookPen,
   RefreshCw,
-  Save,
   Search,
   Trash2,
   TriangleAlert,
@@ -107,6 +96,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
@@ -171,6 +167,8 @@ type MobileSection =
   | "notes"
   | "comments"
   | "translation";
+type EditorGroup = "essential" | "recipe" | "complements";
+type OpenEditorGroups = Record<EditorGroup, boolean>;
 
 type LocaleKey = "fr" | "en";
 type RecipeFormContext = Record<string, never>;
@@ -298,15 +296,21 @@ export function AdminRecipeEditor({
   const [mode, setMode] = useState<RecipeFormMode>(
     startInCreateMode ? "create" : "update",
   );
+  const [openGroups, setOpenGroups] = useState<OpenEditorGroups>({
+    essential: true,
+    recipe: true,
+    complements: false,
+  });
   const baseSelectedRecipe =
     initialRecipeProp?.slug === selectedSlug ? initialRecipeProp : null;
   const [imageMutation, setImageMutation] = useState<
-    (RecipeImageMutation & { slug: string }) | null
+    (RecipeImageMutation & { slug: string; authoritative?: boolean }) | null
   >(null);
   const selectedRecipe =
     baseSelectedRecipe &&
     imageMutation?.slug === baseSelectedRecipe.slug &&
-    imageMutation.revision > baseSelectedRecipe.revision
+    (imageMutation.authoritative ||
+      imageMutation.revision > baseSelectedRecipe.revision)
       ? {
           ...baseSelectedRecipe,
           heroImageUrl: imageMutation.heroImageUrl,
@@ -330,11 +334,8 @@ export function AdminRecipeEditor({
 
   const { getValues, reset } = form;
   const watchedValues = useWatch({ control: form.control });
-  const rawMobileSection = searchParams.get("section");
-  const mobileSection =
-    rawMobileSection === null && selectedSlug
-      ? "info"
-      : normalizeMobileSection(rawMobileSection);
+  const mobileSection: MobileSection =
+    searchParams.get("section") === "comments" ? "comments" : "info";
   const focusField = searchParams.get("field");
   const isPreview = searchParams.get("mode") === "preview";
 
@@ -351,6 +352,14 @@ export function AdminRecipeEditor({
       setMode("update");
     });
   }, [searchParams, selectedSlug]);
+
+  useEffect(() => {
+    const section = searchParams.get("section");
+    if (!section || section === "comments") return;
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("section");
+    router.replace(`/${locale}/admin/recettes?${params.toString()}`);
+  }, [locale, router, searchParams]);
 
   const defaultLocale = useWatch({
     control: form.control,
@@ -371,11 +380,16 @@ export function AdminRecipeEditor({
 
   const revealFieldError = useCallback(
     (field: string) => {
+      const section = sectionForField(field);
+      setOpenGroups((current) => ({
+        ...current,
+        [groupForSection(section)]: true,
+      }));
       const params = new URLSearchParams(searchParams.toString());
       params.delete("new");
       params.delete("mode");
       if (selectedSlug) params.set("slug", selectedSlug);
-      params.set("section", sectionForField(field));
+      params.delete("section");
       params.set("field", field);
       const fieldLocale = field.split(".")[1];
       params.set("lang", fieldLocale === "en" ? "en" : "fr");
@@ -403,7 +417,7 @@ export function AdminRecipeEditor({
     (slug: string) => {
       setMode("update");
       setSelectedSlug(slug);
-      router.replace(`/${locale}/admin/recettes?slug=${slug}&section=info`);
+      router.replace(`/${locale}/admin/recettes?slug=${slug}`);
     },
     [locale, router],
   );
@@ -420,8 +434,12 @@ export function AdminRecipeEditor({
     syncState,
     hasUnsavedChanges,
     revision,
+    publishedRevision,
     isPublic,
     saveCurrentDraft,
+    publishCurrentDraft,
+    revertToPublished,
+    setVisibility,
     imageRevisionSession: draftImageRevisionSession,
     deleteRecipe,
     replaceConflict,
@@ -443,6 +461,8 @@ export function AdminRecipeEditor({
     onFieldError: revealFieldError,
     onCreated: handleCreated,
     onDeleted: handleDeleted,
+    onRestoredImage: (image) =>
+      setImageMutation({ ...image, authoritative: true }),
   });
   const imageRevisionSession = useMemo<RecipeImageRevisionSession>(
     () => ({
@@ -452,6 +472,7 @@ export function AdminRecipeEditor({
           setImageMutation({ ...mutation, slug: selectedSlug });
           return mutation;
         }),
+      waitForIdle: () => draftImageRevisionSession.waitForIdle(),
     }),
     [draftImageRevisionSession, selectedSlug],
   );
@@ -472,23 +493,15 @@ export function AdminRecipeEditor({
     return () => window.cancelAnimationFrame(frame);
   }, [focusField, mobileSection]);
 
-  function selectRecipe(slug: string) {
+  async function selectRecipe(slug: string) {
     if (!slug) return;
-    if (
-      hasUnsavedChanges &&
-      !window.confirm("Quitter cette recette sans enregistrer les modifications ?")
-    )
-      return;
-    router.push(`/${locale}/admin/recettes?slug=${slug}&section=info`);
+    if (hasUnsavedChanges) await saveCurrentDraft();
+    router.push(`/${locale}/admin/recettes?slug=${slug}`);
     window.scrollTo({ top: 0, behavior: "auto" });
   }
 
-  function showMobileHome() {
-    if (
-      hasUnsavedChanges &&
-      !window.confirm("Retourner au carnet sans enregistrer les modifications ?")
-    )
-      return;
+  async function showMobileHome() {
+    if (hasUnsavedChanges) await saveCurrentDraft();
     setSelectedSlug("");
     setMode("update");
     resetSyncState();
@@ -498,11 +511,18 @@ export function AdminRecipeEditor({
 
   function openMobileSection(section: MobileSection) {
     if (!selectedSlug) return;
+    if (section !== "comments") {
+      setOpenGroups((current) => ({
+        ...current,
+        [groupForSection(section)]: true,
+      }));
+    }
     const params = new URLSearchParams(searchParams.toString());
     params.delete("new");
     params.delete("mode");
     params.set("slug", selectedSlug);
-    params.set("section", section);
+    if (section === "comments") params.set("section", "comments");
+    else params.delete("section");
     params.set("lang", requestedLanguage);
     router.push(`/${locale}/admin/recettes?${params.toString()}`);
     window.scrollTo({ top: 0, behavior: "auto" });
@@ -543,8 +563,12 @@ export function AdminRecipeEditor({
   ) {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("mode");
-    params.set("section", section);
+    params.delete("section");
     params.set("lang", requestedLanguage);
+    setOpenGroups((current) => ({
+      ...current,
+      [groupForSection(section)]: true,
+    }));
     router.push(`/${locale}/admin/recettes?${params.toString()}`);
   }
 
@@ -581,9 +605,11 @@ export function AdminRecipeEditor({
           selectedSlug={selectedSlug}
           mode={mode}
           section={mobileSection}
+          openGroups={openGroups}
           syncState={syncState}
           hasUnsavedChanges={hasUnsavedChanges}
           revision={revision}
+          publishedRevision={publishedRevision}
           isPublic={isPublic}
           isPending={isPending}
           state={state}
@@ -598,7 +624,13 @@ export function AdminRecipeEditor({
           onHome={showMobileHome}
           onSelect={selectRecipe}
           onOpenSection={openMobileSection}
+          onToggleGroup={(group, open) =>
+            setOpenGroups((current) => ({ ...current, [group]: open }))
+          }
           onSave={() => saveCurrentDraft(syncState === "conflict")}
+          onPublish={publishCurrentDraft}
+          onRevert={revertToPublished}
+          onVisibility={setVisibility}
           onDelete={deleteRecipe}
           imageRevisionSession={imageRevisionSession}
           onReplaceConflict={replaceConflict}
@@ -617,9 +649,11 @@ function MobileRecipeAdmin({
   selectedSlug,
   mode,
   section,
+  openGroups,
   syncState,
   hasUnsavedChanges,
   revision,
+  publishedRevision,
   isPublic,
   isPending,
   state,
@@ -634,7 +668,11 @@ function MobileRecipeAdmin({
   onHome,
   onSelect,
   onOpenSection,
+  onToggleGroup,
   onSave,
+  onPublish,
+  onRevert,
+  onVisibility,
   onDelete,
   imageRevisionSession,
   onReplaceConflict,
@@ -647,9 +685,11 @@ function MobileRecipeAdmin({
   selectedSlug: string;
   mode: RecipeFormMode;
   section: MobileSection;
+  openGroups: OpenEditorGroups;
   syncState: SyncState;
   hasUnsavedChanges: boolean;
   revision: number;
+  publishedRevision: number;
   isPublic: boolean;
   isPending: boolean;
   state: SaveRecipeState;
@@ -664,20 +704,31 @@ function MobileRecipeAdmin({
   onHome: () => void;
   onSelect: (slug: string) => void;
   onOpenSection: (section: MobileSection) => void;
+  onToggleGroup: (group: EditorGroup, open: boolean) => void;
   onSave: () => void;
+  onPublish: () => void;
+  onRevert: () => void;
+  onVisibility: (visible: boolean) => void;
   onDelete: () => void;
   imageRevisionSession: RecipeImageRevisionSession;
   onReplaceConflict: () => void;
   onReloadConflict: () => void;
   onPreview: () => void;
 }) {
-  const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState<"all" | "draft" | "published">("all");
   const values = useWatch({ control: form.control }) as RecipeDraftPayload;
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const readiness = getRecipeReadiness(
     values,
     Boolean(selectedRecipe?.heroImageUrl),
   );
+  const editorStatusLabel =
+    readiness.blockers.length > 0
+      ? "À compléter"
+      : isPublic
+        ? "En ligne"
+        : publishedRevision >= 0
+          ? "Masquée"
+          : "Prête à publier";
   if (!selectedSlug && mode !== "create") {
     return (
       <AdminRecipeHome
@@ -702,13 +753,13 @@ function MobileRecipeAdmin({
             <ArrowLeft /> Le carnet
           </button>
           <div className="grid gap-2">
-            <p className="type-label text-primary">Nouveau brouillon</p>
+            <p className="type-label text-primary">Nouvelle recette</p>
             <h1 className="type-page-title">
               Comment s’appelle cette recette&nbsp;?
             </h1>
             <p className="type-body font-semibold text-muted-foreground [text-wrap:pretty]">
-              Le titre crée immédiatement un brouillon privé. Tu pourras tout
-              compléter ensuite.
+              Le titre réserve la recette en privé. Tu pourras la compléter,
+              puis choisir quand la publier.
             </p>
           </div>
           {sourceIdea ? (
@@ -748,36 +799,26 @@ function MobileRecipeAdmin({
     );
   }
 
-  const sectionTitle = mobileSectionTitle(section);
-
   return (
-    <main
-      className={`min-h-screen px-4 pt-3 text-foreground sm:pt-5 ${hasUnsavedChanges ? "pb-28" : "pb-8"}`}
-    >
+    <main className="min-h-screen px-4 pb-10 pt-3 text-foreground sm:pt-5">
       <div className="mx-auto w-full max-w-5xl">
         <header className="sticky top-2 z-20 mb-4 grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 rounded-[1.25rem] bg-card/95 p-2 shadow-[var(--shadow-card)] backdrop-blur-xl sm:grid-cols-[auto_minmax(0,1fr)_auto_auto]">
           <Button
             type="button"
             variant="ghost"
             size="icon"
-            onClick={() =>
-              section === "overview" ? onHome() : onOpenSection("overview")
-            }
+            onClick={onHome}
             className="size-11 rounded-xl"
-            aria-label={
-              section === "overview"
-                ? "Retour au carnet"
-                : "Retour à la recette"
-            }
+            aria-label="Retour au carnet"
           >
             <ArrowLeft />
           </Button>
           <div className="min-w-0 flex-1">
             <p
               className="type-label truncate text-muted-foreground"
-              title={sectionTitle}
+              title={editorStatusLabel}
             >
-              {sectionTitle}
+              {editorStatusLabel}
             </p>
             <h1
               className="type-panel-title truncate ![text-wrap:nowrap]"
@@ -846,13 +887,13 @@ function MobileRecipeAdmin({
                     size="icon"
                     onClick={onPreview}
                     className="rounded-xl"
-                    aria-label="Prévisualiser le brouillon"
+                    aria-label="Prévisualiser la recette"
                   >
                     <Eye />
                   </Button>
                 }
               />
-              <TooltipContent className="">Prévisualiser le brouillon</TooltipContent>
+              <TooltipContent className="">Prévisualiser la recette</TooltipContent>
             </Tooltip>
             <SyncPill
               state={syncState}
@@ -870,19 +911,10 @@ function MobileRecipeAdmin({
         ) : null}
         {state.type === "error" ? <SaveStateAlert state={state} /> : null}
 
-        {section === "overview" ? (
-          <MobileOverview
-            recipe={selectedRecipe}
-            values={values}
-            readiness={readiness}
-            onOpen={onOpenSection}
-            isPending={isPending}
-            onDelete={onDelete}
-          />
-        ) : (
+        {section === "comments" && selectedRecipe ? (
           <section className="rounded-2xl bg-card p-4 shadow-[var(--shadow-card)]">
             <MobileSectionFields
-              section={section}
+              section="comments"
               locale={locale}
               recipe={selectedRecipe}
               imageRevisionSession={imageRevisionSession}
@@ -892,193 +924,187 @@ function MobileRecipeAdmin({
               requestedLanguage={requestedLanguage}
             />
           </section>
-        )}
-      </div>
-
-      {hasUnsavedChanges ? (
-        <div
-          className="pointer-events-none fixed inset-x-0 bottom-0 z-30 bg-gradient-to-t from-background via-background/95 to-transparent px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-5"
-          role="region"
-          aria-label="Enregistrement de la recette"
-        >
-          <div className="pointer-events-auto mx-auto max-w-xl rounded-[1.125rem] bg-card/95 p-1.5 shadow-[var(--shadow-card)] backdrop-blur-xl">
-            <Button
-              type="button"
-              size="lg"
-              onClick={onSave}
-              disabled={isPending}
-              className="h-12 w-full rounded-xl"
+        ) : (
+          <div className="grid gap-4">
+            <details
+              open={openGroups.essential}
+              onToggle={(event) =>
+                onToggleGroup("essential", event.currentTarget.open)
+              }
+              className="group rounded-2xl bg-card shadow-[var(--shadow-card)]"
             >
-              {isPending ? (
-                <Spinner data-icon="inline-start" />
-              ) : (
-                <Save data-icon="inline-start" />
-              )}
-              {isPending ? "Enregistrement…" : "Enregistrer les modifications"}
-            </Button>
+              <summary className="cursor-pointer list-none p-4 type-panel-title">
+                Essentiel
+                <span className="ml-2 text-sm text-muted-foreground">Photo, titre et description</span>
+              </summary>
+              <div className="border-t border-border p-4">
+                <MobileSectionFields
+                  section="info"
+                  locale={locale}
+                  recipe={selectedRecipe}
+                  imageRevisionSession={imageRevisionSession}
+                  form={form}
+                  categoryValues={categoryValues}
+                  defaultLocale={defaultLocale}
+                  requestedLanguage={requestedLanguage}
+                />
+              </div>
+            </details>
+            <details
+              open={openGroups.recipe}
+              onToggle={(event) =>
+                onToggleGroup("recipe", event.currentTarget.open)
+              }
+              className="group rounded-2xl bg-card shadow-[var(--shadow-card)]"
+            >
+              <summary className="cursor-pointer list-none p-4 type-panel-title">
+                Recette
+                <span className="ml-2 text-sm text-muted-foreground">Quantités, temps, ingrédients et préparation</span>
+              </summary>
+              <div className="grid gap-8 border-t border-border p-4">
+                {(["details", "ingredients", "preparation"] as const).map((recipeSection) => (
+                  <MobileSectionFields
+                    key={recipeSection}
+                    section={recipeSection}
+                    locale={locale}
+                    recipe={selectedRecipe}
+                    imageRevisionSession={imageRevisionSession}
+                    form={form}
+                    categoryValues={categoryValues}
+                    defaultLocale={defaultLocale}
+                    requestedLanguage={requestedLanguage}
+                  />
+                ))}
+              </div>
+            </details>
+            <details
+              open={openGroups.complements}
+              onToggle={(event) =>
+                onToggleGroup("complements", event.currentTarget.open)
+              }
+              className="group rounded-2xl bg-card shadow-[var(--shadow-card)]"
+            >
+              <summary className="cursor-pointer list-none p-4 type-panel-title">
+                Compléments
+                <span className="ml-2 text-sm text-muted-foreground">Notes, catégories et traduction</span>
+              </summary>
+              <div className="grid gap-8 border-t border-border p-4">
+                <MobileSectionFields
+                  section="notes"
+                  locale={locale}
+                  recipe={selectedRecipe}
+                  imageRevisionSession={imageRevisionSession}
+                  form={form}
+                  categoryValues={categoryValues}
+                  defaultLocale={defaultLocale}
+                  requestedLanguage={requestedLanguage}
+                />
+              </div>
+            </details>
+
+            <section className="grid gap-3 rounded-2xl bg-card p-4 shadow-[var(--shadow-card)]" aria-label="Publication">
+              {readiness.blockers.length ? (
+                <div className="grid gap-2 rounded-xl bg-destructive/10 p-3">
+                  <p className="font-black">À compléter avant de publier</p>
+                  {readiness.blockers.map((blocker) => (
+                    <button
+                      key={blocker.code}
+                      type="button"
+                      className="text-left text-sm font-semibold underline underline-offset-2"
+                      onClick={() => {
+                        onOpenSection(blocker.section);
+                        if (blocker.locale !== requestedLanguage) {
+                          onLanguage(blocker.locale);
+                        }
+                      }}
+                    >
+                      {blocker.label}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
+              {readiness.warnings.length ? (
+                <details className="rounded-xl bg-muted p-3">
+                  <summary className="cursor-pointer font-bold">{readiness.warnings.length} conseil{readiness.warnings.length > 1 ? "s" : ""}</summary>
+                  <ul className="mt-2 grid gap-1 text-sm font-semibold text-muted-foreground">
+                    {readiness.warnings.map((warning) => <li key={warning.code}>{warning.label}</li>)}
+                  </ul>
+                </details>
+              ) : null}
+              <Button
+                type="button"
+                size="lg"
+                disabled={isPending || readiness.blockers.length > 0 || (revision === publishedRevision && !hasUnsavedChanges)}
+                onClick={onPublish}
+                className="h-12 rounded-xl"
+              >
+                {isPending ? <Spinner data-icon="inline-start" /> : <Check data-icon="inline-start" />}
+                {isPending ? "Publication…" : "Publier les modifications"}
+              </Button>
+              {state.type === "success" && revision === publishedRevision ? (
+                <p className="text-sm font-bold text-success">Modifications publiées.</p>
+              ) : null}
+              <div className="flex justify-end border-t border-border pt-3">
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    render={
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        disabled={isPending}
+                        className="min-h-11 rounded-xl"
+                      />
+                    }
+                  >
+                    <MoreHorizontal data-icon="inline-start" /> Autres actions
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="min-w-64">
+                    {selectedRecipe ? (
+                      <DropdownMenuItem className="" inset={false} onClick={() => onOpenSection("comments")}>
+                        <MessageSquare /> Commentaires
+                      </DropdownMenuItem>
+                    ) : null}
+                    {publishedRevision >= 0 && revision !== publishedRevision ? (
+                      <DropdownMenuItem className="" inset={false} onClick={onRevert}>
+                        Revenir à la version publiée
+                      </DropdownMenuItem>
+                    ) : null}
+                    {publishedRevision >= 0 ? (
+                      <DropdownMenuItem className="" inset={false} onClick={() => onVisibility(!isPublic)}>
+                        {isPublic ? "Masquer du site" : "Rendre visible"}
+                      </DropdownMenuItem>
+                    ) : null}
+                    {selectedRecipe ? (
+                      <>
+                        <DropdownMenuSeparator className="" />
+                        <DropdownMenuItem
+                          className=""
+                          inset={false}
+                          variant="destructive"
+                          onClick={() => setDeleteDialogOpen(true)}
+                        >
+                          <Trash2 /> Supprimer la recette
+                        </DropdownMenuItem>
+                      </>
+                    ) : null}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                {selectedRecipe ? (
+                  <DeleteRecipeControl
+                    recipe={selectedRecipe}
+                    isPending={isPending}
+                    onDelete={onDelete}
+                    variant="hidden"
+                    open={deleteDialogOpen}
+                    onOpenChange={setDeleteDialogOpen}
+                  />
+                ) : null}
+              </div>
+            </section>
           </div>
-        </div>
-      ) : null}
-    </main>
-  );
-}
-
-function MobileOverview({
-  recipe,
-  values,
-  readiness,
-  onOpen,
-  isPending,
-  onDelete,
-}: {
-  recipe: EditableRecipe | null;
-  values: RecipeDraftPayload;
-  readiness: RecipeReadiness;
-  onOpen: (section: MobileSection) => void;
-  isPending: boolean;
-  onDelete: () => void;
-}) {
-  function status(section: Exclude<MobileSection, "overview">) {
-    return {
-      blockers: readiness.blockers.filter((item) => item.section === section)
-        .length,
-      warnings: readiness.warnings.filter((item) => item.section === section)
-        .length,
-    };
-  }
-  const sections: Array<{
-    id: Exclude<MobileSection, "overview">;
-    title: string;
-    detail: string;
-    icon: typeof Camera;
-    complete: boolean;
-    blockers: number;
-    warnings: number;
-  }> = [
-    {
-      id: "info",
-      title: "Informations principales",
-      detail: "Photo, titre, auteur et description",
-      icon: NotebookPen,
-      complete: readiness.sections.info,
-      ...status("info"),
-    },
-    {
-      id: "details",
-      title: "Détails",
-      detail: "Quantité obtenue, temps et température",
-      icon: Clock3,
-      complete: readiness.sections.details,
-      ...status("details"),
-    },
-    {
-      id: "ingredients",
-      title: "Ingrédients",
-      detail: `${values.translations[values.defaultLocale].ingredients.filter((item) => item.name.trim()).length} éléments`,
-      icon: ListChecks,
-      complete: readiness.sections.ingredients,
-      ...status("ingredients"),
-    },
-    {
-      id: "preparation",
-      title: "Préparation",
-      detail: "Sections, étapes et sous-recettes",
-      icon: BookOpen,
-      complete: readiness.sections.preparation,
-      ...status("preparation"),
-    },
-    {
-      id: "notes",
-      title: "Notes",
-      detail: "Astuces et variantes",
-      icon: NotebookPen,
-      complete: true,
-      ...status("notes"),
-    },
-    {
-      id: "comments",
-      title: "Commentaires",
-      detail: "Contributions des visiteurs",
-      icon: MessageSquare,
-      complete: true,
-      blockers: 0,
-      warnings: 0,
-    },
-    {
-      id: "translation",
-      title: "Traduction",
-      detail: "Version anglaise",
-      icon: Languages,
-      complete: readiness.sections.translation,
-      ...status("translation"),
-    },
-  ];
-
-  return (
-    <div className="grid gap-4">
-      <div className="overflow-hidden rounded-2xl bg-card shadow-[var(--shadow-card)]">
-        <div className="relative aspect-[16/9] bg-muted">
-          {recipe?.heroImageUrl ? (
-            <Image
-              src={recipe.heroImageUrl}
-              alt=""
-              fill
-              sizes="(max-width: 768px) 100vw, 32rem"
-              className="object-cover outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
-            />
-          ) : (
-            <div className="grid size-full place-items-center gap-2 text-muted-foreground">
-              <Camera />
-              <span className="text-sm font-bold">Ajouter une photo</span>
-            </div>
-          )}
-        </div>
-      </div>
-      <div className="grid gap-2 lg:grid-cols-2">
-        {sections.map(
-          ({ id, title, detail, icon: Icon, complete, blockers, warnings }) => (
-            <button
-              key={id}
-              type="button"
-              onClick={() => onOpen(id)}
-              className="grid min-h-17 grid-cols-[2.75rem_1fr_auto] items-center gap-3 rounded-2xl bg-card p-3 text-left shadow-[var(--shadow-card)] transition-[scale,box-shadow] active:scale-[0.96]"
-            >
-              <span className="grid size-11 place-items-center rounded-xl bg-muted">
-                <Icon className="size-5" />
-              </span>
-              <span>
-                <span className="block font-black">{title}</span>
-                <span className="block text-xs font-semibold text-muted-foreground">
-                  {blockers > 0
-                    ? `${blockers} blocage${blockers > 1 ? "s" : ""}`
-                    : warnings > 0
-                      ? `${warnings} conseil${warnings > 1 ? "s" : ""}`
-                      : detail}
-                </span>
-              </span>
-              {blockers > 0 ? (
-                <TriangleAlert className="size-5 text-destructive" />
-              ) : warnings > 0 ? (
-                <TriangleAlert className="size-5 text-warning" />
-              ) : complete ? (
-                <Check className="size-5 text-success" />
-              ) : (
-                <ChevronRight className="size-5 text-muted-foreground" />
-              )}
-            </button>
-          ),
         )}
       </div>
-      {recipe ? (
-        <div className="border-t border-border pt-4">
-          <DeleteRecipeControl
-            recipe={recipe}
-            isPending={isPending}
-            onDelete={onDelete}
-          />
-        </div>
-      ) : null}
-    </div>
+    </main>
   );
 }
 
@@ -1147,7 +1173,6 @@ function MobileSectionFields({
               { label: "Anglais", value: "en" },
             ]}
           />
-          <RecipeCategoryField form={form} value={categoryValues} />
         </FieldGroup>
       </div>
     );
@@ -1261,11 +1286,14 @@ function MobileSectionFields({
     );
   if (section === "notes")
     return (
-      <NotesArray
-        name={`${base}.notes`}
-        control={form.control}
-        register={form.register}
-      />
+      <FieldGroup>
+        <RecipeCategoryField form={form} value={categoryValues} />
+        <NotesArray
+          name={`${base}.notes`}
+          control={form.control}
+          register={form.register}
+        />
+      </FieldGroup>
     );
   if (section === "comments" && recipe)
     return <AdminRecipeComments slug={recipe.slug} locale={locale} />;
@@ -1404,8 +1432,8 @@ function SyncPill({
           : state === "conflict"
             ? "Conflit"
             : hasUnsavedChanges
-              ? "Modifié"
-              : "Enregistré";
+              ? "À sauvegarder"
+              : "Sauvegardé";
   return (
     <span
       title={`Révision ${revision}`}
@@ -1433,8 +1461,8 @@ function ConflictCard({
         <div>
           <h2 className="font-black">Modifications sur un autre appareil</h2>
           <p className="mt-1 text-sm font-semibold text-muted-foreground">
-            Recharge la version la plus récente ou remplace-la avec le contenu
-            de ce téléphone.
+            Consulte la version récente ou confirme que cette version doit la
+            remplacer.
           </p>
         </div>
       </div>
@@ -1445,7 +1473,7 @@ function ConflictCard({
           onClick={onReload}
           className="min-h-11"
         >
-          Recharger
+          Voir la version récente
         </Button>
         <Button
           type="button"
@@ -1453,45 +1481,23 @@ function ConflictCard({
           onClick={onReplace}
           className="min-h-11"
         >
-          Remplacer
+          Publier quand même
         </Button>
       </div>
     </div>
   );
 }
 
-function mobileSectionTitle(section: MobileSection) {
-  return (
-    {
-      overview: "Vue d’ensemble",
-      info: "Informations principales",
-      details: "Détails",
-      ingredients: "Ingrédients",
-      preparation: "Préparation",
-      notes: "Notes",
-      comments: "Commentaires",
-      translation: "Traduction",
-    } as const
-  )[section];
-}
-
-function normalizeMobileSection(value: string | null): MobileSection {
-  if (value === "essentials" || value === "photo") return "info";
-  const sections: MobileSection[] = [
-    "overview",
-    "info",
-    "details",
-    "ingredients",
-    "preparation",
-    "notes",
-    "comments",
-    "translation",
-  ];
-  return sections.includes(value as MobileSection)
-    ? (value as MobileSection)
-    : value === null
-      ? "overview"
-      : "info";
+function groupForSection(section: MobileSection): EditorGroup {
+  if (section === "info") return "essential";
+  if (
+    section === "details" ||
+    section === "ingredients" ||
+    section === "preparation"
+  ) {
+    return "recipe";
+  }
+  return "complements";
 }
 
 function normalizeLocaleKey(
@@ -2275,6 +2281,9 @@ function firstFormErrorPath(
 }
 
 function sectionForField(field: string): MobileSection {
+  if (field === "categories" || field === "legacyCategoryLabels") {
+    return "notes";
+  }
   if (field === "referenceServings" || field.includes(".ingredients")) {
     return "ingredients";
   }

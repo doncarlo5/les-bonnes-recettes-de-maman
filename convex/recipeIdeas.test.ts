@@ -311,8 +311,9 @@ describe("recipe ideas", () => {
       }),
     ).rejects.toThrow("RECIPE_IDEA_EDIT_LOCKED");
 
-    await t.mutation(api.recipes.unpublish, {
+    await t.mutation(api.recipes.setVisibility, {
       slug: created.slug,
+      visible: false,
       adminPassword: password,
     });
     expect(await t.query(internal.recipeIdeaAdmin.getOutstandingCount, {})).toBe(1);
@@ -337,10 +338,17 @@ describe("recipe ideas", () => {
       expectedRevision: beforeRepublish?.revision ?? 0,
       adminPassword: password,
     });
+    expect((await listIdeas(t, "completed")).page).toHaveLength(0);
+    await t.mutation(api.recipes.setVisibility, {
+      slug: created.slug,
+      visible: true,
+      adminPassword: password,
+    });
     expect((await listIdeas(t, "completed")).page[0]._id).toBe(idea.ideaId);
     expect(await t.query(internal.recipeIdeaAdmin.getOutstandingCount, {})).toBe(0);
-    await t.mutation(api.recipes.unpublish, {
+    await t.mutation(api.recipes.setVisibility, {
       slug: created.slug,
+      visible: false,
       adminPassword: password,
     });
 

@@ -64,7 +64,7 @@ export function AdminDraftPreview({
           <span className="hidden sm:inline">Retour à l’édition</span>
         </Button>
         <div className="flex items-center gap-2">
-          <p className="type-label text-primary">Aperçu du brouillon</p>
+          <p className="type-label text-primary">Aperçu avant publication</p>
           <Button
             type="button"
             variant={previewLocale === "fr" ? "default" : "outline"}
