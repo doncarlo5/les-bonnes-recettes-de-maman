@@ -100,7 +100,7 @@
             },
             {
               "id": "step-0-1",
-              "text": "Éplucher les pommes et les couper en petites tranches.",
+              "text": "Éplucher les pommes et les couper en petits morceaux.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-0"
@@ -142,7 +142,7 @@
             },
             {
               "id": "step-0-5",
-              "text": "Beurrer le plat et disposer les tranches de pommes parfumées au calvados.",
+              "text": "Beurrer le plat et disposer les petits morceaux de pommes parfumés au calvados.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-0"
@@ -268,7 +268,7 @@
             },
             {
               "id": "step-0-1",
-              "text": "Peel the apples and cut them into small slices.",
+              "text": "Peel the apples and cut them into small pieces.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-0"
@@ -313,7 +313,7 @@
             },
             {
               "id": "step-0-5",
-              "text": "Butter the dish and arrange the calvados-flavored apple slices.",
+              "text": "Butter the dish and arrange the small pieces of apple flavored with calvados.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-3"
