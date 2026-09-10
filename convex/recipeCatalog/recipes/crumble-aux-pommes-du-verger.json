@@ -100,7 +100,7 @@
             },
             {
               "id": "step-0-1",
-              "text": "Éplucher les pommes, les couper en 4, ôter le cœur et les pépins, puis les détailler en tranches épaisses.",
+              "text": "Éplucher les pommes et les couper en petites tranches.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-0"
@@ -154,7 +154,7 @@
             },
             {
               "id": "step-0-6",
-              "text": "Les couvrir du mélange farine-poudre d’amandes-beurre-cassonade et mettre au four pendant 35 min environ.",
+              "text": "Les couvrir du mélange farine-poudre d’amandes-beurre-cassonade et mettre au four pendant 35 min environ. Après 30 min de cuisson, si les pommes ne sont pas complètement fondantes, prolonger la cuisson en protégeant le crumble avec du papier sulfurisé.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-1"
@@ -268,7 +268,7 @@
             },
             {
               "id": "step-0-1",
-              "text": "Peel the apples, quarter them, remove the core and seeds, then cut into thick slices.",
+              "text": "Peel the apples and cut them into small slices.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-0"
@@ -325,7 +325,7 @@
             },
             {
               "id": "step-0-6",
-              "text": "Cover with the flour-almond-butter-brown sugar mixture and bake for about 35 min.",
+              "text": "Cover with the flour-almond-butter-brown sugar mixture and bake for about 35 min. After 30 min of baking, if the apples are not completely tender, continue baking, covering the crumble with parchment paper.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-3"
