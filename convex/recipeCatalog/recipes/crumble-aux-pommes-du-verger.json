@@ -109,8 +109,14 @@
             },
             {
               "id": "step-0-2",
-              "text": "Les déposer dans une assiette creuse et les arroser de calvados.",
+              "text": "Mettre les pommes dans le moule beurré et les arroser de calvados.",
               "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
                 {
                   "ingredientId": "ingredient-main-7"
                 }
@@ -141,20 +147,8 @@
               ]
             },
             {
-              "id": "step-0-5",
-              "text": "Beurrer le plat et disposer les petits morceaux de pommes parfumés au calvados.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-0"
-                },
-                {
-                  "ingredientId": "ingredient-main-7"
-                }
-              ]
-            },
-            {
               "id": "step-0-6",
-              "text": "Les couvrir du mélange farine-poudre d’amandes-beurre-cassonade et mettre au four pendant 35 min environ. Après 30 min de cuisson, si les pommes ne sont pas complètement fondantes, prolonger la cuisson en protégeant le crumble avec du papier sulfurisé.",
+              "text": "Couvrir les pommes du mélange farine-poudre d’amandes-beurre-cassonade et mettre au four pendant 35 min environ. Après 30 min de cuisson, si les pommes ne sont pas complètement fondantes, prolonger la cuisson en protégeant le crumble avec du papier sulfurisé.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-1"
@@ -277,8 +271,14 @@
             },
             {
               "id": "step-0-2",
-              "text": "Place them in a deep plate and drizzle with calvados.",
+              "text": "Place the apples in the buttered baking dish and drizzle with calvados.",
               "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
                 {
                   "ingredientId": "ingredient-main-7"
                 }
@@ -312,20 +312,8 @@
               ]
             },
             {
-              "id": "step-0-5",
-              "text": "Butter the dish and arrange the small pieces of apple flavored with calvados.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-3"
-                },
-                {
-                  "ingredientId": "ingredient-main-7"
-                }
-              ]
-            },
-            {
               "id": "step-0-6",
-              "text": "Cover with the flour-almond-butter-brown sugar mixture and bake for about 35 min. After 30 min of baking, if the apples are not completely tender, continue baking, covering the crumble with parchment paper.",
+              "text": "Cover the apples with the flour-almond-butter-brown sugar mixture and bake for about 35 min. After 30 min of baking, if the apples are not completely tender, continue baking, covering the crumble with parchment paper.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-3"
