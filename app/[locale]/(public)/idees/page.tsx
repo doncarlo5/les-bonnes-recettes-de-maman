@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { RecipeIdeasPage } from "@/components/recipes/recipe-ideas-page";
-import { hasLocale, type Locale } from "@/i18n/config";
+import { hasLocale, localeAlternates, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: dict.ideas.metadataDescription,
     alternates: {
       canonical: `/${locale}/idees`,
-      languages: { fr: "/fr/idees", en: "/en/idees" },
+      languages: localeAlternates("/idees"),
     },
   };
 }

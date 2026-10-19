@@ -1,0 +1,79 @@
+{
+  "slug": "pates-carbonara",
+  "translations": {
+    "pt-br": {
+      "title": "Macarrão à carbonara",
+      "author": "Antoine",
+      "description": "Macarrão à carbonara de família com ovos inteiros, parmesão e bacon defumado em cubinhos, ligado com um pouco da água do cozimento se necessário.",
+      "yieldLabel": "2 pessoas",
+      "prepTime": "5 min",
+      "cookTime": "15 min",
+      "restTime": "",
+      "totalTime": "20 min",
+      "timeLabel": "20 min",
+      "temperature": "",
+      "equipment": ["1 panela grande", "1 frigideira", "1 tigela", "1 copo"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "espaguete", "quantity": "250", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "bacon defumado em cubinhos", "quantity": "125", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "ovos", "quantity": "2", "unit": "", "notes": "inteiros, sem separar as claras das gemas" },
+        "ingredient-main-3": { "name": "parmesão ralado", "quantity": "50", "unit": "g", "notes": "mais um pouco para servir" },
+        "ingredient-main-4": { "name": "água do cozimento do macarrão", "quantity": "um pouco", "unit": "", "notes": "reservar caso o molho fique seco demais" },
+        "ingredient-main-5": { "name": "sal", "quantity": "", "unit": "", "notes": "a gosto" },
+        "ingredient-main-6": { "name": "pimenta-do-reino", "quantity": "", "unit": "", "notes": "a gosto" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Cozinhe o macarrão em uma panela grande com água fervente salgada, conforme as instruções da embalagem.",
+            "step-0-1": "Enquanto isso, doure o bacon em uma frigideira.",
+            "step-0-2": "Em uma tigela, bata os ovos inteiros com o parmesão e pimenta-do-reino. Salgue bem pouco, pois o bacon defumado e o parmesão já são salgados.",
+            "step-0-3": "Antes de escorrer o macarrão, reserve um copo da água do cozimento. Escorra o macarrão sem deixá-lo secar demais e volte-o para a panela quente, fora do fogo.",
+            "step-0-4": "Junte imediatamente o bacon e depois despeje a mistura de ovos e parmesão. Mexa sem parar para que o calor residual envolva o macarrão sem talhar os ovos.",
+            "step-0-5": "Se o molho estiver seco demais, acrescente um pouco da água do cozimento reservada. Sirva imediatamente com um pouco de parmesão e pimenta-do-reino."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Pasta carbonara",
+      "author": "Antoine",
+      "description": "Pasta carbonara zoals thuis, met hele eieren, parmezaan en gerookte spekblokjes, indien nodig gebonden met een beetje kookwater.",
+      "yieldLabel": "2 personen",
+      "prepTime": "5 min",
+      "cookTime": "15 min",
+      "restTime": "",
+      "totalTime": "20 min",
+      "timeLabel": "20 min",
+      "temperature": "",
+      "equipment": ["1 grote kookpot", "1 pan", "1 kom", "1 glas"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "spaghetti", "quantity": "250", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "gerookte spekblokjes", "quantity": "125", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "eieren", "quantity": "2", "unit": "", "notes": "heel, eiwit en dooier niet gescheiden" },
+        "ingredient-main-3": { "name": "geraspte parmezaan", "quantity": "50", "unit": "g", "notes": "plus een beetje om te serveren" },
+        "ingredient-main-4": { "name": "kookwater van de pasta", "quantity": "een beetje", "unit": "", "notes": "apart houden voor als de saus te droog is" },
+        "ingredient-main-5": { "name": "zout", "quantity": "", "unit": "", "notes": "naar smaak" },
+        "ingredient-main-6": { "name": "peper", "quantity": "", "unit": "", "notes": "naar smaak" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Kook de pasta in een grote kookpot met kokend gezouten water volgens de aanwijzingen op de verpakking.",
+            "step-0-1": "Bak intussen de gerookte spekblokjes goudbruin in een pan.",
+            "step-0-2": "Klop in een kom de hele eieren los met de parmezaan en peper. Zout heel licht, want de gerookte spekblokjes en de parmezaan zijn al zout.",
+            "step-0-3": "Houd een glas kookwater apart voor je de pasta afgiet. Giet de pasta af zonder ze helemaal droog te laten worden en doe ze terug in de warme kookpot, van het vuur.",
+            "step-0-4": "Voeg meteen de spekblokjes toe en giet dan het eier-parmezaanmengsel erbij. Blijf roeren zodat de restwarmte de pasta omhult zonder dat de eieren gaan schiften.",
+            "step-0-5": "Is de saus te droog, voeg dan een beetje van het apart gehouden kookwater toe. Serveer meteen met wat extra parmezaan en peper."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

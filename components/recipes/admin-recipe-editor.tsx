@@ -41,7 +41,7 @@ import {
   Trash2,
   TriangleAlert,
 } from "lucide-react";
-import type { Locale } from "@/i18n/config";
+import type { ContentLocale, Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -148,7 +148,7 @@ import { AdminRecipeHome } from "./admin-recipe-home";
 import { DeleteRecipeControl } from "./admin-recipe-delete-control";
 
 type AdminRecipeEditorProps = {
-  locale: Locale;
+  locale: ContentLocale;
   dictionaries: Record<LocaleKey, Dictionary>;
   recipes: EditableRecipeSummary[];
   initialRecipe?: EditableRecipe;

@@ -1,0 +1,87 @@
+{
+  "slug": "poulet-au-four",
+  "translations": {
+    "pt-br": {
+      "title": "Frango assado",
+      "author": "Maman",
+      "description": "Frango caipira assado com azeite, cebola, tomilho e alecrim, regado regularmente com o próprio caldo.",
+      "yieldLabel": "1 frango",
+      "prepTime": "10 min",
+      "cookTime": "1 h 30",
+      "restTime": "",
+      "totalTime": "1 h 40",
+      "timeLabel": "1 h 30 de forno",
+      "temperature": "180 °C",
+      "equipment": ["1 assadeira"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "frango caipira Label Rouge", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-1": { "name": "azeite de oliva", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-2": { "name": "cebolas ou chalotas", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-3": { "name": "ervas de Provence", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-4": { "name": "tomilho", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-5": { "name": "alecrim", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-6": { "name": "tomate", "quantity": "1", "unit": "", "notes": "opcional" },
+        "ingredient-main-7": { "name": "bacon em cubos", "quantity": "", "unit": "", "notes": "alguns, opcional" },
+        "ingredient-main-8": { "name": "sal", "quantity": "", "unit": "", "notes": "a gosto" },
+        "ingredient-main-9": { "name": "pimenta-do-reino", "quantity": "", "unit": "", "notes": "a gosto" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Besunte o frango com azeite de todos os lados.",
+            "step-0-1": "Coloque-o em uma assadeira com as cebolas e os outros acompanhamentos ao redor.",
+            "step-0-2": "Junte o tomilho e o alecrim e/ou polvilhe ervas de Provence.",
+            "step-0-3": "Tempere com sal e pimenta e leve ao forno a 180 °C.",
+            "step-0-4": "Depois de 20 min, coloque um pouco de água (não muito) na assadeira, raspe tudo ao redor e regue o frango.",
+            "step-0-5": "Repita a cada 15 a 20 min: acrescente água se necessário, raspe o queimadinho da carne no fundo da assadeira e regue o frango.",
+            "step-0-6": "Conte cerca de 1 h 30 de forno."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Kip uit de oven",
+      "author": "Maman",
+      "description": "Hoevekip geroosterd met olijfolie, uien, tijm en rozemarijn, regelmatig overgoten met haar eigen jus.",
+      "yieldLabel": "1 kip",
+      "prepTime": "10 min",
+      "cookTime": "1 h 30",
+      "restTime": "",
+      "totalTime": "1 h 40",
+      "timeLabel": "1 h 30 in de oven",
+      "temperature": "180 °C",
+      "equipment": ["1 ovenschaal"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "hoevekip Label Rouge", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-1": { "name": "olijfolie", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-2": { "name": "uien of sjalotten", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-3": { "name": "Provençaalse kruiden", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-4": { "name": "tijm", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-5": { "name": "rozemarijn", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-6": { "name": "tomaat", "quantity": "1", "unit": "", "notes": "optioneel" },
+        "ingredient-main-7": { "name": "spekblokjes", "quantity": "", "unit": "", "notes": "enkele, optioneel" },
+        "ingredient-main-8": { "name": "zout", "quantity": "", "unit": "", "notes": "naar smaak" },
+        "ingredient-main-9": { "name": "peper", "quantity": "", "unit": "", "notes": "naar smaak" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Bestrijk de kip aan alle kanten met olijfolie.",
+            "step-0-1": "Leg ze in een ovenschaal met de uien en de andere garnituren eromheen.",
+            "step-0-2": "Voeg de tijm en de rozemarijn toe en/of bestrooi met Provençaalse kruiden.",
+            "step-0-3": "Kruid met peper en zout en zet in de oven op 180 °C.",
+            "step-0-4": "Giet na 20 min een beetje water (niet te veel) in de schaal, schraap alles rondom los en overgiet de kip.",
+            "step-0-5": "Herhaal om de 15 à 20 min: voeg zo nodig water toe, schraap het aanbaksel van het vlees los in de schaal en overgiet de kip.",
+            "step-0-6": "Reken op ongeveer 1 h 30 in de oven."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

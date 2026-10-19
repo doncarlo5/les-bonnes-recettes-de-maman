@@ -1,0 +1,105 @@
+{
+  "slug": "cake-moelleux-au-citron-de-pierre-herme",
+  "translations": {
+    "pt-br": {
+      "title": "Bolo de limão fofinho de Pierre Hermé",
+      "author": "Pierre Hermé",
+      "description": "Bolo inglês de limão fofinho, regado com uma calda de limão.",
+      "yieldLabel": "1 bolo inglês",
+      "prepTime": "10 min",
+      "cookTime": "60 min",
+      "restTime": "",
+      "totalTime": "1 h 10 min",
+      "timeLabel": "1 h 10 min",
+      "temperature": "165 °C",
+      "equipment": ["1 fôrma de bolo inglês"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "farinha de trigo", "quantity": "190", "unit": "g", "notes": "para o bolo" },
+        "ingredient-main-1": { "name": "fermento químico em pó", "quantity": "1/2", "unit": "colher (chá)", "notes": "para o bolo" },
+        "ingredient-main-2": { "name": "raspas de limão", "quantity": "1", "unit": "limão grande", "notes": "ou 2 pequenos" },
+        "ingredient-main-3": { "name": "açúcar", "quantity": "200", "unit": "g", "notes": "para o bolo" },
+        "ingredient-main-4": { "name": "ovos", "quantity": "3", "unit": "", "notes": "para o bolo" },
+        "ingredient-main-5": { "name": "creme de leite fresco", "quantity": "10", "unit": "cl", "notes": "para o bolo" },
+        "ingredient-main-6": { "name": "rum", "quantity": "2", "unit": "colheres (sopa)", "notes": "para o bolo" },
+        "ingredient-main-7": { "name": "sal", "quantity": "1", "unit": "pitada", "notes": "para o bolo" },
+        "ingredient-main-8": { "name": "manteiga derretida e fria", "quantity": "65", "unit": "g", "notes": "para o bolo" },
+        "ingredient-main-9": { "name": "água", "quantity": "75", "unit": "g", "notes": "para a calda" },
+        "ingredient-main-10": { "name": "açúcar", "quantity": "30", "unit": "g", "notes": "para a calda" },
+        "ingredient-main-11": { "name": "suco de limão", "quantity": "3", "unit": "colheres (sopa)", "notes": "para a calda" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 165 °C.",
+            "step-0-1": "Misture as raspas de limão com o açúcar.",
+            "step-0-2": "Junte os ovos um a um, misturando bem.",
+            "step-0-3": "Acrescente o creme de leite.",
+            "step-0-4": "Acrescente o rum e o sal.",
+            "step-0-5": "Misture a farinha e o fermento.",
+            "step-0-6": "Incorpore a farinha e o fermento à mistura aos poucos, em várias etapas.",
+            "step-0-7": "Junte a manteiga e misture.",
+            "step-0-8": "Unte com manteiga e enfarinhe a fôrma de bolo inglês.",
+            "step-0-9": "Despeje a massa e asse por cerca de 60 min.",
+            "step-0-10": "Prepare a calda: leve a água e o açúcar ao fogo até ferver.",
+            "step-0-11": "Fora do fogo, junte o suco de limão.",
+            "step-0-12": "Retire o bolo do forno e regue-o com a calda.",
+            "step-0-13": "Deixe esfriar sobre uma grade antes de saborear."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Smeuïge citroencake van Pierre Hermé",
+      "author": "Pierre Hermé",
+      "description": "Smeuïge citroencake, gedrenkt in een citroensiroop.",
+      "yieldLabel": "1 cake",
+      "prepTime": "10 min",
+      "cookTime": "60 min",
+      "restTime": "",
+      "totalTime": "1 h 10 min",
+      "timeLabel": "1 h 10 min",
+      "temperature": "165 °C",
+      "equipment": ["1 cakevorm"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "bloem", "quantity": "190", "unit": "g", "notes": "voor de cake" },
+        "ingredient-main-1": { "name": "bakpoeder", "quantity": "1/2", "unit": "kl", "notes": "voor de cake" },
+        "ingredient-main-2": { "name": "citroenrasp", "quantity": "1", "unit": "grote citroen", "notes": "of 2 kleine" },
+        "ingredient-main-3": { "name": "suiker", "quantity": "200", "unit": "g", "notes": "voor de cake" },
+        "ingredient-main-4": { "name": "eieren", "quantity": "3", "unit": "", "notes": "voor de cake" },
+        "ingredient-main-5": { "name": "vloeibare room", "quantity": "10", "unit": "cl", "notes": "voor de cake" },
+        "ingredient-main-6": { "name": "rum", "quantity": "2", "unit": "el", "notes": "voor de cake" },
+        "ingredient-main-7": { "name": "zout", "quantity": "1", "unit": "snufje", "notes": "voor de cake" },
+        "ingredient-main-8": { "name": "gesmolten en afgekoelde boter", "quantity": "65", "unit": "g", "notes": "voor de cake" },
+        "ingredient-main-9": { "name": "water", "quantity": "75", "unit": "g", "notes": "voor de siroop" },
+        "ingredient-main-10": { "name": "suiker", "quantity": "30", "unit": "g", "notes": "voor de siroop" },
+        "ingredient-main-11": { "name": "citroensap", "quantity": "3", "unit": "el", "notes": "voor de siroop" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 165 °C.",
+            "step-0-1": "Meng de citroenrasp met de suiker.",
+            "step-0-2": "Voeg de eieren een voor een toe en meng goed.",
+            "step-0-3": "Voeg de room toe.",
+            "step-0-4": "Voeg de rum en het zout toe.",
+            "step-0-5": "Meng de bloem met het bakpoeder.",
+            "step-0-6": "Voeg de bloem en het bakpoeder in een paar keer toe aan het mengsel.",
+            "step-0-7": "Voeg de boter toe en meng.",
+            "step-0-8": "Beboter en bebloem de cakevorm.",
+            "step-0-9": "Giet het beslag in de vorm en bak ongeveer 60 min.",
+            "step-0-10": "Maak de siroop: breng het water en de suiker aan de kook.",
+            "step-0-11": "Haal van het vuur en voeg het citroensap toe.",
+            "step-0-12": "Haal de cake uit de oven en drenk hem met de siroop.",
+            "step-0-13": "Laat afkoelen op een rooster voor je ervan smult."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

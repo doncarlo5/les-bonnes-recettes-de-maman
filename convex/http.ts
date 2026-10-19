@@ -1,3 +1,4 @@
+import { isPublicLocale } from "./recipeLocales";
 import { httpRouter } from "convex/server";
 import { httpAction } from "./_generated/server";
 import { internal } from "./_generated/api";
@@ -150,7 +151,7 @@ http.route({
     if (state !== "outstanding" && state !== "completed") {
       return adminJson({ error: "RECIPE_IDEA_STATE_INVALID" }, 400);
     }
-    if (locale !== "fr" && locale !== "en") {
+    if (!isPublicLocale(locale)) {
       return adminJson({ error: "RECIPE_IDEA_LOCALE_INVALID" }, 400);
     }
     try {
@@ -174,7 +175,7 @@ http.route({
     const url = new URL(request.url);
     const ideaId = url.searchParams.get("ideaId")?.trim();
     const locale = url.searchParams.get("locale");
-    if (!ideaId || (locale !== "fr" && locale !== "en")) {
+    if (!ideaId || !isPublicLocale(locale)) {
       return adminJson({ error: "RECIPE_IDEA_NOT_FOUND" }, 400);
     }
     const idea = await ctx.runQuery(internal.recipeIdeaAdmin.get, { ideaId, locale });

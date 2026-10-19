@@ -1,0 +1,95 @@
+{
+  "slug": "amandin",
+  "translations": {
+    "pt-br": {
+      "title": "Amandin (bolo de amêndoas)",
+      "author": "Maman",
+      "description": "Bolo de amêndoas e limão com claras em neve, com cobertura de limão opcional.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "35 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "35 min",
+      "temperature": "160 °C",
+      "equipment": ["1 forma de bolo"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "açúcar", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "ovos", "quantity": "4", "unit": "", "notes": "claras e gemas separadas" },
+        "ingredient-main-2": { "name": "farinha de amêndoas", "quantity": "200", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "limão-siciliano", "quantity": "1/2", "unit": "", "notes": "suco + raspas" },
+        "ingredient-main-4": { "name": "açúcar de confeiteiro", "quantity": "", "unit": "", "notes": "a gosto, para a cobertura opcional" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 160 °C.",
+            "step-0-1": "Separe as claras das gemas.",
+            "step-0-2": "Junte o açúcar às gemas, depois a farinha de amêndoas e, por fim, o suco de 1/2 limão e as raspas.",
+            "step-0-3": "Bata as claras em neve e incorpore-as delicadamente à mistura de amêndoas."
+          }
+        },
+        {
+          "title": "Forno",
+          "steps": {
+            "step-1-0": "Asse por 35 min a 160 °C."
+          }
+        },
+        {
+          "title": "Cobertura opcional",
+          "steps": {
+            "step-2-0": "Misture um pouco de suco de limão com açúcar de confeiteiro e espalhe sobre o bolo já frio."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Amandin (amandeltaart)",
+      "author": "Maman",
+      "description": "Amandelcake met citroen en stijfgeklopt eiwit, met een citroenglazuur naar keuze.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "35 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "35 min",
+      "temperature": "160 °C",
+      "equipment": ["1 taartvorm"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "suiker", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "eieren", "quantity": "4", "unit": "", "notes": "eiwitten en dooiers gescheiden" },
+        "ingredient-main-2": { "name": "amandelpoeder", "quantity": "200", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "citroen", "quantity": "1/2", "unit": "", "notes": "sap + rasp" },
+        "ingredient-main-4": { "name": "poedersuiker", "quantity": "", "unit": "", "notes": "naar behoefte, voor het glazuur (naar keuze)" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 160 °C.",
+            "step-0-1": "Scheid de eiwitten van de dooiers.",
+            "step-0-2": "Meng de suiker onder de dooiers, voeg dan het amandelpoeder toe en tot slot het sap van 1/2 citroen en de rasp.",
+            "step-0-3": "Klop de eiwitten stijf en spatel ze voorzichtig onder het amandelmengsel."
+          }
+        },
+        {
+          "title": "Bakken",
+          "steps": {
+            "step-1-0": "Bak 35 min op 160 °C."
+          }
+        },
+        {
+          "title": "Glazuur (naar keuze)",
+          "steps": {
+            "step-2-0": "Meng een beetje citroensap met poedersuiker en verdeel het over de afgekoelde taart."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

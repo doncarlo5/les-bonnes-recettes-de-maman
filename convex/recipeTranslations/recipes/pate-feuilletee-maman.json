@@ -1,0 +1,75 @@
+{
+  "slug": "pate-feuilletee-maman",
+  "translations": {
+    "pt-br": {
+      "title": "Massa folhada da Maman",
+      "author": "Maman",
+      "description": "Massa folhada caseira feita com farinha, margarina Astra, sal e água.",
+      "yieldLabel": "Cerca de 1,3 kg de massa",
+      "prepTime": "",
+      "cookTime": "",
+      "restTime": "15 min",
+      "totalTime": "15 min de descanso, sem contar o preparo",
+      "timeLabel": "15 min de descanso, sem contar o preparo",
+      "temperature": "",
+      "equipment": ["1 rolo de massa"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "farinha de trigo", "quantity": "750", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "Astra", "quantity": "500", "unit": "g", "notes": "margarina" },
+        "ingredient-main-2": { "name": "sal", "quantity": "2", "unit": "colheres (chá)", "notes": "" },
+        "ingredient-main-3": { "name": "água", "quantity": "1", "unit": "copo", "notes": "cerca de 20 cl, adicionada aos poucos" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Coloque a farinha sobre a bancada.",
+            "step-0-1": "Reserve 70 g de margarina. Coloque o restante da margarina em pedaços numa cavidade aberta no centro da farinha e junte o sal.",
+            "step-0-2": "Amasse acrescentando a água aos poucos, até obter uma massa homogênea.",
+            "step-0-3": "Abra a massa com o rolo e espalhe os 70 g de margarina reservados por toda a superfície.",
+            "step-0-4": "Faça uma primeira dobra simples: dobre um terço da massa em direção ao centro e depois dobre o outro terço por cima.",
+            "step-0-5": "Abra a massa novamente e repita a mesma dobra em três.",
+            "step-0-6": "Deixe descansar 15 min antes de usar."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Bladerdeeg van Maman",
+      "author": "Maman",
+      "description": "Zelfgemaakt bladerdeeg met bloem, Astra-margarine, zout en water.",
+      "yieldLabel": "Ongeveer 1,3 kg deeg",
+      "prepTime": "",
+      "cookTime": "",
+      "restTime": "15 min",
+      "totalTime": "15 min rusten, bereiding niet meegerekend",
+      "timeLabel": "15 min rusten, bereiding niet meegerekend",
+      "temperature": "",
+      "equipment": ["1 deegrol"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "bloem", "quantity": "750", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "Astra", "quantity": "500", "unit": "g", "notes": "margarine" },
+        "ingredient-main-2": { "name": "zout", "quantity": "2", "unit": "kl", "notes": "" },
+        "ingredient-main-3": { "name": "water", "quantity": "1", "unit": "glas", "notes": "ongeveer 20 cl, beetje bij beetje toe te voegen" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Doe de bloem op het werkblad.",
+            "step-0-1": "Hou 70 g margarine opzij. Leg de rest van de margarine in stukjes in een kuiltje in het midden van de bloem en voeg het zout toe.",
+            "step-0-2": "Kneed en voeg beetje bij beetje het water toe, tot je een glad deeg krijgt.",
+            "step-0-3": "Rol het deeg uit met de deegrol en verdeel de opzijgehouden 70 g margarine over het hele oppervlak.",
+            "step-0-4": "Geef een eerste enkele toer: plooi een derde van het deeg naar het midden en sla het andere derde erover.",
+            "step-0-5": "Rol het deeg opnieuw uit en plooi het nog een keer op dezelfde manier in drie.",
+            "step-0-6": "Laat 15 min rusten voor gebruik."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

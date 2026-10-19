@@ -1,5 +1,6 @@
 import { paginationOptsValidator } from "convex/server";
 import { v } from "convex/values";
+import { publicLocaleValidator } from "./recipeLocales";
 import { internalMutation, internalQuery } from "./_generated/server";
 import {
   changeOutstandingCount,
@@ -8,7 +9,7 @@ import {
   removeIdea,
 } from "./recipeIdeas";
 
-const localeValidator = v.union(v.literal("fr"), v.literal("en"));
+const localeValidator = publicLocaleValidator;
 const stateValidator = v.union(
   v.literal("outstanding"),
   v.literal("completed"),

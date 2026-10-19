@@ -1,0 +1,85 @@
+{
+  "slug": "taboule",
+  "translations": {
+    "pt-br": {
+      "title": "Tabule",
+      "author": "Maman",
+      "description": "Tabule caseiro de cuscuz marroquino, tomate, pepino, pimentão e ervas frescas, temperado com limão e azeite.",
+      "yieldLabel": "4 pessoas",
+      "prepTime": "20 min",
+      "cookTime": "",
+      "restTime": "2 h no mínimo",
+      "totalTime": "2 h 20",
+      "timeLabel": "2 h 20",
+      "temperature": "",
+      "equipment": ["1 saladeira", "1 tampa", "1 garfo", "papel-toalha"],
+      "notes": ["O tabule fica ainda melhor depois de uma noite na geladeira."],
+      "ingredients": {
+        "ingredient-main-0": { "name": "cuscuz marroquino médio", "quantity": "200", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "água", "quantity": "200", "unit": "ml", "notes": "fervente" },
+        "ingredient-main-2": { "name": "tomates pequenos", "quantity": "4", "unit": "", "notes": "" },
+        "ingredient-main-3": { "name": "pepino", "quantity": "1/2", "unit": "", "notes": "" },
+        "ingredient-main-4": { "name": "hortelã", "quantity": "10", "unit": "folhas", "notes": "" },
+        "ingredient-main-5": { "name": "pimentão", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-6": { "name": "salsinha e coentro", "quantity": "", "unit": "", "notes": "a gosto" },
+        "ingredient-main-7": { "name": "uvas-passas", "quantity": "50", "unit": "g", "notes": "opcionais" },
+        "ingredient-main-8": { "name": "suco de limão", "quantity": "4", "unit": "colheres (sopa)", "notes": "" },
+        "ingredient-main-9": { "name": "azeite", "quantity": "4", "unit": "colheres (sopa)", "notes": "" },
+        "ingredient-main-10": { "name": "sal", "quantity": "", "unit": "", "notes": "para a água fervente" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Coloque o cuscuz em uma saladeira. Junte 200 ml de água fervente salgada, tampe e deixe hidratar por 5 min.",
+            "step-0-1": "Acrescente o suco de limão e o azeite e solte os grãos do cuscuz com um garfo.",
+            "step-0-2": "Corte os tomates, o pepino e o pimentão em pedacinhos bem pequenos. Pique a hortelã, a salsinha e o coentro e junte tudo ao cuscuz.",
+            "step-0-3": "Se for usar uvas-passas, deixe-as hidratar por 10 a 15 min em água morna, depois escorra bem e seque-as com papel-toalha antes de juntá-las.",
+            "step-0-4": "Misture bem e deixe descansar na geladeira por pelo menos 2 h."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Tabouleh",
+      "author": "Maman",
+      "description": "Huisgemaakte tabouleh met couscous, tomaten, komkommer, paprika en verse kruiden, op smaak gebracht met citroen en olijfolie.",
+      "yieldLabel": "4 personen",
+      "prepTime": "20 min",
+      "cookTime": "",
+      "restTime": "minstens 2 h",
+      "totalTime": "2 h 20",
+      "timeLabel": "2 h 20",
+      "temperature": "",
+      "equipment": ["1 slakom", "1 deksel", "1 vork", "keukenpapier"],
+      "notes": ["De tabouleh is nog lekkerder na een nachtje in de koelkast."],
+      "ingredients": {
+        "ingredient-main-0": { "name": "middelgrove couscous", "quantity": "200", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "water", "quantity": "200", "unit": "ml", "notes": "kokend" },
+        "ingredient-main-2": { "name": "kleine tomaten", "quantity": "4", "unit": "", "notes": "" },
+        "ingredient-main-3": { "name": "komkommer", "quantity": "1/2", "unit": "", "notes": "" },
+        "ingredient-main-4": { "name": "munt", "quantity": "10", "unit": "blaadjes", "notes": "" },
+        "ingredient-main-5": { "name": "paprika", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-6": { "name": "peterselie en koriander", "quantity": "", "unit": "", "notes": "naar smaak" },
+        "ingredient-main-7": { "name": "rozijnen", "quantity": "50", "unit": "g", "notes": "naar keuze" },
+        "ingredient-main-8": { "name": "citroensap", "quantity": "4", "unit": "el", "notes": "" },
+        "ingredient-main-9": { "name": "olijfolie", "quantity": "4", "unit": "el", "notes": "" },
+        "ingredient-main-10": { "name": "zout", "quantity": "", "unit": "", "notes": "voor het kokende water" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Doe de couscous in een slakom. Giet er 200 ml kokend gezouten water over, dek af en laat 5 min wellen.",
+            "step-0-1": "Voeg het citroensap en de olijfolie toe en maak de couscous los met een vork.",
+            "step-0-2": "Snij de tomaten, de komkommer en de paprika in heel kleine stukjes. Snipper de munt, de peterselie en de koriander en voeg alles toe aan de couscous.",
+            "step-0-3": "Gebruik je rozijnen, laat ze dan 10 à 15 min wellen in lauw water, laat ze goed uitlekken en dep ze droog met keukenpapier voor je ze toevoegt.",
+            "step-0-4": "Meng goed en laat minstens 2 h rusten in de koelkast."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "slug": "clafoutis-aux-abricots",
+  "translations": {
+    "pt-br": {
+      "title": "Clafoutis de damasco",
+      "author": "Maman",
+      "description": "Clafoutis de damasco com farinha de amêndoas, macio e levemente dourado.",
+      "yieldLabel": "6 pessoas",
+      "prepTime": "",
+      "cookTime": "35 a 40 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "35 a 40 min",
+      "temperature": "180 °C",
+      "equipment": ["1 refratário ou 1 forma de 24 cm"],
+      "notes": [
+        "Se os damascos estiverem um pouco ácidos, polvilhe-os com uma colher de sopa de açúcar antes de despejar a massa. Isso equilibra o sabor sem deixar o clafoutis doce demais."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "damascos", "quantity": "500 a 600", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "ovos", "quantity": "3", "unit": "", "notes": "" },
+        "ingredient-main-2": { "name": "açúcar", "quantity": "80", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "farinha de trigo", "quantity": "60", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "farinha de amêndoas", "quantity": "40", "unit": "g", "notes": "" },
+        "ingredient-main-5": { "name": "leite semidesnatado", "quantity": "250", "unit": "ml", "notes": "" },
+        "ingredient-main-6": { "name": "extrato de baunilha", "quantity": "1", "unit": "colher (chá)", "notes": "ou as sementes de meia fava" },
+        "ingredient-main-7": { "name": "sal", "quantity": "1", "unit": "pitada", "notes": "" },
+        "ingredient-main-8": { "name": "manteiga", "quantity": "20", "unit": "g", "notes": "para a forma, ou um pouco de óleo" },
+        "ingredient-main-9": { "name": "açúcar mascavo", "quantity": "1", "unit": "colher (sopa)", "notes": "opcional, para caramelizar levemente a superfície" },
+        "ingredient-main-10": { "name": "amêndoas laminadas", "quantity": "algumas", "unit": "", "notes": "opcional" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 180 °C.",
+            "step-0-1": "Unte com manteiga um refratário ou uma forma de cerca de 24 cm.",
+            "step-0-2": "Lave os damascos, corte-os ao meio e retire os caroços. Disponha-os no refratário com o lado cortado para cima.",
+            "step-0-3": "Misture os ovos com o açúcar até obter uma mistura homogênea.",
+            "step-0-4": "Acrescente a farinha, a farinha de amêndoas e a pitada de sal.",
+            "step-0-5": "Despeje o leite aos poucos, batendo com o batedor de arame, até obter uma massa lisa, e depois adicione a baunilha.",
+            "step-0-6": "Despeje a massa sobre os damascos."
+          }
+        },
+        {
+          "title": "Finalização opcional",
+          "steps": {
+            "step-1-0": "Para uma superfície levemente caramelizada, polvilhe açúcar mascavo e, se quiser, algumas amêndoas laminadas."
+          }
+        },
+        {
+          "title": "Cozimento",
+          "steps": {
+            "step-2-0": "Leve ao forno por 35 a 40 min, até que a superfície esteja bem dourada e o centro esteja apenas firme."
+          }
+        },
+        {
+          "title": "Para servir",
+          "steps": {
+            "step-3-0": "Deixe amornar por 15 a 20 min antes de servir. O clafoutis fica excelente morno, mas também frio, depois de algumas horas na geladeira."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Clafoutis met abrikozen",
+      "author": "Maman",
+      "description": "Clafoutis met abrikozen en amandelpoeder, zacht en lichtjes goudbruin.",
+      "yieldLabel": "6 personen",
+      "prepTime": "",
+      "cookTime": "35 à 40 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "35 à 40 min",
+      "temperature": "180 °C",
+      "equipment": ["1 ovenschotel of 1 bakvorm van 24 cm"],
+      "notes": [
+        "Zijn de abrikozen wat zuur, bestrooi ze dan met een soeplepel suiker voor je het beslag erover giet. Zo wordt hun smaak in evenwicht gebracht zonder dat de clafoutis te zoet wordt."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "abrikozen", "quantity": "500 à 600", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "eieren", "quantity": "3", "unit": "", "notes": "" },
+        "ingredient-main-2": { "name": "suiker", "quantity": "80", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "bloem", "quantity": "60", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "amandelpoeder", "quantity": "40", "unit": "g", "notes": "" },
+        "ingredient-main-5": { "name": "halfvolle melk", "quantity": "250", "unit": "ml", "notes": "" },
+        "ingredient-main-6": { "name": "vanille-extract", "quantity": "1", "unit": "kl", "notes": "of de zaadjes van een half vanillestokje" },
+        "ingredient-main-7": { "name": "zout", "quantity": "1", "unit": "snufje", "notes": "" },
+        "ingredient-main-8": { "name": "boter", "quantity": "20", "unit": "g", "notes": "voor de vorm, of een beetje olie" },
+        "ingredient-main-9": { "name": "rietsuiker", "quantity": "1", "unit": "el", "notes": "facultatief, om de bovenkant lichtjes te karamelliseren" },
+        "ingredient-main-10": { "name": "amandelschilfers", "quantity": "enkele", "unit": "", "notes": "facultatief" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 180 °C.",
+            "step-0-1": "Beboter een ovenschotel of een bakvorm van ongeveer 24 cm.",
+            "step-0-2": "Was de abrikozen, snijd ze doormidden en verwijder de pitten. Leg ze in de schotel met de snijkant naar boven.",
+            "step-0-3": "Meng de eieren met de suiker tot een egaal mengsel.",
+            "step-0-4": "Voeg de bloem, het amandelpoeder en het snufje zout toe.",
+            "step-0-5": "Giet al kloppend geleidelijk de melk erbij tot een glad beslag en voeg dan de vanille toe.",
+            "step-0-6": "Giet het beslag over de abrikozen."
+          }
+        },
+        {
+          "title": "Facultatieve afwerking",
+          "steps": {
+            "step-1-0": "Voor een lichtjes gekaramelliseerde bovenkant: bestrooi met rietsuiker en, als je wilt, met enkele amandelschilfers."
+          }
+        },
+        {
+          "title": "Bakken",
+          "steps": {
+            "step-2-0": "Zet 35 à 40 min in de oven, tot de bovenkant mooi goudbruin is en het midden net gestold is."
+          }
+        },
+        {
+          "title": "Serveren",
+          "steps": {
+            "step-3-0": "Laat 15 à 20 min afkoelen tot lauw voor je serveert. De clafoutis is heerlijk lauw, maar ook koud na enkele uren in de koelkast."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "slug": "gateau-au-citron",
+  "translations": {
+    "pt-br": {
+      "title": "Bolo de limão",
+      "author": "Maman",
+      "description": "Pão de ló estilo Vichy cortado em dois discos e recheado com creme de limão.",
+      "yieldLabel": "6 pessoas",
+      "prepTime": "",
+      "cookTime": "45 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "45 min",
+      "temperature": "160 °C",
+      "equipment": [
+        "1 forma redonda de bolo",
+        "1 panela",
+        "1 faca de lâmina longa"
+      ],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "ovos", "quantity": "4", "unit": "", "notes": "para o bolo" },
+        "ingredient-main-1": { "name": "farinha de trigo", "quantity": "o peso de 2 1/2 ovos", "unit": "", "notes": "para o bolo" },
+        "ingredient-main-2": { "name": "açúcar", "quantity": "o peso de 4 ovos", "unit": "", "notes": "para o bolo" },
+        "ingredient-main-3": { "name": "ovos", "quantity": "2", "unit": "", "notes": "para o creme de limão" },
+        "ingredient-main-4": { "name": "limões-sicilianos", "quantity": "2", "unit": "", "notes": "suco + raspas" },
+        "ingredient-main-5": { "name": "açúcar", "quantity": "100", "unit": "g", "notes": "para o creme de limão" },
+        "ingredient-main-6": { "name": "manteiga", "quantity": "50", "unit": "g", "notes": "para o creme de limão" }
+      },
+      "sections": [
+        {
+          "title": "Pão de ló estilo Vichy",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 160 °C.",
+            "step-0-1": "Misture o açúcar com 3 gemas + 1 ovo inteiro.",
+            "step-0-2": "Bata as claras em neve firme.",
+            "step-0-3": "Incorpore-as à massa, alternando com a farinha.",
+            "step-0-4": "Despeje a massa na forma e asse por 45 min a 160 °C."
+          }
+        },
+        {
+          "title": "Creme de limão",
+          "steps": {
+            "step-1-0": "Quebre os ovos, junte o açúcar e a manteiga.",
+            "step-1-1": "Leve ao fogo para derreter.",
+            "step-1-2": "Rale bem fino a casca do limão e acrescente as raspas e o suco à mistura.",
+            "step-1-3": "Mexa sobre o fogo para o creme engrossar, mas cuidado para ele não talhar."
+          }
+        },
+        {
+          "title": "Montagem",
+          "steps": {
+            "step-2-0": "Deixe o pão de ló esfriar completamente.",
+            "step-2-1": "Corte o bolo na horizontal em dois discos com uma faca de lâmina longa.",
+            "step-2-2": "Espalhe o creme de limão sobre o disco de baixo e recoloque delicadamente o disco de cima."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Citroentaart",
+      "author": "Maman",
+      "description": "Vichy-biscuit, in twee schijven gesneden en gevuld met citroencrème.",
+      "yieldLabel": "6 personen",
+      "prepTime": "",
+      "cookTime": "45 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "45 min",
+      "temperature": "160 °C",
+      "equipment": [
+        "1 ronde taartvorm",
+        "1 kookpot",
+        "1 mes met een lang lemmet"
+      ],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "eieren", "quantity": "4", "unit": "", "notes": "voor de biscuit" },
+        "ingredient-main-1": { "name": "bloem", "quantity": "gewicht van 2 1/2 eieren", "unit": "", "notes": "voor de biscuit" },
+        "ingredient-main-2": { "name": "suiker", "quantity": "gewicht van 4 eieren", "unit": "", "notes": "voor de biscuit" },
+        "ingredient-main-3": { "name": "eieren", "quantity": "2", "unit": "", "notes": "voor de citroencrème" },
+        "ingredient-main-4": { "name": "citroenen", "quantity": "2", "unit": "", "notes": "sap + rasp" },
+        "ingredient-main-5": { "name": "suiker", "quantity": "100", "unit": "g", "notes": "voor de citroencrème" },
+        "ingredient-main-6": { "name": "boter", "quantity": "50", "unit": "g", "notes": "voor de citroencrème" }
+      },
+      "sections": [
+        {
+          "title": "Vichy-biscuit",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 160 °C.",
+            "step-0-1": "Meng de suiker met 3 eidooiers + 1 heel ei.",
+            "step-0-2": "Klop de eiwitten tot een stevige sneeuw.",
+            "step-0-3": "Spatel ze door het beslag, afwisselend met de bloem.",
+            "step-0-4": "Giet het beslag in de vorm en bak 45 min op 160 °C."
+          }
+        },
+        {
+          "title": "Citroencrème",
+          "steps": {
+            "step-1-0": "Breek de eieren, voeg de suiker en de boter toe.",
+            "step-1-1": "Laat smelten.",
+            "step-1-2": "Rasp de citroenschil fijn en voeg de rasp en het sap bij het mengsel.",
+            "step-1-3": "Roer op het vuur tot de crème bindt, maar let op dat ze niet schift."
+          }
+        },
+        {
+          "title": "Afwerking",
+          "steps": {
+            "step-2-0": "Laat de Vichy-biscuit volledig afkoelen.",
+            "step-2-1": "Snij de taart met een mes met een lang lemmet horizontaal in twee schijven.",
+            "step-2-2": "Smeer de citroencrème op de onderste schijf en leg de bovenste schijf er voorzichtig weer op."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

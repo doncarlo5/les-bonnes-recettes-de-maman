@@ -1,0 +1,95 @@
+{
+  "slug": "clafoutis-poires-et-framboises",
+  "translations": {
+    "pt-br": {
+      "title": "Clafoutis de pera e framboesa",
+      "author": "Maman",
+      "description": "Clafoutis de pera, com algumas framboesas opcionais.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "45 a 50 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "45 a 50 min",
+      "temperature": "200 °C e depois 180 °C",
+      "equipment": [],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "açúcar", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "farinha de trigo", "quantity": "80", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "farinha de amêndoas", "quantity": "40", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "sal", "quantity": "1", "unit": "pitada", "notes": "" },
+        "ingredient-main-4": { "name": "canela", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-5": { "name": "ovos", "quantity": "3", "unit": "", "notes": "" },
+        "ingredient-main-6": { "name": "creme de leite fresco", "quantity": "20", "unit": "cl", "notes": "" },
+        "ingredient-main-7": { "name": "leite", "quantity": "20", "unit": "cl", "notes": "" },
+        "ingredient-main-8": { "name": "framboesas", "quantity": "algumas", "unit": "", "notes": "opcional" },
+        "ingredient-main-9": { "name": "peras", "quantity": "2 a 3", "unit": "", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Ligue o forno a 200 °C.",
+            "step-0-1": "Misture o açúcar, a farinha, a farinha de amêndoas, o sal e a canela.",
+            "step-0-2": "Em seguida, acrescente 3 ovos, 20 cl de creme de leite e 20 cl de leite.",
+            "step-0-3": "Bata tudo no liquidificador.",
+            "step-0-4": "Coloque as peras na forma e despeje a massa por cima."
+          }
+        },
+        {
+          "title": "Cozimento",
+          "steps": {
+            "step-1-0": "Asse por 10 min a 200 °C e depois por 35 a 40 min a 180 °C."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Clafoutis met peren en frambozen",
+      "author": "Maman",
+      "description": "Clafoutis met peren, met eventueel een paar frambozen erbij.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "45 à 50 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "45 à 50 min",
+      "temperature": "200 °C en daarna 180 °C",
+      "equipment": [],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "suiker", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "bloem", "quantity": "80", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "amandelpoeder", "quantity": "40", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "zout", "quantity": "1", "unit": "snufje", "notes": "" },
+        "ingredient-main-4": { "name": "kaneel", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-5": { "name": "eieren", "quantity": "3", "unit": "", "notes": "" },
+        "ingredient-main-6": { "name": "room", "quantity": "20", "unit": "cl", "notes": "" },
+        "ingredient-main-7": { "name": "melk", "quantity": "20", "unit": "cl", "notes": "" },
+        "ingredient-main-8": { "name": "frambozen", "quantity": "enkele", "unit": "", "notes": "facultatief" },
+        "ingredient-main-9": { "name": "peren", "quantity": "2 à 3", "unit": "", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Zet de oven op 200 °C.",
+            "step-0-1": "Meng de suiker, de bloem, het amandelpoeder, het zout en de kaneel.",
+            "step-0-2": "Voeg daarna 3 eieren, 20 cl room en 20 cl melk toe.",
+            "step-0-3": "Mix alles.",
+            "step-0-4": "Leg de peren in de vorm en giet het beslag erover."
+          }
+        },
+        {
+          "title": "Bakken",
+          "steps": {
+            "step-1-0": "Bak 10 min op 200 °C en daarna 35 à 40 min op 180 °C."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "slug": "gougeres",
+  "translations": {
+    "pt-br": {
+      "title": "Gougères",
+      "author": "Maman",
+      "description": "Gougères de queijo comté, com pimenta-do-reino e noz-moscada.",
+      "yieldLabel": "Cerca de 20 gougères",
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "190 °C",
+      "equipment": ["1 panela", "1 assadeira"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "manteiga", "quantity": "80", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "comté ralado", "quantity": "100", "unit": "g", "notes": "+ um pouco para decorar" },
+        "ingredient-main-2": { "name": "farinha de trigo", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "água", "quantity": "25", "unit": "cl", "notes": "" },
+        "ingredient-main-4": { "name": "ovos", "quantity": "4", "unit": "", "notes": "" },
+        "ingredient-main-5": { "name": "sal", "quantity": "1", "unit": "colher (chá)", "notes": "" },
+        "ingredient-main-6": { "name": "pimenta-do-reino", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-7": { "name": "noz-moscada", "quantity": "", "unit": "", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 190 °C.",
+            "step-0-1": "Derreta a manteiga na água com o sal.",
+            "step-0-2": "Quando espumar, junte a farinha peneirada.",
+            "step-0-3": "Deixe 2 min na panela para a água evaporar.",
+            "step-0-4": "Acrescente a pimenta e a noz-moscada, depois os ovos um a um e, por fim, o queijo ralado.",
+            "step-0-5": "Forme montinhos sobre uma assadeira e coloque um pouco de comté por cima para decorar."
+          }
+        },
+        {
+          "title": "Cozimento",
+          "steps": {
+            "step-1-0": "Asse por 30 min a 190 °C."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Gougères",
+      "author": "Maman",
+      "description": "Gougères met comté, peper en nootmuskaat.",
+      "yieldLabel": "Ongeveer 20 gougères",
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "190 °C",
+      "equipment": ["1 kookpot", "1 bakplaat"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "boter", "quantity": "80", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "geraspte comté", "quantity": "100", "unit": "g", "notes": "+ extra voor de afwerking" },
+        "ingredient-main-2": { "name": "bloem", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "water", "quantity": "25", "unit": "cl", "notes": "" },
+        "ingredient-main-4": { "name": "eieren", "quantity": "4", "unit": "", "notes": "" },
+        "ingredient-main-5": { "name": "zout", "quantity": "1", "unit": "kl", "notes": "" },
+        "ingredient-main-6": { "name": "peper", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-7": { "name": "nootmuskaat", "quantity": "", "unit": "", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 190 °C.",
+            "step-0-1": "Laat de boter smelten in het water met het zout.",
+            "step-0-2": "Voeg de gezeefde bloem toe zodra het schuimt.",
+            "step-0-3": "Laat 2 min in de kookpot staan zodat het water kan verdampen.",
+            "step-0-4": "Voeg de peper en de nootmuskaat toe, daarna de eieren een voor een en tot slot de geraspte kaas.",
+            "step-0-5": "Schep kleine hoopjes op een bakplaat en strooi er een beetje comté over als versiering."
+          }
+        },
+        {
+          "title": "Bakken",
+          "steps": {
+            "step-1-0": "Bak 30 min op 190 °C."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

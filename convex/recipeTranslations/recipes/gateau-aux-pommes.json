@@ -1,0 +1,127 @@
+{
+  "slug": "gateau-aux-pommes",
+  "translations": {
+    "pt-br": {
+      "title": "Bolo de maçã",
+      "author": "Virginie",
+      "description": "Bolo de maçã com uma massa simples e um creme despejado no meio do cozimento.",
+      "yieldLabel": "6 pessoas",
+      "prepTime": "25 min",
+      "cookTime": "40 min",
+      "restTime": "",
+      "totalTime": "1 h 05",
+      "timeLabel": "1 h 05",
+      "temperature": "180 °C",
+      "equipment": ["1 forma redonda de bolo", "1 panela"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "farinha de trigo", "quantity": "10", "unit": "colheres (sopa)", "notes": "" },
+        "ingredient-main-1": { "name": "açúcar", "quantity": "8", "unit": "colheres (sopa)", "notes": "" },
+        "ingredient-main-2": { "name": "leite", "quantity": "6", "unit": "colheres (sopa)", "notes": "" },
+        "ingredient-main-3": { "name": "óleo", "quantity": "4", "unit": "colheres (sopa)", "notes": "" },
+        "ingredient-main-4": { "name": "maçãs", "quantity": "4", "unit": "grandes", "notes": "" },
+        "ingredient-main-5": { "name": "ovo", "quantity": "2", "unit": "", "notes": "" },
+        "ingredient-main-6": { "name": "sal", "quantity": "2", "unit": "pitadas", "notes": "" },
+        "ingredient-main-7": { "name": "fermento em pó", "quantity": "1", "unit": "envelope", "notes": "" },
+        "ingredient-main-8": { "name": "manteiga", "quantity": "80", "unit": "g", "notes": "creme" },
+        "ingredient-main-9": { "name": "açúcar", "quantity": "100", "unit": "g", "notes": "creme" },
+        "ingredient-main-10": { "name": "ovo", "quantity": "1", "unit": "", "notes": "creme" },
+        "ingredient-main-11": { "name": "baunilha", "quantity": "", "unit": "", "notes": "creme" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 180 °C.",
+            "step-0-1": "Misture a farinha, o açúcar, o fermento e o sal.",
+            "step-0-2": "Junte o leite, os ovos e o óleo.",
+            "step-0-3": "Trabalhe bem a massa.",
+            "step-0-4": "Despeje em uma forma redonda forrada com fatias de maçã.",
+            "step-0-5": "Leve ao forno a 180 °C por 25 min."
+          }
+        },
+        {
+          "title": "Creme",
+          "steps": {
+            "step-1-0": "Derreta a manteiga em uma panela.",
+            "step-1-1": "Junte o açúcar, o ovo e a baunilha."
+          }
+        },
+        {
+          "title": "Final do cozimento",
+          "steps": {
+            "step-2-0": "Depois de 25 min, quando o bolo começar a crescer e dourar, despeje o creme sobre o bolo e continue assando por mais 15 min."
+          }
+        },
+        {
+          "title": "Conservação",
+          "steps": {
+            "step-3-0": "Este bolo se conserva por 3 a 4 dias."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Appeltaart",
+      "author": "Virginie",
+      "description": "Appeltaart met een eenvoudig beslag en een crème die je halverwege het bakken erover giet.",
+      "yieldLabel": "6 personen",
+      "prepTime": "25 min",
+      "cookTime": "40 min",
+      "restTime": "",
+      "totalTime": "1 h 05",
+      "timeLabel": "1 h 05",
+      "temperature": "180 °C",
+      "equipment": ["1 ronde taartvorm", "1 kookpot"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "bloem", "quantity": "10", "unit": "el", "notes": "" },
+        "ingredient-main-1": { "name": "suiker", "quantity": "8", "unit": "el", "notes": "" },
+        "ingredient-main-2": { "name": "melk", "quantity": "6", "unit": "el", "notes": "" },
+        "ingredient-main-3": { "name": "olie", "quantity": "4", "unit": "el", "notes": "" },
+        "ingredient-main-4": { "name": "appelen", "quantity": "4", "unit": "flinke", "notes": "" },
+        "ingredient-main-5": { "name": "ei", "quantity": "2", "unit": "", "notes": "" },
+        "ingredient-main-6": { "name": "zout", "quantity": "2", "unit": "snufjes", "notes": "" },
+        "ingredient-main-7": { "name": "bakpoeder", "quantity": "1", "unit": "zakje", "notes": "" },
+        "ingredient-main-8": { "name": "boter", "quantity": "80", "unit": "g", "notes": "crème" },
+        "ingredient-main-9": { "name": "suiker", "quantity": "100", "unit": "g", "notes": "crème" },
+        "ingredient-main-10": { "name": "ei", "quantity": "1", "unit": "", "notes": "crème" },
+        "ingredient-main-11": { "name": "vanille", "quantity": "", "unit": "", "notes": "crème" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 180 °C.",
+            "step-0-1": "Meng de bloem, de suiker, het bakpoeder en het zout.",
+            "step-0-2": "Voeg de melk, de eieren en de olie toe.",
+            "step-0-3": "Werk alles goed door elkaar.",
+            "step-0-4": "Giet het beslag in een ronde taartvorm, bekleed met schijfjes appel.",
+            "step-0-5": "Bak 25 min in de oven op 180 °C."
+          }
+        },
+        {
+          "title": "Crème",
+          "steps": {
+            "step-1-0": "Smelt de boter in een kookpot.",
+            "step-1-1": "Voeg de suiker, het ei en de vanille toe."
+          }
+        },
+        {
+          "title": "Verder bakken",
+          "steps": {
+            "step-2-0": "Na 25 min, wanneer de taart begint te rijzen en goudbruin te kleuren, giet je de crème over de taart en bak je nog 15 min verder."
+          }
+        },
+        {
+          "title": "Bewaren",
+          "steps": {
+            "step-3-0": "Deze taart blijft 3 à 4 dagen goed."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

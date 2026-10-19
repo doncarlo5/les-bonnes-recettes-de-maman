@@ -1,0 +1,105 @@
+{
+  "slug": "papillotes-de-cabillaud",
+  "translations": {
+    "pt-br": {
+      "title": "Bacalhau fresco en papillote",
+      "author": "Maman",
+      "description": "Bacalhau fresco en papillote com limão e ervas, acompanhado de um molho de manteiga à polonesa.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "180 °C",
+      "equipment": ["papel-manteiga", "grampeador", "máquina de molhos SEB", "garfo"],
+      "notes": [
+        "A quantidade de bacalhau não está indicada na receita manuscrita.",
+        "O molho rende cerca de 1 tigela."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "bacalhau fresco", "quantity": "", "unit": "", "notes": "quantidade não indicada" },
+        "ingredient-main-1": { "name": "suco de limão", "quantity": "1", "unit": "colher (chá)", "notes": "para os papillotes" },
+        "ingredient-main-2": { "name": "azeite de oliva", "quantity": "1", "unit": "colher (chá)", "notes": "para os papillotes" },
+        "ingredient-main-3": { "name": "sal", "quantity": "", "unit": "", "notes": "a gosto" },
+        "ingredient-main-4": { "name": "pimenta-do-reino", "quantity": "", "unit": "", "notes": "a gosto" },
+        "ingredient-main-5": { "name": "salsinha ou coentro", "quantity": "", "unit": "", "notes": "a gosto" },
+        "ingredient-main-6": { "name": "ovo cozido", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-7": { "name": "mostarda", "quantity": "1", "unit": "colher (chá)", "notes": "" },
+        "ingredient-main-8": { "name": "manteiga", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-9": { "name": "suco de limão", "quantity": "1", "unit": "colher (sopa)", "notes": "para o molho" }
+      },
+      "sections": [
+        {
+          "title": "Papillotes",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 180 °C.",
+            "step-0-1": "Coloque o bacalhau sobre papel-manteiga. Acrescente 1 colher (chá) de suco de limão e 1 colher (chá) de azeite e tempere com sal, pimenta e salsinha ou coentro.",
+            "step-0-2": "Feche o papillote com o grampeador, mantendo os grampos longe dos alimentos.",
+            "step-0-3": "Leve ao forno por 30 min a 180 °C."
+          }
+        },
+        {
+          "title": "Molho de manteiga à polonesa",
+          "steps": {
+            "step-1-0": "Amasse o ovo cozido bem fininho com o garfo.",
+            "step-1-1": "Coloque-o na máquina de molhos SEB com o sal, a pimenta, a mostarda e 1 colher (sopa) de suco de limão.",
+            "step-1-2": "Ajuste a máquina de molhos SEB na posição 2 para um cozimento suave e acrescente aos poucos a manteiga em pedacinhos.",
+            "step-1-3": "Deixe a máquina de molhos SEB funcionar por 12 min e sirva o molho com os papillotes de bacalhau."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Kabeljauw en papillote",
+      "author": "Maman",
+      "description": "Kabeljauw en papillote met citroen en kruiden, met een Poolse botersaus erbij.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "180 °C",
+      "equipment": ["bakpapier", "nietjesmachine", "SEB-sauzenmaker", "vork"],
+      "notes": [
+        "De hoeveelheid kabeljauw staat niet op het handgeschreven receptkaartje.",
+        "De saus is goed voor ongeveer 1 kom."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "kabeljauw", "quantity": "", "unit": "", "notes": "hoeveelheid niet vermeld" },
+        "ingredient-main-1": { "name": "citroensap", "quantity": "1", "unit": "kl", "notes": "voor de papillotes" },
+        "ingredient-main-2": { "name": "olijfolie", "quantity": "1", "unit": "kl", "notes": "voor de papillotes" },
+        "ingredient-main-3": { "name": "zout", "quantity": "", "unit": "", "notes": "naar smaak" },
+        "ingredient-main-4": { "name": "peper", "quantity": "", "unit": "", "notes": "naar smaak" },
+        "ingredient-main-5": { "name": "peterselie of koriander", "quantity": "", "unit": "", "notes": "naar smaak" },
+        "ingredient-main-6": { "name": "hardgekookt ei", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-7": { "name": "mosterd", "quantity": "1", "unit": "kl", "notes": "" },
+        "ingredient-main-8": { "name": "boter", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-9": { "name": "citroensap", "quantity": "1", "unit": "el", "notes": "voor de saus" }
+      },
+      "sections": [
+        {
+          "title": "Papillotes",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 180 °C.",
+            "step-0-1": "Leg de kabeljauw op bakpapier. Voeg 1 koffielepel citroensap en 1 koffielepel olijfolie toe en kruid met zout, peper en peterselie of koriander.",
+            "step-0-2": "Sluit de papillote met de nietjesmachine en houd de nietjes uit de buurt van het eten.",
+            "step-0-3": "Zet 30 min in de oven op 180 °C."
+          }
+        },
+        {
+          "title": "Poolse botersaus",
+          "steps": {
+            "step-1-0": "Plet het hardgekookte ei heel fijn met de vork.",
+            "step-1-1": "Doe het in de SEB-sauzenmaker met het zout, de peper, de mosterd en 1 el citroensap.",
+            "step-1-2": "Zet de SEB-sauzenmaker op stand 2 voor zacht garen en voeg geleidelijk de boter in kleine stukjes toe.",
+            "step-1-3": "Laat de SEB-sauzenmaker 12 min draaien en serveer de saus bij de kabeljauwpapillotes."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

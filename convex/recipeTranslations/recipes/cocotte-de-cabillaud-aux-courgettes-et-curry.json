@@ -1,0 +1,127 @@
+{
+  "slug": "cocotte-de-cabillaud-aux-courgettes-et-curry",
+  "translations": {
+    "pt-br": {
+      "title": "Bacalhau fresco com abobrinha e curry no forno",
+      "author": "Maman",
+      "description": "Cumbuquinhas de bacalhau fresco com abobrinha, curry, creme de leite fresco e parmesão.",
+      "yieldLabel": "6 pessoas",
+      "prepTime": "20 min",
+      "cookTime": "35–45 min",
+      "restTime": "",
+      "totalTime": "55–65 min",
+      "timeLabel": "55–65 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 frigideira",
+        "1 travessa grande refratária ou 6 cumbuquinhas individuais (cocottes)",
+        "Papel-manteiga ou papel-alumínio"
+      ],
+      "notes": [
+        "Maman usa uma travessa grande refratária, porque não tem cumbuquinhas individuais, e a cobre com papel-manteiga ou papel-alumínio.",
+        "Maman usa um pacote congelado da Carrefour com uma mistura de 3 peixes. Ela descongela no micro-ondas e escorre bem para não ficar muita água na travessa.",
+        "As abobrinhas devem começar a desmanchar: conte de preferência 15 a 20 min de cozimento na frigideira.",
+        "No fim do tempo de forno, retire o papel para gratinar o parmesão."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "filé de bacalhau fresco sem pele e sem espinhas", "quantity": "500", "unit": "g", "notes": "Pode ser substituído por uma mistura congelada de 3 peixes, descongelada no micro-ondas e bem escorrida." },
+        "ingredient-main-1": { "name": "abobrinhas", "quantity": "900", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "sal", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-3": { "name": "pimenta-do-reino moída na hora", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-4": { "name": "cebola", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-5": { "name": "azeite de oliva", "quantity": "1", "unit": "colher (sopa)", "notes": "" },
+        "ingredient-main-6": { "name": "salsinha", "quantity": "1/2", "unit": "maço", "notes": "" },
+        "ingredient-main-7": { "name": "curry em pó", "quantity": "1", "unit": "colher (chá)", "notes": "" },
+        "ingredient-main-8": { "name": "parmesão ralado", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-9": { "name": "creme de leite fresco", "quantity": "25", "unit": "cl", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Descasque a cebola e corte em fatias finas.",
+            "step-0-1": "Descasque as abobrinhas e corte em cubinhos.",
+            "step-0-2": "Pique a salsinha.",
+            "step-0-3": "Corte os filés de bacalhau em pedaços. Se usar uma mistura congelada de 3 peixes, descongele no micro-ondas e escorra bem para não ficar muita água na travessa.",
+            "step-0-4": "Numa frigideira, refogue a cebola fatiada com as abobrinhas em fogo médio por 15 a 20 min, até as abobrinhas começarem a desmanchar.",
+            "step-0-5": "Tempere com sal e pimenta, polvilhe o curry e acrescente a salsinha picada.",
+            "step-0-6": "Misture e deixe cozinhar por mais alguns minutos.",
+            "step-0-7": "Tire do fogo, junte os pedaços de peixe às abobrinhas e misture.",
+            "step-0-8": "Preaqueça o forno a 180 °C.",
+            "step-0-9": "Despeje a preparação numa travessa grande refratária ou distribua nas cumbuquinhas individuais.",
+            "step-0-10": "Regue com o creme de leite fresco e polvilhe o parmesão."
+          }
+        },
+        {
+          "title": "Finalização",
+          "steps": {
+            "step-1-0": "Cubra a travessa grande com papel-manteiga ou papel-alumínio e leve ao forno a 180 °C por cerca de 15 a 20 min. No fim do cozimento, retire o papel e deixe o parmesão gratinar.",
+            "step-1-1": "Sirva assim que sair do forno."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Ovenschoteltjes met kabeljauw, courgette en curry",
+      "author": "Maman",
+      "description": "Ovenschoteltjes met kabeljauw, courgette, curry, vloeibare room en parmezaan.",
+      "yieldLabel": "6 personen",
+      "prepTime": "20 min",
+      "cookTime": "35–45 min",
+      "restTime": "",
+      "totalTime": "55–65 min",
+      "timeLabel": "55–65 min",
+      "temperature": "180 °C",
+      "equipment": [
+        "1 pan",
+        "1 grote ovenschotel of 6 kleine cocottes",
+        "Bakpapier of aluminiumfolie"
+      ],
+      "notes": [
+        "Maman gebruikt een grote ovenschotel, omdat ze geen kleine cocottes heeft, en dekt die af met bakpapier of aluminiumfolie.",
+        "Maman gebruikt een zak diepgevroren vismix met 3 soorten vis van Carrefour. Ze laat die ontdooien in de microgolfoven en laat ze goed uitlekken, zodat er niet te veel water in de schotel komt.",
+        "De courgettes moeten beginnen te smelten: reken eerder op 15 à 20 min in de pan.",
+        "Haal op het einde van de oventijd het papier weg, zodat de parmezaan kan gratineren."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "kabeljauwfilet zonder vel en zonder graten", "quantity": "500", "unit": "g", "notes": "Kan vervangen worden door een diepgevroren mix van 3 soorten vis, ontdooid in de microgolfoven en goed uitgelekt." },
+        "ingredient-main-1": { "name": "courgettes", "quantity": "900", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "zout", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-3": { "name": "versgemalen peper", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-4": { "name": "ui", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-5": { "name": "olijfolie", "quantity": "1", "unit": "el", "notes": "" },
+        "ingredient-main-6": { "name": "peterselie", "quantity": "1/2", "unit": "bussel", "notes": "" },
+        "ingredient-main-7": { "name": "currypoeder", "quantity": "1", "unit": "kl", "notes": "" },
+        "ingredient-main-8": { "name": "geraspte parmezaan", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-9": { "name": "vloeibare room", "quantity": "25", "unit": "cl", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Pel de ui en snij hem in dunne ringen.",
+            "step-0-1": "Schil de courgettes en snij ze in kleine blokjes.",
+            "step-0-2": "Hak de peterselie fijn.",
+            "step-0-3": "Snij de kabeljauwfilets in stukken. Gebruik je een diepgevroren mix van 3 soorten vis, laat die dan ontdooien in de microgolfoven en goed uitlekken, zodat er niet te veel water in de schotel komt.",
+            "step-0-4": "Stoof de ui samen met de courgettes in een pan op een middelhoog vuur gedurende 15 à 20 min, tot de courgettes beginnen te smelten.",
+            "step-0-5": "Kruid met peper en zout, bestrooi met curry en voeg de gehakte peterselie toe.",
+            "step-0-6": "Meng en laat nog enkele minuten verder garen.",
+            "step-0-7": "Haal van het vuur, voeg de stukken vis bij de courgettes en meng.",
+            "step-0-8": "Verwarm de oven voor op 180 °C.",
+            "step-0-9": "Giet het mengsel in een grote ovenschotel of verdeel het over de kleine cocottes.",
+            "step-0-10": "Overgiet met de vloeibare room en bestrooi met parmezaan."
+          }
+        },
+        {
+          "title": "Afwerking",
+          "steps": {
+            "step-1-0": "Dek de grote schotel af met bakpapier of aluminiumfolie en zet ongeveer 15 à 20 min in de oven op 180 °C. Haal op het einde het papier weg en laat de parmezaan gratineren.",
+            "step-1-1": "Dien meteen op zodra de schotel uit de oven komt."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

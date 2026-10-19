@@ -10,10 +10,13 @@
     "lint": "eslint",
     "generate:recipe-catalog-index": "node scripts/generate-recipe-catalog-index.mjs",
     "check:recipe-catalog-index": "node scripts/generate-recipe-catalog-index.mjs --check",
+    "generate:recipe-translations-index": "node scripts/generate-recipe-translations-index.mjs",
+    "check:recipe-translations-index": "node scripts/generate-recipe-translations-index.mjs --check",
     "sync:recipe:production": "RECIPE_SYNC_MODE=single node --env-file-if-exists=.env.local scripts/sync-production-recipes.mjs",
     "sync:recipes:production": "node --env-file-if-exists=.env.local scripts/sync-production-recipes.mjs",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "sync:recipe-translations:production": "npx convex run --prod recipeTranslations/sync:apply"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

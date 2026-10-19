@@ -1,0 +1,101 @@
+{
+  "slug": "tarte-aux-amandes-et-confiture-de-framboises",
+  "translations": {
+    "pt-br": {
+      "title": "Torta de amêndoas e geleia de framboesa",
+      "author": "Maman",
+      "description": "Torta de massa sablée, recheada com geleia de framboesa e um creme de amêndoas.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "30 a 35 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 a 35 min",
+      "temperature": "160 °C",
+      "equipment": [],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "massa sablée", "quantity": "1", "unit": "", "notes": "Pierre Hermé ou outra" },
+        "ingredient-main-1": { "name": "manteiga", "quantity": "100", "unit": "g", "notes": "amolecida" },
+        "ingredient-main-2": { "name": "açúcar", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "farinha de amêndoas", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "ovos", "quantity": "2", "unit": "", "notes": "claras e gemas separadas" },
+        "ingredient-main-5": { "name": "geleia de framboesa", "quantity": "2 a 3", "unit": "colheres (sopa)", "notes": "" },
+        "ingredient-main-6": { "name": "amêndoas laminadas tostadas", "quantity": "", "unit": "", "notes": "para decorar" },
+        "ingredient-main-7": { "name": "açúcar de confeiteiro", "quantity": "", "unit": "", "notes": "para decorar" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 160 °C.",
+            "step-0-1": "Misture a manteiga amolecida com o açúcar e as gemas.",
+            "step-0-2": "Junte a farinha de amêndoas e, depois, as claras batidas em neve.",
+            "step-0-3": "Espalhe a geleia sobre a massa e cubra com a mistura de amêndoas."
+          }
+        },
+        {
+          "title": "Cozimento",
+          "steps": {
+            "step-1-0": "Asse por 30 a 35 min a 160 °C."
+          }
+        },
+        {
+          "title": "Decoração",
+          "steps": {
+            "step-2-0": "Decore com amêndoas laminadas tostadas e açúcar de confeiteiro."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Amandeltaart met frambozenconfituur",
+      "author": "Maman",
+      "description": "Taart op zanddeeg, gevuld met frambozenconfituur en een amandelvulling.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "30 à 35 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 à 35 min",
+      "temperature": "160 °C",
+      "equipment": [],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "zanddeeg", "quantity": "1", "unit": "", "notes": "Pierre Hermé of een ander" },
+        "ingredient-main-1": { "name": "boter", "quantity": "100", "unit": "g", "notes": "zacht" },
+        "ingredient-main-2": { "name": "suiker", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "amandelpoeder", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "eieren", "quantity": "2", "unit": "", "notes": "eiwitten en dooiers gescheiden" },
+        "ingredient-main-5": { "name": "frambozenconfituur", "quantity": "2 à 3", "unit": "el", "notes": "" },
+        "ingredient-main-6": { "name": "geroosterde amandelschilfers", "quantity": "", "unit": "", "notes": "voor de afwerking" },
+        "ingredient-main-7": { "name": "bloemsuiker", "quantity": "", "unit": "", "notes": "voor de afwerking" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 160 °C.",
+            "step-0-1": "Meng de zachte boter met de suiker en de eidooiers.",
+            "step-0-2": "Voeg het amandelpoeder toe en spatel daarna de stijfgeklopte eiwitten erdoor.",
+            "step-0-3": "Smeer de confituur over het deeg en verdeel er dan het amandelmengsel over."
+          }
+        },
+        {
+          "title": "Bakken",
+          "steps": {
+            "step-1-0": "Bak 30 à 35 min op 160 °C."
+          }
+        },
+        {
+          "title": "Afwerking",
+          "steps": {
+            "step-2-0": "Werk af met geroosterde amandelschilfers en bloemsuiker."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

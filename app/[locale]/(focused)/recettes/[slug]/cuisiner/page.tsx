@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { GuidedCookMode } from "@/components/recipes/guided-cook-mode";
 import { api } from "@/convex/_generated/api";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { hasLocale } from "@/i18n/config";
+import { hasLocale, type Locale } from "@/i18n/config";
 import { getPublicRecipeE2EFixture } from "@/components/recipes/admin-recipe-e2e-fixtures";
 import { parseSelectedServings } from "@/lib/recipe-servings";
 import {
@@ -12,7 +12,7 @@ import {
   type PublicRecipeWire,
 } from "@/lib/recipe-public";
 
-const getRecipe = cache((locale: "fr" | "en", slug: string) => {
+const getRecipe = cache((locale: Locale, slug: string) => {
   const fixture = getPublicRecipeE2EFixture(locale, slug);
   const result = fixture
     ? Promise.resolve(fixture)

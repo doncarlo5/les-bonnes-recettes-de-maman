@@ -14,7 +14,7 @@ export function resolveYieldLabel({
   yieldLabel,
   servings,
 }: {
-  locale: "fr" | "en";
+  locale: string;
   slug: string;
   yieldLabel?: string;
   servings?: LegacyServings | null;

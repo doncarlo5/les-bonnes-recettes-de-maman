@@ -1,0 +1,79 @@
+{
+  "slug": "lasagnes",
+  "translations": {
+    "pt-br": {
+      "title": "Lasanha",
+      "author": "Maman",
+      "description": "Lasanha de família com molho à bolonhesa, bechamel e queijos ralados.",
+      "yieldLabel": "1 travessa",
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "200 °C",
+      "equipment": ["1 travessa refratária"],
+      "notes": [
+        "A lasanha pode ser preparada na véspera. Nesse caso, reduza um pouco o tempo de forno para que ela não fique cozida demais ao ser reaquecida."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "molho bechamel", "quantity": "1/2", "unit": "litro", "notes": "aproximadamente" },
+        "ingredient-main-1": { "name": "molho à bolonhesa", "quantity": "1", "unit": "receita", "notes": "" },
+        "ingredient-main-2": { "name": "massa para lasanha", "quantity": "1", "unit": "pacote", "notes": "" },
+        "ingredient-main-3": { "name": "queijo gruyère ralado", "quantity": "", "unit": "", "notes": "para cada camada" },
+        "ingredient-main-4": { "name": "parmesão ralado", "quantity": "", "unit": "", "notes": "para gratinar" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 200 °C e prepare o bechamel.",
+            "step-0-1": "Espalhe uma concha de bechamel no fundo da travessa e cubra com uma camada de folhas de lasanha.",
+            "step-0-2": "Adicione uma camada de molho à bolonhesa, cubra com bechamel e polvilhe generosamente com gruyère ralado.",
+            "step-0-3": "Repita as camadas de massa, molho à bolonhesa, bechamel e gruyère até terminar os ingredientes.",
+            "step-0-4": "Termine com uma camada de bechamel e cubra generosamente com parmesão ralado.",
+            "step-0-5": "Leve ao forno por cerca de 30 min a 200 °C."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Lasagne",
+      "author": "Maman",
+      "description": "Lasagne zoals thuis, met bolognesesaus, bechamelsaus en geraspte kaas.",
+      "yieldLabel": "1 ovenschotel",
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "200 °C",
+      "equipment": ["1 ovenschaal"],
+      "notes": [
+        "De lasagne kan de dag voordien klaargemaakt worden. Verkort dan de baktijd een beetje, zodat ze bij het opwarmen niet te gaar wordt."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "bechamelsaus", "quantity": "1/2", "unit": "liter", "notes": "ongeveer" },
+        "ingredient-main-1": { "name": "bolognesesaus", "quantity": "1", "unit": "portie", "notes": "" },
+        "ingredient-main-2": { "name": "lasagnebladen", "quantity": "1", "unit": "pak", "notes": "" },
+        "ingredient-main-3": { "name": "geraspte gruyère", "quantity": "", "unit": "", "notes": "voor elke laag" },
+        "ingredient-main-4": { "name": "geraspte parmezaan", "quantity": "", "unit": "", "notes": "om te gratineren" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 200 °C en maak de bechamelsaus.",
+            "step-0-1": "Verdeel een pollepel bechamelsaus over de bodem van de schaal en leg er een laag lasagnebladen op.",
+            "step-0-2": "Voeg een laag bolognesesaus toe, bedek met bechamelsaus en bestrooi royaal met geraspte gruyère.",
+            "step-0-3": "Herhaal de lagen lasagnebladen, bolognesesaus, bechamelsaus en gruyère tot alle ingrediënten op zijn.",
+            "step-0-4": "Werk af met een laag bechamelsaus en bestrooi die royaal met geraspte parmezaan.",
+            "step-0-5": "Zet ongeveer 30 min in de oven op 200 °C."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

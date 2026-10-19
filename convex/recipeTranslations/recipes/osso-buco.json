@@ -1,0 +1,87 @@
+{
+  "slug": "osso-buco",
+  "translations": {
+    "pt-br": {
+      "title": "Osso buco",
+      "author": "Maman",
+      "description": "Osso buco de jarrete de vitela com tomate, cenoura, vinho branco e bouquet garni.",
+      "yieldLabel": "4 pessoas",
+      "prepTime": "",
+      "cookTime": "45 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "45 min",
+      "temperature": "fogo baixo",
+      "equipment": ["1 panela de pressão"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "ossobuco de vitela", "quantity": "4", "unit": "fatias", "notes": "cerca de 200 g cada" },
+        "ingredient-main-1": { "name": "óleo", "quantity": "10", "unit": "cl", "notes": "" },
+        "ingredient-main-2": { "name": "alho", "quantity": "3", "unit": "dentes", "notes": "" },
+        "ingredient-main-3": { "name": "cebolas", "quantity": "2", "unit": "", "notes": "" },
+        "ingredient-main-4": { "name": "tomate pelado picado", "quantity": "1", "unit": "lata de 400 g", "notes": "" },
+        "ingredient-main-5": { "name": "cenouras", "quantity": "200", "unit": "g", "notes": "" },
+        "ingredient-main-6": { "name": "vinho branco", "quantity": "20", "unit": "cl", "notes": "" },
+        "ingredient-main-7": { "name": "bouquet garni", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-8": { "name": "farinha de trigo", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-9": { "name": "sal", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-10": { "name": "pimenta-do-reino", "quantity": "", "unit": "", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Passe a carne na farinha.",
+            "step-0-1": "Doure-a de todos os lados na panela com um fio de óleo no fundo.",
+            "step-0-2": "Junte as cenouras cortadas em rodelas grossas, as cebolas fatiadas e o alho picado.",
+            "step-0-3": "Acrescente os tomates e o vinho branco.",
+            "step-0-4": "Tempere com sal e pimenta e junte o bouquet garni.",
+            "step-0-5": "Cozinhe por 45 min em fogo baixo depois que a válvula começar a girar."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Osso buco",
+      "author": "Maman",
+      "description": "Osso buco van kalfsschenkel met tomaten, wortelen, witte wijn en bouquet garni.",
+      "yieldLabel": "4 personen",
+      "prepTime": "",
+      "cookTime": "45 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "45 min",
+      "temperature": "zacht vuur",
+      "equipment": ["1 snelkookpan"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "kalfsschenkel", "quantity": "4", "unit": "schijven", "notes": "ongeveer 200 g per stuk" },
+        "ingredient-main-1": { "name": "olie", "quantity": "10", "unit": "cl", "notes": "" },
+        "ingredient-main-2": { "name": "look", "quantity": "3", "unit": "teentjes", "notes": "" },
+        "ingredient-main-3": { "name": "uien", "quantity": "2", "unit": "", "notes": "" },
+        "ingredient-main-4": { "name": "tomatenblokjes", "quantity": "1", "unit": "blik van 400 g", "notes": "" },
+        "ingredient-main-5": { "name": "wortelen", "quantity": "200", "unit": "g", "notes": "" },
+        "ingredient-main-6": { "name": "witte wijn", "quantity": "20", "unit": "cl", "notes": "" },
+        "ingredient-main-7": { "name": "bouquet garni", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-8": { "name": "bloem", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-9": { "name": "zout", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-10": { "name": "peper", "quantity": "", "unit": "", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Bebloem het vlees.",
+            "step-0-1": "Bak het aan alle kanten goudbruin in de kookpot met een bodempje olie.",
+            "step-0-2": "Voeg de in dikke schijfjes gesneden wortelen, de gesnipperde uien en de gehakte look toe.",
+            "step-0-3": "Voeg de tomaten en de witte wijn toe.",
+            "step-0-4": "Kruid met peper en zout en voeg de bouquet garni toe.",
+            "step-0-5": "Laat 45 min op zacht vuur garen zodra het ventiel begint te draaien."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

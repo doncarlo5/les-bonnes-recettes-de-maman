@@ -1,0 +1,107 @@
+{
+  "slug": "cake-orange",
+  "translations": {
+    "pt-br": {
+      "title": "Bolo de laranja",
+      "author": "Maman",
+      "description": "Bolo de laranja com manteiga com sal, coberto com glacê ou calda de laranja.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "40 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "40 min",
+      "temperature": "180 °C",
+      "equipment": [],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "laranja", "quantity": "1", "unit": "", "notes": "suco + raspas" },
+        "ingredient-main-1": { "name": "ovos", "quantity": "3", "unit": "", "notes": "" },
+        "ingredient-main-2": { "name": "manteiga com sal", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "açúcar", "quantity": "160", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "farinha de trigo", "quantity": "160", "unit": "g", "notes": "" },
+        "ingredient-main-5": { "name": "fermento em pó", "quantity": "1/2", "unit": "colher (chá)", "notes": "forma grande" },
+        "ingredient-main-6": { "name": "açúcar de confeiteiro", "quantity": "", "unit": "", "notes": "para o glacê" },
+        "ingredient-main-7": { "name": "suco de laranja", "quantity": "um pouco", "unit": "", "notes": "para o glacê" },
+        "ingredient-main-8": { "name": "suco de laranja", "quantity": "1", "unit": "", "notes": "para a calda" },
+        "ingredient-main-9": { "name": "açúcar", "quantity": "50", "unit": "g", "notes": "para a calda" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 180 °C.",
+            "step-0-1": "Bata os ovos com o açúcar até obter uma mistura fofa e espumosa.",
+            "step-0-2": "Junte a farinha e o fermento.",
+            "step-0-3": "Acrescente a manteiga derretida e, em seguida, o suco e as raspas de laranja."
+          }
+        },
+        {
+          "title": "Cozimento",
+          "steps": {
+            "step-1-0": "Asse por 40 min a 180 °C."
+          }
+        },
+        {
+          "title": "Finalização",
+          "steps": {
+            "step-2-0": "Para um glacê: misture açúcar de confeiteiro com um pouco de suco de laranja.",
+            "step-2-1": "Ou para uma calda: aqueça o suco de 1 laranja com 50 g de açúcar."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Sinaasappelcake",
+      "author": "Maman",
+      "description": "Sinaasappelcake met gezouten boter, met een sinaasappelglazuur of -siroop.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "40 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "40 min",
+      "temperature": "180 °C",
+      "equipment": [],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "sinaasappel", "quantity": "1", "unit": "", "notes": "sap + zeste" },
+        "ingredient-main-1": { "name": "eieren", "quantity": "3", "unit": "", "notes": "" },
+        "ingredient-main-2": { "name": "gezouten boter", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "suiker", "quantity": "160", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "bloem", "quantity": "160", "unit": "g", "notes": "" },
+        "ingredient-main-5": { "name": "bakpoeder", "quantity": "1/2", "unit": "kl", "notes": "grote vorm" },
+        "ingredient-main-6": { "name": "bloemsuiker", "quantity": "", "unit": "", "notes": "voor het glazuur" },
+        "ingredient-main-7": { "name": "sinaasappelsap", "quantity": "een beetje", "unit": "", "notes": "voor het glazuur" },
+        "ingredient-main-8": { "name": "sinaasappelsap", "quantity": "1", "unit": "", "notes": "voor de siroop" },
+        "ingredient-main-9": { "name": "suiker", "quantity": "50", "unit": "g", "notes": "voor de siroop" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 180 °C.",
+            "step-0-1": "Klop de eieren met de suiker tot een luchtig, schuimig mengsel.",
+            "step-0-2": "Voeg de bloem en het bakpoeder toe.",
+            "step-0-3": "Voeg de gesmolten boter toe, daarna het sinaasappelsap en de zeste."
+          }
+        },
+        {
+          "title": "Bakken",
+          "steps": {
+            "step-1-0": "Bak 40 min op 180 °C."
+          }
+        },
+        {
+          "title": "Afwerking",
+          "steps": {
+            "step-2-0": "Voor een glazuur: meng bloemsuiker met een beetje sinaasappelsap.",
+            "step-2-1": "Of voor een siroop: verwarm het sap van 1 sinaasappel met 50 g suiker."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

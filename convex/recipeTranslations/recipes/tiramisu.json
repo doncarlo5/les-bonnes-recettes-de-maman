@@ -1,0 +1,101 @@
+{
+  "slug": "tiramisu",
+  "translations": {
+    "pt-br": {
+      "title": "Tiramisu",
+      "author": "Agnès",
+      "description": "Tiramisu de mascarpone, café e biscoitos champanhe.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "",
+      "restTime": "10 a 12 h na geladeira",
+      "totalTime": "10 a 12 h de descanso, sem contar o preparo",
+      "timeLabel": "10 a 12 h de descanso, sem contar o preparo",
+      "temperature": "",
+      "equipment": ["1 batedeira elétrica", "1 espátula de silicone", "1 travessa de servir"],
+      "notes": [
+        "Cuidado para não misturar demais o mascarpone: ele não pode ficar muito líquido."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "mascarpone", "quantity": "250", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "ovos", "quantity": "4", "unit": "", "notes": "" },
+        "ingredient-main-2": { "name": "açúcar de confeiteiro", "quantity": "35", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "açúcar refinado", "quantity": "35", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "café", "quantity": "1/2", "unit": "cafeteira", "notes": "" },
+        "ingredient-main-5": { "name": "biscoitos champanhe", "quantity": "250", "unit": "g", "notes": "1 caixa" },
+        "ingredient-main-7": { "name": "chocolate em pó", "quantity": "", "unit": "", "notes": "para polvilhar" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Prepare o café.",
+            "step-0-1": "Bata as claras e junte o açúcar de confeiteiro.",
+            "step-0-2": "Bata as gemas com o açúcar refinado.",
+            "step-0-3": "Junte o mascarpone às gemas adoçadas. Bata na batedeira na velocidade 1 por no máximo 30 segundos, só para começar a homogeneizar. Termine com a espátula, amassando delicadamente contra as paredes da tigela os pedaços de mascarpone que restarem, sem trabalhar demais a mistura.",
+            "step-0-4": "Incorpore as claras à mistura de gemas e mascarpone.",
+            "step-0-6": "Molhe rapidamente cada biscoito no café: de um lado, depois do outro, sem deixar encharcar. Coloque-o imediatamente na travessa.",
+            "step-0-7": "Arrume os biscoitos lado a lado e aperte levemente para formar uma camada uniforme.",
+            "step-0-8": "Cubra com o creme.",
+            "step-0-9": "Polvilhe com chocolate em pó."
+          }
+        },
+        {
+          "title": "Descanso",
+          "steps": {
+            "step-1-0": "Leve à geladeira por 10 a 12 h."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Tiramisu",
+      "author": "Agnès",
+      "description": "Tiramisu met mascarpone, koffie en lange vingers.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "",
+      "restTime": "10 à 12 h in de koelkast",
+      "totalTime": "10 à 12 h rusttijd, zonder bereidingstijd",
+      "timeLabel": "10 à 12 h rusttijd, zonder bereidingstijd",
+      "temperature": "",
+      "equipment": ["1 elektrische mixer", "1 pannenlikker", "1 serveerschotel"],
+      "notes": [
+        "Let op dat je de mascarpone niet te veel mengt: hij mag niet te vloeibaar worden."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "mascarpone", "quantity": "250", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "eieren", "quantity": "4", "unit": "", "notes": "" },
+        "ingredient-main-2": { "name": "bloemsuiker", "quantity": "35", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "fijne kristalsuiker", "quantity": "35", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "koffie", "quantity": "1/2", "unit": "koffiekan", "notes": "" },
+        "ingredient-main-5": { "name": "lange vingers", "quantity": "250", "unit": "g", "notes": "1 doos" },
+        "ingredient-main-7": { "name": "cacaopoeder", "quantity": "", "unit": "", "notes": "om te bestrooien" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Zet koffie.",
+            "step-0-1": "Klop de eiwitten op en voeg de bloemsuiker toe.",
+            "step-0-2": "Klop de eidooiers met de fijne suiker.",
+            "step-0-3": "Voeg de mascarpone toe aan de gezoete eidooiers. Meng met de mixer op stand 1, maximaal 30 seconden, net genoeg om het geheel wat glad te krijgen. Werk af met de pannenlikker en druk eventuele stukjes mascarpone voorzichtig plat tegen de wand van de kom, zonder het mengsel te veel te bewerken.",
+            "step-0-4": "Spatel de eiwitten door het mengsel van eidooiers en mascarpone.",
+            "step-0-6": "Dop elke lange vinger snel in de koffie: eerst de ene kant, dan de andere, zonder dat hij doorweekt raakt. Leg hem meteen in de schotel.",
+            "step-0-7": "Leg de koekjes naast elkaar en druk ze lichtjes aan tot een gelijkmatige laag.",
+            "step-0-8": "Verdeel het mengsel erover.",
+            "step-0-9": "Bestrooi met cacaopoeder."
+          }
+        },
+        {
+          "title": "Rusten",
+          "steps": {
+            "step-1-0": "Zet 10 à 12 h in de koelkast."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

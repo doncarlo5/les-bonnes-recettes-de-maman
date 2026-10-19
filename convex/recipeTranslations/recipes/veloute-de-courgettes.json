@@ -1,0 +1,81 @@
+{
+  "slug": "veloute-de-courgettes",
+  "translations": {
+    "pt-br": {
+      "title": "Creme de abobrinha",
+      "author": "Jeanine",
+      "description": "Creme de abobrinha com batata, alho, cebola, creme de leite e queijo cremoso.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "15 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "15 min",
+      "temperature": "",
+      "equipment": [],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "abobrinhas pequenas", "quantity": "1", "unit": "kg", "notes": "" },
+        "ingredient-main-1": { "name": "batata", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-2": { "name": "alho", "quantity": "1", "unit": "dente", "notes": "" },
+        "ingredient-main-3": { "name": "cebola", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-4": { "name": "creme de leite fresco", "quantity": "25", "unit": "cl", "notes": "" },
+        "ingredient-main-5": { "name": "Vache qui rit / Kiri", "quantity": "2", "unit": "porções", "notes": "" },
+        "ingredient-main-6": { "name": "tomilho", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-7": { "name": "sal", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-8": { "name": "pimenta-do-reino", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-9": { "name": "noz-moscada", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-10": { "name": "água", "quantity": "50", "unit": "cl", "notes": "para o cozimento" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Cozinhe todos os legumes em 50 cl de água com sal e o tomilho.",
+            "step-0-1": "Deixe cozinhar em fogo baixo por 15 min e depois bata no liquidificador.",
+            "step-0-2": "Junte o queijo cremoso e o creme de leite, depois tempere com pimenta e acrescente noz-moscada a gosto."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Courgettesoep",
+      "author": "Jeanine",
+      "description": "Gebonden courgettesoep met aardappel, look, ui, room en smeerkaas.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "15 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "15 min",
+      "temperature": "",
+      "equipment": [],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "kleine courgettes", "quantity": "1", "unit": "kg", "notes": "" },
+        "ingredient-main-1": { "name": "aardappel", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-2": { "name": "look", "quantity": "1", "unit": "teentje", "notes": "" },
+        "ingredient-main-3": { "name": "ui", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-4": { "name": "vloeibare room", "quantity": "25", "unit": "cl", "notes": "" },
+        "ingredient-main-5": { "name": "Vache qui rit / Kiri", "quantity": "2", "unit": "porties", "notes": "" },
+        "ingredient-main-6": { "name": "tijm", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-7": { "name": "zout", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-8": { "name": "peper", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-9": { "name": "nootmuskaat", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-10": { "name": "water", "quantity": "50", "unit": "cl", "notes": "om te koken" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Kook alle groenten in 50 cl water met zout en de tijm.",
+            "step-0-1": "Laat 15 min zachtjes koken en mix dan fijn.",
+            "step-0-2": "Voeg de smeerkaas en de room toe, kruid met peper en voeg naar smaak nootmuskaat toe."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

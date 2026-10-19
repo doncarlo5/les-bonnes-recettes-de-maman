@@ -1,0 +1,81 @@
+{
+  "slug": "gateau-renverse-a-l-ananas",
+  "translations": {
+    "pt-br": {
+      "title": "Bolo de abacaxi invertido",
+      "author": "Agnès",
+      "description": "Um bolo de família com abacaxi, com rodelas da fruta sobre um caramelo dourado.",
+      "yieldLabel": "Cerca de 6 pessoas",
+      "prepTime": "15 min",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "45 min",
+      "timeLabel": "45 min",
+      "temperature": "180 °C",
+      "equipment": ["1 fôrma de torta de 24 a 26 cm", "1 panela", "1 tigela", "1 batedor de arame", "1 travessa de servir resistente ao calor"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "abacaxi em rodelas em calda", "quantity": "1", "unit": "lata", "notes": "" },
+        "ingredient-main-1": { "name": "ovos", "quantity": "2", "unit": "", "notes": "" },
+        "ingredient-main-2": { "name": "açúcar", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "açúcar de baunilha", "quantity": "1", "unit": "sachê", "notes": "" },
+        "ingredient-main-4": { "name": "fermento químico em pó", "quantity": "0.5", "unit": "sachê", "notes": "" },
+        "ingredient-main-5": { "name": "farinha de trigo", "quantity": "75", "unit": "g", "notes": "" },
+        "ingredient-main-6": { "name": "óleo neutro", "quantity": "10", "unit": "cl", "notes": "" },
+        "ingredient-main-7": { "name": "açúcar para o caramelo", "quantity": "80", "unit": "g", "notes": "" },
+        "ingredient-main-8": { "name": "água", "quantity": "2", "unit": "colheres (sopa)", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 180 °C. Escorra o abacaxi e reserve a calda.",
+            "step-0-1": "Aqueça o açúcar do caramelo com a água em uma panela até ficar cor de âmbar. Despeje na fôrma e arrume as rodelas de abacaxi por cima. O caramelo também pode ser feito diretamente em uma fôrma que possa ir ao fogão.",
+            "step-0-2": "Bata os ovos com os 100 g de açúcar e o açúcar de baunilha. Incorpore o óleo, depois a farinha e o fermento, até obter uma massa homogênea.",
+            "step-0-3": "Despeje a massa sobre as frutas. Asse por cerca de 30 minutos; deixe mais um pouco se a ponta de uma faca sair com massa crua.",
+            "step-0-4": "Solte as bordas e vire sobre uma travessa resistente ao calor. Espere alguns minutos antes de levantar a fôrma. Se quiser, acrescente um pouco da calda reservada, sem encharcar o bolo. Deixe esfriar."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Omgekeerde ananastaart",
+      "author": "Agnès",
+      "description": "Een familietaart met ananas, met schijfjes fruit op een goudbruine karamel.",
+      "yieldLabel": "Ongeveer 6 personen",
+      "prepTime": "15 min",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "45 min",
+      "timeLabel": "45 min",
+      "temperature": "180 °C",
+      "equipment": ["1 taartvorm van 24 à 26 cm", "1 steelpan", "1 mengkom", "1 garde", "1 hittebestendige serveerschaal"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "ananasschijven op siroop", "quantity": "1", "unit": "blik", "notes": "" },
+        "ingredient-main-1": { "name": "eieren", "quantity": "2", "unit": "", "notes": "" },
+        "ingredient-main-2": { "name": "suiker", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "vanillesuiker", "quantity": "1", "unit": "zakje", "notes": "" },
+        "ingredient-main-4": { "name": "bakpoeder", "quantity": "0.5", "unit": "zakje", "notes": "" },
+        "ingredient-main-5": { "name": "bloem", "quantity": "75", "unit": "g", "notes": "" },
+        "ingredient-main-6": { "name": "neutrale olie", "quantity": "10", "unit": "cl", "notes": "" },
+        "ingredient-main-7": { "name": "suiker voor de karamel", "quantity": "80", "unit": "g", "notes": "" },
+        "ingredient-main-8": { "name": "water", "quantity": "2", "unit": "el", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 180 °C. Laat de ananas uitlekken en houd de siroop opzij.",
+            "step-0-1": "Verwarm de suiker voor de karamel met het water in een steelpan tot hij amberkleurig is. Giet in de vorm en schik de ananasschijven erop. Je kunt de karamel ook rechtstreeks maken in een vorm die op de kookplaat mag.",
+            "step-0-2": "Klop de eieren met de 100 g suiker en de vanillesuiker. Roer de olie erdoor, daarna de bloem en het bakpoeder, tot een glad beslag.",
+            "step-0-3": "Giet het beslag over het fruit. Bak ongeveer 30 minuten; bak wat langer als er nog rauw beslag aan de punt van een mes kleeft.",
+            "step-0-4": "Maak de randen los en keer om op een hittebestendige schaal. Wacht enkele minuten voor je de vorm optilt. Voeg desgewenst een beetje van de opzijgehouden siroop toe, zonder de taart te doorweken. Laat afkoelen."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

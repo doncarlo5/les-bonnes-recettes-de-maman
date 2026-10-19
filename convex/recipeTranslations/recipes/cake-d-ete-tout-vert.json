@@ -1,0 +1,107 @@
+{
+  "slug": "cake-d-ete-tout-vert",
+  "translations": {
+    "pt-br": {
+      "title": "Bolo salgado de verão todo verde",
+      "author": "Anne Langenvin",
+      "description": "Bolo salgado com ervas, pesto ou tapenade verde, queijo gruyère e avelãs.",
+      "yieldLabel": "1 forma de bolo inglês ou 12 minibolos",
+      "prepTime": "",
+      "cookTime": "30 a 40 min, conforme o tamanho",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 a 40 min, conforme o tamanho",
+      "temperature": "180 °C",
+      "equipment": ["1 forma de bolo inglês ou 12 forminhas de minibolo"],
+      "notes": ["Fica ainda melhor preparado na véspera."],
+      "ingredients": {
+        "ingredient-main-0": { "name": "salsinha", "quantity": "1", "unit": "maço", "notes": "" },
+        "ingredient-main-1": { "name": "cebolinha", "quantity": "1", "unit": "maço generoso", "notes": "" },
+        "ingredient-main-2": { "name": "farinha de trigo", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "fermento em pó", "quantity": "1", "unit": "sachê", "notes": "" },
+        "ingredient-main-4": { "name": "ovos", "quantity": "3", "unit": "", "notes": "" },
+        "ingredient-main-5": { "name": "leite", "quantity": "10", "unit": "cl", "notes": "" },
+        "ingredient-main-6": { "name": "azeite", "quantity": "7", "unit": "cl", "notes": "" },
+        "ingredient-main-7": { "name": "queijo gruyère ralado", "quantity": "80", "unit": "g", "notes": "" },
+        "ingredient-main-8": { "name": "tapenade verde ou pesto verde", "quantity": "4", "unit": "colheres (sopa)", "notes": "" },
+        "ingredient-main-9": { "name": "avelãs picadas grosseiramente", "quantity": "120", "unit": "g", "notes": "" },
+        "ingredient-main-10": { "name": "sal", "quantity": "", "unit": "", "notes": "a gosto" },
+        "ingredient-main-11": { "name": "pimenta-do-reino", "quantity": "", "unit": "", "notes": "a gosto" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 180 °C.",
+            "step-0-1": "Coloque a forma, untada com manteiga se não for de silicone, sobre a assadeira de alumínio perfurada.",
+            "step-0-2": "Lave e escorra as ervas, depois pique-as com a tesoura ou no picador de ervas.",
+            "step-0-3": "Em uma tigela grande, misture a farinha e o fermento.",
+            "step-0-4": "Junte os ovos, depois o leite, o azeite e o gruyère, e misture bem.",
+            "step-0-5": "Termine com as ervas, a tapenade ou o pesto e as avelãs, e acerte o tempero se necessário.",
+            "step-0-6": "Despeje na forma e leve ao forno por cerca de 40 min para um bolo grande ou 30 min para os pequenos.",
+            "step-0-7": "A lâmina da faca deve sair seca.",
+            "step-0-8": "Deixe esfriar e desenforme."
+          }
+        },
+        {
+          "title": "Para servir",
+          "steps": {
+            "step-1-0": "Sirva com uma salada verde."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Groene zomercake",
+      "author": "Anne Langenvin",
+      "description": "Hartige cake met kruiden, groene pesto of groene tapenade, gruyère en hazelnoten.",
+      "yieldLabel": "1 cakevorm of 12 minicakejes",
+      "prepTime": "",
+      "cookTime": "30 à 40 min, afhankelijk van het formaat",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 à 40 min, afhankelijk van het formaat",
+      "temperature": "180 °C",
+      "equipment": ["1 cakevorm of 12 minicakevormpjes"],
+      "notes": ["Nog lekkerder als je hem de dag voordien maakt."],
+      "ingredients": {
+        "ingredient-main-0": { "name": "peterselie", "quantity": "1", "unit": "bosje", "notes": "" },
+        "ingredient-main-1": { "name": "bieslook", "quantity": "1", "unit": "flink bosje", "notes": "" },
+        "ingredient-main-2": { "name": "bloem", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "bakpoeder", "quantity": "1", "unit": "zakje", "notes": "" },
+        "ingredient-main-4": { "name": "eieren", "quantity": "3", "unit": "", "notes": "" },
+        "ingredient-main-5": { "name": "melk", "quantity": "10", "unit": "cl", "notes": "" },
+        "ingredient-main-6": { "name": "olijfolie", "quantity": "7", "unit": "cl", "notes": "" },
+        "ingredient-main-7": { "name": "geraspte gruyère", "quantity": "80", "unit": "g", "notes": "" },
+        "ingredient-main-8": { "name": "groene tapenade of groene pesto", "quantity": "4", "unit": "el", "notes": "" },
+        "ingredient-main-9": { "name": "grof gehakte hazelnoten", "quantity": "120", "unit": "g", "notes": "" },
+        "ingredient-main-10": { "name": "zout", "quantity": "", "unit": "", "notes": "naar smaak" },
+        "ingredient-main-11": { "name": "peper", "quantity": "", "unit": "", "notes": "naar smaak" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 180 °C.",
+            "step-0-1": "Zet de vorm, ingevet met boter als hij niet van silicone is, op de geperforeerde aluminium bakplaat.",
+            "step-0-2": "Was de kruiden, laat ze uitlekken en knip ze fijn of snij ze met de kruidenhakker.",
+            "step-0-3": "Meng de bloem en het bakpoeder in een mengkom.",
+            "step-0-4": "Voeg de eieren toe, daarna de melk, de olie en de gruyère, en meng goed.",
+            "step-0-5": "Voeg als laatste de kruiden, de tapenade of pesto en de hazelnoten toe, en breng indien nodig op smaak.",
+            "step-0-6": "Giet het beslag in de cakevorm en bak ongeveer 40 min voor een grote cake of 30 min voor kleine cakejes.",
+            "step-0-7": "Het mes moet er droog uitkomen.",
+            "step-0-8": "Laat afkoelen en haal uit de vorm."
+          }
+        },
+        {
+          "title": "Serveren",
+          "steps": {
+            "step-1-0": "Serveer met een groene salade."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

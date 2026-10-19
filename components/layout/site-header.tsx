@@ -4,7 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 
 import type { Dictionary } from "@/i18n/get-dictionary";
-import type { Locale } from "@/i18n/config";
+import { localeDetails, type Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils";
 import { LocaleSwitcher } from "./locale-switcher";
 import { ThemeToggle } from "./theme-toggle";
@@ -84,7 +84,7 @@ export function SiteHeader({ locale, dict }: SiteHeaderProps) {
           <Suspense
             fallback={
               <span className="type-label inline-flex min-h-11 items-center px-1 text-primary md:min-h-10">
-                {locale}
+                {localeDetails[locale].short}
               </span>
             }
           >

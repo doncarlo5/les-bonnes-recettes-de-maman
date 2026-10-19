@@ -1,0 +1,71 @@
+{
+  "slug": "mayonnaise",
+  "translations": {
+    "pt-br": {
+      "title": "Maionese",
+      "author": "Louis",
+      "description": "Maionese caseira com mostarda Dijon, batida no mixer com óleo de girassol e temperada com vinagre balsâmico.",
+      "yieldLabel": "Uma tigelinha",
+      "prepTime": "5 min",
+      "cookTime": "",
+      "restTime": "",
+      "totalTime": "5 min",
+      "timeLabel": "5 min",
+      "temperature": "",
+      "equipment": ["1 mixer"],
+      "notes": ["Para uma maionese bem fresquinha, deixe-a descansar 30 min na geladeira antes de servir."],
+      "ingredients": {
+        "ingredient-main-0": { "name": "mostarda Dijon", "quantity": "2", "unit": "colheres (chá)", "notes": "" },
+        "ingredient-main-1": { "name": "gema de ovo", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-2": { "name": "óleo de girassol", "quantity": "10", "unit": "cl", "notes": "" },
+        "ingredient-main-3": { "name": "vinagre balsâmico", "quantity": "algumas gotas", "unit": "", "notes": "" },
+        "ingredient-main-4": { "name": "sal", "quantity": "", "unit": "", "notes": "a gosto" },
+        "ingredient-main-5": { "name": "pimenta-do-reino", "quantity": "", "unit": "", "notes": "a gosto" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Coloque a mostarda Dijon e a gema no copo do mixer e bata.",
+            "step-0-1": "Continue batendo enquanto despeja o óleo de girassol aos poucos, em fio fino, até obter uma maionese bem emulsionada.",
+            "step-0-2": "Acrescente algumas gotas de vinagre balsâmico e tempere com sal e pimenta a gosto. Bata uma última vez para homogeneizar."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Mayonaise",
+      "author": "Louis",
+      "description": "Huisgemaakte mayonaise met Dijonmosterd, opgeklopt met de mixer met zonnebloemolie en op smaak gebracht met balsamicoazijn.",
+      "yieldLabel": "Een klein kommetje",
+      "prepTime": "5 min",
+      "cookTime": "",
+      "restTime": "",
+      "totalTime": "5 min",
+      "timeLabel": "5 min",
+      "temperature": "",
+      "equipment": ["1 mixer"],
+      "notes": ["Voor een lekker frisse mayonaise laat je ze voor het serveren 30 min rusten in de koelkast."],
+      "ingredients": {
+        "ingredient-main-0": { "name": "Dijonmosterd", "quantity": "2", "unit": "kl", "notes": "" },
+        "ingredient-main-1": { "name": "eidooier", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-2": { "name": "zonnebloemolie", "quantity": "10", "unit": "cl", "notes": "" },
+        "ingredient-main-3": { "name": "balsamicoazijn", "quantity": "enkele druppels", "unit": "", "notes": "" },
+        "ingredient-main-4": { "name": "zout", "quantity": "", "unit": "", "notes": "naar smaak" },
+        "ingredient-main-5": { "name": "peper", "quantity": "", "unit": "", "notes": "naar smaak" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Doe de Dijonmosterd en de eidooier in de beker van de mixer en mix.",
+            "step-0-1": "Blijf mixen terwijl je de zonnebloemolie geleidelijk in een dun straaltje toevoegt, tot je een mooi gebonden mayonaise hebt.",
+            "step-0-2": "Voeg enkele druppels balsamicoazijn toe en kruid naar smaak met peper en zout. Mix nog een laatste keer tot alles goed gemengd is."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

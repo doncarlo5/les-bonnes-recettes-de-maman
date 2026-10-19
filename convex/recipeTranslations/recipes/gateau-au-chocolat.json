@@ -1,0 +1,85 @@
+{
+  "slug": "gateau-au-chocolat",
+  "translations": {
+    "pt-br": {
+      "title": "Bolo de chocolate",
+      "author": "Dominique",
+      "description": "Bolo de chocolate simples com claras batidas em neve.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "180 °C",
+      "equipment": ["1 forma de bolo"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "açúcar", "quantity": "200", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "chocolate", "quantity": "200", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "ovos", "quantity": "4", "unit": "", "notes": "claras batidas em neve" },
+        "ingredient-main-3": { "name": "manteiga", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "farinha de trigo", "quantity": "2", "unit": "colheres (sopa)", "notes": "rasas" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 180 °C.",
+            "step-0-1": "Derreta o chocolate com a manteiga.",
+            "step-0-2": "Misture o açúcar com as gemas.",
+            "step-0-3": "Junte o chocolate e a farinha e depois incorpore delicadamente as claras em neve.",
+            "step-0-4": "Despeje a massa na forma."
+          }
+        },
+        {
+          "title": "Cozimento",
+          "steps": {
+            "step-1-0": "Asse em forno médio por 30 min, a 180 °C."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Chocoladetaart",
+      "author": "Dominique",
+      "description": "Eenvoudige chocoladetaart met stijfgeklopt eiwit.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "180 °C",
+      "equipment": ["1 taartvorm"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "suiker", "quantity": "200", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "chocolade", "quantity": "200", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "eieren", "quantity": "4", "unit": "", "notes": "eiwitten stijfgeklopt" },
+        "ingredient-main-3": { "name": "boter", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "bloem", "quantity": "2", "unit": "el", "notes": "afgestreken" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 180 °C.",
+            "step-0-1": "Smelt de chocolade met de boter.",
+            "step-0-2": "Meng de suiker met de eierdooiers.",
+            "step-0-3": "Voeg de chocolade en de bloem toe en spatel dan voorzichtig het stijfgeklopte eiwit erdoor.",
+            "step-0-4": "Giet het beslag in de vorm."
+          }
+        },
+        {
+          "title": "Bakken",
+          "steps": {
+            "step-1-0": "Bak 30 min in een matig warme oven, op 180 °C."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

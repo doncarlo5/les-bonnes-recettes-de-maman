@@ -7,7 +7,7 @@ import { AdminRecipeIdeas } from "@/components/recipes/admin-recipe-ideas";
 import { LocalizedLoading } from "@/components/recipes/localized-loading";
 import { getRecipeAdminE2EFixtures } from "@/components/recipes/admin-recipe-e2e-fixtures";
 import { api } from "@/convex/_generated/api";
-import type { Locale } from "@/i18n/config";
+import { isContentLocale, type ContentLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { getRecipeAdminAccess } from "@/lib/recipe-admin-auth";
 import type { EditableRecipeSummary } from "@/components/recipes/types";
@@ -35,8 +35,13 @@ type PageProps = {
 };
 
 export default async function Page({ params, searchParams }: PageProps) {
-  const { locale } = await params;
+  const { locale: requestedLocale } = await params;
   const resolvedSearchParams = await searchParams;
+  // Recipes are edited in French and English; other languages use the French admin.
+  if (!isContentLocale(requestedLocale)) {
+    redirect(`/fr/admin/recettes${toQueryString(resolvedSearchParams)}`);
+  }
+  const locale = requestedLocale;
   const { new: newRecipe, slug, section, view, newIdea, idea } = resolvedSearchParams;
   const requestedView = Array.isArray(view) ? view[0] : view;
   const sourceIdeaId = (Array.isArray(idea) ? idea[0] : idea)?.trim() || undefined;
@@ -140,8 +145,19 @@ export default async function Page({ params, searchParams }: PageProps) {
   );
 }
 
+function toQueryString(params: Record<string, string | string[] | undefined>) {
+  const query = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    for (const item of value === undefined ? [] : Array.isArray(value) ? value : [value]) {
+      query.append(key, item);
+    }
+  }
+  const text = query.toString();
+  return text ? `?${text}` : "";
+}
+
 async function listAllRecipesForEditing(
-  locale: Locale,
+  locale: ContentLocale,
   adminPassword: string,
 ) {
   const recipes = await collectPaginated<EditableRecipeSummary>((cursor) =>

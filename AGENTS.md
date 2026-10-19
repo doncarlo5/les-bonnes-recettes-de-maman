@@ -29,3 +29,9 @@ catalog sync. Do not run `npx convex dev` or create a development deployment.
 ## Affiche des nouvelles recettes
 
 Pour chaque nouvelle recette, suivre [le parcours de création d’affiche](docs/recipe-poster-workflow.md) avant publication. Utiliser le prompt partagé dans `lib/recipe-poster-prompt.ts`, générer l’affiche 9:16, puis l’associer à la recette et vérifier son aperçu. Une recette sans image reste en brouillon.
+
+## Portugais (Brésil) et néerlandais (Belgique)
+
+Le site est servi en `fr`, `en`, `pt-br` et `nl-be`. L’admin n’édite que le français et l’anglais. Les traductions `pt-br` et `nl-be` de chaque recette publiée sont dans `convex/recipeTranslations/recipes/<slug>.json` : du texte uniquement, indexé par les ids d’ingrédients et d’étapes du français.
+
+Pour une nouvelle recette ou une recette modifiée : écrire ou mettre à jour ce fichier à partir du français publié, lancer `npm run generate:recipe-translations-index`, déployer avec `npx convex deploy`, puis exécuter `npm run sync:recipe-translations:production`. La synchronisation valide chaque fichier contre la recette française publiée et n’applique rien en cas d’écart. Si la structure française change (ingrédient ou étape ajouté ou supprimé), la page affiche le français (`nl-be`) ou l’anglais (`pt-br`) jusqu’à la mise à jour de la traduction.

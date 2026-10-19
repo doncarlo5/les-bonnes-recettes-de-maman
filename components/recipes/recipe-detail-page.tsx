@@ -110,7 +110,7 @@ export function RecipePresentation({
               <Clock3 className="size-4 stroke-[1.8]" />
               <span>{recipe.timeLabel}</span>
             </div>
-            <h1 className="type-display max-w-[min(14ch,100%)] [overflow-wrap:anywhere]">{recipe.title}</h1>
+            <h1 className="type-display max-w-[min(14ch,100%)] hyphens-auto [overflow-wrap:anywhere]">{recipe.title}</h1>
             <p className="type-byline mt-4 text-muted-foreground">
               {formatRecipeByline(
                 locale,

@@ -1,0 +1,101 @@
+{
+  "slug": "pain-de-poisson",
+  "translations": {
+    "pt-br": {
+      "title": "Pão de peixe",
+      "author": "Zabelh",
+      "description": "Pão de peixe com extrato de tomate, creme de leite fresco e ovos, servido frio com maionese caseira.",
+      "yieldLabel": "",
+      "prepTime": "30 min",
+      "cookTime": "50 a 55 min",
+      "restTime": "Até esfriar completamente",
+      "totalTime": "1 h 20 a 1 h 25, sem contar o resfriamento",
+      "timeLabel": "1 h 20 a 1 h 25, sem contar o resfriamento",
+      "temperature": "th. 7 / 210 °C",
+      "equipment": ["1 forma de bolo inglês", "1 assadeira para banho-maria"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "peixe", "quantity": "800", "unit": "g", "notes": "mix de peixes congelados sem espinhas" },
+        "ingredient-main-1": { "name": "extrato de tomate", "quantity": "1/2", "unit": "lata pequena", "notes": "" },
+        "ingredient-main-2": { "name": "creme de leite fresco", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "ovos", "quantity": "4", "unit": "", "notes": "" },
+        "ingredient-main-4": { "name": "Maizena", "quantity": "1", "unit": "colher (sopa)", "notes": "" },
+        "ingredient-main-5": { "name": "manteiga", "quantity": "", "unit": "", "notes": "para untar a forma" },
+        "ingredient-main-6": { "name": "sal", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-7": { "name": "pimenta-do-reino", "quantity": "", "unit": "", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Prepare uma forma de bolo inglês forrando o fundo com papel-manteiga.",
+            "step-0-1": "Cozinhe o mix de peixes congelados em um caldo de cozimento pronto (court-bouillon) por cerca de 10 a 15 min e escorra bem.",
+            "step-0-2": "Em uma tigela, misture o extrato de tomate, os ovos, o creme de leite e a Maizena diluída.",
+            "step-0-3": "Tempere com sal e pimenta e prove para acertar o tempero.",
+            "step-0-4": "Junte o peixe na tigela e bata tudo no processador até obter a consistência desejada.",
+            "step-0-5": "Preaqueça o forno a 210 °C (th. 7).",
+            "step-0-6": "Despeje tudo na forma untada com manteiga.",
+            "step-0-7": "Asse em banho-maria no forno a th. 7 por 40 min.",
+            "step-0-8": "Verifique o cozimento com uma faca; a parte de cima deve estar levemente dourada.",
+            "step-0-9": "Deixe esfriar completamente antes de desenformar e guarde na geladeira até a hora de servir."
+          }
+        },
+        {
+          "title": "Para servir",
+          "steps": {
+            "step-1-0": "Sirva frio com maionese caseira e decore o prato com salada em volta."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Visbrood",
+      "author": "Zabelh",
+      "description": "Visbrood met tomatenconcentraat, crème fraîche en eieren, koud geserveerd met zelfgemaakte mayonaise.",
+      "yieldLabel": "",
+      "prepTime": "30 min",
+      "cookTime": "50 à 55 min",
+      "restTime": "Tot volledig afgekoeld",
+      "totalTime": "1 h 20 à 1 h 25, zonder afkoeltijd",
+      "timeLabel": "1 h 20 à 1 h 25, zonder afkoeltijd",
+      "temperature": "th. 7 / 210 °C",
+      "equipment": ["1 cakevorm", "1 schotel voor au bain-marie"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "vis", "quantity": "800", "unit": "g", "notes": "mengeling van diepgevroren vis zonder graten" },
+        "ingredient-main-1": { "name": "tomatenconcentraat", "quantity": "1/2", "unit": "klein blikje", "notes": "" },
+        "ingredient-main-2": { "name": "crème fraîche", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "eieren", "quantity": "4", "unit": "", "notes": "" },
+        "ingredient-main-4": { "name": "Maïzena", "quantity": "1", "unit": "el", "notes": "" },
+        "ingredient-main-5": { "name": "boter", "quantity": "", "unit": "", "notes": "voor de vorm" },
+        "ingredient-main-6": { "name": "zout", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-7": { "name": "peper", "quantity": "", "unit": "", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Bekleed de bodem van een cakevorm met bakpapier.",
+            "step-0-1": "Kook de diepgevroren vismengeling ongeveer 10 à 15 min in een kant-en-klare court-bouillon en laat goed uitlekken.",
+            "step-0-2": "Meng in een kom het tomatenconcentraat, de eieren, de room en de aangelengde Maïzena.",
+            "step-0-3": "Voeg zout en peper toe en proef of het goed op smaak is.",
+            "step-0-4": "Voeg de vis toe en mix alles in de keukenrobot tot de gewenste consistentie.",
+            "step-0-5": "Verwarm de oven voor op 210 °C (th. 7).",
+            "step-0-6": "Giet alles in de beboterde vorm.",
+            "step-0-7": "Bak 40 min au bain-marie in een oven op th. 7.",
+            "step-0-8": "Controleer met een mes of het gaar is; de bovenkant moet lichtjes goudbruin zijn.",
+            "step-0-9": "Laat volledig afkoelen voor je het uit de vorm haalt en bewaar in de koelkast tot het opdienen."
+          }
+        },
+        {
+          "title": "Opdienen",
+          "steps": {
+            "step-1-0": "Dien koud op met zelfgemaakte mayonaise en garneer de schotel rondom met sla."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

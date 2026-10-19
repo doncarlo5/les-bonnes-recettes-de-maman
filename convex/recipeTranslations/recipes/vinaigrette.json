@@ -1,0 +1,67 @@
+{
+  "slug": "vinaigrette",
+  "translations": {
+    "pt-br": {
+      "title": "Vinagrete balsâmico da Maman",
+      "author": "Maman",
+      "description": "O molho vinagrete balsâmico da Maman com azeite de oliva, preparado direto num recipiente de 50 cl.",
+      "yieldLabel": "Cerca de 50 cl",
+      "prepTime": "5 min",
+      "cookTime": "",
+      "restTime": "",
+      "totalTime": "5 min",
+      "timeLabel": "5 min",
+      "temperature": "",
+      "equipment": [],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "sal", "quantity": "3", "unit": "colheres (chá)", "notes": "" },
+        "ingredient-main-1": { "name": "vinagre balsâmico", "quantity": "5", "unit": "colheres (chá)", "notes": "bem cheias" },
+        "ingredient-main-2": { "name": "azeite de oliva", "quantity": "47,5", "unit": "cl", "notes": "aproximadamente, ajustando para completar o recipiente até 50 cl" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Coloque o sal num recipiente de 50 cl.",
+            "step-0-1": "Junte o vinagre balsâmico e misture até o sal dissolver.",
+            "step-0-2": "Acrescente cerca de 47,5 cl de azeite de oliva, ajustando para completar o recipiente até 50 cl.",
+            "step-0-3": "Feche e agite para emulsionar."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Vinaigrette",
+      "author": "Maman",
+      "description": "De balsamicovinaigrette van Maman met olijfolie, rechtstreeks gemaakt in een fles van 50 cl.",
+      "yieldLabel": "Ongeveer 50 cl",
+      "prepTime": "5 min",
+      "cookTime": "",
+      "restTime": "",
+      "totalTime": "5 min",
+      "timeLabel": "5 min",
+      "temperature": "",
+      "equipment": [],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "zout", "quantity": "3", "unit": "kl", "notes": "" },
+        "ingredient-main-1": { "name": "balsamicoazijn", "quantity": "5", "unit": "kl", "notes": "goed vol" },
+        "ingredient-main-2": { "name": "olijfolie", "quantity": "47,5", "unit": "cl", "notes": "ongeveer, bij te passen om de fles tot 50 cl aan te vullen" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Doe het zout in een fles van 50 cl.",
+            "step-0-1": "Voeg de balsamicoazijn toe en meng tot het zout opgelost is.",
+            "step-0-2": "Voeg ongeveer 47,5 cl olijfolie toe, en pas bij om de fles tot 50 cl aan te vullen.",
+            "step-0-3": "Sluit af en schud om te emulgeren."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

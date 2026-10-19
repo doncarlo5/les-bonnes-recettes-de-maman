@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { locales, type Locale } from "@/i18n/config";
+import { localeDetails, locales, type Locale } from "@/i18n/config";
 
 const localeSet = new Set<string>(locales);
 
@@ -50,6 +50,10 @@ export function LocaleSwitcher({ current }: LocaleSwitcherProps) {
             ) : null}
             <Link
               href={href}
+              hrefLang={localeDetails[locale].htmlLang}
+              lang={localeDetails[locale].htmlLang}
+              title={localeDetails[locale].name}
+              aria-label={localeDetails[locale].name}
               aria-current={isActive ? "true" : undefined}
               className={
                 isActive
@@ -57,7 +61,7 @@ export function LocaleSwitcher({ current }: LocaleSwitcherProps) {
                   : "inline-flex min-h-11 items-center px-1 text-muted-foreground transition-colors duration-150 hover:text-primary md:min-h-10"
               }
             >
-              {locale}
+              {localeDetails[locale].short}
             </Link>
           </span>
         );

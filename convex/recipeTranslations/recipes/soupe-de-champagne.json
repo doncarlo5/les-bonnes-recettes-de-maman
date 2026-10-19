@@ -1,0 +1,71 @@
+{
+  "slug": "soupe-de-champagne",
+  "translations": {
+    "pt-br": {
+      "title": "Ponche de champanhe (soupe de champagne)",
+      "author": "Fabrice",
+      "description": "Coquetel espumante com crémant de Loire, Cointreau, Pulco Citron e xarope de açúcar de cana, para servir bem gelado.",
+      "yieldLabel": "Cerca de 1 litro",
+      "prepTime": "5 min",
+      "cookTime": "",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "5 min",
+      "temperature": "",
+      "equipment": [],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "crémant de Loire", "quantity": "75", "unit": "cl", "notes": "" },
+        "ingredient-main-1": { "name": "Cointreau", "quantity": "10", "unit": "cl", "notes": "" },
+        "ingredient-main-2": { "name": "Pulco Citron", "quantity": "10", "unit": "cl", "notes": "" },
+        "ingredient-main-3": { "name": "Canadou", "quantity": "5 a 7", "unit": "cl", "notes": "" },
+        "ingredient-main-4": { "name": "cubos de gelo", "quantity": "", "unit": "", "notes": "a gosto" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Coloque todos os ingredientes na geladeira com antecedência para que fiquem bem gelados.",
+            "step-0-1": "Numa tigela grande, misture o Cointreau, o Pulco Citron e o Canadou.",
+            "step-0-2": "Na hora de servir, acrescente o crémant de Loire.",
+            "step-0-3": "Junte cubos de gelo, mexa delicadamente e sirva imediatamente, bem gelado."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Champagnebowl (soupe de champagne)",
+      "author": "Fabrice",
+      "description": "Bruisende cocktail met crémant de Loire, Cointreau, Pulco Citron en rietsuikersiroop, zeer koud te serveren.",
+      "yieldLabel": "Ongeveer 1 liter",
+      "prepTime": "5 min",
+      "cookTime": "",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "5 min",
+      "temperature": "",
+      "equipment": [],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "crémant de Loire", "quantity": "75", "unit": "cl", "notes": "" },
+        "ingredient-main-1": { "name": "Cointreau", "quantity": "10", "unit": "cl", "notes": "" },
+        "ingredient-main-2": { "name": "Pulco Citron", "quantity": "10", "unit": "cl", "notes": "" },
+        "ingredient-main-3": { "name": "Canadou", "quantity": "5 à 7", "unit": "cl", "notes": "" },
+        "ingredient-main-4": { "name": "ijsblokjes", "quantity": "", "unit": "", "notes": "naar behoefte" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Zet alle ingrediënten vooraf in de koelkast, zodat ze goed koud zijn.",
+            "step-0-1": "Meng de Cointreau, de Pulco Citron en de Canadou in een slakom.",
+            "step-0-2": "Voeg op het laatste moment de crémant de Loire toe.",
+            "step-0-3": "Voeg ijsblokjes toe, roer voorzichtig en serveer meteen, goed koud."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

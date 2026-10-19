@@ -1,0 +1,125 @@
+{
+  "slug": "macaron-tante-maria",
+  "translations": {
+    "pt-br": {
+      "title": "Bolo macaron da tia Maria",
+      "author": "Tante Maria",
+      "description": "Bolo macaron de claras, amêndoas e extrato de amêndoa amarga, servido com creme inglês de baunilha.",
+      "yieldLabel": "8 pessoas",
+      "prepTime": "",
+      "cookTime": "45 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "45 min",
+      "temperature": "140 °C",
+      "equipment": [
+        "1 batedeira elétrica",
+        "1 panela"
+      ],
+      "notes": [
+        "Variação de café: substitua a baunilha por 2 colheres (chá) de extrato de café, acrescentadas fora do fogo."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "claras", "quantity": "6", "unit": "", "notes": "" },
+        "ingredient-main-1": { "name": "açúcar refinado", "quantity": "340", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "amêndoas", "quantity": "340", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "fermento químico", "quantity": "1", "unit": "pitada", "notes": "" },
+        "ingredient-main-4": { "name": "extrato de amêndoa amarga", "quantity": "1", "unit": "colher (chá)", "notes": "" },
+        "ingredient-main-5": { "name": "gemas", "quantity": "6", "unit": "", "notes": "para o creme inglês, as gemas que sobraram do macaron" },
+        "ingredient-main-6": { "name": "leite", "quantity": "50", "unit": "cl", "notes": "para o creme inglês" },
+        "ingredient-main-7": { "name": "açúcar refinado", "quantity": "100", "unit": "g", "notes": "para o creme inglês" },
+        "ingredient-main-8": { "name": "Maizena", "quantity": "1", "unit": "colher (chá) bem rasa", "notes": "para o creme inglês" },
+        "ingredient-main-9": { "name": "fava de baunilha", "quantity": "1", "unit": "", "notes": "para o creme inglês; na falta, use extrato de baunilha conforme a dosagem do frasco" }
+      },
+      "sections": [
+        {
+          "title": "Preparo do macaron",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 140 °C.",
+            "step-0-1": "Bata as claras em neve bem firme.",
+            "step-0-2": "Bata com o açúcar por 5 min na batedeira elétrica.",
+            "step-0-3": "Em seguida, acrescente as amêndoas, o fermento e o extrato de amêndoa amarga."
+          }
+        },
+        {
+          "title": "Cozimento",
+          "steps": {
+            "step-1-0": "Asse em forno baixo, a 140 °C, por 45 min."
+          }
+        },
+        {
+          "title": "Creme inglês de baunilha",
+          "steps": {
+            "step-2-0": "Abra a fava de baunilha ao meio e raspe as sementes.",
+            "step-2-1": "Ferva 50 cl de leite com a fava, as sementes de baunilha e 1 colher (chá) bem rasa de Maizena.",
+            "step-2-2": "Misture 6 gemas com 100 g de açúcar refinado.",
+            "step-2-3": "Retire a fava e despeje aos poucos o leite fervente sobre as gemas, mexendo sem parar.",
+            "step-2-4": "Volte tudo para a panela e deixe o creme engrossar por 1 a 2 min em fogo baixo, sem deixar ferver.",
+            "step-2-5": "Deixe esfriar e sirva o creme inglês bem gelado ao lado do macaron."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Macarontaart van tante Maria",
+      "author": "Tante Maria",
+      "description": "Macarontaart met eiwitten, amandelen en bitteramandelextract, geserveerd met vanilleroomsaus (crème anglaise).",
+      "yieldLabel": "8 personen",
+      "prepTime": "",
+      "cookTime": "45 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "45 min",
+      "temperature": "140 °C",
+      "equipment": [
+        "1 elektrische handmixer",
+        "1 kookpot"
+      ],
+      "notes": [
+        "Koffievariant: vervang de vanille door 2 kl koffie-extract, toegevoegd van het vuur af."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "eiwitten", "quantity": "6", "unit": "", "notes": "" },
+        "ingredient-main-1": { "name": "fijne kristalsuiker", "quantity": "340", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "amandelen", "quantity": "340", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "bakpoeder", "quantity": "1", "unit": "snufje", "notes": "" },
+        "ingredient-main-4": { "name": "bitteramandelextract", "quantity": "1", "unit": "kl", "notes": "" },
+        "ingredient-main-5": { "name": "eidooiers", "quantity": "6", "unit": "", "notes": "voor de crème anglaise, de dooiers die overblijven van de macaron" },
+        "ingredient-main-6": { "name": "melk", "quantity": "50", "unit": "cl", "notes": "voor de crème anglaise" },
+        "ingredient-main-7": { "name": "fijne kristalsuiker", "quantity": "100", "unit": "g", "notes": "voor de crème anglaise" },
+        "ingredient-main-8": { "name": "Maïzena", "quantity": "1", "unit": "zeer afgestreken kl", "notes": "voor de crème anglaise" },
+        "ingredient-main-9": { "name": "vanillestokje", "quantity": "1", "unit": "", "notes": "voor de crème anglaise; anders vanille-extract gebruiken volgens de dosering op het flesje" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding van de macaron",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 140 °C.",
+            "step-0-1": "Klop de eiwitten tot een zeer stevige sneeuw.",
+            "step-0-2": "Klop 5 min verder met de suiker met de elektrische mixer.",
+            "step-0-3": "Voeg daarna de amandelen, het bakpoeder en het bitteramandelextract toe."
+          }
+        },
+        {
+          "title": "Bakken",
+          "steps": {
+            "step-1-0": "Bak in een zachte oven, op 140 °C, gedurende 45 min."
+          }
+        },
+        {
+          "title": "Vanille-crème anglaise",
+          "steps": {
+            "step-2-0": "Snij het vanillestokje open en schraap de zaadjes eruit.",
+            "step-2-1": "Breng 50 cl melk aan de kook met het stokje, de vanillezaadjes en 1 zeer afgestreken kl Maïzena.",
+            "step-2-2": "Meng 6 eidooiers met 100 g fijne kristalsuiker.",
+            "step-2-3": "Haal het stokje eruit en giet de kokende melk al roerend geleidelijk over de dooiers.",
+            "step-2-4": "Giet terug in de kookpot en laat de crème 1 à 2 min op een zacht vuur indikken, zonder ze te laten koken.",
+            "step-2-5": "Laat afkoelen en serveer de crème anglaise goed koud naast de macaron."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

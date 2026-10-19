@@ -5,7 +5,7 @@ import { fetchQuery } from "convex/nextjs";
 import { RecipeDetailPage } from "@/components/recipes/recipe-detail-page";
 import { api } from "@/convex/_generated/api";
 import { getDictionary } from "@/i18n/get-dictionary";
-import type { Locale } from "@/i18n/config";
+import { localeAlternates, localeDetails, type Locale } from "@/i18n/config";
 import { getPublicRecipeE2EFixture } from "@/components/recipes/admin-recipe-e2e-fixtures";
 import { parseSelectedServings } from "@/lib/recipe-servings";
 import {
@@ -50,16 +50,12 @@ export async function generateMetadata({
     description,
     alternates: {
       canonical: `/${locale}/recettes/${slug}`,
-      languages: {
-        fr: `/fr/recettes/${slug}`,
-        en: `/en/recettes/${slug}`,
-        "x-default": `/fr/recettes/${slug}`,
-      },
+      languages: localeAlternates(`/recettes/${slug}`),
     },
     openGraph: {
       type: "article",
       siteName: dict.site.wordmark,
-      locale: locale === "fr" ? "fr_FR" : "en_US",
+      locale: localeDetails[locale].ogLocale,
       title: recipe.title,
       description,
       url: `/${locale}/recettes/${slug}`,

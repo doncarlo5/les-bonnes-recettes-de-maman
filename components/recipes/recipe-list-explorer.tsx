@@ -42,6 +42,13 @@ type RecipeListExplorerProps = {
   recipes: RecipeSummary[];
 };
 
+
+const sortDirectionLabels: Record<Locale, Record<"asc" | "desc", string>> = {
+  fr: { asc: "ordre croissant", desc: "ordre décroissant" },
+  en: { asc: "ascending", desc: "descending" },
+  "pt-br": { asc: "ordem crescente", desc: "ordem decrescente" },
+  "nl-be": { asc: "oplopend", desc: "aflopend" },
+};
 export function RecipeListExplorer({
   locale,
   dict,
@@ -248,9 +255,7 @@ export function RecipeListExplorer({
                       </span>
                       {sort === activeSort ? (
                         <span className="sr-only">
-                          {locale === "fr"
-                            ? direction === "asc" ? "ordre croissant" : "ordre décroissant"
-                            : direction === "asc" ? "ascending" : "descending"}
+                          {sortDirectionLabels[locale][direction]}
                         </span>
                       ) : null}
                     </ToggleGroupItem>

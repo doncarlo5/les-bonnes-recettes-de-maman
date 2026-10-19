@@ -1,0 +1,85 @@
+{
+  "slug": "crumble-aux-pommes-du-verger",
+  "translations": {
+    "pt-br": {
+      "title": "Crumble de maçã do pomar",
+      "author": "Maman",
+      "description": "Crumble de maçã com açúcar mascavo, farinha de amêndoas, canela e calvados.",
+      "yieldLabel": "4 a 6 pessoas",
+      "prepTime": "15 min",
+      "cookTime": "35 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "35 min",
+      "temperature": "180 °C",
+      "equipment": ["1 refratário"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "maçãs", "quantity": "1,2", "unit": "kg", "notes": "" },
+        "ingredient-main-1": { "name": "farinha de trigo semi-integral", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "manteiga com sal em temperatura ambiente", "quantity": "100", "unit": "g", "notes": "cortada em cubinhos" },
+        "ingredient-main-3": { "name": "manteiga", "quantity": "20", "unit": "g", "notes": "para untar o refratário" },
+        "ingredient-main-4": { "name": "açúcar mascavo", "quantity": "120", "unit": "g", "notes": "" },
+        "ingredient-main-5": { "name": "farinha de amêndoas", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-6": { "name": "canela em pó", "quantity": "1", "unit": "colher (chá)", "notes": "" },
+        "ingredient-main-7": { "name": "calvados", "quantity": "4", "unit": "colheres (sopa)", "notes": "" },
+        "ingredient-main-8": { "name": "sal", "quantity": "1", "unit": "pitada", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 180 °C.",
+            "step-0-1": "Descasque as maçãs e corte-as em pedacinhos.",
+            "step-0-2": "Coloque as maçãs no refratário untado com manteiga e regue com o calvados.",
+            "step-0-3": "Em uma tigela grande, misture a farinha, a farinha de amêndoas, a canela, o açúcar mascavo e a manteiga.",
+            "step-0-4": "Junte a pitada de sal. Misture delicadamente.",
+            "step-0-5": "Cubra as maçãs com a mistura de farinha, farinha de amêndoas, manteiga e açúcar mascavo e leve ao forno por cerca de 35 min. Depois de 30 min de forno, se as maçãs ainda não estiverem bem macias, prolongue o cozimento protegendo o crumble com papel-manteiga.",
+            "step-0-7": "Sirva o crumble morno ou frio."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Crumble met appels uit de boomgaard",
+      "author": "Maman",
+      "description": "Appelcrumble met bruine suiker, amandelpoeder, kaneel en calvados.",
+      "yieldLabel": "4 à 6 personen",
+      "prepTime": "15 min",
+      "cookTime": "35 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "35 min",
+      "temperature": "180 °C",
+      "equipment": ["1 ovenschotel"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "appels", "quantity": "1,2", "unit": "kg", "notes": "" },
+        "ingredient-main-1": { "name": "halfvolkorenbloem", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "gezouten boter op kamertemperatuur", "quantity": "100", "unit": "g", "notes": "in kleine blokjes gesneden" },
+        "ingredient-main-3": { "name": "boter", "quantity": "20", "unit": "g", "notes": "voor de schotel" },
+        "ingredient-main-4": { "name": "bruine basterdsuiker", "quantity": "120", "unit": "g", "notes": "" },
+        "ingredient-main-5": { "name": "amandelpoeder", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-6": { "name": "kaneelpoeder", "quantity": "1", "unit": "kl", "notes": "" },
+        "ingredient-main-7": { "name": "calvados", "quantity": "4", "unit": "el", "notes": "" },
+        "ingredient-main-8": { "name": "zout", "quantity": "1", "unit": "snufje", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 180 °C.",
+            "step-0-1": "Schil de appels en snij ze in kleine stukjes.",
+            "step-0-2": "Leg de appels in de beboterde schotel en besprenkel ze met de calvados.",
+            "step-0-3": "Meng in een grote kom de bloem, het amandelpoeder, de kaneel, de bruine suiker en de boter.",
+            "step-0-4": "Voeg het snufje zout toe. Roer voorzichtig om.",
+            "step-0-5": "Bedek de appels met het mengsel van bloem, amandelpoeder, boter en bruine suiker en zet ongeveer 35 min in de oven. Zijn de appels na 30 min bakken nog niet helemaal zacht, bak dan nog wat langer en dek de crumble af met bakpapier.",
+            "step-0-7": "Geniet van de crumble lauw of koud."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

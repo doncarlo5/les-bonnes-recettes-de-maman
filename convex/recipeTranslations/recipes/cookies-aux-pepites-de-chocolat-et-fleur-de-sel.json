@@ -1,0 +1,131 @@
+{
+  "slug": "cookies-aux-pepites-de-chocolat-et-fleur-de-sel",
+  "translations": {
+    "pt-br": {
+      "title": "Cookies com gotas de chocolate e flor de sal",
+      "author": "Julien",
+      "description": "Cookies grandes com pedaços de chocolate, crocantes nas bordas, macios no centro e realçados com um toque de flor de sal.",
+      "yieldLabel": "Cerca de 20 cookies grandes",
+      "prepTime": "≈ 40 min",
+      "cookTime": "10 min",
+      "restTime": "",
+      "totalTime": "≈ 1 h",
+      "timeLabel": "≈ 1 h",
+      "temperature": "180 °C",
+      "equipment": ["1 assadeira"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "manteiga", "quantity": "200", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "açúcar mascavo", "quantity": "270", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "açúcar refinado", "quantity": "80", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "farinha de trigo", "quantity": "350", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "bicarbonato de sódio", "quantity": "1", "unit": "colher (chá)", "notes": "opcional" },
+        "ingredient-main-5": { "name": "fermento químico em pó", "quantity": "1", "unit": "colher (chá)", "notes": "" },
+        "ingredient-main-6": { "name": "sal", "quantity": "1/2", "unit": "colher (chá)", "notes": "" },
+        "ingredient-main-7": { "name": "ovo grande", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-8": { "name": "fava de baunilha", "quantity": "1/4", "unit": "", "notes": "apenas as sementes" },
+        "ingredient-main-9": { "name": "chocolate amargo", "quantity": "200", "unit": "g", "notes": "picado grosseiramente" },
+        "ingredient-main-10": { "name": "flor de sal", "quantity": "", "unit": "", "notes": "para salpicar" }
+      },
+      "sections": [
+        {
+          "title": "Preparo da massa",
+          "steps": {
+            "step-0-0": "Em uma tigela, misture a farinha, o bicarbonato, o fermento e o sal.",
+            "step-0-1": "Derreta a manteiga em fogo médio e despeje-a em uma tigela grande.",
+            "step-0-2": "Junte o açúcar mascavo e o açúcar refinado à manteiga derretida e misture até obter uma mistura homogênea.",
+            "step-0-3": "Incorpore o ovo e as sementes de baunilha até obter uma textura lisa e brilhante.",
+            "step-0-4": "Acrescente os ingredientes secos em duas vezes com uma colher de pau, misturando só o suficiente para incorporá-los.",
+            "step-0-5": "Junte o chocolate amargo picado grosseiramente e misture uma última vez, sem trabalhar demais a massa."
+          }
+        },
+        {
+          "title": "Descanso",
+          "steps": {
+            "step-1-0": "Cubra a tigela e leve a massa à geladeira por 30 min."
+          }
+        },
+        {
+          "title": "Forno",
+          "steps": {
+            "step-2-0": "Preaqueça o forno a 180 °C e forre uma assadeira com papel-manteiga.",
+            "step-2-1": "Forme bolas grandes de massa com um boleador de sorvete ou uma colher de sopa e espalhe-as bem afastadas na assadeira.",
+            "step-2-2": "Salpique cada bola com uma pitadinha de flor de sal.",
+            "step-2-3": "Leve ao forno por 8 min, retire a assadeira e bata-a levemente na bancada para ajudar os cookies a se espalharem.",
+            "step-2-4": "Continue assando por mais 2 min e bata de novo a assadeira ao tirá-la do forno."
+          }
+        },
+        {
+          "title": "Resfriamento",
+          "steps": {
+            "step-3-0": "Coloque os cookies sobre uma grade e deixe-os descansar por pelo menos 10 min antes de guardá-los ou saboreá-los."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Cookies met chocoladestukjes en fleur de sel",
+      "author": "Julien",
+      "description": "Grote cookies met chocoladestukjes, knapperig aan de randen, zacht in het midden en afgewerkt met een vleugje fleur de sel.",
+      "yieldLabel": "Ongeveer 20 grote cookies",
+      "prepTime": "≈ 40 min",
+      "cookTime": "10 min",
+      "restTime": "",
+      "totalTime": "≈ 1 h",
+      "timeLabel": "≈ 1 h",
+      "temperature": "180 °C",
+      "equipment": ["1 bakplaat"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "boter", "quantity": "200", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "bruine suiker", "quantity": "270", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "kristalsuiker", "quantity": "80", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "bloem", "quantity": "350", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "bicarbonaat", "quantity": "1", "unit": "kl", "notes": "naar keuze" },
+        "ingredient-main-5": { "name": "bakpoeder", "quantity": "1", "unit": "kl", "notes": "" },
+        "ingredient-main-6": { "name": "zout", "quantity": "1/2", "unit": "kl", "notes": "" },
+        "ingredient-main-7": { "name": "groot ei", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-8": { "name": "vanillestokje", "quantity": "1/4", "unit": "", "notes": "enkel de zaadjes" },
+        "ingredient-main-9": { "name": "pure chocolade", "quantity": "200", "unit": "g", "notes": "grof gehakt" },
+        "ingredient-main-10": { "name": "fleur de sel", "quantity": "", "unit": "", "notes": "om te bestrooien" }
+      },
+      "sections": [
+        {
+          "title": "Het deeg maken",
+          "steps": {
+            "step-0-0": "Meng in een kom de bloem, het bicarbonaat, het bakpoeder en het zout.",
+            "step-0-1": "Smelt de boter op middelhoog vuur en giet ze in een grote kom.",
+            "step-0-2": "Voeg de bruine suiker en de kristalsuiker toe aan de gesmolten boter en meng tot een gelijkmatig geheel.",
+            "step-0-3": "Roer het ei en de vanillezaadjes erdoor tot je een glad en glanzend mengsel hebt.",
+            "step-0-4": "Voeg de droge ingrediënten in twee keer toe met een houten lepel en meng net genoeg om ze op te nemen.",
+            "step-0-5": "Voeg de grof gehakte pure chocolade toe en meng een laatste keer zonder het deeg te veel te bewerken."
+          }
+        },
+        {
+          "title": "Laten rusten",
+          "steps": {
+            "step-1-0": "Dek de kom af en zet het deeg 30 min in de koelkast."
+          }
+        },
+        {
+          "title": "Bakken",
+          "steps": {
+            "step-2-0": "Verwarm de oven voor op 180 °C en bekleed een bakplaat met bakpapier.",
+            "step-2-1": "Vorm grote bollen deeg met een ijsschep of een soeplepel en leg ze met ruim tussenruimte op de bakplaat.",
+            "step-2-2": "Bestrooi elke bol met een klein snufje fleur de sel.",
+            "step-2-3": "Bak 8 min, haal de bakplaat uit de oven en tik ze zachtjes op het werkblad zodat de cookies beter uitlopen.",
+            "step-2-4": "Bak nog 2 min verder en tik de bakplaat opnieuw op het werkblad wanneer je ze uit de oven haalt."
+          }
+        },
+        {
+          "title": "Afkoelen",
+          "steps": {
+            "step-3-0": "Leg de cookies op een rooster en laat ze minstens 10 min rusten voor je ze bewaart of opeet."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

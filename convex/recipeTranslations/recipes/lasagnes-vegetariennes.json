@@ -1,0 +1,81 @@
+{
+  "slug": "lasagnes-vegetariennes",
+  "translations": {
+    "pt-br": {
+      "title": "Lasanha vegetariana",
+      "author": "Maman",
+      "description": "Lasanha vegetariana com ratatouille, molho branco e queijos ralados.",
+      "yieldLabel": "1 travessa",
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "200 °C",
+      "equipment": ["1 refratário"],
+      "notes": [
+        "Esta lasanha pode ser preparada na véspera. Nesse caso, reduza um pouco o tempo de forno para que ela não fique cozida demais ao ser reaquecida."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "molho branco (bechamel)", "quantity": "1/2", "unit": "litro", "notes": "cerca de" },
+        "ingredient-main-1": { "name": "ratatouille", "quantity": "1", "unit": "receita", "notes": "não muito líquida" },
+        "ingredient-main-2": { "name": "massa para lasanha", "quantity": "1", "unit": "pacote", "notes": "" },
+        "ingredient-main-3": { "name": "gruyère ralado", "quantity": "", "unit": "", "notes": "para cada camada" },
+        "ingredient-main-4": { "name": "parmesão ralado", "quantity": "", "unit": "", "notes": "para gratinar" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 200 °C e prepare o molho branco.",
+            "step-0-1": "Use uma ratatouille não muito líquida, para que a lasanha fique bem firme.",
+            "step-0-2": "Espalhe uma concha de molho branco no fundo do refratário e cubra com uma camada de massa.",
+            "step-0-3": "Acrescente uma camada de ratatouille, cubra com molho branco e polvilhe generosamente gruyère ralado.",
+            "step-0-4": "Repita as camadas de massa, ratatouille, molho branco e gruyère até terminarem os ingredientes.",
+            "step-0-5": "Finalize com uma camada de molho branco e cubra generosamente com parmesão ralado.",
+            "step-0-6": "Leve ao forno por cerca de 30 min a 200 °C."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Vegetarische lasagne",
+      "author": "Maman",
+      "description": "Vegetarische lasagne met ratatouille, bechamelsaus en geraspte kaas.",
+      "yieldLabel": "1 ovenschotel",
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "200 °C",
+      "equipment": ["1 ovenschotel"],
+      "notes": [
+        "Deze lasagne kan de dag voordien al klaargemaakt worden. Verkort in dat geval de baktijd een beetje, zodat ze bij het opwarmen niet te gaar wordt."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "bechamelsaus", "quantity": "1/2", "unit": "liter", "notes": "ongeveer" },
+        "ingredient-main-1": { "name": "ratatouille", "quantity": "1", "unit": "portie", "notes": "niet te vloeibaar" },
+        "ingredient-main-2": { "name": "lasagnebladen", "quantity": "1", "unit": "pak", "notes": "" },
+        "ingredient-main-3": { "name": "geraspte gruyère", "quantity": "", "unit": "", "notes": "voor elke laag" },
+        "ingredient-main-4": { "name": "geraspte parmezaan", "quantity": "", "unit": "", "notes": "om te gratineren" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 200 °C en maak de bechamelsaus.",
+            "step-0-1": "Gebruik een ratatouille die niet te vloeibaar is, zodat de lasagne mooi stevig blijft.",
+            "step-0-2": "Verdeel een pollepel bechamel over de bodem van de schotel en leg er een laag lasagnebladen op.",
+            "step-0-3": "Voeg een laag ratatouille toe, bedek met bechamel en bestrooi royaal met geraspte gruyère.",
+            "step-0-4": "Herhaal de lagen lasagnebladen, ratatouille, bechamel en gruyère tot alle ingrediënten op zijn.",
+            "step-0-5": "Eindig met een laag bechamel en bestrooi die royaal met geraspte parmezaan.",
+            "step-0-6": "Zet ongeveer 30 min in de oven op 200 °C."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

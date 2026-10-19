@@ -1,0 +1,95 @@
+{
+  "slug": "cake-chevre-noix-olives",
+  "translations": {
+    "pt-br": {
+      "title": "Bolo salgado de queijo de cabra, nozes e azeitonas",
+      "author": "Maman",
+      "description": "Bolo salgado com queijo de cabra, nozes, azeitonas e comté ralado.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "180 °C",
+      "equipment": [],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "farinha de trigo", "quantity": "175", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "ovos", "quantity": "3", "unit": "", "notes": "" },
+        "ingredient-main-2": { "name": "azeite de oliva", "quantity": "2", "unit": "colheres (sopa)", "notes": "" },
+        "ingredient-main-3": { "name": "queijo comté ralado", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "queijo de cabra", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-5": { "name": "leite", "quantity": "1", "unit": "copo pequeno", "notes": "" },
+        "ingredient-main-6": { "name": "nozes", "quantity": "70", "unit": "g", "notes": "" },
+        "ingredient-main-7": { "name": "azeitonas inteiras", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-8": { "name": "sal", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-9": { "name": "pimenta-do-reino", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-10": { "name": "fermento químico", "quantity": "1/2", "unit": "sachê", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 180 °C.",
+            "step-0-1": "Misture os ovos, a farinha, o fermento, o sal e a pimenta.",
+            "step-0-2": "Acrescente aos poucos o azeite e o leite quente com o queijo ralado.",
+            "step-0-3": "Junte o queijo de cabra amassado, as nozes e as azeitonas."
+          }
+        },
+        {
+          "title": "Cozimento",
+          "steps": {
+            "step-1-0": "Asse por 30 min a 180 °C."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Hartige cake met geitenkaas, walnoten en olijven",
+      "author": "Maman",
+      "description": "Hartige cake met geitenkaas, walnoten, olijven en geraspte comté.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "30 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "30 min",
+      "temperature": "180 °C",
+      "equipment": [],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "bloem", "quantity": "175", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "eieren", "quantity": "3", "unit": "", "notes": "" },
+        "ingredient-main-2": { "name": "olijfolie", "quantity": "2", "unit": "el", "notes": "" },
+        "ingredient-main-3": { "name": "geraspte comté", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "geitenkaas", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-5": { "name": "melk", "quantity": "1", "unit": "klein glas", "notes": "" },
+        "ingredient-main-6": { "name": "walnoten", "quantity": "70", "unit": "g", "notes": "" },
+        "ingredient-main-7": { "name": "hele olijven", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-8": { "name": "zout", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-9": { "name": "peper", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-10": { "name": "bakpoeder", "quantity": "1/2", "unit": "zakje", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 180 °C.",
+            "step-0-1": "Meng de eieren, de bloem, het bakpoeder, het zout en de peper.",
+            "step-0-2": "Voeg beetje bij beetje de olie en de warme melk met de geraspte kaas toe.",
+            "step-0-3": "Voeg de geprakte geitenkaas, de walnoten en de olijven toe."
+          }
+        },
+        {
+          "title": "Bakken",
+          "steps": {
+            "step-1-0": "Bak 30 min op 180 °C."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

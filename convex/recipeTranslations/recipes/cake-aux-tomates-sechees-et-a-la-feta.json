@@ -1,0 +1,95 @@
+{
+  "slug": "cake-aux-tomates-sechees-et-a-la-feta",
+  "translations": {
+    "pt-br": {
+      "title": "Bolo salgado de tomate seco e feta",
+      "author": "Alexia",
+      "description": "Bolo salgado fofinho com tomate seco, feta, manjericão e queijo gruyère.",
+      "yieldLabel": "6 pessoas",
+      "prepTime": "15 min",
+      "cookTime": "40 min",
+      "restTime": "",
+      "totalTime": "55 min",
+      "timeLabel": "55 min",
+      "temperature": "180 °C",
+      "equipment": ["1 tigela grande", "1 forma de bolo inglês"],
+      "notes": [
+        "Para o óleo, use de preferência o do pote de tomates secos; na falta dele, use azeite de oliva."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "queijo gruyère ralado", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "óleo", "quantity": "6", "unit": "cl", "notes": "de preferência o óleo do pote de tomates secos, senão azeite de oliva" },
+        "ingredient-main-2": { "name": "fermento químico em pó", "quantity": "1", "unit": "sachê", "notes": "" },
+        "ingredient-main-3": { "name": "farinha de trigo", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "tomates secos", "quantity": "200", "unit": "g", "notes": "cortados em pedacinhos" },
+        "ingredient-main-5": { "name": "queijo feta", "quantity": "100", "unit": "g", "notes": "cortado em cubos" },
+        "ingredient-main-6": { "name": "ovos", "quantity": "3", "unit": "", "notes": "" },
+        "ingredient-main-7": { "name": "leite", "quantity": "12", "unit": "cl", "notes": "" },
+        "ingredient-main-8": { "name": "manjericão", "quantity": "1", "unit": "maço", "notes": "picado" },
+        "ingredient-main-9": { "name": "sal", "quantity": "", "unit": "", "notes": "a gosto" },
+        "ingredient-main-10": { "name": "pimenta-do-reino", "quantity": "", "unit": "", "notes": "a gosto" },
+        "ingredient-main-11": { "name": "manteiga", "quantity": "um pouco", "unit": "", "notes": "para a forma" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 180 °C.",
+            "step-0-1": "Em uma tigela grande, misture a farinha e o fermento.",
+            "step-0-2": "Junte os ovos, o leite e o óleo e misture bem.",
+            "step-0-3": "Incorpore os tomates secos cortados em pedacinhos, o manjericão picado, a feta em cubos e o gruyère ralado.",
+            "step-0-4": "Tempere com sal e pimenta e misture de novo.",
+            "step-0-5": "Unte a forma de bolo inglês com a manteiga, despeje a massa e leve ao forno por 40 min.",
+            "step-0-6": "Deixe esfriar antes de desenformar e saborear."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Hartige cake met gedroogde tomaten en feta",
+      "author": "Alexia",
+      "description": "Smeuïge hartige cake met gedroogde tomaten, feta, basilicum en gruyère.",
+      "yieldLabel": "6 personen",
+      "prepTime": "15 min",
+      "cookTime": "40 min",
+      "restTime": "",
+      "totalTime": "55 min",
+      "timeLabel": "55 min",
+      "temperature": "180 °C",
+      "equipment": ["1 slakom", "1 cakevorm"],
+      "notes": [
+        "Gebruik voor de olie bij voorkeur de olie uit de pot gedroogde tomaten; heb je die niet, neem dan olijfolie."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "geraspte gruyère", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "olie", "quantity": "6", "unit": "cl", "notes": "bij voorkeur olie uit de pot gedroogde tomaten, anders olijfolie" },
+        "ingredient-main-2": { "name": "bakpoeder", "quantity": "1", "unit": "zakje", "notes": "" },
+        "ingredient-main-3": { "name": "bloem", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "gedroogde tomaten", "quantity": "200", "unit": "g", "notes": "in kleine stukjes gesneden" },
+        "ingredient-main-5": { "name": "feta", "quantity": "100", "unit": "g", "notes": "in blokjes gesneden" },
+        "ingredient-main-6": { "name": "eieren", "quantity": "3", "unit": "", "notes": "" },
+        "ingredient-main-7": { "name": "melk", "quantity": "12", "unit": "cl", "notes": "" },
+        "ingredient-main-8": { "name": "basilicum", "quantity": "1", "unit": "bosje", "notes": "fijngesneden" },
+        "ingredient-main-9": { "name": "zout", "quantity": "", "unit": "", "notes": "naar smaak" },
+        "ingredient-main-10": { "name": "peper", "quantity": "", "unit": "", "notes": "naar smaak" },
+        "ingredient-main-11": { "name": "boter", "quantity": "een beetje", "unit": "", "notes": "voor de vorm" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 180 °C.",
+            "step-0-1": "Meng in een slakom de bloem en het bakpoeder.",
+            "step-0-2": "Voeg de eieren, de melk en de olie toe en meng goed.",
+            "step-0-3": "Spatel de in stukjes gesneden gedroogde tomaten, de fijngesneden basilicum, de feta in blokjes en de geraspte gruyère erdoor.",
+            "step-0-4": "Voeg zout en peper toe en meng opnieuw.",
+            "step-0-5": "Vet de cakevorm in met de boter, giet het deeg erin en zet 40 min in de oven.",
+            "step-0-6": "Laat afkoelen voor je de cake uit de vorm haalt en ervan geniet."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

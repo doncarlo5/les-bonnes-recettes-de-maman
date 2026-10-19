@@ -1,0 +1,107 @@
+{
+  "slug": "brownies",
+  "translations": {
+    "pt-br": {
+      "title": "Brownies",
+      "author": "Maman",
+      "description": "Brownies de chocolate amargo com nozes, macios por dentro.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "20 min",
+      "restTime": "2 h 35",
+      "totalTime": "",
+      "timeLabel": "20 min",
+      "temperature": "180 °C",
+      "equipment": ["1 forma retangular de 25 × 18 cm ou 1 forma quadrada equivalente", "papel-manteiga"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "chocolate amargo", "quantity": "250", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "açúcar", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "manteiga", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "açúcar de baunilha", "quantity": "1", "unit": "sachê", "notes": "" },
+        "ingredient-main-4": { "name": "farinha de trigo", "quantity": "60", "unit": "g", "notes": "peneirada" },
+        "ingredient-main-5": { "name": "ovos", "quantity": "3", "unit": "", "notes": "" },
+        "ingredient-main-6": { "name": "sal", "quantity": "1", "unit": "pitada", "notes": "" },
+        "ingredient-main-7": { "name": "nozes", "quantity": "60", "unit": "g", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 180 °C e forre a forma com papel-manteiga.",
+            "step-0-1": "Derreta o chocolate amargo com a manteiga.",
+            "step-0-2": "Junte o açúcar e o açúcar de baunilha e misture.",
+            "step-0-3": "Bata os ovos como para uma omelete com a pitada de sal e incorpore à mistura de chocolate.",
+            "step-0-4": "Acrescente a farinha peneirada e as nozes e misture até obter uma massa homogênea."
+          }
+        },
+        {
+          "title": "Cozimento",
+          "steps": {
+            "step-1-0": "Despeje a massa na forma e asse por 20 min a 180 °C."
+          }
+        },
+        {
+          "title": "Descanso e desenformar",
+          "steps": {
+            "step-2-0": "Depois de assados, deixe os brownies descansarem 5 min no forno desligado.",
+            "step-2-1": "Retire do forno e deixe esfriar por 30 min.",
+            "step-2-2": "Leve à geladeira por 2 h e depois desenforme."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Brownies",
+      "author": "Maman",
+      "description": "Brownies met pure chocolade en walnoten, smeuïg vanbinnen.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "20 min",
+      "restTime": "2 h 35",
+      "totalTime": "",
+      "timeLabel": "20 min",
+      "temperature": "180 °C",
+      "equipment": ["1 rechthoekige bakvorm van 25 × 18 cm of 1 vierkante vorm van gelijke grootte", "bakpapier"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "pure chocolade", "quantity": "250", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "suiker", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "boter", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "vanillesuiker", "quantity": "1", "unit": "zakje", "notes": "" },
+        "ingredient-main-4": { "name": "bloem", "quantity": "60", "unit": "g", "notes": "gezeefd" },
+        "ingredient-main-5": { "name": "eieren", "quantity": "3", "unit": "", "notes": "" },
+        "ingredient-main-6": { "name": "zout", "quantity": "1", "unit": "snufje", "notes": "" },
+        "ingredient-main-7": { "name": "walnoten", "quantity": "60", "unit": "g", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 180 °C en bekleed de vorm met bakpapier.",
+            "step-0-1": "Smelt de pure chocolade samen met de boter.",
+            "step-0-2": "Voeg de suiker en de vanillesuiker toe en meng.",
+            "step-0-3": "Klop de eieren los met het snufje zout en roer ze door het chocolademengsel.",
+            "step-0-4": "Voeg de gezeefde bloem en de walnoten toe en meng tot een glad deeg."
+          }
+        },
+        {
+          "title": "Bakken",
+          "steps": {
+            "step-1-0": "Giet het deeg in de vorm en bak 20 min op 180 °C."
+          }
+        },
+        {
+          "title": "Rusten en ontvormen",
+          "steps": {
+            "step-2-0": "Laat de brownies na het bakken nog 5 min rusten in de uitgeschakelde oven.",
+            "step-2-1": "Haal ze uit de oven en laat 30 min afkoelen.",
+            "step-2-2": "Zet 2 h in de koelkast en haal ze daarna uit de vorm."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

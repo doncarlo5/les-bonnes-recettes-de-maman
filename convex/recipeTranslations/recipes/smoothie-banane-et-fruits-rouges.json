@@ -1,0 +1,79 @@
+{
+  "slug": "smoothie-banane-et-fruits-rouges",
+  "translations": {
+    "pt-br": {
+      "title": "Smoothie de banana e frutas vermelhas",
+      "author": "Alexia",
+      "description": "Smoothie cremoso de banana, frutas vermelhas, queijo fresco batido, sementes de chia e flocos de aveia.",
+      "yieldLabel": "1 pessoa",
+      "prepTime": "5 min",
+      "cookTime": "",
+      "restTime": "",
+      "totalTime": "5 min",
+      "timeLabel": "5 min",
+      "temperature": "",
+      "equipment": ["1 liquidificador"],
+      "notes": [
+        "As frutas vermelhas congeladas são muito duras, como cubos de gelo. Coloque sempre os ingredientes macios primeiro no liquidificador e as frutas congeladas por último, para não forçar o aparelho."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "leite", "quantity": "2", "unit": "xícaras de café", "notes": "" },
+        "ingredient-main-1": { "name": "queijo fresco batido (fromage blanc)", "quantity": "2", "unit": "colheres (sopa)", "notes": "" },
+        "ingredient-main-2": { "name": "banana", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-3": { "name": "mel", "quantity": "1", "unit": "colher (chá)", "notes": "" },
+        "ingredient-main-4": { "name": "sementes de chia", "quantity": "1", "unit": "colher (chá)", "notes": "" },
+        "ingredient-main-5": { "name": "flocos de aveia", "quantity": "1 a 2", "unit": "colheres (sopa)", "notes": "" },
+        "ingredient-main-6": { "name": "frutas vermelhas", "quantity": "2 a 3", "unit": "xícaras de café", "notes": "frescas ou congeladas: framboesas, cerejas, morangos, mirtilos, amoras…" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Descasque a banana e corte em pedaços.",
+            "step-0-1": "Coloque primeiro o leite no liquidificador e depois acrescente o queijo fresco, a banana, o mel, as sementes de chia e os flocos de aveia, nessa ordem.",
+            "step-0-2": "Junte as frutas vermelhas por último e bata por cerca de 1 min, até obter uma textura lisa e cremosa.",
+            "step-0-3": "Acrescente um pouco de leite se o smoothie estiver muito grosso e sirva imediatamente."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Smoothie met banaan en rood fruit",
+      "author": "Alexia",
+      "description": "Romige smoothie met banaan, rood fruit, plattekaas, chiazaad en havervlokken.",
+      "yieldLabel": "1 persoon",
+      "prepTime": "5 min",
+      "cookTime": "",
+      "restTime": "",
+      "totalTime": "5 min",
+      "timeLabel": "5 min",
+      "temperature": "",
+      "equipment": ["1 blender"],
+      "notes": [
+        "Diepvries rood fruit is heel hard, zoals ijsblokjes. Doe altijd eerst de zachte ingrediënten in de blender en het bevroren fruit als laatste, zodat het toestel niet te zwaar moet werken."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "melk", "quantity": "2", "unit": "koffietassen", "notes": "" },
+        "ingredient-main-1": { "name": "plattekaas", "quantity": "2", "unit": "el", "notes": "" },
+        "ingredient-main-2": { "name": "banaan", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-3": { "name": "honing", "quantity": "1", "unit": "kl", "notes": "" },
+        "ingredient-main-4": { "name": "chiazaad", "quantity": "1", "unit": "kl", "notes": "" },
+        "ingredient-main-5": { "name": "havervlokken", "quantity": "1 à 2", "unit": "el", "notes": "" },
+        "ingredient-main-6": { "name": "rood fruit", "quantity": "2 à 3", "unit": "koffietassen", "notes": "vers of diepgevroren: frambozen, kersen, aardbeien, blauwe bessen, bramen…" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Schil de banaan en snij ze in stukken.",
+            "step-0-1": "Giet eerst de melk in de blender en voeg dan de plattekaas, de banaan, de honing, het chiazaad en de havervlokken toe, in die volgorde.",
+            "step-0-2": "Voeg het rood fruit als laatste toe en mix ongeveer 1 min, tot de smoothie glad en romig is.",
+            "step-0-3": "Voeg een beetje melk toe als de smoothie te dik is en serveer meteen."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

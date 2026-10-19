@@ -1,0 +1,91 @@
+{
+  "slug": "sauce-bolognaise",
+  "translations": {
+    "pt-br": {
+      "title": "Molho à bolonhesa",
+      "author": "Maman",
+      "description": "Molho à bolonhesa caseiro com carne moída, presunto, tomate, alho, cebola, salsinha e ervas de Provence.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "40 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "40 min",
+      "temperature": "fogo baixo",
+      "equipment": ["1 frigideira"],
+      "notes": [
+        "Este molho pode ser usado, por exemplo, para preparar lasanha."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "carne moída", "quantity": "500", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "presunto", "quantity": "2", "unit": "fatias", "notes": "" },
+        "ingredient-main-2": { "name": "tomate pelado picado em lata", "quantity": "400", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "purê de tomate", "quantity": "200", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "cebola", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-5": { "name": "alho", "quantity": "1", "unit": "dente", "notes": "" },
+        "ingredient-main-6": { "name": "salsinha", "quantity": "1", "unit": "maço", "notes": "" },
+        "ingredient-main-7": { "name": "cenoura", "quantity": "1", "unit": "", "notes": "opcional" },
+        "ingredient-main-8": { "name": "ervas de Provence", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-9": { "name": "sal", "quantity": "", "unit": "", "notes": "a gosto" },
+        "ingredient-main-10": { "name": "pimenta-do-reino", "quantity": "", "unit": "", "notes": "a gosto" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Descasque o alho e a cebola.",
+            "step-0-1": "Aqueça um fio de óleo em uma frigideira. Junte a cebola, o alho e a salsinha picados, além da cenoura cortada em cubinhos bem pequenos, e refogue em fogo baixo.",
+            "step-0-2": "Acrescente a carne moída e o presunto e deixe dourar por uns dez minutos.",
+            "step-0-3": "Junte o tomate pelado picado e o purê de tomate.",
+            "step-0-4": "Tempere com sal e pimenta e acrescente as ervas de Provence.",
+            "step-0-5": "Deixe cozinhar em fogo brando, com a panela semitampada, por cerca de 30 min."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Bolognesesaus",
+      "author": "Maman",
+      "description": "Huisgemaakte bolognesesaus met rundergehakt, ham, tomaten, look, ui, peterselie en Provençaalse kruiden.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "40 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "40 min",
+      "temperature": "zacht vuur",
+      "equipment": ["1 pan"],
+      "notes": [
+        "Deze saus kan je onder meer gebruiken om lasagne te maken."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "rundergehakt", "quantity": "500", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "ham", "quantity": "2", "unit": "sneden", "notes": "" },
+        "ingredient-main-2": { "name": "tomatenpulp uit blik", "quantity": "400", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "tomatenpuree", "quantity": "200", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "ui", "quantity": "1", "unit": "", "notes": "" },
+        "ingredient-main-5": { "name": "look", "quantity": "1", "unit": "teentje", "notes": "" },
+        "ingredient-main-6": { "name": "peterselie", "quantity": "1", "unit": "bosje", "notes": "" },
+        "ingredient-main-7": { "name": "wortel", "quantity": "1", "unit": "", "notes": "facultatief" },
+        "ingredient-main-8": { "name": "Provençaalse kruiden", "quantity": "", "unit": "", "notes": "" },
+        "ingredient-main-9": { "name": "zout", "quantity": "", "unit": "", "notes": "naar smaak" },
+        "ingredient-main-10": { "name": "peper", "quantity": "", "unit": "", "notes": "naar smaak" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Pel de look en de ui.",
+            "step-0-1": "Verhit een bodempje olie in een pan. Voeg de gehakte ui, look en peterselie toe, samen met de wortel in heel kleine blokjes, en stoof alles aan op zacht vuur.",
+            "step-0-2": "Voeg het rundergehakt en de ham toe en laat een tiental minuten bruinen.",
+            "step-0-3": "Voeg de tomatenpulp en de tomatenpuree toe.",
+            "step-0-4": "Kruid met zout en peper en voeg de Provençaalse kruiden toe.",
+            "step-0-5": "Laat half afgedekt ongeveer 30 min zachtjes pruttelen."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

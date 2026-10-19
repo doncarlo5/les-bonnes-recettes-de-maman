@@ -102,6 +102,14 @@ export default defineSchema({
       fr: localizedRecipe,
       en: localizedRecipe,
     }),
+    // Published-only translations generated from the French content and synced
+    // from convex/recipeTranslations. The admin edits French and English only.
+    extraTranslations: v.optional(
+      v.object({
+        ptBR: v.optional(localizedRecipe),
+        nlBE: v.optional(localizedRecipe),
+      }),
+    ),
     // Transitional fields for the categories migration. `tags` is removed after
     // every production document has categories and no legacy labels remain.
     tags: v.optional(v.array(v.string())),

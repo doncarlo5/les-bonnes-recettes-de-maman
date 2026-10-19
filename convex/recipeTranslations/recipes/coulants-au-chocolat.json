@@ -1,0 +1,101 @@
+{
+  "slug": "coulants-au-chocolat",
+  "translations": {
+    "pt-br": {
+      "title": "Petit gâteau de chocolate",
+      "author": "Maman",
+      "description": "Pequenos petit gâteaux de chocolate amargo, para servir mornos com uma bola de sorvete de baunilha.",
+      "yieldLabel": "Cerca de 5 petit gâteaux",
+      "prepTime": "",
+      "cookTime": "10 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "10 min",
+      "temperature": "180 °C",
+      "equipment": ["5 cavidades de fôrma de muffin"],
+      "notes": ["Esta receita rende mais 5 petit gâteaux do que 6."],
+      "ingredients": {
+        "ingredient-main-0": { "name": "chocolate amargo", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "ovos", "quantity": "2", "unit": "", "notes": "" },
+        "ingredient-main-2": { "name": "farinha de trigo", "quantity": "25", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "manteiga", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "açúcar refinado", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-5": { "name": "sorvete de baunilha", "quantity": "5", "unit": "bolas", "notes": "opcional, para servir" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 180 °C.",
+            "step-0-1": "Derreta a manteiga e o chocolate por 2 min no micro-ondas.",
+            "step-0-2": "Misture os ovos, o açúcar e a farinha.",
+            "step-0-3": "Despeje essa mistura sobre a mistura de manteiga e chocolate.",
+            "step-0-4": "Distribua em 5 cavidades de fôrma de muffin, no formato de pequenos cupcakes."
+          }
+        },
+        {
+          "title": "Cozimento",
+          "steps": {
+            "step-1-0": "Asse por 10 min em forno quente a 180 °C."
+          }
+        },
+        {
+          "title": "Para servir",
+          "steps": {
+            "step-2-0": "Deixe amornar e, com cuidado, passe uma colher de sopa entre cada petit gâteau e a fôrma para desenformá-lo sem quebrar.",
+            "step-2-1": "Sirva cada petit gâteau morno com uma bola de sorvete de baunilha."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Chocoladefondantjes",
+      "author": "Maman",
+      "description": "Kleine fondantjes van pure chocolade, lauwwarm te serveren met een bolletje vanille-ijs.",
+      "yieldLabel": "Ongeveer 5 fondantjes",
+      "prepTime": "",
+      "cookTime": "10 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "10 min",
+      "temperature": "180 °C",
+      "equipment": ["5 holtes van een muffinvorm"],
+      "notes": ["Dit recept levert eerder 5 dan 6 fondantjes op."],
+      "ingredients": {
+        "ingredient-main-0": { "name": "pure chocolade", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "eieren", "quantity": "2", "unit": "", "notes": "" },
+        "ingredient-main-2": { "name": "bloem", "quantity": "25", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "boter", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "kristalsuiker", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-5": { "name": "vanille-ijs", "quantity": "5", "unit": "bolletjes", "notes": "optioneel, om te serveren" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 180 °C.",
+            "step-0-1": "Smelt de boter en de chocolade 2 min in de microgolfoven.",
+            "step-0-2": "Meng de eieren, de suiker en de bloem.",
+            "step-0-3": "Giet dit mengsel bij het boter-chocolademengsel.",
+            "step-0-4": "Verdeel over 5 holtes van een muffinvorm, in de vorm van kleine cupcakes."
+          }
+        },
+        {
+          "title": "Bakken",
+          "steps": {
+            "step-1-0": "Bak 10 min in een voorverwarmde oven op 180 °C."
+          }
+        },
+        {
+          "title": "Serveren",
+          "steps": {
+            "step-2-0": "Laat lauw worden en schuif dan voorzichtig een soeplepel tussen elk fondantje en de vorm om het los te maken zonder het te breken.",
+            "step-2-1": "Serveer elk fondantje lauwwarm met een bolletje vanille-ijs."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

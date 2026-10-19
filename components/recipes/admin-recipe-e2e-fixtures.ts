@@ -1,3 +1,4 @@
+import type { Locale } from "@/i18n/config";
 import type { Id } from "@/convex/_generated/dataModel";
 import {
   getPublicationState,
@@ -135,7 +136,7 @@ export function getRecipeAdminE2EFixtures() {
   return { recipes: [summary], recipe, idea };
 }
 
-export function getPublicRecipeE2EFixture(locale: "fr" | "en", slug?: string) {
+export function getPublicRecipeE2EFixture(locale: Locale, slug?: string) {
   const fixtures = getRecipeAdminE2EFixtures();
   if (!fixtures) return null;
   const recipe = fixtures.recipe;
@@ -150,7 +151,7 @@ export function getPublicRecipeE2EFixture(locale: "fr" | "en", slug?: string) {
     relatedRecipes: [],
     categories: recipe.categories,
     status: recipe.status,
-    ...recipe.translations[locale],
+    ...recipe.translations[locale === "fr" ? "fr" : "en"],
   } satisfies Recipe;
 
   if (!slug || slug === recipe.slug) return publicRecipe;

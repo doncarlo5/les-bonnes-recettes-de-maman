@@ -1,5 +1,10 @@
 import { paginationOptsValidator } from "convex/server";
 import { v } from "convex/values";
+import {
+  publicLocaleValidator,
+  publishedTranslation,
+  type PublicLocale,
+} from "./recipeLocales";
 import type { Doc, Id } from "./_generated/dataModel";
 import {
   mutation,
@@ -8,7 +13,7 @@ import {
   type QueryCtx,
 } from "./_generated/server";
 
-const localeValidator = v.union(v.literal("fr"), v.literal("en"));
+const localeValidator = publicLocaleValidator;
 const stateValidator = v.union(
   v.literal("outstanding"),
   v.literal("completed"),
@@ -146,7 +151,7 @@ export async function detachLinkedIdea(
 async function presentIdea(
   ctx: QueryCtx,
   idea: Doc<"recipeIdeas">,
-  locale: "fr" | "en",
+  locale: PublicLocale,
   participantDigest: string | null,
   includeUnpublishedRecipe: boolean,
 ) {
@@ -171,7 +176,7 @@ async function presentIdea(
     linkedRecipe: recipe && (includeUnpublishedRecipe || recipe.status === "published")
       ? {
           slug: recipe.slug,
-          title: recipe.translations[locale].title,
+          title: publishedTranslation(recipe, locale).title,
           isPublic: recipe.status === "published",
         }
       : null,
@@ -181,7 +186,7 @@ async function presentIdea(
 export async function presentIdeaForAdmin(
   ctx: QueryCtx,
   idea: Doc<"recipeIdeas">,
-  locale: "fr" | "en",
+  locale: PublicLocale,
 ) {
   return presentIdea(ctx, idea, locale, null, true);
 }

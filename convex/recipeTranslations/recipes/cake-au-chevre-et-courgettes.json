@@ -1,0 +1,103 @@
+{
+  "slug": "cake-au-chevre-et-courgettes",
+  "translations": {
+    "pt-br": {
+      "title": "Cake salgado de queijo de cabra e abobrinha",
+      "author": "Mimi",
+      "description": "Cake salgado com queijo de cabra, abobrinha, gruyère ralado e cerefólio.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "45 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "45 min",
+      "temperature": "180 °C",
+      "equipment": ["1 forma de bolo inglês"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "ovos", "quantity": "3", "unit": "", "notes": "" },
+        "ingredient-main-1": { "name": "farinha de trigo", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "fermento em pó", "quantity": "1", "unit": "sachê", "notes": "" },
+        "ingredient-main-3": { "name": "óleo de girassol", "quantity": "8", "unit": "cl", "notes": "" },
+        "ingredient-main-4": { "name": "leite integral", "quantity": "12,5", "unit": "cl", "notes": "" },
+        "ingredient-main-5": { "name": "gruyère ralado", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-6": { "name": "queijo de cabra em rolo", "quantity": "200", "unit": "g", "notes": "" },
+        "ingredient-main-7": { "name": "abobrinha", "quantity": "1", "unit": "grande", "notes": "" },
+        "ingredient-main-8": { "name": "azeite de oliva", "quantity": "2", "unit": "colheres (sopa)", "notes": "" },
+        "ingredient-main-9": { "name": "cerefólio", "quantity": "1", "unit": "maço", "notes": "" },
+        "ingredient-main-10": { "name": "sal", "quantity": "2", "unit": "pitadas", "notes": "" },
+        "ingredient-main-11": { "name": "pimenta-do-reino", "quantity": "", "unit": "", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Preaqueça o forno a 180 °C.",
+            "step-0-1": "Doure a abobrinha cortada em rodelas no azeite por 15 min e depois coloque sobre papel-toalha.",
+            "step-0-2": "Bata os ovos, a farinha, o fermento, o sal e a pimenta.",
+            "step-0-3": "Incorpore aos poucos o óleo e o leite aquecido.",
+            "step-0-4": "Acrescente o gruyère ralado e misture.",
+            "step-0-5": "Incorpore a abobrinha, o queijo de cabra cortado em pedaços e o cerefólio picado.",
+            "step-0-6": "Misture tudo e coloque em uma forma sem untar."
+          }
+        },
+        {
+          "title": "Cozimento",
+          "steps": {
+            "step-1-0": "Asse por 45 min a 180 °C."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Hartige cake met geitenkaas en courgette",
+      "author": "Mimi",
+      "description": "Hartige cake met geitenkaas, courgette, geraspte gruyère en kervel.",
+      "yieldLabel": "",
+      "prepTime": "",
+      "cookTime": "45 min",
+      "restTime": "",
+      "totalTime": "",
+      "timeLabel": "45 min",
+      "temperature": "180 °C",
+      "equipment": ["1 cakevorm"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "eieren", "quantity": "3", "unit": "", "notes": "" },
+        "ingredient-main-1": { "name": "bloem", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "bakpoeder", "quantity": "1", "unit": "zakje", "notes": "" },
+        "ingredient-main-3": { "name": "zonnebloemolie", "quantity": "8", "unit": "cl", "notes": "" },
+        "ingredient-main-4": { "name": "volle melk", "quantity": "12,5", "unit": "cl", "notes": "" },
+        "ingredient-main-5": { "name": "geraspte gruyère", "quantity": "100", "unit": "g", "notes": "" },
+        "ingredient-main-6": { "name": "geitenkaasrol", "quantity": "200", "unit": "g", "notes": "" },
+        "ingredient-main-7": { "name": "courgette", "quantity": "1", "unit": "flinke", "notes": "" },
+        "ingredient-main-8": { "name": "olijfolie", "quantity": "2", "unit": "el", "notes": "" },
+        "ingredient-main-9": { "name": "kervel", "quantity": "1", "unit": "bosje", "notes": "" },
+        "ingredient-main-10": { "name": "zout", "quantity": "2", "unit": "snufjes", "notes": "" },
+        "ingredient-main-11": { "name": "peper", "quantity": "", "unit": "", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Verwarm de oven voor op 180 °C.",
+            "step-0-1": "Bak de courgette in schijfjes 15 min in de olijfolie en laat ze daarna uitlekken op keukenpapier.",
+            "step-0-2": "Klop de eieren, de bloem, het bakpoeder, het zout en de peper door elkaar.",
+            "step-0-3": "Voeg beetje bij beetje de olie en de opgewarmde melk toe.",
+            "step-0-4": "Voeg de geraspte gruyère toe en meng.",
+            "step-0-5": "Spatel de courgette, de geitenkaas in stukjes en de fijngeknipte kervel erdoor.",
+            "step-0-6": "Meng alles goed en giet het in een niet-ingevette vorm."
+          }
+        },
+        {
+          "title": "Bakken",
+          "steps": {
+            "step-1-0": "Bak 45 min op 180 °C."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

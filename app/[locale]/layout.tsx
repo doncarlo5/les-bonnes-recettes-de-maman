@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import { bodyFontClassName, fontVariables } from "@/app/fonts";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { hasLocale, locales } from "@/i18n/config";
+import { hasLocale, localeAlternates, localeDetails, locales } from "@/i18n/config";
 import { siteUrl } from "@/lib/site";
 import { ConvexClientProvider } from "@/components/convex-client-provider";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -38,7 +38,7 @@ export async function generateMetadata({
   }
 
   const dict = await getDictionary(locale);
-  const ogLocale = locale === "fr" ? "fr_FR" : "en_US";
+  const ogLocale = localeDetails[locale].ogLocale;
 
   return {
     metadataBase: new URL(siteUrl),
@@ -63,11 +63,7 @@ export async function generateMetadata({
     },
     alternates: {
       canonical: `/${locale}`,
-      languages: {
-        fr: "/fr",
-        en: "/en",
-        "x-default": "/fr",
-      },
+      languages: localeAlternates(),
     },
   };
 }
@@ -93,7 +89,7 @@ export default async function RootLayout({
 
   return (
     <html
-      lang={locale}
+      lang={localeDetails[locale].htmlLang}
       suppressHydrationWarning
       className={`${fontVariables} ${bodyFontClassName} h-full antialiased`}
     >

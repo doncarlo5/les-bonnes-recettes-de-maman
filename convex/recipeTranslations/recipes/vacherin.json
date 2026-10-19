@@ -1,0 +1,83 @@
+{
+  "slug": "vacherin",
+  "translations": {
+    "pt-br": {
+      "title": "Vacherin",
+      "author": "Maman",
+      "description": "Sobremesa gelada em forma de anel feita com ovos, creme de leite fresco e suspiros.",
+      "yieldLabel": "8 pessoas",
+      "prepTime": "20 min",
+      "cookTime": "",
+      "restTime": "3 h no congelador",
+      "totalTime": "3 h 20",
+      "timeLabel": "3 h 20",
+      "temperature": "",
+      "equipment": ["1 forma de anel (com furo no meio)"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "óleo", "quantity": "um pouco", "unit": "", "notes": "para a forma" },
+        "ingredient-main-1": { "name": "ovos", "quantity": "4", "unit": "", "notes": "claras e gemas separadas" },
+        "ingredient-main-2": { "name": "açúcar refinado", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "açúcar de confeiteiro", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "creme de leite fresco espesso (crème fraîche)", "quantity": "200", "unit": "g", "notes": "" },
+        "ingredient-main-5": { "name": "extrato de baunilha", "quantity": "1", "unit": "colher (chá)", "notes": "" },
+        "ingredient-main-6": { "name": "suspiros", "quantity": "2", "unit": "grandes", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Unte a forma de anel com óleo.",
+            "step-0-1": "Bata vigorosamente as gemas com o açúcar refinado até a mistura ficar esbranquiçada.",
+            "step-0-2": "Acrescente o extrato de baunilha e o creme.",
+            "step-0-3": "Bata as claras em neve, adicionando o açúcar de confeiteiro no final.",
+            "step-0-4": "Incorpore delicadamente as claras à mistura e despeje metade na forma.",
+            "step-0-5": "Distribua os suspiros grosseiramente quebrados e termine com o restante da mistura.",
+            "step-0-6": "Leve ao congelador por 3 h.",
+            "step-0-7": "Para desenformar, mergulhe a forma por alguns segundos em água morna."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Vacherin",
+      "author": "Maman",
+      "description": "IJsdessert in een tulbandvorm, gemaakt met eieren, crème fraîche en meringues.",
+      "yieldLabel": "8 personen",
+      "prepTime": "20 min",
+      "cookTime": "",
+      "restTime": "3 h in de diepvriezer",
+      "totalTime": "3 h 20",
+      "timeLabel": "3 h 20",
+      "temperature": "",
+      "equipment": ["1 ringvorm"],
+      "notes": [],
+      "ingredients": {
+        "ingredient-main-0": { "name": "olie", "quantity": "een beetje", "unit": "", "notes": "voor de vorm" },
+        "ingredient-main-1": { "name": "eieren", "quantity": "4", "unit": "", "notes": "eiwitten en dooiers gescheiden" },
+        "ingredient-main-2": { "name": "kristalsuiker", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-3": { "name": "bloemsuiker", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-4": { "name": "dikke crème fraîche", "quantity": "200", "unit": "g", "notes": "" },
+        "ingredient-main-5": { "name": "vanille-extract", "quantity": "1", "unit": "kl", "notes": "" },
+        "ingredient-main-6": { "name": "meringues", "quantity": "2", "unit": "grote", "notes": "" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Vet de ringvorm in met olie.",
+            "step-0-1": "Klop de eidooiers krachtig met de kristalsuiker tot het mengsel wit ziet.",
+            "step-0-2": "Voeg het vanille-extract en de room toe.",
+            "step-0-3": "Klop de eiwitten stijf en voeg op het einde de bloemsuiker toe.",
+            "step-0-4": "Spatel de eiwitten voorzichtig onder het mengsel en giet de helft in de vorm.",
+            "step-0-5": "Verdeel de grof verbrokkelde meringues erover en eindig met de rest van het mengsel.",
+            "step-0-6": "Laat 3 h bevriezen.",
+            "step-0-7": "Dompel de vorm enkele seconden in lauw water om de vacherin eruit te halen."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

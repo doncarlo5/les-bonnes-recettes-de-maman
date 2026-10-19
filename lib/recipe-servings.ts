@@ -1,11 +1,11 @@
-export type RecipeLocale = "fr" | "en";
+export type RecipeLocale = "fr" | "en" | "pt-br" | "nl-be";
 
 type LegacyServings = { quantity: number; unit: string } | null | undefined;
 
 export const MIN_REFERENCE_SERVINGS = 1;
 export const MAX_REFERENCE_SERVINGS = 50;
 const NUMBER_PATTERN = "(?:\\d+\\s+\\d+\\/\\d+|\\d+\\/\\d+|\\d+(?:[.,]\\d+)?)";
-const RANGE_PATTERN = new RegExp(`^(${NUMBER_PATTERN})(\\s*(?:à|to|[-–—])\\s*)(${NUMBER_PATTERN})$`, "i");
+const RANGE_PATTERN = new RegExp(`^(${NUMBER_PATTERN})(\\s*(?:à|a|to|tot|[-–—])\\s*)(${NUMBER_PATTERN})$`, "i");
 const SINGLE_PATTERN = new RegExp(`^${NUMBER_PATTERN}$`);
 
 export function formatScaledIngredientQuantity(

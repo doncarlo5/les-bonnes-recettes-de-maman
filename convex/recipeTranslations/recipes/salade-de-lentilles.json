@@ -1,0 +1,89 @@
+{
+  "slug": "salade-de-lentilles",
+  "translations": {
+    "pt-br": {
+      "title": "Salada de lentilha",
+      "author": "Maman",
+      "description": "Salada de lentilha verde com tomate-cereja, feta, cebola roxa e salsinha, temperada com um vinagrete de limão.",
+      "yieldLabel": "4 pessoas",
+      "prepTime": "5 min",
+      "cookTime": "20 min",
+      "restTime": "",
+      "totalTime": "25 min",
+      "timeLabel": "25 min",
+      "temperature": "",
+      "equipment": ["1 panela", "1 tigela pequena", "1 saladeira"],
+      "notes": [
+        "Adicione o suco de limão com moderação: em excesso, ele pode encobrir o sabor dos outros ingredientes.",
+        "Na minha versão de sempre, troco o vinagrete de limão por vinagre balsâmico, azeite e sal.",
+        "Acrescento 2 ovos e às vezes, conforme o que tenho em casa, alguns cubinhos de abobrinha, pepino e/ou cenoura, cortados em pedaços bem pequenos."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "limão-siciliano", "quantity": "1/2", "unit": "", "notes": "suco e raspas" },
+        "ingredient-main-1": { "name": "azeite", "quantity": "60", "unit": "ml", "notes": "" },
+        "ingredient-main-2": { "name": "alho", "quantity": "1/2", "unit": "dente", "notes": "picado" },
+        "ingredient-main-3": { "name": "orégano", "quantity": "1/2", "unit": "colher (sopa)", "notes": "" },
+        "ingredient-main-4": { "name": "lentilha verde", "quantity": "320", "unit": "g", "notes": "" },
+        "ingredient-main-5": { "name": "cebola roxa", "quantity": "1/2", "unit": "", "notes": "fatiada fininha" },
+        "ingredient-main-6": { "name": "tomates-cereja", "quantity": "200", "unit": "g", "notes": "cortados em pedacinhos bem pequenos" },
+        "ingredient-main-7": { "name": "salsinha", "quantity": "4", "unit": "colheres (sopa)", "notes": "picada" },
+        "ingredient-main-8": { "name": "feta", "quantity": "80", "unit": "g", "notes": "esfarelado" },
+        "ingredient-main-9": { "name": "sal", "quantity": "", "unit": "", "notes": "a gosto" },
+        "ingredient-main-10": { "name": "pimenta-do-reino", "quantity": "", "unit": "", "notes": "a gosto" }
+      },
+      "sections": [
+        {
+          "title": "Preparo",
+          "steps": {
+            "step-0-0": "Cozinhe as lentilhas conforme as instruções da embalagem. Escorra, lave e deixe esfriar.",
+            "step-0-1": "Enquanto isso, prepare o vinagrete: em uma tigela pequena, bata o suco e as raspas do meio limão com o azeite, o alho, o orégano, sal e pimenta. Reserve.",
+            "step-0-2": "Corte os tomates-cereja em pedacinhos bem pequenos. Em uma saladeira, misture-os com as lentilhas, a salsinha, a cebola roxa e o feta. Regue com o vinagrete e misture delicadamente."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Linzensalade",
+      "author": "Maman",
+      "description": "Salade van groene linzen met kerstomaatjes, feta, rode ui en peterselie, afgewerkt met een citroenvinaigrette.",
+      "yieldLabel": "4 personen",
+      "prepTime": "5 min",
+      "cookTime": "20 min",
+      "restTime": "",
+      "totalTime": "25 min",
+      "timeLabel": "25 min",
+      "temperature": "",
+      "equipment": ["1 kookpot", "1 kleine kom", "1 slakom"],
+      "notes": [
+        "Voeg het citroensap met mate toe: te veel ervan kan de smaak van de andere ingrediënten overheersen.",
+        "Voor mijn gewone versie vervang ik de citroenvinaigrette door balsamicoazijn, olijfolie en zout.",
+        "Ik voeg er 2 eieren aan toe en soms, afhankelijk van wat ik in huis heb, enkele blokjes courgette, komkommer en/of wortel, in heel kleine stukjes gesneden."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "citroen", "quantity": "1/2", "unit": "", "notes": "sap en zeste" },
+        "ingredient-main-1": { "name": "olijfolie", "quantity": "60", "unit": "ml", "notes": "" },
+        "ingredient-main-2": { "name": "look", "quantity": "1/2", "unit": "teentje", "notes": "fijngehakt" },
+        "ingredient-main-3": { "name": "oregano", "quantity": "1/2", "unit": "el", "notes": "" },
+        "ingredient-main-4": { "name": "groene linzen", "quantity": "320", "unit": "g", "notes": "" },
+        "ingredient-main-5": { "name": "rode ui", "quantity": "1/2", "unit": "", "notes": "fijngesneden" },
+        "ingredient-main-6": { "name": "kerstomaatjes", "quantity": "200", "unit": "g", "notes": "in heel kleine stukjes gesneden" },
+        "ingredient-main-7": { "name": "peterselie", "quantity": "4", "unit": "el", "notes": "fijngehakt" },
+        "ingredient-main-8": { "name": "feta", "quantity": "80", "unit": "g", "notes": "verkruimeld" },
+        "ingredient-main-9": { "name": "zout", "quantity": "", "unit": "", "notes": "naar smaak" },
+        "ingredient-main-10": { "name": "peper", "quantity": "", "unit": "", "notes": "naar smaak" }
+      },
+      "sections": [
+        {
+          "title": "Bereiding",
+          "steps": {
+            "step-0-0": "Kook de linzen volgens de aanwijzingen op de verpakking. Giet ze af, spoel ze en laat ze afkoelen.",
+            "step-0-1": "Maak intussen de vinaigrette: klop in een kleine kom het sap en de zeste van de halve citroen los met de olijfolie, de look, de oregano, zout en peper. Zet opzij.",
+            "step-0-2": "Snij de kerstomaatjes in heel kleine stukjes. Meng ze in een slakom met de linzen, de peterselie, de rode ui en de feta. Giet de vinaigrette erover en meng voorzichtig."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

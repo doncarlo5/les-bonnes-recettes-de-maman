@@ -20,6 +20,11 @@ import {
   type RecipeDraftContentLike,
 } from "../lib/recipe-admin-domain";
 import { resolveYieldLabel } from "../lib/recipe-yield";
+import {
+  publicLocaleValidator,
+  publishedTranslation,
+  type PublicLocale,
+} from "./recipeLocales";
 import { resolveReferenceServings } from "../lib/recipe-servings";
 import {
   RECIPE_CATEGORIES,
@@ -169,7 +174,7 @@ const openverseImageCreditValidator = v.object({
 
 export const list = query({
   args: {
-    locale: localeValidator,
+    locale: publicLocaleValidator,
     paginationOpts: paginationOptsValidator,
   },
   handler: async (ctx, args) => {
@@ -204,7 +209,7 @@ export const listSlugs = query({
 
 export const getBySlug = query({
   args: {
-    locale: localeValidator,
+    locale: publicLocaleValidator,
     slug: v.string(),
   },
   handler: async (ctx, args) => {
@@ -906,12 +911,12 @@ export const syncProductionRecipe = mutation({
   },
 });
 
-async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
+async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: PublicLocale) {
   if (!recipe.translations || !recipe.defaultLocale) {
     throw new Error(`Recipe ${recipe.slug} has not been migrated`);
   }
 
-  const translation = recipe.translations[locale];
+  const translation = publishedTranslation(recipe, locale);
   const { servings, yieldLabel, ...content } = translation;
   const publicContent = toEditableLocalizedRecipe(
     translation,
@@ -934,7 +939,7 @@ async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
           if (!related || related.status !== "published") return null;
           return {
             slug: related.slug,
-            title: related.translations[locale].title,
+            title: publishedTranslation(related, locale).title,
           };
         }),
     )
@@ -976,9 +981,9 @@ async function localize(ctx: QueryCtx, recipe: RecipeDoc, locale: Locale) {
 async function localizeSummary(
   ctx: QueryCtx,
   recipe: RecipeDoc,
-  locale: Locale,
+  locale: PublicLocale,
 ) {
-  const translation = recipe.translations[locale];
+  const translation = publishedTranslation(recipe, locale);
   const [storedHeroImageUrl, commentSummary] = await Promise.all([
     recipe.heroImageStorageId
       ? ctx.storage.getUrl(recipe.heroImageStorageId)
@@ -1096,7 +1101,7 @@ function toEditableRecipeContent(
 
 function toEditableLocalizedRecipe(
   localized: StoredLocalizedRecipe,
-  locale: Locale,
+  locale: PublicLocale,
   slug: string,
 ): EditableLocalizedRecipe {
   const { servings, yieldLabel, ...content } = localized;
