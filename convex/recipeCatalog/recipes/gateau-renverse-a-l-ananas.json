@@ -1,20 +1,6 @@
 {
   "slug": "gateau-renverse-a-l-ananas",
-  "heroImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/eb08659c-ba5e-4101-8d4d-46911b80761e",
-  "imageCredit": {
-    "provider": "openverse",
-    "title": "Pineapple upside down cake",
-    "creator": "jeffreyw",
-    "creatorUrl": "https://www.flickr.com/people/jeffreyww/",
-    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Pineapple_upside_down_cake.jpg",
-    "landingUrl": "https://commons.wikimedia.org/wiki/File:Pineapple_upside_down_cake.jpg",
-    "license": "by",
-    "licenseVersion": "2.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
-    "source": "wikimedia",
-    "attribution": "Pineapple upside down cake — jeffreyw — CC BY 2.0, via Wikimedia Commons. Version redimensionnée.",
-    "alt": "Gâteau renversé à l’ananas caramélisé, décoré de cerises (photo d’illustration)."
-  },
+  "heroImageUrl": "https://images.unsplash.com/photo-1687975091176-5a28a9860907?auto=format&fit=crop&w=1400&q=85",
   "defaultLocale": "fr",
   "referenceServings": 6,
   "relatedRecipeSlugs": [],
@@ -334,5 +320,12 @@
       "totalTime": "45 min",
       "yieldLabel": "Environ 6 personnes"
     }
+  },
+  "imageCredit": {
+    "alt": "a pineapple cake on a wooden board next to a pineapple",
+    "photoUrl": "https://unsplash.com/photos/a-cake-sitting-on-top-of-a-table-next-to-a-pineapple-XRLsjWm_Jpc?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Fatane Rahimi",
+    "photographerUrl": "https://unsplash.com/@fatane?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }
