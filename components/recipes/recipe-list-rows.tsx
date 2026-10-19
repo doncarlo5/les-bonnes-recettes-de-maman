@@ -31,15 +31,15 @@ export function RecipeListRows({
         <li key={recipe._id}>
           <Link
             href={`/${locale}/recettes/${recipe.slug}`}
-            className="surface-elevated group grid gap-4 rounded-3xl bg-card p-3 transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:grid-cols-[11rem_1fr] sm:items-center"
+            className="surface-elevated group grid grid-cols-[6rem_minmax(0,1fr)] items-center gap-4 rounded-3xl bg-card p-3 transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:grid-cols-[9rem_minmax(0,1fr)]"
           >
-            <span className="relative aspect-[4/3] overflow-hidden rounded-xl bg-muted sm:aspect-[5/4]">
+            <span className="relative aspect-[4/3] overflow-hidden rounded-xl bg-muted">
               <Image
                 src={recipe.heroImageUrl || defaultRecipeImageUrl}
                 alt=""
                 fill
-                sizes="(max-width: 640px) 100vw, 180px"
-                className="image-outline object-cover transition-transform duration-500 group-hover:scale-[1.025]"
+                sizes="(max-width: 639px) 96px, 144px"
+                className="image-outline object-cover"
               />
             </span>
             <span className="grid gap-3 px-1 py-1 sm:py-3">

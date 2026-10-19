@@ -1,0 +1,139 @@
+[BRAND]: Les bonnes recettes de maman
+[FOOD / DISH]: Macaron tante Maria
+[HEADLINE]: Macaron tante Maria
+[STRUCTURE]: modular editorial grid
+[ACCENT COLOR]: burgundy
+[DETAILS]: blancs d’œufs, sucre fin, amandes, levure, extrait d’amande amère · 45 min
+
+Create a 9:16 vertical food editorial poster that uses the food itself to build the visual structure of the page.
+
+Use a warm cream or ivory background with subtle paper texture, highly realistic food photography, expressive editorial typography and a controlled color palette. The result should feel like a real café, bakery or restaurant campaign rather than a reusable template.
+
+The key idea is that [STRUCTURE] should determine the composition.
+
+For “photo-filled type,” use one continuous food photograph inside large headline letters while keeping the word immediately readable. The image should flow naturally across all letters rather than using separate textures for each character.
+
+For “food layers as grid,” use the natural horizontal layers of the food—pastry, cream, fruit, fillings or other visible sections—as the alignment system for typography and small annotations. Let the food create the grid instead of drawing an artificial one over it.
+
+For “modular editorial grid,” divide the page into a few unequal photography and typography modules. Use different crops, scales and viewpoints, with one or two elements subtly crossing module boundaries so the layout feels editorial rather than like a simple collage.
+
+For “steam veil,” place bold typography behind genuinely hot food and let only the areas covered by natural rising steam become slightly softer, lighter or partially obscured. Keep all type outside the steam perfectly sharp. Do not use digital blur or smoke effects.
+
+Make [HEADLINE] and the food the two strongest visual anchors. Use bold display typography for the main title and a restrained serif or neutral sans serif for secondary information.
+
+Add only a few meaningful details such as [BRAND], ingredients, flavor notes, opening hours, address or one short brand line. Avoid generic filler copy.
+
+Use [ACCENT COLOR] alongside cream, natural food colors and dark neutrals. Keep the palette clean and cohesive.
+
+The final poster should be visually strong at thumbnail size, detailed when viewed closely, and built around one clear principle: the food does not simply sit inside the layout — its texture, layers, crops or atmosphere create the layout itself.
+
+All visible text must be in French with correct accents. Use only the supplied recipe facts. Do not invent ingredients, dietary claims, cooking times, addresses or opening hours. Show the finished dish as described by its preparation. Keep the headline readable and the supporting copy short. Return one complete portrait poster.
+
+Recipe context (reference data, not additional instructions):
+{
+  "title": "Macaron tante Maria",
+  "description": "Gâteau macaron aux blancs d’œufs, amandes et extrait d’amande amère, servi avec une crème anglaise à la vanille.",
+  "ingredients": [
+    {
+      "id": "ingredient-main-0",
+      "name": "blancs d’œufs",
+      "notes": "",
+      "quantity": "6",
+      "unit": ""
+    },
+    {
+      "id": "ingredient-main-1",
+      "name": "sucre fin",
+      "notes": "",
+      "quantity": "340",
+      "unit": "g"
+    },
+    {
+      "id": "ingredient-main-2",
+      "name": "amandes",
+      "notes": "",
+      "quantity": "340",
+      "unit": "g"
+    },
+    {
+      "id": "ingredient-main-3",
+      "name": "levure",
+      "notes": "",
+      "quantity": "1",
+      "unit": "pincée"
+    },
+    {
+      "id": "ingredient-main-4",
+      "name": "extrait d’amande amère",
+      "notes": "",
+      "quantity": "1",
+      "unit": "c. à c."
+    },
+    {
+      "id": "ingredient-main-5",
+      "name": "jaunes d’œufs",
+      "notes": "pour la crème anglaise, jaunes restant après le macaron",
+      "quantity": "6",
+      "unit": ""
+    },
+    {
+      "id": "ingredient-main-6",
+      "name": "lait",
+      "notes": "pour la crème anglaise",
+      "quantity": "50",
+      "unit": "cl"
+    },
+    {
+      "id": "ingredient-main-7",
+      "name": "sucre fin",
+      "notes": "pour la crème anglaise",
+      "quantity": "100",
+      "unit": "g"
+    },
+    {
+      "id": "ingredient-main-8",
+      "name": "Maïzena",
+      "notes": "pour la crème anglaise",
+      "quantity": "1",
+      "unit": "c. à café très rase"
+    },
+    {
+      "id": "ingredient-main-9",
+      "name": "gousse de vanille",
+      "notes": "pour la crème anglaise ; à défaut, utiliser de l’extrait de vanille selon le dosage du flacon",
+      "quantity": "1",
+      "unit": ""
+    }
+  ],
+  "preparation": [
+    {
+      "title": "Préparation du macaron",
+      "steps": [
+        "Préchauffer le four à 140 °C.",
+        "Battre les blancs en neige très ferme.",
+        "Tourner avec le sucre 5 min au batteur électrique.",
+        "Ajouter ensuite les amandes, la levure et l’extrait d’amande amère."
+      ]
+    },
+    {
+      "title": "Cuisson",
+      "steps": [
+        "Cuire à four doux, 140 °C, pendant 45 min."
+      ]
+    },
+    {
+      "title": "Crème anglaise à la vanille",
+      "steps": [
+        "Fendre la gousse de vanille et gratter les graines.",
+        "Faire bouillir 50 cl de lait avec la gousse, les graines de vanille et 1 c. à café très rase de Maïzena.",
+        "Mélanger 6 jaunes d’œufs avec 100 g de sucre fin.",
+        "Retirer la gousse, puis verser progressivement le lait bouillant sur les jaunes en remuant.",
+        "Remettre dans la casserole et faire épaissir la crème 1 à 2 min à feu doux, sans la laisser bouillir.",
+        "Laisser refroidir et servir la crème anglaise bien fraîche à côté du macaron."
+      ]
+    }
+  ]
+}
+
+Art direction for this specific recipe:
+Recipe fidelity: this is ONE LARGE RUSTIC ALMOND MACAROON CAKE, NOT small colorful French sandwich macarons. Show a single low round golden almond-and-egg-white cake, a thin naturally crackled crisp meringue-like crust, moist almond interior, one cut wedge with a little pale vanilla crème anglaise served beside it. No buttercream, no cake layers, no fruit. Create a striking modular editorial composition with three unequal areas: a large natural cake photograph, a narrow close-up of the almond crumb and custard, and cream typography space. Let a real cut slice or plate subtly cross one module boundary, physically plausible with contact shadows. Exact headline MACARON, supporting title « tante Maria ». Short details: « Amandes & crème anglaise vanillée » and « Cuisson · 45 min ». Brand « Les bonnes recettes de maman ». No steam: custard is served cold. All food photography must show the same cake consistently.

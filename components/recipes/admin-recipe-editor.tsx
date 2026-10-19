@@ -1127,6 +1127,7 @@ function MobileSectionFields({
   defaultLocale: LocaleKey;
   requestedLanguage: LocaleKey;
 }) {
+  const posterRecipe = useWatch({ control: form.control, name: "translations.fr" });
   const base = `translations.${requestedLanguage}` as const;
   const errors = form.formState.errors;
   if (section === "info")
@@ -1137,6 +1138,7 @@ function MobileSectionFields({
             key={recipe?.slug ?? "new"}
             locale={locale}
             recipe={recipe}
+            posterRecipe={posterRecipe}
             revisionSession={imageRevisionSession}
             compact
           />

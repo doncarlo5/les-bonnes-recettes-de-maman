@@ -42,17 +42,17 @@ export function RecipeGrid({
               href={`/${locale}/recettes/${recipe.slug}`}
               className="surface-elevated group flex h-full flex-col overflow-hidden rounded-2xl bg-card text-start transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background md:rounded-3xl"
             >
-              <span className="relative block aspect-square shrink-0 overflow-hidden rounded-t-2xl bg-muted md:aspect-[4/3] md:rounded-t-3xl">
+              <span className="relative block aspect-square md:aspect-[4/3] shrink-0 overflow-hidden rounded-t-2xl bg-muted md:rounded-t-3xl">
                 <Image
                   src={recipe.heroImageUrl || defaultRecipeImageUrl}
                   alt=""
                   fill
-                  priority={priorityFirstImage && index === 0}
+                  preload={priorityFirstImage && index === 0}
                   sizes="(max-width: 767px) 50vw, (max-width: 1279px) 50vw, 33vw"
-                  className="image-outline object-cover transition-transform duration-500 group-hover:scale-[1.025]"
+                  className="image-outline object-cover"
                 />
               </span>
-              <span className="flex min-h-24 flex-1 flex-col p-3 md:block md:min-h-0 md:p-7">
+              <span className="flex min-h-24 flex-1 flex-col p-3 md:block md:min-h-0 md:p-5">
                 <span className="type-label mb-4 hidden items-center gap-4 text-primary tabular-nums md:flex">
                   <span className="inline-flex items-center gap-2">
                     <Clock3 aria-hidden className="size-4 stroke-[1.8]" />

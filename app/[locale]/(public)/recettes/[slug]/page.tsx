@@ -42,7 +42,8 @@ export async function generateMetadata({
     return {};
   }
 
-  const description = recipe.description ?? undefined;
+  const dict = await getDictionary(locale);
+  const description = recipe.description?.trim() || `${recipe.title} · ${recipe.timeLabel} · ${dict.site.description}`;
 
   return {
     title: recipe.title,
@@ -57,6 +58,8 @@ export async function generateMetadata({
     },
     openGraph: {
       type: "article",
+      siteName: dict.site.wordmark,
+      locale: locale === "fr" ? "fr_FR" : "en_US",
       title: recipe.title,
       description,
       url: `/${locale}/recettes/${slug}`,

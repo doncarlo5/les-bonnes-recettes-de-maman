@@ -105,7 +105,7 @@ function renderTrigger(variant: TriggerVariant, dict: Dictionary) {
         "surface-elevated group w-full bg-card text-center transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         variant === "card"
           ? "flex h-full min-h-48 flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl md:min-h-80 md:gap-5 md:rounded-3xl"
-          : "grid gap-4 rounded-3xl p-4 sm:grid-cols-[11rem_1fr] sm:items-center sm:text-left",
+          : "grid grid-cols-[6rem_minmax(0,1fr)] items-center gap-4 rounded-3xl p-3 text-left sm:grid-cols-[9rem_minmax(0,1fr)]",
       )}
     />
   );
@@ -120,7 +120,7 @@ function ChooserBody({ dict, compact }: { dict: Dictionary; compact: boolean }) 
           "flex items-center justify-center bg-primary/10 text-primary transition-[scale,background-color,color] duration-300 group-hover:bg-primary group-hover:text-primary-foreground",
           compact
             ? "size-12 rounded-full group-hover:scale-105 md:size-20"
-            : "aspect-[4/3] rounded-xl sm:aspect-[5/4]",
+            : "aspect-[4/3] rounded-xl",
         )}
       >
         <Plus className={compact ? "size-6 stroke-[1.8] md:size-10" : "size-12 stroke-[1.8]"} />

@@ -1,0 +1,21 @@
+[BRAND]: Les bonnes recettes de maman
+[FOOD / DRINK]: A rustic pan of homemade bolognese sauce with ground beef, ham, tomatoes, garlic, onion, parsley and herbes de Provence.
+[HEADLINE]: Sauce bolognaise
+[SUBHEAD]: La recette familiale de Maman
+[DETAILS]: Bœuf, tomates, jambon, herbes de Provence · Cuisson : 40 min
+[ACCENT COLOR]: Burgundy
+[LAYOUT]: Annotated flat lay
+
+Create a 9:16 vertical food editorial poster that combines highly realistic food photography with expressive magazine-style typography.
+
+Use a warm ivory or cream paper background with subtle natural paper texture. The food should be the main visual anchor, photographed with realistic texture, natural highlights, contact shadows, appetizing materials and believable proportions. Avoid CGI, plastic-looking surfaces, overly polished commercial rendering or floating cutout objects.
+
+Build the composition around the actual shape, direction or arrangement of the food rather than placing the product in a fixed template. Let the annotated flat lay layout determine how photography and typography interact. The subject may crop beyond the frame, overlap with type, divide the page, create a circular structure, form a diagonal axis, or leave intentional negative space for editorial information.
+
+Typography should be a major part of the composition. Use one expressive display typeface for the main headline and one restrained supporting typeface for secondary information. Allow changes in scale, orientation, cropping and placement so the text feels integrated with the food rather than simply placed above or below it.
+
+Keep a clear visual hierarchy: large headline and food first, short supporting copy second, then the few supplied ingredient and cooking details.
+
+Use burgundy sparingly alongside cream, food-derived natural colors and dark neutral typography. Keep the palette controlled and cohesive.
+
+Render only the supplied brand, headline, subhead and details as visible text, exactly in French, preserving accents and œ. Ingredient details may be arranged as individual annotations; show each supplied text once. Do not print the bracketed field labels. Do not invent additional text, ingredients or claims. The dish is the sauce itself in a pan, no pasta.

@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { paginationOptsValidator } from "convex/server";
 import {
+  internalMutation,
   mutation,
   query,
   type MutationCtx,
@@ -535,6 +536,40 @@ export const publishDraft = mutation({
       publishedRevision: draft.revision,
       savedAt,
     };
+  },
+});
+
+// Asset-only maintenance for already published legacy recipes. Their content
+// may predate today's readiness rules, so verify it is unchanged instead.
+export const publishImageOnly = internalMutation({
+  args: { slug: v.string(), expectedRevision: v.number() },
+  handler: async (ctx, args) => {
+    const recipe = await getRecipeBySlug(ctx, args.slug);
+    const draft = await getRecipeDraft(ctx, recipe._id);
+    if (recipe.status !== "published" || !draft) {
+      throw new Error("RECIPE_NOT_PUBLISHED");
+    }
+    assertExpectedRevision(draft, args.expectedRevision);
+    if (
+      JSON.stringify(toEditableRecipeContent(recipe, recipe.slug)) !==
+      JSON.stringify(toEditableRecipeContent(draft, recipe.slug))
+    ) {
+      throw new Error("RECIPE_CONTENT_CHANGED");
+    }
+    if (!draft.heroImageStorageId || !(await ctx.db.system.get(draft.heroImageStorageId))) {
+      throw new Error("RECIPE_IMAGE_NOT_FOUND");
+    }
+    await ctx.db.patch(recipe._id, {
+      heroImageStorageId: draft.heroImageStorageId,
+      heroImageUrl: draft.heroImageUrl,
+      imageCredit: draft.imageCredit,
+    });
+    await ctx.db.patch(draft._id, {
+      publishedRevision: draft.revision,
+      updatedAt: Date.now(),
+    });
+    // Retain the previous stored image so this catalog-wide change is reversible.
+    return { slug: recipe.slug, publishedRevision: draft.revision };
   },
 });
 

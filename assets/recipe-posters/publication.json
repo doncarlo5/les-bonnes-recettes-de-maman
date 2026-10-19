@@ -1,0 +1,534 @@
+{
+  "deployment": "https://festive-lobster-957.eu-west-1.convex.cloud",
+  "recipes": {
+    "sauce-bolognaise": {
+      "hash": "ad2cecb3318cf0d8f9e589358c446b128503d528d4a12752e60b2601a808d6f8",
+      "previousImageUrl": "/images/recipes/sauce-bolognaise.png",
+      "previousImageCredit": null,
+      "previousRevision": 3,
+      "stage": "published",
+      "storageId": "kg2e52h76xm74fhcgxqx4h1man8dywqc",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/a50d641e-19fc-4e80-b4be-1660438614a5",
+      "revision": 4
+    },
+    "coulants-au-chocolat": {
+      "hash": "4d8d3aa583ec0697c57e6ec265c589b348a1e383c7560ac0d7cb12ea459d860a",
+      "previousImageUrl": "https://images.unsplash.com/photo-1626125323072-bc20d2674d9e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxfHxDb3VsYW50cyUyMGF1JTIwY2hvY29sYXR8ZW58MXwwfHx8MTc4MTc5NDM4OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "previousImageCredit": {
+        "alt": "chocolate cake on white ceramic plate",
+        "photoUrl": "https://unsplash.com/photos/chocolate-cake-on-white-ceramic-plate-hXm8rAgs11c?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "photographerName": "Valentina Perez",
+        "photographerUrl": "https://unsplash.com/@ovalentinaperez?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "provider": "unsplash"
+      },
+      "previousRevision": 7,
+      "stage": "published",
+      "storageId": "kg2ahqc86qr7vmv6p8n4jhcmp58dysqa",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/eb70094f-4f4d-4b98-98c3-947240a726f7",
+      "revision": 8
+    },
+    "tarte-aux-amandes-et-confiture-de-framboises": {
+      "hash": "0f24c2f7999c0b79d2d0e80457c00e4e426cfe51198c4c7b2ea5bd0e8e04d5b1",
+      "previousImageUrl": "https://images.unsplash.com/photo-1554298128-c916518a4b34?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxfHxUYXJ0ZXxlbnwxfDB8fHwxNzgxNzk1Mzg4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "previousImageCredit": {
+        "alt": "pie on cake stand",
+        "photoUrl": "https://unsplash.com/photos/pie-on-cake-stand-tWOt1vRvob4?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "photographerName": "sheri silver",
+        "photographerUrl": "https://unsplash.com/@sheri_silver?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "provider": "unsplash"
+      },
+      "previousRevision": 5,
+      "stage": "published",
+      "storageId": "kg20yb0sb6amw1rvt7dxzwg3dn8dyvkx",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/a6443d9f-0072-4c9a-996a-09c574abec16",
+      "revision": 6
+    },
+    "gateau-aux-pommes": {
+      "hash": "12710a6b15ff819d7c9b2cb7901994735ac83c5db00cb79ab5b9baaff523e1c3",
+      "previousImageUrl": "https://images.unsplash.com/photo-1562007908-859b4ba9a1a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxfHxUYXJ0ZSUyMGZpbmUlMjBwb21tZXN8ZW58MXwwfHx8MTc4NDQ1NzM3OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "previousImageCredit": {
+        "alt": "pie on white ceramic plate",
+        "photoUrl": "https://unsplash.com/photos/pie-on-white-ceramic-plate-es7aJ-3iBDo?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "photographerName": "Diliara Garifullina",
+        "photographerUrl": "https://unsplash.com/@dilja96?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "provider": "unsplash"
+      },
+      "previousRevision": 6,
+      "stage": "published",
+      "storageId": "kg20gt2vztkwz0jz8rp9ca6tmh8dz7av",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/00df3e6b-abf7-4d41-a2b6-9763c2258172",
+      "revision": 7
+    },
+    "vacherin": {
+      "hash": "46d6da5898bc59365fe0db5ad67d74673754cc881271ad5dd50d20fff836e74c",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/80ce0b6a-2df9-4ab4-aabd-85840feb6f24",
+      "previousImageCredit": null,
+      "previousRevision": 7,
+      "stage": "published",
+      "storageId": "kg24qqej14ygcpc9zy0jq7qvgs8dzged",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/c75a2258-8292-457c-89ba-f28fc098b609",
+      "revision": 8
+    },
+    "gateau-au-chocolat": {
+      "hash": "559d547e48f9f2be078149d61976b57052b2ee9d20b3a8ae80299bc65243dae4",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/5de09eac-a001-49bd-ba64-5659775cf056",
+      "previousImageCredit": {
+        "alt": "Gâteau au chocolat et à la betterave rouge / Chocolate and beet cake",
+        "attribution": "\"Gâteau au chocolat et à la betterave rouge / Chocolate and beet cake\" by balise42 is licensed under CC BY-SA 2.0. To view a copy of this license, visit https://creativecommons.org/licenses/by-sa/2.0/.",
+        "creator": "balise42",
+        "creatorUrl": "https://www.flickr.com/photos/22722986@N08",
+        "imageUrl": "https://live.staticflickr.com/7144/6802627875_2f10d210b5_b.jpg",
+        "landingUrl": "https://www.flickr.com/photos/22722986@N08/6802627875",
+        "license": "by-sa",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+        "licenseVersion": "2.0",
+        "provider": "openverse",
+        "source": "flickr",
+        "title": "Gâteau au chocolat et à la betterave rouge / Chocolate and beet cake"
+      },
+      "previousRevision": 4,
+      "stage": "published",
+      "storageId": "kg246j6snxsy8zgbafsrkkbsdn8dyh02",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/95034a33-55dd-4dc3-822a-bcb14bf0b15b",
+      "revision": 5
+    },
+    "gateau-au-citron": {
+      "hash": "9038d5ef69506b0fed8bb40bdf1287a4ecaebd9a85ffed627c436c3dc8968e4c",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/bb1e9ecb-d2d2-41be-95fc-dbb2d2a21c49",
+      "previousImageCredit": null,
+      "previousRevision": 6,
+      "stage": "published",
+      "storageId": "kg2cc0wg7d2x0byyxaqdmftj458dza8b",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/d929cf94-2783-400b-8322-a1544416a840",
+      "revision": 7
+    },
+    "tiramisu": {
+      "hash": "1f63e4ab769a384d7ef9c07999bf5be88f529822be25f0b545cb7f1a0ce52711",
+      "previousImageUrl": "https://images.unsplash.com/photo-1594356225191-e9b58190cb3a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxMnx8VGlyYW1pc3V8ZW58MXwwfHx8MTc4MTc5NTIzOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "previousImageCredit": {
+        "alt": "brown powder in stainless steel tray",
+        "photoUrl": "https://unsplash.com/photos/brown-powder-in-stainless-steel-tray-rm8dpxuzPlw?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "photographerName": "Kasturi Roy",
+        "photographerUrl": "https://unsplash.com/@stationery_hoe?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "provider": "unsplash"
+      },
+      "previousRevision": 6,
+      "stage": "published",
+      "storageId": "kg2ew6m042zg6sh7pgqtnjjtjs8dy39j",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/602d32f0-adf4-4e7c-8613-c5b2a9bdb03e",
+      "revision": 7
+    },
+    "pate-feuilletee-maman": {
+      "hash": "2aab9bb98f9ca869c0bc880e08b270434fd5a695b0845f24dc1ef70e6d79946b",
+      "previousImageUrl": "https://images.unsplash.com/photo-1603779702309-ed36e656861b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHw4fHxQJUMzJUEydGUlMjBmZXVpbGxldCVDMyVBOWV8ZW58MXwwfHx8MTc4NDQ1NTI3M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "previousImageCredit": {
+        "alt": "brown wooden stick on white surface",
+        "photoUrl": "https://unsplash.com/photos/brown-wooden-stick-on-white-surface-KSEq6kkqXQs?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "photographerName": "Nathan Dumlao",
+        "photographerUrl": "https://unsplash.com/@nate_dumlao?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "provider": "unsplash"
+      },
+      "previousRevision": 5,
+      "stage": "published",
+      "storageId": "kg2ege994wrdn3q5wgmy1tnd7h8dyzbv",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/523d8460-df12-4aba-a38a-4ed01579f397",
+      "revision": 6
+    },
+    "crumble-aux-pommes-du-verger": {
+      "hash": "d46924053e51a5482a69649fda4cca642b56402223d26454eeef728b71a5ea71",
+      "previousImageUrl": "https://images.unsplash.com/photo-1506127946181-abb01a32593c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxfHxDcnVtYmxlJTIwYXV4JTIwcG9tbWVzJTIwZHUlMjB2ZXJnZXJ8ZW58MXwwfHx8MTc4MTc5Mzk3NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "previousImageCredit": {
+        "alt": "brown pastry on brown wooden table",
+        "photoUrl": "https://unsplash.com/photos/brown-pastry-on-brown-wooden-table-LDnctIMQGeY?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "photographerName": "Patrick Fore",
+        "photographerUrl": "https://unsplash.com/@patrickian4?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "provider": "unsplash"
+      },
+      "previousRevision": 5,
+      "stage": "published",
+      "storageId": "kg20kxc45pyxgh57ac2rdva7k18dza1p",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/831d9b94-57bd-40cd-82f8-3d8680a55673",
+      "revision": 6
+    },
+    "cake-orange": {
+      "hash": "5431ac9aa8214b533d13320942a2c468ab0624f5e1a184c938e8cf98ea9d5fd4",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/02f60237-35ce-41dc-8aa3-2222082a1957",
+      "previousImageCredit": null,
+      "previousRevision": 8,
+      "stage": "published",
+      "storageId": "kg2bv99x31dz54tbnaev4jr1bx8dyn9e",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/14b54d04-db20-4aec-bee5-9dfbace7cc56",
+      "revision": 9
+    },
+    "cake-d-ete-tout-vert": {
+      "hash": "abb955b6cb6f6dea21a3bdc50c6164dc96284094f358e0f13075794c63c57004",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/8357a177-3f64-44cb-bea7-fd821b91ba54",
+      "previousImageCredit": null,
+      "previousRevision": 16,
+      "stage": "published",
+      "storageId": "kg23q7gbdemdbbva802366vwzh8dzfg6",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/56881012-49cb-4622-8c32-24cc9e0244aa",
+      "revision": 17
+    },
+    "clafoutis-poires-et-framboises": {
+      "hash": "31eaa36ad29f9fba60de7d3b75f3a474ff45d3f2f47ac7556e050867119f1bc8",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/f4b642eb-bcd1-4c7c-92d0-5be4bc8fddfd",
+      "previousImageCredit": null,
+      "previousRevision": 11,
+      "stage": "published",
+      "storageId": "kg2fd5kw7pn0vy2ztygw2xygb58dzywq",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/5367100e-3ff9-4717-986a-470b0fb6e3d4",
+      "revision": 12
+    },
+    "veloute-de-courgettes": {
+      "hash": "4e3529fa204fcd08f5e50afb6cd89430164a605659457026308ff9ef0025057a",
+      "previousImageUrl": "https://images.unsplash.com/photo-1778104682844-63bf9bf4f3a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxMHx8VmVsb3V0JUMzJUE5JTIwZGUlMjBjb3VyZ2V0dGVzfGVufDF8MHx8fDE3ODE3OTUzMzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "previousImageCredit": {
+        "alt": "A bowl of creamy orange soup with fish and vegetables",
+        "photoUrl": "https://unsplash.com/photos/a-bowl-of-creamy-orange-soup-with-fish-and-vegetables-F9bp_6QmzzM?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "photographerName": "Milan Trninic",
+        "photographerUrl": "https://unsplash.com/@wedesignmarbella?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "provider": "unsplash"
+      },
+      "previousRevision": 6,
+      "stage": "published",
+      "storageId": "kg22f359satefvrtygmjpgcd3n8dzk0d",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/1cd8593e-171f-41b3-8289-19a95ca1e432",
+      "revision": 7
+    },
+    "osso-buco": {
+      "hash": "e1129443af26f42adebf8595eb281457ca6f32ffd9b986c595c3384392f65955",
+      "previousImageUrl": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1400&q=85",
+      "previousImageCredit": null,
+      "previousRevision": 6,
+      "stage": "published",
+      "storageId": "kg2fqqtqjt89903s9vs4k7wqz58dyttz",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/84e1fe20-308e-40d9-9596-98af4125cba4",
+      "revision": 7
+    },
+    "cake-moelleux-au-citron-de-pierre-herme": {
+      "hash": "c1a712096ba19749937c2cbf448bfa78f61b7782f1c5833502e4f89acfbf204e",
+      "previousImageUrl": "https://images.unsplash.com/photo-1691242720281-9269de4d9f86?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxfHxDYWtlJTIwbW9lbGxldSUyMGNpdHJvbnxlbnwxfDB8fHwxNzgxNzk0Mzc0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "previousImageCredit": {
+        "alt": "a loaf of lemon bread sitting on top of a piece of wax paper",
+        "photoUrl": "https://unsplash.com/photos/a-loaf-of-lemon-bread-sitting-on-top-of-a-piece-of-wax-paper-Rhos_ejdrcM?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "photographerName": "The Design Lady",
+        "photographerUrl": "https://unsplash.com/@sarah35?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "provider": "unsplash"
+      },
+      "previousRevision": 4,
+      "stage": "published",
+      "storageId": "kg21yfrwwkwajn18813mcbzk958dz0hj",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/876df406-c9e5-48c1-9bbe-efb91d7322e5",
+      "revision": 5
+    },
+    "gougeres": {
+      "hash": "4a45bfff3ef3da3ff1b449fea1744e6f85590ddfd34ab29fd30b1b8fd8a4c69f",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/2dfbfdf1-c71c-45b3-b925-a4361f9d1bbb",
+      "previousImageCredit": {
+        "alt": "Gougères",
+        "attribution": "\"Gougères\" by krossbow is licensed under CC BY 2.0. To view a copy of this license, visit https://creativecommons.org/licenses/by/2.0/.",
+        "creator": "krossbow",
+        "creatorUrl": "https://www.flickr.com/photos/13194817@N00",
+        "imageUrl": "https://live.staticflickr.com/8071/8333598154_d0d5e7ba33_b.jpg",
+        "landingUrl": "https://www.flickr.com/photos/13194817@N00/8333598154",
+        "license": "by",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+        "licenseVersion": "2.0",
+        "provider": "openverse",
+        "source": "flickr",
+        "title": "Gougères"
+      },
+      "previousRevision": 7,
+      "stage": "published",
+      "storageId": "kg28we3d0z1xrkqhv861nvr23s8dzxgy",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/b82cb717-488a-4ed8-a090-00765863b152",
+      "revision": 8
+    },
+    "cake-chevre-noix-olives": {
+      "hash": "e50485b55068f448e969819b887df481f700f936896a90d554c6c6263e4994f1",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/8992eb8c-18a6-463e-a4d7-800cb0975457",
+      "previousImageCredit": null,
+      "previousRevision": 6,
+      "stage": "published",
+      "storageId": "kg2a07h61aznknwp2j1b3m7k0s8dymp8",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/10b35163-dc9e-4a99-9602-54ffe8dd2110",
+      "revision": 7
+    },
+    "cake-au-chevre-et-courgettes": {
+      "hash": "524a7fa70e0cfab6deb26dcef5c0f50eba881a7595f45dafea9b3f35baa9d34c",
+      "previousImageUrl": "https://images.unsplash.com/photo-1730723817285-93ccb135fbb4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxfHxDYWtlJTIwYXUlMjBjaCVDMyVBOHZyZSUyMGV0JTIwY291cmdldHRlc3xlbnwxfDB8fHwxNzg0NTMzNTcwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "previousImageCredit": {
+        "alt": "A loaf of bread sitting on top of a table",
+        "photoUrl": "https://unsplash.com/photos/a-loaf-of-bread-sitting-on-top-of-a-table-FPBvd9apd2E?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "photographerName": "Liana S",
+        "photographerUrl": "https://unsplash.com/@cherstve_pechivo?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "provider": "unsplash"
+      },
+      "previousRevision": 7,
+      "stage": "published",
+      "storageId": "kg23xwmzpcb4kw03t6z01gfdp98dz4m1",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/b8574e3b-e0f4-4856-826f-7afbff96d907",
+      "revision": 8
+    },
+    "cocotte-de-cabillaud-aux-courgettes-et-curry": {
+      "hash": "3360d494d74470a444def7f0327adab4b5a6164a7a5b0f8c85efeb7544d9cba2",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/e0115485-0aad-4708-8a37-d02decb09358",
+      "previousImageCredit": null,
+      "previousRevision": 4,
+      "stage": "published",
+      "storageId": "kg201rca4ahna7emkdd5ah90x18dzq7e",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/0c2c82db-91f3-4202-a095-c5a5fa70d306",
+      "revision": 5
+    },
+    "pate-sucree-de-pierre-herme": {
+      "hash": "23eac79515602fcf460753e485638ab586c0236b0a75d1e473ae028ab6a71f45",
+      "previousImageUrl": "https://images.unsplash.com/photo-1603777953733-c3f9b2533bf8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxMXx8UCVDMyVBMnRlJTIwc3VjciVDMyVBOWV8ZW58MXwwfHx8MTc4NDQ1NzI1N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "previousImageCredit": {
+        "alt": "brown bread on white textile",
+        "photoUrl": "https://unsplash.com/photos/brown-bread-on-white-textile-0dCOHmQpNuA?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "photographerName": "Nathan Dumlao",
+        "photographerUrl": "https://unsplash.com/@nate_dumlao?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "provider": "unsplash"
+      },
+      "previousRevision": 4,
+      "stage": "published",
+      "storageId": "kg20cyy6y4q1abwhhxrwsfsnn18dywhx",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/6f154ab3-9b72-42e5-a9cc-068e6173c05f",
+      "revision": 5
+    },
+    "pain-de-poisson": {
+      "hash": "3dce72bc3fa26a9f96e93a9fada818b1a9beee696625497a665bb5e2212938f0",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/5d46be13-4416-4d47-ab62-a0cef9effcc4",
+      "previousImageCredit": null,
+      "previousRevision": 6,
+      "stage": "published",
+      "storageId": "kg21y4v1grehgexfwr2n6aj1sh8dyz1w",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/15cdd866-2581-431a-bd49-f0687d925a28",
+      "revision": 7
+    },
+    "flan-au-lait-concentre-sucre-nestle": {
+      "hash": "85284001ee3d7a5085f9991c59eee8c090cea3e7e50c962799c615701234b61b",
+      "previousImageUrl": "https://images.unsplash.com/photo-1702728109878-c61a98d80491?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxfHxGbGFufGVufDF8MHx8fDE3ODE3OTQzMDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "previousImageCredit": {
+        "alt": "a small dessert on a white plate on a wooden table",
+        "photoUrl": "https://unsplash.com/photos/a-small-dessert-on-a-white-plate-on-a-wooden-table-TqPdzQ00I0U?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "photographerName": "Felippe Lopes",
+        "photographerUrl": "https://unsplash.com/@pires128?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "provider": "unsplash"
+      },
+      "previousRevision": 3,
+      "stage": "published",
+      "storageId": "kg2cnc5zpwpp9phx4ec7xvdp698dyxdw",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/e71c0e2f-f08c-47d2-9024-4873e4212778",
+      "revision": 4
+    },
+    "banana-bread-du-kona-inn": {
+      "hash": "a93b9d4809dd9c4ee16396ca5de20fe47973c1e2030ff71b4b75bad4dced2137",
+      "previousImageUrl": "https://images.unsplash.com/photo-1596241913027-34358037e159?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwyfHxCYW5hbmElMjBicmVhZHxlbnwxfDB8fHwxNzg0NTMzNjUwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "previousImageCredit": {
+        "alt": "sliced bread on brown wooden chopping board",
+        "photoUrl": "https://unsplash.com/photos/sliced-bread-on-brown-wooden-chopping-board-Dcrpmris9Yc?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "photographerName": "Evangelina Silina",
+        "photographerUrl": "https://unsplash.com/@evangelinas_photography?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "provider": "unsplash"
+      },
+      "previousRevision": 17,
+      "stage": "published",
+      "storageId": "kg235n6j3a0dxgv6bvrfb3f9r98dzgxw",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/80bc41fb-89af-47a0-b518-717399cca5c5",
+      "revision": 18
+    },
+    "vinaigrette": {
+      "hash": "e472ba654f508fb9fa7356471190ef1692dd39e450d374c8fe704c6594610e1d",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/402b0ec9-8cdf-4625-bc71-67bb6a35fe46",
+      "previousImageCredit": null,
+      "previousRevision": 1,
+      "stage": "published",
+      "storageId": "kg2dhxazp2gtwwerwrwdv4y4g58dy5gr",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/e03cdba4-06bb-455a-9c2c-793ffca8e1e3",
+      "revision": 2
+    },
+    "cookies-aux-pepites-de-chocolat-et-fleur-de-sel": {
+      "hash": "36a9e2a47ff9dcbcb2015487e766bc96160bf23ac2f1ef2f1f40346b35fc9290",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/478b3cf6-cb85-4e8f-a303-360ff520e49d",
+      "previousImageCredit": null,
+      "previousRevision": 4,
+      "stage": "published",
+      "storageId": "kg226y0nhncgz3f2cqp8ppma418dzgxf",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/41af316c-9f76-42e9-b056-a716f51fd8e9",
+      "revision": 5
+    },
+    "mayonnaise": {
+      "hash": "dfa2edf650f06e2b2fd8de90c2481baccd906794239dea3af1ed89216919592f",
+      "previousImageUrl": "/images/recipes/mayonnaise.png",
+      "previousImageCredit": null,
+      "previousRevision": 1,
+      "stage": "published",
+      "storageId": "kg21f4nx1761jjjp1ap7ep2v418dzgv3",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/abe4cc88-103d-4f6b-8b0d-67c7629e0409",
+      "revision": 2
+    },
+    "soupe-de-champagne": {
+      "hash": "264cf3740f6ef9ab9befcb69e946a9c746b1a48483e343f297f0763306cc1a87",
+      "previousImageUrl": "/images/recipes/soupe-de-champagne.png",
+      "previousImageCredit": null,
+      "previousRevision": 9,
+      "stage": "published",
+      "storageId": "kg2dnbrtnd5yrt027n4tza5pch8dzdee",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/49a47c5e-9d50-4bd1-adde-36a613866fe1",
+      "revision": 10
+    },
+    "clafoutis-aux-abricots": {
+      "hash": "bc19640a5056ff8e83ff1cd3bf73d358ac9faa8656dbfc1a42d6ac6ba3246c7b",
+      "previousImageUrl": "/images/recipes/clafoutis-aux-abricots.png",
+      "previousImageCredit": null,
+      "previousRevision": 1,
+      "stage": "published",
+      "storageId": "kg27qzgep5cb5bfhq6a2m5nvks8dz58k",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/75da96df-5cf3-4d12-9a17-257c48b9f7b3",
+      "revision": 2
+    },
+    "salade-de-lentilles": {
+      "hash": "bad833a3a96d6b900b94a1fc4723e7fa4669c10c40e80fb40dae12fb2e78d44d",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/47b746f2-1533-4fa7-957e-810896bef95f",
+      "previousImageCredit": null,
+      "previousRevision": 5,
+      "stage": "published",
+      "storageId": "kg24r729a3bwm86qq7xfwyj42x8dzvg7",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/acc38f15-4620-41df-b1d6-8328f94e9214",
+      "revision": 6
+    },
+    "brownies": {
+      "hash": "652387cf1d0bb76feb4262ce9d911f12d60b4d9844cb2fdd6bf2c1969515b2f8",
+      "previousImageUrl": "https://images.unsplash.com/photo-1461009312844-e80697a81cc7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfGFsbHx8fHx8fHx8fDE3ODU0OTM3ODh8&ixlib=rb-4.1.0&q=80&w=1080",
+      "previousImageCredit": {
+        "alt": "sliced baked brownies on foiled tray",
+        "photoUrl": "https://unsplash.com/photos/sliced-baked-brownies-on-foiled-tray-WPRuXYLNY68?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "photographerName": "Toa Heftiba",
+        "photographerUrl": "https://unsplash.com/@heftiba?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "provider": "unsplash"
+      },
+      "previousRevision": 3,
+      "stage": "published",
+      "storageId": "kg23sz62v2bc9ymhp414g5nd4n8dytfv",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/d842fff7-0af0-41b8-8a08-59589eaaaf5e",
+      "revision": 4
+    },
+    "papillotes-de-cabillaud": {
+      "hash": "a9e7662c235f1411a61291f144d5c788a493b9efc4f0d08194cb45a76b64345e",
+      "previousImageUrl": "https://images.unsplash.com/photo-1633760040841-1f708ce95c56?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfGFsbHx8fHx8fHx8fDE3ODU0OTQyMzB8&ixlib=rb-4.1.0&q=80&w=1080",
+      "previousImageCredit": {
+        "alt": "a white plate topped with fish and vegetables",
+        "photoUrl": "https://unsplash.com/photos/a-white-plate-topped-with-fish-and-vegetables-KxbBzxQ5rhY?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "photographerName": "Zohair Mirza",
+        "photographerUrl": "https://unsplash.com/@zamclicks?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "provider": "unsplash"
+      },
+      "previousRevision": 2,
+      "stage": "published",
+      "storageId": "kg289wevszng541zn0e53sa58n8dybpe",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/3497edd8-63d4-4fa4-a446-5547aedf9105",
+      "revision": 3
+    },
+    "taboule": {
+      "hash": "c1cf7ec937c6e603023cc4ab4e9a4acbb2615e5de7c7db84545b2e9c5be54dea",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/a0ce8a85-27fb-4be3-a897-e0dae9c5b03f",
+      "previousImageCredit": {
+        "alt": "Taboule homemade",
+        "attribution": "\"Taboule homemade\" by Rosmarie Voegtli is licensed under CC BY 2.0. To view a copy of this license, visit https://creativecommons.org/licenses/by/2.0/.",
+        "creator": "Rosmarie Voegtli",
+        "creatorUrl": "https://www.flickr.com/photos/94212497@N00",
+        "imageUrl": "https://live.staticflickr.com/936/39838398630_d8daab89a5_b.jpg",
+        "landingUrl": "https://www.flickr.com/photos/94212497@N00/39838398630",
+        "license": "by",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+        "licenseVersion": "2.0",
+        "provider": "openverse",
+        "source": "flickr",
+        "title": "Taboule homemade"
+      },
+      "previousRevision": 2,
+      "stage": "published",
+      "storageId": "kg2664y15vbr6zsg8x2bsf1yr98dyg5d",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/e00c5bdd-2407-4720-9f4d-d8dff2fbe68f",
+      "revision": 3
+    },
+    "smoothie-banane-et-fruits-rouges": {
+      "hash": "1a0dbe7c7a93398a6164aebfc8e99566d980c63d19e04a49ecbb48d494d553ae",
+      "previousImageUrl": "https://images.unsplash.com/photo-1570696516188-ade861b84a49?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxfHxTbW9vdGhpZSUyMGJhbmFuZSUyMGV0JTIwZnJ1aXRzJTIwcm91Z2VzfGVufDF8MHx8fDE3ODcyMTM0MzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "previousImageCredit": {
+        "alt": "pink smoothie",
+        "photoUrl": "https://unsplash.com/photos/pink-smoothie-hsTwPUzFegQ?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "photographerName": "Denis",
+        "photographerUrl": "https://unsplash.com/@denis96?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+        "provider": "unsplash"
+      },
+      "previousRevision": 5,
+      "stage": "published",
+      "storageId": "kg255zykgfhpzka6hanbx8m3d98dyq5w",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/d470457d-56ac-4231-b398-7c3f82a1be00",
+      "revision": 6
+    },
+    "cake-aux-tomates-sechees-et-a-la-feta": {
+      "hash": "dd740dbab65566de47c569cad928351cb46f86f8956759db19243b95ba4cc4a4",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/de6e9808-b7c6-4589-9343-7626df12a74a",
+      "previousImageCredit": null,
+      "previousRevision": 3,
+      "stage": "published",
+      "storageId": "kg2bbads2hq907afeyyb8a52m18dzdcs",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/b5e2bb7d-92d4-4678-80fc-5e0847f5256b",
+      "revision": 4
+    },
+    "lasagnes": {
+      "hash": "80fffe9d7f9a205c2acdd819498467e50b47e3c82cd912375a064b3328eecf35",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/bc42569a-6934-43ea-8d04-f189a6fb812e",
+      "previousImageCredit": null,
+      "previousRevision": 2,
+      "stage": "published",
+      "storageId": "kg2fxsretf5wzqtm4nkm2j9mwn8dz48x",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/34bef1f1-20b8-49cc-9d9c-1396dc5d6615",
+      "revision": 3
+    },
+    "lasagnes-vegetariennes": {
+      "hash": "406450c3b4999adb27c7b668f6bea6d9301e65c3197ba1af1b394bc80b77bfc7",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/53f43b9c-bc07-4212-8d9a-565564cbdf3d",
+      "previousImageCredit": null,
+      "previousRevision": 2,
+      "stage": "published",
+      "storageId": "kg244w5wtfgvzkz7thme61jexn8dzhj7",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/0b9e8f13-ca4d-4289-8e3e-a0c64d2adc90",
+      "revision": 3
+    },
+    "macaron-tante-maria": {
+      "hash": "d630866a79e488925c4d06dec8bcebd6fd9631f22f516f6b81bf9e09c5c2555d",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/12f6705f-995f-424e-9586-b3c037a0cd18",
+      "previousImageCredit": null,
+      "previousRevision": 6,
+      "stage": "published",
+      "storageId": "kg25c2txfznwz8j5tq6e5e65bn8dy2hy",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/51cf071f-05c3-4ed0-a993-81907c5c3b3e",
+      "revision": 7
+    },
+    "amandin": {
+      "hash": "48e70993ff5ce9ffb2e5c326e1cb5a131b057e0fb583b1185dbfe1f9d604026e",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/b712fcb3-5908-426f-963f-5f1be3e46824",
+      "previousImageCredit": null,
+      "previousRevision": 9,
+      "stage": "published",
+      "storageId": "kg29f4gaszst3873c9j1zzb3198dydvk",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/d0c59529-1016-4eb0-a28d-858598e15b80",
+      "revision": 10
+    },
+    "pates-carbonara": {
+      "hash": "bc8f45d70c346624100e2a7c4321d8625afa144db59402ce065d852d94b6c496",
+      "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/8fedc27c-70f0-4662-abe0-43e273880ddc",
+      "previousImageCredit": null,
+      "previousRevision": 3,
+      "stage": "published",
+      "storageId": "kg299ag6092tcgxsxj3bp7qsx98dyam0",
+      "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/466c7df6-d43a-4ed2-87fd-000f3df40a02",
+      "revision": 4
+    }
+  }
+}

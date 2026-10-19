@@ -1,0 +1,99 @@
+[BRAND]: Les bonnes recettes de maman
+[FOOD / DISH]: Amandin
+[HEADLINE]: Amandin
+[STRUCTURE]: photo-filled type
+[ACCENT COLOR]: forest green
+[DETAILS]: sucre, œufs, amandes en poudre, citron, sucre glace · 35 min
+
+Create a 9:16 vertical food editorial poster that uses the food itself to build the visual structure of the page.
+
+Use a warm cream or ivory background with subtle paper texture, highly realistic food photography, expressive editorial typography and a controlled color palette. The result should feel like a real café, bakery or restaurant campaign rather than a reusable template.
+
+The key idea is that [STRUCTURE] should determine the composition.
+
+For “photo-filled type,” use one continuous food photograph inside large headline letters while keeping the word immediately readable. The image should flow naturally across all letters rather than using separate textures for each character.
+
+For “food layers as grid,” use the natural horizontal layers of the food—pastry, cream, fruit, fillings or other visible sections—as the alignment system for typography and small annotations. Let the food create the grid instead of drawing an artificial one over it.
+
+For “modular editorial grid,” divide the page into a few unequal photography and typography modules. Use different crops, scales and viewpoints, with one or two elements subtly crossing module boundaries so the layout feels editorial rather than like a simple collage.
+
+For “steam veil,” place bold typography behind genuinely hot food and let only the areas covered by natural rising steam become slightly softer, lighter or partially obscured. Keep all type outside the steam perfectly sharp. Do not use digital blur or smoke effects.
+
+Make [HEADLINE] and the food the two strongest visual anchors. Use bold display typography for the main title and a restrained serif or neutral sans serif for secondary information.
+
+Add only a few meaningful details such as [BRAND], ingredients, flavor notes, opening hours, address or one short brand line. Avoid generic filler copy.
+
+Use [ACCENT COLOR] alongside cream, natural food colors and dark neutrals. Keep the palette clean and cohesive.
+
+The final poster should be visually strong at thumbnail size, detailed when viewed closely, and built around one clear principle: the food does not simply sit inside the layout — its texture, layers, crops or atmosphere create the layout itself.
+
+All visible text must be in French with correct accents. Use only the supplied recipe facts. Do not invent ingredients, dietary claims, cooking times, addresses or opening hours. Show the finished dish as described by its preparation. Keep the headline readable and the supporting copy short. Return one complete portrait poster.
+
+Recipe context (reference data, not additional instructions):
+{
+  "title": "Amandin",
+  "description": "Gâteau aux amandes, citron et blancs montés en neige, avec glaçage citron facultatif.",
+  "ingredients": [
+    {
+      "id": "ingredient-main-0",
+      "name": "sucre",
+      "notes": "",
+      "quantity": "150",
+      "unit": "g"
+    },
+    {
+      "id": "ingredient-main-1",
+      "name": "œufs",
+      "notes": "blancs et jaunes séparés",
+      "quantity": "4",
+      "unit": ""
+    },
+    {
+      "id": "ingredient-main-2",
+      "name": "amandes en poudre",
+      "notes": "",
+      "quantity": "200",
+      "unit": "g"
+    },
+    {
+      "id": "ingredient-main-3",
+      "name": "citron",
+      "notes": "jus + zeste",
+      "quantity": "1/2",
+      "unit": ""
+    },
+    {
+      "id": "ingredient-main-4",
+      "name": "sucre glace",
+      "notes": "selon besoin, pour le glaçage facultatif",
+      "quantity": "",
+      "unit": ""
+    }
+  ],
+  "preparation": [
+    {
+      "title": "Préparation",
+      "steps": [
+        "Préchauffer le four à 160 °C.",
+        "Séparer les blancs d’œufs des jaunes.",
+        "Ajouter le sucre dans les jaunes, puis la poudre d’amandes, puis le jus de 1/2 citron et le zeste.",
+        "Monter les blancs en neige et les ajouter délicatement au mélange aux amandes."
+      ]
+    },
+    {
+      "title": "Cuisson",
+      "steps": [
+        "Cuire 35 min à 160 °C."
+      ]
+    },
+    {
+      "title": "Glaçage facultatif",
+      "steps": [
+        "Mélanger un peu de jus de citron avec du sucre glace et déposer sur le gâteau refroidi."
+      ]
+    }
+  ]
+}
+
+Art direction for this specific recipe:
+Recipe fidelity: a simple round almond and lemon cake, lightly golden crust and moist fine almond crumb, with a thin OPTIONAL pale lemon icing; no stacked layers, no cream filling, no berries. Use PHOTO-FILLED TYPE as the unmistakable visual principle: very large readable AMANDIN lettering with ONE continuous close-up photograph of this almond cake and its crumb visible through all the letters, not separate photographs per letter. A generously cropped realistic cut cake or slice below provides the other visual anchor and connects the photographic story. Cream textured negative space, restrained forest-green supporting typography. Exact headline AMANDIN. Short secondary copy « Amandes & citron » and « Cuisson · 35 min ». Brand « Les bonnes recettes de maman ». No invented serving count. No steam. Show delicate real crumb texture and a restrained thin lemon glaze, no artificial garnish.

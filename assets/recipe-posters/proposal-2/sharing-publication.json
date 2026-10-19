@@ -1,0 +1,261 @@
+{
+  "coulants-au-chocolat": {
+    "storageId": "kg21ght8tjj4gzbqez1cxxn3058dzjs8",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/6a258fd9-a8a7-435f-8008-5287b043ebb2",
+    "hash": "298c00ec90d722c88dbbba6ce94acc8ce3321bb9349923e6b30cd93f22c132a1",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/eb70094f-4f4d-4b98-98c3-947240a726f7",
+    "file": "/images/recipes/posters/coulants-au-chocolat-fr-v2.webp"
+  },
+  "tarte-aux-amandes-et-confiture-de-framboises": {
+    "storageId": "kg26ydyvntn9dbde12gct4j00n8dysen",
+    "hash": "9de06daba70a3b92c90b98cc7bb5effd1857ddedf8add63ab0d45fe7ede3422d",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/a6443d9f-0072-4c9a-996a-09c574abec16",
+    "file": "/images/recipes/posters/tarte-aux-amandes-et-confiture-de-framboises-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/53435f01-962a-44f5-a4ba-1777c16906ce"
+  },
+  "gateau-aux-pommes": {
+    "storageId": "kg20p2sm2f89x2ky1tvkhbmda98dyb4c",
+    "hash": "740582ec773c788da995514d0b97585c6dcf70678c7a204c0bfec8c55c3e39b0",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/00df3e6b-abf7-4d41-a2b6-9763c2258172",
+    "file": "/images/recipes/posters/gateau-aux-pommes-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/8dd4ef35-7aed-430f-9275-06797a85fff6"
+  },
+  "vacherin": {
+    "storageId": "kg2389pyj8h90scgegxe739r658dzht9",
+    "hash": "ea572b273e6f1b1c28b6ff16aa9f54e59bb38dea578d25e1dd9e5904bce0d5b7",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/c75a2258-8292-457c-89ba-f28fc098b609",
+    "file": "/images/recipes/posters/vacherin-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/321f72ce-cf31-47db-96fa-0e30edc2e689"
+  },
+  "gateau-au-chocolat": {
+    "storageId": "kg28j4ndsdqrz6zsqfvnamxezd8dyxs5",
+    "hash": "60a6a1259529b6704b0da42650649acf411368cfede131fb89f6909b0ea68069",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/95034a33-55dd-4dc3-822a-bcb14bf0b15b",
+    "file": "/images/recipes/posters/gateau-au-chocolat-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/f5cb7a3f-4d92-4e2f-ac1a-b2954d431805"
+  },
+  "gateau-au-citron": {
+    "storageId": "kg2ca7qc4rjvhm01159vf6twwd8dyqv7",
+    "hash": "dbff954406f73104eb039f1263168b400ccdccaadfab05d1b6df5c6e7a317e14",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/d929cf94-2783-400b-8322-a1544416a840",
+    "file": "/images/recipes/posters/gateau-au-citron-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/42d3dc04-f8b4-45bb-bb11-251355565d7c"
+  },
+  "tiramisu": {
+    "storageId": "kg2de65jrgratxpvtvnvyawcph8dykfv",
+    "hash": "6438342e1724c410c99f66a7ff1a8ac2901a36b8994cf9ea94b56154427e5873",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/602d32f0-adf4-4e7c-8613-c5b2a9bdb03e",
+    "file": "/images/recipes/posters/tiramisu-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/84a5983b-3c3e-4b7c-9deb-54386e3cd4a4"
+  },
+  "pate-feuilletee-maman": {
+    "storageId": "kg28gdk19wwzr7qdxf11c3mjv58dzeft",
+    "hash": "a02b8e39a21f84f65732863953f8f701e1e169a65be02f4c5a8406600656d847",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/523d8460-df12-4aba-a38a-4ed01579f397",
+    "file": "/images/recipes/posters/pate-feuilletee-maman-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/26d81de4-98ea-4bdb-b489-4481f7f6a03b"
+  },
+  "crumble-aux-pommes-du-verger": {
+    "storageId": "kg2d7f6meh4vwyakcrrx26x3qx8dyqk3",
+    "hash": "d099752a8621803dd0601ab322cdddff7cdcf1b29b6cd8278882e16025045411",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/831d9b94-57bd-40cd-82f8-3d8680a55673",
+    "file": "/images/recipes/posters/crumble-aux-pommes-du-verger-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/69f207d7-8574-4076-96ea-6e6a0df0e82a"
+  },
+  "cake-orange": {
+    "storageId": "kg2es42dr70pbrcz23gd10b7s58dyw5e",
+    "hash": "5e1fd12d7e0397393e26b588c8facb71cd959e4e4733d691a43b6cd42208d6a8",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/14b54d04-db20-4aec-bee5-9dfbace7cc56",
+    "file": "/images/recipes/posters/cake-orange-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/9fd2fe9f-cac0-4ad9-bbec-4acfcc6d988a"
+  },
+  "cake-d-ete-tout-vert": {
+    "storageId": "kg24y4ygjzcrfn9q1z13vp49hs8dy0a7",
+    "hash": "fcbd66ef149ad29f797eb29031e72869654c6dbc9144a3fbfe06bf7f8e4585b2",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/56881012-49cb-4622-8c32-24cc9e0244aa",
+    "file": "/images/recipes/posters/cake-d-ete-tout-vert-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/1087b0fd-4434-4c6a-a56b-94d142625201"
+  },
+  "clafoutis-poires-et-framboises": {
+    "storageId": "kg2cvc0fvyzm6r6bm0nczvvr018dyst3",
+    "hash": "fe173acc9de7426d48dfe9dc8e93397a49bddff4a7cd8f4bdc8a7a2ce493cc53",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/5367100e-3ff9-4717-986a-470b0fb6e3d4",
+    "file": "/images/recipes/posters/clafoutis-poires-et-framboises-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/6d7edcc9-c198-4fc3-af95-5e7987632238"
+  },
+  "veloute-de-courgettes": {
+    "storageId": "kg2c8nepya8pkvexjhhz1f7c8h8dyhv7",
+    "hash": "64c029117f0f6754c4e480f68a24f27228253911773601abc7ab6ca7afb9f6e8",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/1cd8593e-171f-41b3-8289-19a95ca1e432",
+    "file": "/images/recipes/posters/veloute-de-courgettes-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/80b0cfdd-82ca-4430-af88-720868e3afc0"
+  },
+  "osso-buco": {
+    "storageId": "kg2d7smseh9xfmskkk65v2sgsd8dy42b",
+    "hash": "c2a9064b383a863760b6b0fd9085ba62efdbe49a5e017c4ca7827d62eca92844",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/84e1fe20-308e-40d9-9596-98af4125cba4",
+    "file": "/images/recipes/posters/osso-buco-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/a4ab96a2-48c2-49cc-993c-6b97fc2ff145"
+  },
+  "cake-moelleux-au-citron-de-pierre-herme": {
+    "storageId": "kg2es5dgrktrg3kw0yta3y07x98dy452",
+    "hash": "765c98ed472ee9ce7dfa6336f3a193d5797ca7dce7776be6804e1161d5fc2be1",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/876df406-c9e5-48c1-9bbe-efb91d7322e5",
+    "file": "/images/recipes/posters/cake-moelleux-au-citron-de-pierre-herme-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/a6d8a871-4ad5-473f-9eb7-d179a1602e4f"
+  },
+  "gougeres": {
+    "storageId": "kg25rv3easx38w8vkp5bdxd0f98dz09b",
+    "hash": "199237514e4a1acdf61ead67c316fe773dcb55873fa441c56442ecb5be8566f7",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/b82cb717-488a-4ed8-a090-00765863b152",
+    "file": "/images/recipes/posters/gougeres-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/48cefe94-6ee0-42f1-8e00-646f8b9ea7d1"
+  },
+  "cake-chevre-noix-olives": {
+    "storageId": "kg255kp6fn8vrn7pz1a9v9xny18dzfm9",
+    "hash": "14af809319867a8fcc2985b64b2f97fe482d4ae20db5af88835bda17b520afda",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/10b35163-dc9e-4a99-9602-54ffe8dd2110",
+    "file": "/images/recipes/posters/cake-chevre-noix-olives-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/08525a0a-14b1-43bc-90d3-06650341c0c9"
+  },
+  "cake-au-chevre-et-courgettes": {
+    "storageId": "kg21zcm55tczs4mwn6g6g5fvb98dycb0",
+    "hash": "5b4f4fa9ee1fa85b17ead36bce8adc1e99b031a0ee66e22b5ae0b842a1eb6c34",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/b8574e3b-e0f4-4856-826f-7afbff96d907",
+    "file": "/images/recipes/posters/cake-au-chevre-et-courgettes-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/7fe018bd-9c38-41c2-be8b-a5eba7cfbdd8"
+  },
+  "cocotte-de-cabillaud-aux-courgettes-et-curry": {
+    "storageId": "kg2423kh48enqq80gbxwrxfncx8dy83k",
+    "hash": "38f3df8f9ceadc9bcf099d6deecff1ef230c63fa1e3c1cb30cff81f22c27419b",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/0c2c82db-91f3-4202-a095-c5a5fa70d306",
+    "file": "/images/recipes/posters/cocotte-de-cabillaud-aux-courgettes-et-curry-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/7e507f03-4689-40c6-8edc-5a4f478584b9"
+  },
+  "pate-sucree-de-pierre-herme": {
+    "storageId": "kg22grwqqccbd8fyte97axank18dyndc",
+    "hash": "d8db36882daaaac9a9cf088eb50c69587ed00177ed82ad4d1e2edf482b1aa897",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/6f154ab3-9b72-42e5-a9cc-068e6173c05f",
+    "file": "/images/recipes/posters/pate-sucree-de-pierre-herme-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/2964b988-b656-4f11-8e0c-c599c71b3ff3"
+  },
+  "pain-de-poisson": {
+    "storageId": "kg2amxty2fc5dw6sq2tq0jrsvs8dyxra",
+    "hash": "3d32597f753f00c218974fc8aac25c6701c1bf579c307779fb52bec20cc83a2a",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/15cdd866-2581-431a-bd49-f0687d925a28",
+    "file": "/images/recipes/posters/pain-de-poisson-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/f32ddeed-a721-4b96-a5fc-3761b5e75565"
+  },
+  "flan-au-lait-concentre-sucre-nestle": {
+    "storageId": "kg28thnp65g0z90yqq4303jgk98dysw5",
+    "hash": "cec1d97937e0cd61065ebc6941dc90a294197f6ad12fe5d528eb845e643c0106",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/e71c0e2f-f08c-47d2-9024-4873e4212778",
+    "file": "/images/recipes/posters/flan-au-lait-concentre-sucre-nestle-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/2d25333c-a92b-45e8-8bef-e78c8e2b0c68"
+  },
+  "banana-bread-du-kona-inn": {
+    "storageId": "kg26dh27fzr2h5rcq86dmd65zh8dy3w2",
+    "hash": "160b4571a86bfc3b184dde7b6159df14baad3c10b00a7cdfb1c772ef63dfda49",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/80bc41fb-89af-47a0-b518-717399cca5c5",
+    "file": "/images/recipes/posters/banana-bread-du-kona-inn-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/f18f66f3-5117-4283-be54-7e001c3733f8"
+  },
+  "vinaigrette": {
+    "storageId": "kg20af8zq60hkx55xdqd14tn058dybms",
+    "hash": "5b382f78a9026b147bc2bc90291f2bc531cc18eab4b33e2b83767a834caa8e56",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/e03cdba4-06bb-455a-9c2c-793ffca8e1e3",
+    "file": "/images/recipes/posters/vinaigrette-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/006dfaac-5acc-4ae4-950c-b11bb7f0d40c"
+  },
+  "cookies-aux-pepites-de-chocolat-et-fleur-de-sel": {
+    "storageId": "kg20ff7a3d3pv2n161j1h31n818dy8w6",
+    "hash": "f45c9b55a08fb4208e966e786aac0749fc67b9eaaa2987f4de6939dc4a749142",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/41af316c-9f76-42e9-b056-a716f51fd8e9",
+    "file": "/images/recipes/posters/cookies-aux-pepites-de-chocolat-et-fleur-de-sel-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/7486d953-9690-4e42-944e-be402b635093"
+  },
+  "mayonnaise": {
+    "storageId": "kg20pn8rmcrgc3bs0h8e0dk2dh8dzqxr",
+    "hash": "9d2f5e4cfb04640251a5835eafcdbaa277683491fbb30078e0000a1d7cc4c2d9",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/abe4cc88-103d-4f6b-8b0d-67c7629e0409",
+    "file": "/images/recipes/posters/mayonnaise-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/535e2261-d63a-47b6-835a-c8d2fc23937b"
+  },
+  "soupe-de-champagne": {
+    "storageId": "kg2cpfxyrrbbpr1r98bgp6bm4x8dzsjc",
+    "hash": "d50e8583bf67fd5ad2f13e2e18ac0115633bb86690d0c3a8fa074df9de3da89d",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/49a47c5e-9d50-4bd1-adde-36a613866fe1",
+    "file": "/images/recipes/posters/soupe-de-champagne-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/eada7021-e087-4a75-9ded-ed5c521cfc6a"
+  },
+  "sauce-bolognaise": {
+    "storageId": "kg2fae8af7yx7f6qz1q8vpdhb58dze83",
+    "hash": "53a1c08395b6fc66a0fd76996cce1514ef9983978213746aac3c166fc1e8dcb8",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/a50d641e-19fc-4e80-b4be-1660438614a5",
+    "file": "/images/recipes/posters/sauce-bolognaise-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/a28408e4-54e5-44fb-9849-698b2efe1cec"
+  },
+  "clafoutis-aux-abricots": {
+    "storageId": "kg29te5zna4cwhsqjfjv7nmkvn8dymqm",
+    "hash": "7ded55dacdabd85a7b1597832d41d7a1012e192747658591d9a079cd4d6aa4c3",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/75da96df-5cf3-4d12-9a17-257c48b9f7b3",
+    "file": "/images/recipes/posters/clafoutis-aux-abricots-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/816186a1-c377-46ff-a279-67c92af426b8"
+  },
+  "salade-de-lentilles": {
+    "storageId": "kg2ar8y5vxnhyycgrym65705zn8dyh7q",
+    "hash": "14b34233d2fc97fb554c2e1d38ad342dad3c348a81f54bec60204a38e2430405",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/acc38f15-4620-41df-b1d6-8328f94e9214",
+    "file": "/images/recipes/posters/salade-de-lentilles-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/3d2c5664-a79e-41d0-b006-c36987e93087"
+  },
+  "brownies": {
+    "storageId": "kg203v74anqx7z43ppz10sy4458dz1eg",
+    "hash": "eff222461bf89c06203098fc4017a7d6036192742b1cf4828b12530b1554af26",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/d842fff7-0af0-41b8-8a08-59589eaaaf5e",
+    "file": "/images/recipes/posters/brownies-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/48f6dfcc-e185-4a3e-af62-b13bc2fead05"
+  },
+  "papillotes-de-cabillaud": {
+    "storageId": "kg22kcykb11p4q3bt6157c7gyh8dyz4k",
+    "hash": "b981dc1c2fa6adf03bcd83cfdf0a8c78ce45b317ddbe69436b0c66a492d9a32c",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/3497edd8-63d4-4fa4-a446-5547aedf9105",
+    "file": "/images/recipes/posters/papillotes-de-cabillaud-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/e684e2c2-9309-4fc0-90c0-a8b31b51398e"
+  },
+  "taboule": {
+    "storageId": "kg2dwp3gjvnwhms6nxd8wwgv2n8dzw6r",
+    "hash": "85ef4455b7c74cccbaad359c13cb8ea2a643c373434edba44a6e4f806fa28862",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/e00c5bdd-2407-4720-9f4d-d8dff2fbe68f",
+    "file": "/images/recipes/posters/taboule-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/be290837-cce8-4bb3-bce0-86b82f0a2151"
+  },
+  "smoothie-banane-et-fruits-rouges": {
+    "storageId": "kg2atsjrjx8xvvm29q95xf1s8s8dy9z5",
+    "hash": "59cad79a46c956d26eb5822d1d910568055280e0ad1cc3d375d9d4af0b66a7ef",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/d470457d-56ac-4231-b398-7c3f82a1be00",
+    "file": "/images/recipes/posters/smoothie-banane-et-fruits-rouges-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/3b7ecec7-5e94-462e-b1e9-f83e5036e277"
+  },
+  "cake-aux-tomates-sechees-et-a-la-feta": {
+    "storageId": "kg25cqrhyhevyyytnwkg9x9rpn8dzdkg",
+    "hash": "cc8ba48f7bb8613dfb7b82893137a87fd03406309d56c66defac7317c2642e28",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/b5e2bb7d-92d4-4678-80fc-5e0847f5256b",
+    "file": "/images/recipes/posters/cake-aux-tomates-sechees-et-a-la-feta-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/8662d25b-a370-436d-9ea3-df65280ce714"
+  },
+  "lasagnes": {
+    "storageId": "kg2fc4nmd5mggz1v4sen625cvh8dz0my",
+    "hash": "8674631ed47ba2fb25a13550b3ae28bda3a83a8caec1a19e3b3ba109ec6519f6",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/34bef1f1-20b8-49cc-9d9c-1396dc5d6615",
+    "file": "/images/recipes/posters/lasagnes-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/77af4036-9890-4c95-98ff-a7f8ea1af2cf"
+  },
+  "lasagnes-vegetariennes": {
+    "storageId": "kg2agx8aaw7d3a896s14gkv7c58dzd8k",
+    "hash": "01879e042fa95781f41d970ff25eaac8dc39d6233a21300ab1a3531be1909407",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/0b9e8f13-ca4d-4289-8e3e-a0c64d2adc90",
+    "file": "/images/recipes/posters/lasagnes-vegetariennes-fr-v2.webp",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/6222dacd-7e99-46b5-b1db-860ec0e8ba07"
+  }
+}

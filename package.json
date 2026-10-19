@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && node scripts/check-recipe-image-trace.mjs",
     "vercel-build": "if [ \"$VERCEL_ENV\" = \"production\" ]; then npx convex deploy --cmd 'npm run build'; else npm run build; fi",
     "start": "next start",
     "lint": "eslint",
@@ -56,6 +56,7 @@
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^26.1.1",
     "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.7",
     "convex-test": "^0.0.54",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.2.10",

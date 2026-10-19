@@ -1,0 +1,38 @@
+{
+  "amandin": {
+    "hash": "cb5531c6f5b25cf871d72493644b1004630da2e8004f8248b43140b305be2f9b",
+    "previousImageUrl": "https://images.unsplash.com/photo-1560716060-3c2aa9aa436b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHw1fHxHJUMzJUEydGVhdSUyMGFtYW5kZXN8ZW58MXwwfHx8MTc4NDQ2OTY2NHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "previousImageCredit": {
+      "alt": "one piece of cookie",
+      "photoUrl": "https://unsplash.com/photos/one-piece-of-cookie-YNj8sMnqkUg?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+      "photographerName": "Vitaly Eroshenko",
+      "photographerUrl": "https://unsplash.com/@langosto?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+      "provider": "unsplash"
+    },
+    "previousRevision": 8,
+    "stage": "published",
+    "storageId": "kg2a7c819haf4d7xprqwtf42js8dzv9m",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/b712fcb3-5908-426f-963f-5f1be3e46824",
+    "revision": 9
+  },
+  "macaron-tante-maria": {
+    "hash": "f5e1731950319b252f187423c0828c02e85398884d8db048639ad09b36887ab9",
+    "previousImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/16ce39cf-32f2-42aa-b28a-5b6cb8513289",
+    "previousImageCredit": null,
+    "previousRevision": 5,
+    "stage": "published",
+    "storageId": "kg2a7tyywz1drgn3re3f3bbk058dy002",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/12f6705f-995f-424e-9586-b3c037a0cd18",
+    "revision": 6
+  },
+  "pates-carbonara": {
+    "hash": "6e4379abdc02c7e91fde66153aa5ea16b63159ed740e35c192f6d066400531dd",
+    "previousImageUrl": "/images/recipes/pates-carbonara.png",
+    "previousImageCredit": null,
+    "previousRevision": 2,
+    "stage": "published",
+    "storageId": "kg2epd2npbhenqvwzmqyj8f1v98dy39x",
+    "imageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/8fedc27c-70f0-4662-abe0-43e273880ddc",
+    "revision": 3
+  }
+}

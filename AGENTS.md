@@ -25,3 +25,7 @@ Reserve `npm run sync:recipes:production` for an explicitly requested full
 catalog sync. Do not run `npx convex dev` or create a development deployment.
 
 <!-- convex-ai-end -->
+
+## Affiche des nouvelles recettes
+
+Pour chaque nouvelle recette, suivre [le parcours de création d’affiche](docs/recipe-poster-workflow.md) avant publication. Utiliser le prompt partagé dans `lib/recipe-poster-prompt.ts`, générer l’affiche 9:16, puis l’associer à la recette et vérifier son aperçu. Une recette sans image reste en brouillon.

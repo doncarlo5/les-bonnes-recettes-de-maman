@@ -225,5 +225,23 @@
     "retry": "Réessayer",
     "globalEyebrow": "Erreur critique",
     "globalTitle": "Le carnet ne peut pas s’ouvrir"
+  },
+  "recipeShare": {
+    "trigger": "Partager la recette",
+    "title": "À partager autour de vous",
+    "close": "Fermer",
+    "shareLink": "Partager le lien…",
+    "link": "Lien de la recette",
+    "copyLink": "Copier le lien",
+    "copy": "Copier",
+    "copied": "Lien copié.",
+    "copyManually": "Sélectionnez et copiez ce lien pour le partager.",
+    "shareFailed": "Le partage n’a pas abouti. Vous pouvez copier le lien ou télécharger l’affiche.",
+    "posterTitle": "Instagram · Stories · Affiche",
+    "instagramHelp": "Enregistrez l’affiche, puis ajoutez-la à votre Story Instagram ou votre statut WhatsApp. Sur Instagram, ajoutez un sticker « Lien » et collez le lien de la recette.",
+    "preparing": "Préparation de l’affiche…",
+    "posterFailed": "L’affiche est momentanément indisponible. Réessayez en rouvrant cette fenêtre.",
+    "sharePoster": "Partager l’affiche…",
+    "download": "Télécharger l’affiche · JPEG"
   }
 }

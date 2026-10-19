@@ -205,13 +205,10 @@ export function getRecipeReadiness(
       "en",
       "translations.en.title",
     ),
-  ].filter((item): item is ReadinessItem => item !== null);
-
-  const warnings = [
-    readinessWarning(
+    readinessItem(
       !hasImage,
       "main-image",
-      "Ajoute une image principale.",
+      "Ajoute une image principale avant publication.",
       "info",
       "fr",
       "heroImageUrl",
@@ -220,7 +217,7 @@ export function getRecipeReadiness(
 
   return {
     sections: {
-      info: essentials,
+      info: essentials && hasImage,
       details: hasTime,
       ingredients: hasIngredient && (hasReferenceServings || allowsYieldOnly),
       preparation: hasPreparation,
@@ -232,7 +229,7 @@ export function getRecipeReadiness(
       en: translationEn,
     },
     blockers,
-    warnings,
+    warnings: [],
   };
 }
 
@@ -467,18 +464,5 @@ function readinessItem(
 ): ReadinessItem | null {
   return include
     ? { code, level: "blocker", label, section, locale, field }
-    : null;
-}
-
-function readinessWarning(
-  include: boolean,
-  code: string,
-  label: string,
-  section: RecipeAdminSection,
-  locale: "fr" | "en",
-  field: string,
-): ReadinessItem | null {
-  return include
-    ? { code, level: "warning", label, section, locale, field }
     : null;
 }

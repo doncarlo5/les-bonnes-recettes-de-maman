@@ -1,0 +1,28 @@
+# Recipe sharing and previews
+
+Research checked on **7 September 2026**. These are website implementation recommendations, not a claim that every receiving app displays an identical preview.
+
+## Recommended behavior
+
+Offer two distinct assets: the localized recipe URL for chats and a downloadable **9:16 JPEG poster** for Stories or image messages. Keep the existing **1200 × 630** landscape image for link metadata. The dimensions and JPEG export are project choices for readable composition and convenient image reuse; this audit did not verify a universal WhatsApp or Instagram image-size requirement.
+
+Use a share panel with native link sharing when available, a WhatsApp link, copyable recipe URL, native poster sharing when supported, and poster download. For Instagram Stories, explain: save/share the poster, then add the recipe URL using Instagram’s **Link** sticker. Do not promise automatic posting, an automatically attached clickable link, or that Instagram will appear among the available share targets.
+
+## Verified platform behavior
+
+- **Native web sharing:** `navigator.share()` uses the device’s sharing mechanism. Available targets depend on the browser/OS; the website cannot select a particular app. Browser support remains incomplete. It requires HTTPS and a user gesture. File support must be checked using `navigator.canShare({ files })`; title or text can be ignored by the receiving target. Treat cancellation (`AbortError`) as a normal outcome. [MDN: navigator.share](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/share), [W3C Web Share specification](https://www.w3.org/TR/web-share/).
+- **Prepare the poster before the share click:** downloading an image before calling `share()` can exhaust transient user activation. Load the JPEG when the panel opens and enable image sharing only once the `File` is ready, so the subsequent click calls `share()` immediately. Keep a download fallback. [WebKit: user activation and slow downloads](https://webkit.org/blog/13862/the-user-activation-api/).
+- **WhatsApp:** `https://wa.me/?text=<URL-encoded message>` opens a contact chooser with a prefilled message. Include the recipe title and absolute URL; the user chooses recipients and sends it. This is not automatic message sending. WhatsApp also lets people disable outgoing link previews, so correct metadata cannot guarantee a visible card. [WhatsApp: click to chat](https://faq.whatsapp.com/5913398998672934/?locale=ko_KR), [WhatsApp: disable link previews](https://faq.whatsapp.com/445453537819972/?cms_platform=iphone).
+- **Instagram Stories:** Meta documents uploading/selecting a picture, choosing the Link sticker, entering the URL and positioning the sticker. Some accounts can be restricted from using it. This supports a manual poster-plus-link workflow. [Meta’s official Link sticker announcement](https://about.fb.com/ja/news/2021/10/linkaccessstickers/).
+- **Open Graph:** publish `og:title`, `og:type`, `og:image`, and canonical `og:url`, plus useful description, site name, locale, image type, dimensions and alt text. Images and URLs must describe the actual public recipe. [Open Graph protocol](https://ogp.me/).
+- **Apple Messages:** metadata must be reachable in the page response without executing JavaScript. Apple recommends consistent metadata for all user agents, specific page titles with branding in `og:site_name`, images at least 900 pixels wide, and meaningful metadata text rather than depending on lettering inside the image. Its published resource guidance is 1 MB for the page and 10 MB total associated resources. The poster’s lettering is decorative; recipe title/description remain metadata. [Apple TN3156](https://developer.apple.com/documentation/technotes/tn3156-create-rich-previews-for-messages).
+
+## Preview implementation and validation
+
+Use absolute HTTPS canonical, Open Graph and Twitter image URLs. Supply the metadata in server-rendered HTML; test the raw response with relevant crawler user agents as well as a normal browser. Keep a compact public JPEG/PNG preview endpoint with the correct MIME type, no authentication or JavaScript requirement, and caching that can refresh after recipe changes. Verify the preview contains the actual poster rather than only a successful image response. Vercel also offers deployment metadata inspection. [Vercel Open Graph inspection](https://vercel.com/docs/deployments/og-preview).
+
+Test native sharing with supported and unsupported file sharing, cancellation, preparation failure, clipboard rejection and manual copy. Check the JPEG download and link destination without sending messages to real recipients. A browser test can validate the outgoing payload and public metadata; the final rendering, caching and available destinations still require a manual check inside each installed app.
+
+## Research limits
+
+Meta’s [Sharing to Stories documentation](https://developers.facebook.com/docs/instagram-platform/sharing-to-stories/), [webmaster guidance](https://developers.facebook.com/docs/sharing/webmasters/) and [WhatsApp link-preview documentation](https://developers.facebook.com/docs/whatsapp/link-previews/) could not be fetched during this audit (errors/rate limits). Their current detailed requirements were **not** independently verified. In particular, do not claim a supported Instagram browser deep link for automatic Story creation, a guaranteed Instagram DM card, or a universal WhatsApp file-size cutoff based on this research. The standards-based native share option plus image download and manual Link sticker remains the supported implementation boundary established by the accessible primary sources.

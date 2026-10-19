@@ -1,3 +1,5 @@
+import { openverseImageCreditSchema, recipeImageCreditSchema } from "./recipe-image-credit-schema";
+export { openverseCreditSchema, openverseImageCreditSchema, recipeImageCreditSchema } from "./recipe-image-credit-schema";
 import { z } from "zod";
 import { compatibleRecipeDraftSchema } from "@/components/recipes/recipe-form-schema";
 
@@ -67,24 +69,6 @@ export const unsplashImageRequestSchema = revisionedRecipeRequestSchema.extend({
   photoUrl: optionalUrl,
 });
 
-export const openverseCreditSchema = z.strictObject({
-  title: z.string().max(1_000),
-  creator: z.string().max(1_000),
-  creatorUrl: optionalUrl,
-  imageUrl: optionalUrl,
-  landingUrl: optionalUrl,
-  license: z.string().max(1_000),
-  licenseVersion: z.string().max(1_000),
-  licenseUrl: optionalUrl,
-  source: z.string().max(1_000),
-  attribution: z.string().max(1_000),
-  alt: z.string().max(1_000),
-});
-
-export const openverseImageCreditSchema = openverseCreditSchema.extend({
-  provider: z.literal("openverse"),
-});
-
 export const openverseImportRequestSchema = z.strictObject({
   imageUrl: optionalUrl,
 });
@@ -98,16 +82,6 @@ export const openverseImageRequestSchema = revisionedRecipeRequestSchema.extend(
   },
 );
 
-export const recipeImageCreditSchema = z.discriminatedUnion("provider", [
-  z.strictObject({
-    provider: z.literal("unsplash"),
-    photographerName: z.string(),
-    photographerUrl: z.string(),
-    photoUrl: z.string(),
-    alt: z.string(),
-  }),
-  openverseImageCreditSchema,
-]);
 
 export const mutationErrorSchema = z.discriminatedUnion("type", [
   z.strictObject({

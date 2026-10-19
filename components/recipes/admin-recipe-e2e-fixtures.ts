@@ -81,13 +81,13 @@ export function getRecipeAdminE2EFixtures() {
   )
     return null;
   const publication = getPublicationState("published", 3, 3);
-  const readiness = getRecipeReadiness(content, false);
+  const readiness = getRecipeReadiness(content, true);
   const recipe: EditableRecipe = {
     _id: "e2e-recipe" as Id<"recipes">,
     _creationTime: 1,
     slug: "tarte-de-demonstration",
     title: localized.title,
-    heroImageUrl: "",
+    heroImageUrl: "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea",
     imageCredit: {
       provider: "unsplash",
       photographerName: "Photographe de démonstration",

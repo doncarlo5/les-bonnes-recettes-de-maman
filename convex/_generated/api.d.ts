@@ -26,6 +26,8 @@ import type * as recipeIdeas from "../recipeIdeas.js";
 import type * as recipeMakeUploads from "../recipeMakeUploads.js";
 import type * as recipeMakes from "../recipeMakes.js";
 import type * as recipes from "../recipes.js";
+import type * as restoreRecipeImages from "../restoreRecipeImages.js";
+import type * as sharingPosterAssets from "../sharingPosterAssets.js";
 
 import type {
   ApiFromModules,
@@ -52,6 +54,8 @@ declare const fullApi: ApiFromModules<{
   recipeMakeUploads: typeof recipeMakeUploads;
   recipeMakes: typeof recipeMakes;
   recipes: typeof recipes;
+  restoreRecipeImages: typeof restoreRecipeImages;
+  sharingPosterAssets: typeof sharingPosterAssets;
 }>;
 
 /**

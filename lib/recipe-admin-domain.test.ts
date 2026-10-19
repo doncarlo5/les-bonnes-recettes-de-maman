@@ -81,3 +81,10 @@ describe("recipe reference servings readiness", () => {
     expect(readiness.sections.ingredients).toBe(true);
   });
 });
+
+test("the poster is required for publication and completes the information section", () => {
+  const value = recipe("Pâte sucrée");
+  expect(getRecipeReadiness(value, false).blockers).toContainEqual(expect.objectContaining({ code: "main-image", field: "heroImageUrl", section: "info" }));
+  expect(getRecipeReadiness(value, false).sections.info).toBe(false);
+  expect(getRecipeReadiness(value, true).blockers).toEqual([]);
+});

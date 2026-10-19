@@ -45,7 +45,12 @@ import {
 import type { EditableRecipe, Recipe } from "./types";
 import { useRecipeMainImageAcquisition } from "./use-recipe-main-image-acquisition";
 
+import { getRecipeShareImageUrl } from "@/lib/recipe-share-image";
+import { RecipePosterStep } from "./recipe-poster-step";
+import type { PosterRecipe } from "@/lib/recipe-poster-prompt";
+
 type AdminRecipeImagePanelProps = {
+  posterRecipe: PosterRecipe;
   locale: Locale;
   recipe: Pick<
     EditableRecipe,
@@ -58,6 +63,7 @@ type AdminRecipeImagePanelProps = {
 export function AdminRecipeImagePanel({
   locale,
   recipe,
+  posterRecipe,
   compact = false,
   revisionSession,
 }: AdminRecipeImagePanelProps) {
@@ -91,16 +97,22 @@ export function AdminRecipeImagePanel({
         </p>
       </div>
 
+      <details>
+        <summary className="cursor-pointer text-sm font-semibold">Prompts d’affiche pour le partage</summary>
+        <p className="my-3 text-sm text-muted-foreground">L’affiche de partage est distincte de la photo principale. Les affiches actuelles sont conservées pour les liens et les téléchargements.</p>
+        <RecipePosterStep recipe={posterRecipe} hasImage={Boolean(recipe && getRecipeShareImageUrl(recipe.slug, ""))} />
+      </details>
+
       <div className="grid gap-4">
         <div className="grid gap-3">
           <div className="overflow-hidden rounded-xl bg-card shadow-[var(--shadow-card)]">
-            <div className="grid aspect-[16/9] place-items-center bg-muted">
+            <div className="relative mx-auto grid aspect-[4/3] w-full place-items-center bg-muted">
               {state.preview.url ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img
                   src={state.preview.url}
                   alt={state.preview.credit?.alt ?? ""}
-                  className="h-full w-full object-cover outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
+                  className="absolute h-full w-full object-contain outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
                 />
               ) : (
                 <span className="grid place-items-center gap-2 text-sm font-bold text-muted-foreground">
@@ -139,7 +151,7 @@ export function AdminRecipeImagePanel({
             className="min-h-11 w-full"
           >
             <Upload data-icon="inline-start" />
-            Remplacer l’image
+            {state.preview.url ? "Remplacer l’image" : "Ajouter une photo"}
           </Button>
           <StatusMessage status={state.status} />
         </div>

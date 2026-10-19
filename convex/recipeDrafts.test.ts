@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 
-import { convexTest } from "convex-test";
+import { convexTest, type TestConvex } from "convex-test";
 import type { FunctionReturnType } from "convex/server";
 import { describe, expect, expectTypeOf, test, vi } from "vitest";
 import { api, internal } from "./_generated/api";
@@ -92,7 +92,80 @@ async function uploadRecipeImage(t: ReturnType<typeof convexTest>) {
   );
 }
 
+// Publication scenarios need an image. Preserve their revision assertions and
+// existing image fixtures; upload/version behavior is exercised separately.
+async function ensurePosterFixture(t: TestConvex<typeof schema>, slug: string) {
+  await t.run(async (ctx) => {
+    const stored = await ctx.db.query("recipes").withIndex("by_slug", q => q.eq("slug", slug)).unique();
+    if (!stored) throw new Error("Missing recipe fixture");
+    const working = await ctx.db.query("recipeDrafts").withIndex("by_recipeId", q => q.eq("recipeId", stored._id)).unique();
+    if (working && !working.heroImageUrl && !working.heroImageStorageId) {
+      await ctx.db.patch(working._id, { heroImageUrl: "/images/test-poster.webp" });
+    }
+  });
+}
+
 describe("recipe working drafts", () => {
+  test("a complete new recipe stays private until its poster is imported", async () => {
+    const t = convexTest(schema, modules);
+    const created = await t.mutation(api.recipes.create, { recipe: recipe(), adminPassword: password });
+    await expect(t.mutation(api.recipes.publishDraft, {
+      slug: created.slug, expectedRevision: 0, adminPassword: password,
+    })).rejects.toThrow("RECIPE_NOT_READY");
+    expect(await t.query(api.recipes.getBySlug, { slug: created.slug, locale: "fr" })).toBeNull();
+    const storageId = await uploadRecipeImage(t);
+    const image = await t.mutation(api.recipes.setHeroImage, {
+      slug: created.slug, expectedRevision: 0, storageId, adminPassword: password,
+    });
+    await t.mutation(api.recipes.publishDraft, {
+      slug: created.slug, expectedRevision: image.revision, adminPassword: password,
+    });
+    const published = await t.query(api.recipes.getBySlug, { slug: created.slug, locale: "fr" });
+    expect(published?.heroImageUrl).toBeTruthy();
+  });
+
+  test("image-only maintenance preserves legacy content and rejects concurrent content edits", async () => {
+    const t = convexTest(schema, modules);
+    const content = recipe("Legacy recipe");
+    content.translations.fr.yieldLabel = "";
+    content.translations.en.yieldLabel = "";
+    const recipeId = await t.run((ctx) => ctx.db.insert("recipes", {
+      slug: "legacy-poster",
+      heroImageUrl: "/old-photo.png",
+      defaultLocale: "fr",
+      translations: {
+        fr: storedLocalized(content.translations.fr),
+        en: storedLocalized(content.translations.en),
+      },
+      categories: ["dessert"],
+      status: "published",
+    }));
+    const before = await t.run((ctx) => ctx.db.get(recipeId));
+    const storageId = await uploadRecipeImage(t);
+    const saved = await t.mutation(api.recipes.setHeroImage, {
+      slug: "legacy-poster", storageId, expectedRevision: 0, adminPassword: password,
+    });
+    await expect(t.mutation(internal.recipes.publishImageOnly, {
+      slug: "legacy-poster", expectedRevision: saved.revision - 1,
+    })).rejects.toThrow("RECIPE_DRAFT_CONFLICT");
+    await t.mutation(internal.recipes.publishImageOnly, {
+      slug: "legacy-poster", expectedRevision: saved.revision,
+    });
+    const after = await t.run((ctx) => ctx.db.get(recipeId));
+    expect(after).toEqual({ ...before, heroImageStorageId: storageId, heroImageUrl: "" });
+    await t.run(async (ctx) => {
+      const working = await ctx.db.query("recipeDrafts").withIndex("by_recipeId", (q) => q.eq("recipeId", recipeId)).unique();
+      await ctx.db.patch(working!._id, {
+        translations: { ...working!.translations, fr: { ...working!.translations.fr, title: "Unpublished edit" } },
+        revision: saved.revision + 1,
+      });
+    });
+    await expect(t.mutation(internal.recipes.publishImageOnly, {
+      slug: "legacy-poster", expectedRevision: saved.revision + 1,
+    })).rejects.toThrow("RECIPE_CONTENT_CHANGED");
+    expect(await t.run((ctx) => ctx.db.get(recipeId))).toEqual(after);
+  });
+
   test("catalog mutation return contracts remain stable", () => {
     type CatalogSyncResult = {
       inserted: number;
@@ -523,6 +596,7 @@ describe("recipe working drafts", () => {
       recipe: recipe("Moka"),
       adminPassword: password,
     });
+    await ensurePosterFixture(t, moka.slug);
     await t.mutation(api.recipes.publishDraft, {
       slug: moka.slug,
       expectedRevision: moka.revision,
@@ -598,6 +672,7 @@ describe("recipe working drafts", () => {
       recipe: recipe("Mayonnaise liée"),
       adminPassword: password,
     });
+    await ensurePosterFixture(t, target.slug);
     await t.mutation(api.recipes.publishDraft, {
       slug: target.slug,
       expectedRevision: target.revision,
@@ -625,6 +700,7 @@ describe("recipe working drafts", () => {
         relatedRecipeSlugs: ["mayonnaise-liee", "mayonnaise-liee"],
       });
     });
+    await ensurePosterFixture(t, parent.slug);
     await expect(
       t.mutation(api.recipes.publishDraft, {
         slug: parent.slug,
@@ -647,6 +723,7 @@ describe("recipe working drafts", () => {
       },
       adminPassword: password,
     });
+    await ensurePosterFixture(t, broken.slug);
     await expect(
       t.mutation(api.recipes.publishDraft, {
         slug: broken.slug,
@@ -1053,6 +1130,7 @@ describe("recipe working drafts", () => {
       });
     });
 
+    await ensurePosterFixture(t, "categories-historiques");
     await t.mutation(api.recipes.publishDraft, {
       slug: "categories-historiques",
       expectedRevision: saved.revision,
@@ -1118,6 +1196,7 @@ describe("recipe working drafts", () => {
     await expect(
       t.query(api.recipes.getBySlug, { locale: "fr", slug: created.slug }),
     ).resolves.toBeNull();
+    await ensurePosterFixture(t, created.slug);
     await t.mutation(api.recipes.publishDraft, {
       slug: created.slug,
       expectedRevision: saved.revision,
@@ -1305,6 +1384,7 @@ describe("recipe working drafts", () => {
       recipe: recipe("Version publiée"),
       adminPassword: password,
     });
+    await ensurePosterFixture(t, created.slug);
     await t.mutation(api.recipes.publishDraft, {
       slug: created.slug,
       expectedRevision: 0,
@@ -1330,6 +1410,7 @@ describe("recipe working drafts", () => {
     });
     expect(beforePublish?.title).toBe("Version publiée");
 
+    await ensurePosterFixture(t, created.slug);
     await t.mutation(api.recipes.publishDraft, {
       slug: created.slug,
       expectedRevision: saved.revision,
@@ -1371,6 +1452,7 @@ describe("recipe working drafts", () => {
       recipe: pieceBasedRecipe,
       adminPassword: password,
     });
+    await ensurePosterFixture(t, created.slug);
     await t.mutation(api.recipes.publishDraft, {
       slug: created.slug,
       expectedRevision: 0,
@@ -1480,6 +1562,7 @@ describe("recipe working drafts", () => {
       recipe: recipe("Image privée"),
       adminPassword: password,
     });
+    await ensurePosterFixture(t, created.slug);
     await t.mutation(api.recipes.publishDraft, {
       slug: created.slug,
       expectedRevision: 0,
@@ -1499,7 +1582,8 @@ describe("recipe working drafts", () => {
       locale: "fr",
       slug: created.slug,
     });
-    expect(publicBefore?.heroImageUrl).toBe("");
+    expect(publicBefore?.heroImageUrl).toBe("/images/test-poster.webp");
+    await ensurePosterFixture(t, created.slug);
     await t.mutation(api.recipes.publishDraft, {
       slug: created.slug,
       expectedRevision: image.revision,
@@ -1539,6 +1623,7 @@ describe("recipe working drafts", () => {
         ctx.db.system.get("_storage", temporaryStorageId),
       ),
     ).toBeNull();
+    await ensurePosterFixture(t, created.slug);
     await t.mutation(api.recipes.publishDraft, {
       slug: created.slug,
       expectedRevision: firstImage.revision,
@@ -1556,6 +1641,7 @@ describe("recipe working drafts", () => {
       await t.run(async (ctx) => ctx.db.system.get("_storage", firstStorageId)),
     ).not.toBeNull();
 
+    await ensurePosterFixture(t, created.slug);
     await t.mutation(api.recipes.publishDraft, {
       slug: created.slug,
       expectedRevision: secondImage.revision,
@@ -1653,6 +1739,7 @@ describe("recipe working drafts", () => {
       recipe: recipe("Version stable"),
       adminPassword: password,
     });
+    await ensurePosterFixture(t, created.slug);
     await t.mutation(api.recipes.publishDraft, {
       slug: created.slug,
       expectedRevision: 0,
@@ -1711,7 +1798,7 @@ describe("recipe working drafts", () => {
       canDiscard: false,
       readiness: {
         sections: {
-          info: true,
+          info: false,
           details: true,
           ingredients: true,
           preparation: true,
@@ -1796,6 +1883,7 @@ describe("recipe working drafts", () => {
       recipe: recipe("À retirer"),
       adminPassword: password,
     });
+    await ensurePosterFixture(t, created.slug);
     await t.mutation(api.recipes.publishDraft, {
       slug: created.slug,
       expectedRevision: 0,
@@ -1827,6 +1915,7 @@ describe("recipe working drafts", () => {
       recipe: recipe("Archive privée"),
       adminPassword: password,
     });
+    await ensurePosterFixture(t, created.slug);
     await t.mutation(api.recipes.publishDraft, {
       slug: created.slug,
       expectedRevision: 0,
@@ -1844,6 +1933,7 @@ describe("recipe working drafts", () => {
       expectedRevision: 0,
       adminPassword: password,
     });
+    await ensurePosterFixture(t, created.slug);
     await t.mutation(api.recipes.publishDraft, {
       slug: created.slug,
       expectedRevision: saved.revision,

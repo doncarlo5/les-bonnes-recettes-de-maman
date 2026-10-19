@@ -19,6 +19,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { EditRecipeAccess } from "./edit-recipe-access";
+import { RecipeShare } from "./recipe-share";
 import { CookModeEntry } from "./cook-mode-entry";
 import { EquipmentIcon } from "./equipment-icon";
 import { RecipeIngredientsPanel } from "./recipe-ingredients-panel";
@@ -84,18 +85,18 @@ export function RecipePresentation({
           </Link>
         ) : null}
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[minmax(0,1.08fr)_minmax(22rem,0.92fr)] lg:items-center lg:gap-14">
-          <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-muted shadow-card lg:aspect-[5/4]">
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl bg-muted shadow-card">
             <Image
               src={recipe.heroImageUrl || defaultRecipeImageUrl}
               alt={recipe.imageCredit?.alt ?? ""}
               fill
-              priority={mode === "public"}
-              sizes="(max-width: 1024px) 100vw, 58vw"
+              preload={mode === "public"}
+              sizes="(max-width: 1023px) calc(100vw - 40px), 55vw"
               className="image-outline object-cover"
             />
           </div>
 
-          <div className="flex flex-col items-start">
+          <div className="flex min-w-0 flex-col items-start">
             {mode === "public" ? (
               <Link
                 href={`/${locale}#recettes`}
@@ -109,7 +110,7 @@ export function RecipePresentation({
               <Clock3 className="size-4 stroke-[1.8]" />
               <span>{recipe.timeLabel}</span>
             </div>
-            <h1 className="type-display max-w-[14ch]">{recipe.title}</h1>
+            <h1 className="type-display max-w-[min(14ch,100%)] [overflow-wrap:anywhere]">{recipe.title}</h1>
             <p className="type-byline mt-4 text-muted-foreground">
               {formatRecipeByline(
                 locale,
@@ -130,6 +131,7 @@ export function RecipePresentation({
                   recipe={recipe}
                   selectedServings={selectedServings}
                 />
+                <RecipeShare locale={locale} slug={recipe.slug} title={recipe.title} dict={dict} />
                 <EditRecipeAccess locale={locale} slug={recipe.slug} />
               </div>
             ) : null}

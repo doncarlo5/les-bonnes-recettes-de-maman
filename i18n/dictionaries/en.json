@@ -225,5 +225,23 @@
     "retry": "Try again",
     "globalEyebrow": "Critical error",
     "globalTitle": "The recipe notebook cannot open"
+  },
+  "recipeShare": {
+    "trigger": "Share recipe",
+    "title": "Good recipes are for sharing",
+    "close": "Close",
+    "shareLink": "Share link…",
+    "link": "Recipe link",
+    "copyLink": "Copy link",
+    "copy": "Copy",
+    "copied": "Link copied.",
+    "copyManually": "Select and copy this link to share it.",
+    "shareFailed": "Sharing did not complete. You can copy the link or download the poster.",
+    "posterTitle": "Instagram · Stories · Poster",
+    "instagramHelp": "Save the poster, then add it to your Instagram Story or WhatsApp status. On Instagram, add a “Link” sticker and paste the recipe link.",
+    "preparing": "Preparing the poster…",
+    "posterFailed": "The poster is temporarily unavailable. Reopen this window to try again.",
+    "sharePoster": "Share poster…",
+    "download": "Download poster · JPEG"
   }
 }
