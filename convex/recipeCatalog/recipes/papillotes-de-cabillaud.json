@@ -1,6 +1,6 @@
 {
   "slug": "papillotes-de-cabillaud",
-  "heroImageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=1400&q=85",
+  "heroImageUrl": "https://images.unsplash.com/photo-1633760040841-1f708ce95c56?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfGFsbHx8fHx8fHx8fDE3ODU0OTQyMzB8&ixlib=rb-4.1.0&q=80&w=1080",
   "defaultLocale": "fr",
   "relatedRecipeSlugs": [],
   "categories": [
@@ -391,5 +391,12 @@
         "The sauce makes about 1 bowl."
       ]
     }
+  },
+  "imageCredit": {
+    "alt": "a white plate topped with fish and vegetables",
+    "photoUrl": "https://unsplash.com/photos/a-white-plate-topped-with-fish-and-vegetables-KxbBzxQ5rhY?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Zohair Mirza",
+    "photographerUrl": "https://unsplash.com/@zamclicks?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

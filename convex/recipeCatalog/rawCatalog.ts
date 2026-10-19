@@ -18,25 +18,26 @@ import recipe15 from "./recipes/flan-au-lait-concentre-sucre-nestle.json";
 import recipe16 from "./recipes/gateau-au-chocolat.json";
 import recipe17 from "./recipes/gateau-au-citron.json";
 import recipe18 from "./recipes/gateau-aux-pommes.json";
-import recipe19 from "./recipes/gougeres.json";
-import recipe20 from "./recipes/lasagnes-vegetariennes.json";
-import recipe21 from "./recipes/lasagnes.json";
-import recipe22 from "./recipes/macaron-tante-maria.json";
-import recipe23 from "./recipes/mayonnaise.json";
-import recipe24 from "./recipes/osso-buco.json";
-import recipe25 from "./recipes/pain-de-poisson.json";
-import recipe26 from "./recipes/papillotes-de-cabillaud.json";
-import recipe27 from "./recipes/pate-feuilletee-maman.json";
-import recipe28 from "./recipes/pate-sucree-de-pierre-herme.json";
-import recipe29 from "./recipes/pates-carbonara.json";
-import recipe30 from "./recipes/salade-de-lentilles.json";
-import recipe31 from "./recipes/sauce-bolognaise.json";
-import recipe32 from "./recipes/smoothie-banane-et-fruits-rouges.json";
-import recipe33 from "./recipes/soupe-de-champagne.json";
-import recipe34 from "./recipes/tarte-aux-amandes-et-confiture-de-framboises.json";
-import recipe35 from "./recipes/tiramisu.json";
-import recipe36 from "./recipes/vacherin.json";
-import recipe37 from "./recipes/veloute-de-courgettes.json";
+import recipe19 from "./recipes/gateau-renverse-a-l-ananas.json";
+import recipe20 from "./recipes/gougeres.json";
+import recipe21 from "./recipes/lasagnes-vegetariennes.json";
+import recipe22 from "./recipes/lasagnes.json";
+import recipe23 from "./recipes/macaron-tante-maria.json";
+import recipe24 from "./recipes/mayonnaise.json";
+import recipe25 from "./recipes/osso-buco.json";
+import recipe26 from "./recipes/pain-de-poisson.json";
+import recipe27 from "./recipes/papillotes-de-cabillaud.json";
+import recipe28 from "./recipes/pate-feuilletee-maman.json";
+import recipe29 from "./recipes/pate-sucree-de-pierre-herme.json";
+import recipe30 from "./recipes/pates-carbonara.json";
+import recipe31 from "./recipes/salade-de-lentilles.json";
+import recipe32 from "./recipes/sauce-bolognaise.json";
+import recipe33 from "./recipes/smoothie-banane-et-fruits-rouges.json";
+import recipe34 from "./recipes/soupe-de-champagne.json";
+import recipe35 from "./recipes/tarte-aux-amandes-et-confiture-de-framboises.json";
+import recipe36 from "./recipes/tiramisu.json";
+import recipe37 from "./recipes/vacherin.json";
+import recipe38 from "./recipes/veloute-de-courgettes.json";
 
 export const rawRecipeCatalog = {
   "amandin": {
@@ -115,80 +116,84 @@ export const rawRecipeCatalog = {
     sourcePath: "./recipes/gateau-aux-pommes.json",
     recipe: recipe18,
   },
+  "gateau-renverse-a-l-ananas": {
+    sourcePath: "./recipes/gateau-renverse-a-l-ananas.json",
+    recipe: recipe19,
+  },
   "gougeres": {
     sourcePath: "./recipes/gougeres.json",
-    recipe: recipe19,
+    recipe: recipe20,
   },
   "lasagnes-vegetariennes": {
     sourcePath: "./recipes/lasagnes-vegetariennes.json",
-    recipe: recipe20,
+    recipe: recipe21,
   },
   "lasagnes": {
     sourcePath: "./recipes/lasagnes.json",
-    recipe: recipe21,
+    recipe: recipe22,
   },
   "macaron-tante-maria": {
     sourcePath: "./recipes/macaron-tante-maria.json",
-    recipe: recipe22,
+    recipe: recipe23,
   },
   "mayonnaise": {
     sourcePath: "./recipes/mayonnaise.json",
-    recipe: recipe23,
+    recipe: recipe24,
   },
   "osso-buco": {
     sourcePath: "./recipes/osso-buco.json",
-    recipe: recipe24,
+    recipe: recipe25,
   },
   "pain-de-poisson": {
     sourcePath: "./recipes/pain-de-poisson.json",
-    recipe: recipe25,
+    recipe: recipe26,
   },
   "papillotes-de-cabillaud": {
     sourcePath: "./recipes/papillotes-de-cabillaud.json",
-    recipe: recipe26,
+    recipe: recipe27,
   },
   "pate-feuilletee-maman": {
     sourcePath: "./recipes/pate-feuilletee-maman.json",
-    recipe: recipe27,
+    recipe: recipe28,
   },
   "pate-sucree-de-pierre-herme": {
     sourcePath: "./recipes/pate-sucree-de-pierre-herme.json",
-    recipe: recipe28,
+    recipe: recipe29,
   },
   "pates-carbonara": {
     sourcePath: "./recipes/pates-carbonara.json",
-    recipe: recipe29,
+    recipe: recipe30,
   },
   "salade-de-lentilles": {
     sourcePath: "./recipes/salade-de-lentilles.json",
-    recipe: recipe30,
+    recipe: recipe31,
   },
   "sauce-bolognaise": {
     sourcePath: "./recipes/sauce-bolognaise.json",
-    recipe: recipe31,
+    recipe: recipe32,
   },
   "smoothie-banane-et-fruits-rouges": {
     sourcePath: "./recipes/smoothie-banane-et-fruits-rouges.json",
-    recipe: recipe32,
+    recipe: recipe33,
   },
   "soupe-de-champagne": {
     sourcePath: "./recipes/soupe-de-champagne.json",
-    recipe: recipe33,
+    recipe: recipe34,
   },
   "tarte-aux-amandes-et-confiture-de-framboises": {
     sourcePath: "./recipes/tarte-aux-amandes-et-confiture-de-framboises.json",
-    recipe: recipe34,
+    recipe: recipe35,
   },
   "tiramisu": {
     sourcePath: "./recipes/tiramisu.json",
-    recipe: recipe35,
+    recipe: recipe36,
   },
   "vacherin": {
     sourcePath: "./recipes/vacherin.json",
-    recipe: recipe36,
+    recipe: recipe37,
   },
   "veloute-de-courgettes": {
     sourcePath: "./recipes/veloute-de-courgettes.json",
-    recipe: recipe37,
+    recipe: recipe38,
   },
 } as const;

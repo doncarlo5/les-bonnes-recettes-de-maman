@@ -1,6 +1,6 @@
 {
   "slug": "coulants-au-chocolat",
-  "heroImageUrl": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1400&q=85",
+  "heroImageUrl": "https://images.unsplash.com/photo-1626125323072-bc20d2674d9e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxfHxDb3VsYW50cyUyMGF1JTIwY2hvY29sYXR8ZW58MXwwfHx8MTc4MTc5NDM4OXww&ixlib=rb-4.1.0&q=80&w=1080",
   "defaultLocale": "fr",
   "referenceServings": 5,
   "relatedRecipeSlugs": [],
@@ -325,5 +325,12 @@
         "This recipe makes closer to 5 lava cakes than 6."
       ]
     }
+  },
+  "imageCredit": {
+    "alt": "chocolate cake on white ceramic plate",
+    "photoUrl": "https://unsplash.com/photos/chocolate-cake-on-white-ceramic-plate-hXm8rAgs11c?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Valentina Perez",
+    "photographerUrl": "https://unsplash.com/@ovalentinaperez?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

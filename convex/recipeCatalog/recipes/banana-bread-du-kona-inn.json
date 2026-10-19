@@ -1,6 +1,6 @@
 {
   "slug": "banana-bread-du-kona-inn",
-  "heroImageUrl": "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=1400&q=85",
+  "heroImageUrl": "https://images.unsplash.com/photo-1596241913027-34358037e159?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwyfHxCYW5hbmElMjBicmVhZHxlbnwxfDB8fHwxNzg0NTMzNjUwfDA&ixlib=rb-4.1.0&q=80&w=1080",
   "defaultLocale": "fr",
   "relatedRecipeSlugs": [],
   "categories": [
@@ -435,5 +435,12 @@
       "subRecipes": [],
       "notes": []
     }
+  },
+  "imageCredit": {
+    "alt": "sliced bread on brown wooden chopping board",
+    "photoUrl": "https://unsplash.com/photos/sliced-bread-on-brown-wooden-chopping-board-Dcrpmris9Yc?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Evangelina Silina",
+    "photographerUrl": "https://unsplash.com/@evangelinas_photography?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

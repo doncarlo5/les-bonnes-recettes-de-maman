@@ -1,6 +1,6 @@
 {
   "slug": "crumble-aux-pommes-du-verger",
-  "heroImageUrl": "https://images.unsplash.com/photo-1601000937859-3031d2be1caa?auto=format&fit=crop&w=1400&q=85",
+  "heroImageUrl": "https://images.unsplash.com/photo-1506127946181-abb01a32593c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxfHxDcnVtYmxlJTIwYXV4JTIwcG9tbWVzJTIwZHUlMjB2ZXJnZXJ8ZW58MXwwfHx8MTc4MTc5Mzk3NXww&ixlib=rb-4.1.0&q=80&w=1080",
   "defaultLocale": "fr",
   "referenceServings": 6,
   "relatedRecipeSlugs": [],
@@ -337,5 +337,12 @@
       "subRecipes": [],
       "notes": []
     }
+  },
+  "imageCredit": {
+    "alt": "brown pastry on brown wooden table",
+    "photoUrl": "https://unsplash.com/photos/brown-pastry-on-brown-wooden-table-LDnctIMQGeY?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Patrick Fore",
+    "photographerUrl": "https://unsplash.com/@patrickian4?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

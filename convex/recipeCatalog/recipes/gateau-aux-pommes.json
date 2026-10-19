@@ -1,6 +1,6 @@
 {
   "slug": "gateau-aux-pommes",
-  "heroImageUrl": "https://images.unsplash.com/photo-1568571780765-9276ac8b75a2?auto=format&fit=crop&w=1400&q=85",
+  "heroImageUrl": "https://images.unsplash.com/photo-1562007908-859b4ba9a1a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxfHxUYXJ0ZSUyMGZpbmUlMjBwb21tZXN8ZW58MXwwfHx8MTc4NDQ1NzM3OHww&ixlib=rb-4.1.0&q=80&w=1080",
   "defaultLocale": "fr",
   "referenceServings": 6,
   "relatedRecipeSlugs": [],
@@ -440,5 +440,12 @@
       "subRecipes": [],
       "notes": []
     }
+  },
+  "imageCredit": {
+    "alt": "pie on white ceramic plate",
+    "photoUrl": "https://unsplash.com/photos/pie-on-white-ceramic-plate-es7aJ-3iBDo?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Diliara Garifullina",
+    "photographerUrl": "https://unsplash.com/@dilja96?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

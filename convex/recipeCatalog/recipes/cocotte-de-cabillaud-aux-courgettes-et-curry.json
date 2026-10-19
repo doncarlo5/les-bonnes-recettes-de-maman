@@ -1,6 +1,6 @@
 {
   "slug": "cocotte-de-cabillaud-aux-courgettes-et-curry",
-  "heroImageUrl": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=1400&q=85",
+  "heroImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/e0115485-0aad-4708-8a37-d02decb09358",
   "defaultLocale": "fr",
   "referenceServings": 6,
   "relatedRecipeSlugs": [],
@@ -16,21 +16,22 @@
       "description": "Cocottes de cabillaud aux courgettes, curry, crème liquide et parmesan.",
       "yieldLabel": "6 personnes",
       "prepTime": "20 min",
-      "cookTime": "30 min",
+      "cookTime": "35–45 min",
       "restTime": "",
-      "totalTime": "50 min",
-      "timeLabel": "50 min",
+      "totalTime": "55–65 min",
+      "timeLabel": "55–65 min",
       "temperature": "180 °C",
       "equipment": [
         "1 poêle",
-        "6 petites cocottes"
+        "1 grand plat à gratin ou 6 petites cocottes",
+        "Papier sulfurisé ou aluminium"
       ],
       "ingredients": [
         {
           "name": "filet de cabillaud sans peau et sans arêtes",
           "quantity": "500",
           "unit": "g",
-          "notes": "",
+          "notes": "Peut être remplacé par un mélange surgelé de 3 poissons, décongelé au micro-ondes puis bien égoutté.",
           "id": "ingredient-main-0"
         },
         {
@@ -136,7 +137,7 @@
             },
             {
               "id": "step-0-3",
-              "text": "Couper les filets de cabillaud en morceaux.",
+              "text": "Couper les filets de cabillaud en morceaux. Si vous utilisez un mélange surgelé de 3 poissons, le décongeler au micro-ondes puis bien l’égoutter pour limiter l’eau dans le plat.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-0"
@@ -145,7 +146,7 @@
             },
             {
               "id": "step-0-4",
-              "text": "Dans une poêle, faire revenir l’oignon émincé avec les courgettes sur feu moyen pendant 10 min environ.",
+              "text": "Dans une poêle, faire revenir l’oignon émincé avec les courgettes sur feu moyen pendant 15 à 20 min, jusqu’à ce que les courgettes commencent à fondre.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-1"
@@ -181,7 +182,7 @@
             },
             {
               "id": "step-0-7",
-              "text": "Retirer du feu, ajouter les morceaux de filet de cabillaud aux courgettes et mélanger.",
+              "text": "Retirer du feu, ajouter les morceaux de poisson aux courgettes et mélanger.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-0"
@@ -198,7 +199,7 @@
             },
             {
               "id": "step-0-9",
-              "text": "Répartir la préparation dans les cocottes.",
+              "text": "Verser la préparation dans un grand plat à gratin ou la répartir dans les petites cocottes.",
               "ingredientUses": []
             },
             {
@@ -223,7 +224,7 @@
           "steps": [
             {
               "id": "step-1-0",
-              "text": "Glisser au four pendant 15 à 20 min environ.",
+              "text": "Couvrir le grand plat de papier sulfurisé ou d’aluminium, puis glisser au four à 180 °C pendant 15 à 20 min environ. En fin de cuisson, retirer le papier et laisser gratiner le parmesan.",
               "ingredientUses": []
             },
             {
@@ -235,7 +236,12 @@
         }
       ],
       "subRecipes": [],
-      "notes": []
+      "notes": [
+        "Maman utilise un grand plat à gratin, car elle n’a pas de petites cocottes, et le couvre de papier sulfurisé ou d’aluminium.",
+        "Maman utilise un sachet surgelé Carrefour de mélange de 3 poissons. Elle le décongèle au micro-ondes puis l’égoutte bien pour limiter l’eau dans le plat.",
+        "Les courgettes doivent commencer à fondre : compter plutôt 15 à 20 min de cuisson à la poêle.",
+        "En fin de cuisson au four, retirer le papier pour faire gratiner le parmesan."
+      ]
     },
     "en": {
       "title": "Cod, Zucchini and Curry Cocottes",
@@ -243,21 +249,22 @@
       "description": "Small cocottes of cod with zucchini, curry, cream and parmesan.",
       "yieldLabel": "6 people",
       "prepTime": "20 min",
-      "cookTime": "30 min",
+      "cookTime": "35–45 min",
       "restTime": "",
-      "totalTime": "50 min",
-      "timeLabel": "50 min",
+      "totalTime": "55–65 min",
+      "timeLabel": "55–65 min",
       "temperature": "180 °C",
       "equipment": [
         "1 frying pan",
-        "6 small cocottes"
+        "1 large baking dish or 6 small cocottes",
+        "Baking parchment or aluminium foil"
       ],
       "ingredients": [
         {
           "name": "skinless, boneless cod fillet",
           "quantity": "500",
           "unit": "g",
-          "notes": "",
+          "notes": "Can be replaced with a frozen three-fish mix, thawed in the microwave and drained thoroughly.",
           "id": "ingredient-main-0"
         },
         {
@@ -357,7 +364,7 @@
             },
             {
               "id": "step-0-3",
-              "text": "Cut the cod fillets into pieces.",
+              "text": "Cut the cod fillets into pieces. If using a frozen three-fish mix, thaw it in the microwave and drain thoroughly to reduce water in the dish.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-0"
@@ -366,7 +373,7 @@
             },
             {
               "id": "step-0-4",
-              "text": "In a skillet, sauté the sliced onion with the zucchini over medium heat for about 10 min.",
+              "text": "In a skillet, sauté the sliced onion with the zucchini over medium heat for 15 to 20 min, until the zucchini start to soften and break down.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-4"
@@ -401,7 +408,7 @@
             },
             {
               "id": "step-0-7",
-              "text": "Remove from the heat, add the cod pieces to the zucchini and mix.",
+              "text": "Remove from the heat, add the fish pieces to the zucchini and mix.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-0"
@@ -418,7 +425,7 @@
             },
             {
               "id": "step-0-9",
-              "text": "Divide the mixture among the cocottes.",
+              "text": "Pour the mixture into a large baking dish or divide it among the small cocottes.",
               "ingredientUses": []
             },
             {
@@ -440,7 +447,7 @@
           "steps": [
             {
               "id": "step-1-0",
-              "text": "Bake for about 15 to 20 min.",
+              "text": "Cover the large dish with baking parchment or aluminium foil, then bake at 180 °C for about 15 to 20 min. At the end of baking, remove the covering and let the parmesan turn golden.",
               "ingredientUses": []
             },
             {
@@ -452,7 +459,12 @@
         }
       ],
       "subRecipes": [],
-      "notes": []
+      "notes": [
+        "Maman uses a large baking dish because she does not have small cocottes, and covers it with baking parchment or aluminium foil.",
+        "Maman uses a bag of Carrefour frozen three-fish mix. She thaws it in the microwave, then drains it thoroughly to reduce water in the dish.",
+        "Cook the zucchini until they start to soften and break down: allow 15 to 20 min in the pan.",
+        "At the end of baking, remove the covering to let the parmesan turn golden."
+      ]
     }
   }
 }

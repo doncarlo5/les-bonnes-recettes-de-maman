@@ -1,6 +1,6 @@
 {
   "slug": "amandin",
-  "heroImageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=85",
+  "heroImageUrl": "https://images.unsplash.com/photo-1560716060-3c2aa9aa436b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHw1fHxHJUMzJUEydGVhdSUyMGFtYW5kZXN8ZW58MXwwfHx8MTc4NDQ2OTY2NHww&ixlib=rb-4.1.0&q=80&w=1080",
   "defaultLocale": "fr",
   "referenceServings": 6,
   "relatedRecipeSlugs": [],
@@ -265,5 +265,12 @@
       "subRecipes": [],
       "notes": []
     }
+  },
+  "imageCredit": {
+    "alt": "one piece of cookie",
+    "photoUrl": "https://unsplash.com/photos/one-piece-of-cookie-YNj8sMnqkUg?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Vitaly Eroshenko",
+    "photographerUrl": "https://unsplash.com/@langosto?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

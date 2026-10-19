@@ -1,6 +1,6 @@
 {
   "slug": "tarte-aux-amandes-et-confiture-de-framboises",
-  "heroImageUrl": "https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=1400&q=85",
+  "heroImageUrl": "https://images.unsplash.com/photo-1554298128-c916518a4b34?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxfHxUYXJ0ZXxlbnwxfDB8fHwxNzgxNzk1Mzg4fDA&ixlib=rb-4.1.0&q=80&w=1080",
   "defaultLocale": "fr",
   "referenceServings": 6,
   "relatedRecipeSlugs": [],
@@ -318,5 +318,12 @@
       "subRecipes": [],
       "notes": []
     }
+  },
+  "imageCredit": {
+    "alt": "pie on cake stand",
+    "photoUrl": "https://unsplash.com/photos/pie-on-cake-stand-tWOt1vRvob4?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "sheri silver",
+    "photographerUrl": "https://unsplash.com/@sheri_silver?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

@@ -1,6 +1,6 @@
 {
   "slug": "cake-moelleux-au-citron-de-pierre-herme",
-  "heroImageUrl": "https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&w=1400&q=85",
+  "heroImageUrl": "https://images.unsplash.com/photo-1691242720281-9269de4d9f86?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxfHxDYWtlJTIwbW9lbGxldSUyMGNpdHJvbnxlbnwxfDB8fHwxNzgxNzk0Mzc0fDA&ixlib=rb-4.1.0&q=80&w=1080",
   "defaultLocale": "fr",
   "referenceServings": 6,
   "relatedRecipeSlugs": [],
@@ -506,5 +506,12 @@
       "subRecipes": [],
       "notes": []
     }
+  },
+  "imageCredit": {
+    "alt": "a loaf of lemon bread sitting on top of a piece of wax paper",
+    "photoUrl": "https://unsplash.com/photos/a-loaf-of-lemon-bread-sitting-on-top-of-a-piece-of-wax-paper-Rhos_ejdrcM?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "The Design Lady",
+    "photographerUrl": "https://unsplash.com/@sarah35?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

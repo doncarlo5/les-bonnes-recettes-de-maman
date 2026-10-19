@@ -1,6 +1,6 @@
 {
   "slug": "gougeres",
-  "heroImageUrl": "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=1400&q=85",
+  "heroImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/2dfbfdf1-c71c-45b3-b925-a4361f9d1bbb",
   "defaultLocale": "fr",
   "relatedRecipeSlugs": [],
   "categories": [
@@ -324,5 +324,19 @@
       "subRecipes": [],
       "notes": []
     }
+  },
+  "imageCredit": {
+    "alt": "Gougères",
+    "attribution": "\"Gougères\" by krossbow is licensed under CC BY 2.0. To view a copy of this license, visit https://creativecommons.org/licenses/by/2.0/.",
+    "creator": "krossbow",
+    "creatorUrl": "https://www.flickr.com/photos/13194817@N00",
+    "imageUrl": "https://live.staticflickr.com/8071/8333598154_d0d5e7ba33_b.jpg",
+    "landingUrl": "https://www.flickr.com/photos/13194817@N00/8333598154",
+    "license": "by",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "licenseVersion": "2.0",
+    "provider": "openverse",
+    "source": "flickr",
+    "title": "Gougères"
   }
 }

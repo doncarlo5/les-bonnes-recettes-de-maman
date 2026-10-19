@@ -1,0 +1,338 @@
+{
+  "slug": "gateau-renverse-a-l-ananas",
+  "heroImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/eb08659c-ba5e-4101-8d4d-46911b80761e",
+  "imageCredit": {
+    "provider": "openverse",
+    "title": "Pineapple upside down cake",
+    "creator": "jeffreyw",
+    "creatorUrl": "https://www.flickr.com/people/jeffreyww/",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f7/Pineapple_upside_down_cake.jpg",
+    "landingUrl": "https://commons.wikimedia.org/wiki/File:Pineapple_upside_down_cake.jpg",
+    "license": "by",
+    "licenseVersion": "2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "wikimedia",
+    "attribution": "Pineapple upside down cake — jeffreyw — CC BY 2.0, via Wikimedia Commons. Version redimensionnée.",
+    "alt": "Gâteau renversé à l’ananas caramélisé, décoré de cerises (photo d’illustration)."
+  },
+  "defaultLocale": "fr",
+  "referenceServings": 6,
+  "relatedRecipeSlugs": [],
+  "categories": [
+    "dessert",
+    "sucre"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "en": {
+      "author": "Agnès",
+      "cookTime": "30 min",
+      "description": "A family pineapple cake with fruit rings and golden caramel.",
+      "equipment": [
+        "1 round 24–26 cm tart tin",
+        "1 saucepan",
+        "1 mixing bowl",
+        "1 whisk",
+        "1 heatproof serving plate"
+      ],
+      "ingredients": [
+        {
+          "id": "ingredient-main-0",
+          "name": "canned pineapple rings in syrup",
+          "notes": "",
+          "quantity": "1",
+          "unit": "can"
+        },
+        {
+          "id": "ingredient-main-1",
+          "name": "eggs",
+          "notes": "",
+          "quantity": "2",
+          "unit": ""
+        },
+        {
+          "id": "ingredient-main-2",
+          "name": "sugar",
+          "notes": "",
+          "quantity": "100",
+          "unit": "g"
+        },
+        {
+          "id": "ingredient-main-3",
+          "name": "vanilla sugar",
+          "notes": "",
+          "quantity": "1",
+          "unit": "packet"
+        },
+        {
+          "id": "ingredient-main-4",
+          "name": "baking powder",
+          "notes": "",
+          "quantity": "0.5",
+          "unit": "packet"
+        },
+        {
+          "id": "ingredient-main-5",
+          "name": "flour",
+          "notes": "",
+          "quantity": "75",
+          "unit": "g"
+        },
+        {
+          "id": "ingredient-main-6",
+          "name": "neutral oil",
+          "notes": "",
+          "quantity": "10",
+          "unit": "cl"
+        },
+        {
+          "id": "ingredient-main-7",
+          "name": "sugar for the caramel",
+          "notes": "",
+          "quantity": "80",
+          "unit": "g"
+        },
+        {
+          "id": "ingredient-main-8",
+          "name": "water",
+          "notes": "",
+          "quantity": "2",
+          "unit": "tbsp"
+        }
+      ],
+      "notes": [],
+      "prepTime": "15 min",
+      "restTime": "",
+      "sections": [
+        {
+          "steps": [
+            {
+              "id": "step-0-0",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ],
+              "text": "Heat the oven to 180 °C. Drain the pineapple and reserve the syrup."
+            },
+            {
+              "id": "step-0-1",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ],
+              "text": "Heat the caramel sugar and water in a saucepan until amber. Pour into the tin and arrange the pineapple rings on top. A hob-safe tin can also be used to make the caramel directly."
+            },
+            {
+              "id": "step-0-2",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ],
+              "text": "Whisk the eggs with the 100 g sugar and vanilla sugar. Mix in the oil, then the flour and baking powder, until smooth."
+            },
+            {
+              "id": "step-0-3",
+              "ingredientUses": [],
+              "text": "Pour over the fruit. Bake for about 30 minutes; extend baking if a knife inserted into the cake comes out with raw batter."
+            },
+            {
+              "id": "step-0-4",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ],
+              "text": "Loosen the edges and invert onto a heatproof plate. Wait a few minutes before lifting the tin. Optionally drizzle with a little reserved syrup without soaking the cake. Leave to cool."
+            }
+          ],
+          "title": "Preparation"
+        }
+      ],
+      "subRecipes": [],
+      "temperature": "180 °C",
+      "timeLabel": "45 min",
+      "title": "Pineapple Upside-Down Cake",
+      "totalTime": "45 min",
+      "yieldLabel": "About 6 servings"
+    },
+    "fr": {
+      "author": "Agnès",
+      "cookTime": "30 min",
+      "description": "Un gâteau familial à l’ananas, avec des rondelles de fruit sur un caramel doré.",
+      "equipment": [
+        "1 moule à tarte de 24 à 26 cm",
+        "1 casserole",
+        "1 saladier",
+        "1 fouet",
+        "1 plat de service résistant à la chaleur"
+      ],
+      "ingredients": [
+        {
+          "id": "ingredient-main-0",
+          "name": "ananas en tranches au sirop",
+          "notes": "",
+          "quantity": "1",
+          "unit": "boîte"
+        },
+        {
+          "id": "ingredient-main-1",
+          "name": "œufs",
+          "notes": "",
+          "quantity": "2",
+          "unit": ""
+        },
+        {
+          "id": "ingredient-main-2",
+          "name": "sucre",
+          "notes": "",
+          "quantity": "100",
+          "unit": "g"
+        },
+        {
+          "id": "ingredient-main-3",
+          "name": "sucre vanillé",
+          "notes": "",
+          "quantity": "1",
+          "unit": "sachet"
+        },
+        {
+          "id": "ingredient-main-4",
+          "name": "levure chimique",
+          "notes": "",
+          "quantity": "0.5",
+          "unit": "sachet"
+        },
+        {
+          "id": "ingredient-main-5",
+          "name": "farine",
+          "notes": "",
+          "quantity": "75",
+          "unit": "g"
+        },
+        {
+          "id": "ingredient-main-6",
+          "name": "huile neutre",
+          "notes": "",
+          "quantity": "10",
+          "unit": "cl"
+        },
+        {
+          "id": "ingredient-main-7",
+          "name": "sucre pour le caramel",
+          "notes": "",
+          "quantity": "80",
+          "unit": "g"
+        },
+        {
+          "id": "ingredient-main-8",
+          "name": "eau",
+          "notes": "",
+          "quantity": "2",
+          "unit": "c. à s."
+        }
+      ],
+      "notes": [],
+      "prepTime": "15 min",
+      "restTime": "",
+      "sections": [
+        {
+          "steps": [
+            {
+              "id": "step-0-0",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ],
+              "text": "Préchauffer à 180 °C. Égoutter l’ananas et réserver le sirop."
+            },
+            {
+              "id": "step-0-1",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                },
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ],
+              "text": "Chauffer le sucre du caramel avec l’eau dans une casserole jusqu’à coloration ambrée. Verser dans le moule, puis disposer les rondelles d’ananas dessus. Le caramel peut aussi se faire directement dans un moule compatible avec la plaque."
+            },
+            {
+              "id": "step-0-2",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ],
+              "text": "Fouetter les œufs avec les 100 g de sucre et le sucre vanillé. Incorporer l’huile, puis la farine et la levure, jusqu’à obtenir une pâte homogène."
+            },
+            {
+              "id": "step-0-3",
+              "ingredientUses": [],
+              "text": "Verser la pâte sur les fruits. Cuire environ 30 minutes ; prolonger si la pointe d’un couteau ressort avec de la pâte crue."
+            },
+            {
+              "id": "step-0-4",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ],
+              "text": "Décoller les bords et retourner sur un plat résistant à la chaleur. Attendre quelques minutes avant de soulever le moule. Si souhaité, ajouter un peu de sirop réservé, sans détremper le gâteau. Laisser refroidir."
+            }
+          ],
+          "title": "Préparation"
+        }
+      ],
+      "subRecipes": [],
+      "temperature": "180 °C",
+      "timeLabel": "45 min",
+      "title": "Gâteau renversé à l’ananas",
+      "totalTime": "45 min",
+      "yieldLabel": "Environ 6 personnes"
+    }
+  }
+}

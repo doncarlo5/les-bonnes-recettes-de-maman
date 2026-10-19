@@ -1,6 +1,6 @@
 {
   "slug": "pate-sucree-de-pierre-herme",
-  "heroImageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=85",
+  "heroImageUrl": "https://images.unsplash.com/photo-1603777953733-c3f9b2533bf8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxMXx8UCVDMyVBMnRlJTIwc3VjciVDMyVBOWV8ZW58MXwwfHx8MTc4NDQ1NzI1N3ww&ixlib=rb-4.1.0&q=80&w=1080",
   "defaultLocale": "fr",
   "relatedRecipeSlugs": [],
   "categories": [
@@ -292,5 +292,12 @@
       "subRecipes": [],
       "notes": []
     }
+  },
+  "imageCredit": {
+    "alt": "brown bread on white textile",
+    "photoUrl": "https://unsplash.com/photos/brown-bread-on-white-textile-0dCOHmQpNuA?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Nathan Dumlao",
+    "photographerUrl": "https://unsplash.com/@nate_dumlao?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

@@ -1,6 +1,6 @@
 {
   "slug": "tiramisu",
-  "heroImageUrl": "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=1400&q=85",
+  "heroImageUrl": "https://images.unsplash.com/photo-1594356225191-e9b58190cb3a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxMnx8VGlyYW1pc3V8ZW58MXwwfHx8MTc4MTc5NTIzOXww&ixlib=rb-4.1.0&q=80&w=1080",
   "defaultLocale": "fr",
   "referenceServings": 6,
   "relatedRecipeSlugs": [],
@@ -13,7 +13,7 @@
     "fr": {
       "title": "Tiramisu",
       "author": "Agnès",
-      "description": "Tiramisu au mascarpone, café et biscuits à la cuillère, parfumé au marsala, xérès ou malaga.",
+      "description": "Tiramisu au mascarpone, café et biscuits à la cuillère.",
       "yieldLabel": "",
       "prepTime": "",
       "cookTime": "",
@@ -68,13 +68,6 @@
           "unit": "g",
           "notes": "1 boîte",
           "id": "ingredient-main-5"
-        },
-        {
-          "name": "marsala, xérès ou malaga",
-          "quantity": "1",
-          "unit": "c. à s.",
-          "notes": "",
-          "id": "ingredient-main-6"
         },
         {
           "name": "chocolat en poudre",
@@ -137,32 +130,14 @@
               ]
             },
             {
-              "id": "step-0-5",
-              "text": "Mélanger le café et la c. à s. d’alcool.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-4"
-                },
-                {
-                  "ingredientId": "ingredient-main-5"
-                },
-                {
-                  "ingredientId": "ingredient-main-6"
-                }
-              ]
-            },
-            {
               "id": "step-0-6",
-              "text": "Tremper rapidement chaque biscuit dans le mélange café-alcool : une face, puis l’autre, sans le laisser se détremper. Le déposer immédiatement dans le plat.",
+              "text": "Tremper rapidement chaque biscuit dans le café : une face, puis l’autre, sans le laisser se détremper. Le déposer immédiatement dans le plat.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-4"
                 },
                 {
                   "ingredientId": "ingredient-main-5"
-                },
-                {
-                  "ingredientId": "ingredient-main-6"
                 }
               ]
             },
@@ -214,7 +189,7 @@
     "en": {
       "title": "Tiramisu",
       "author": "Agnès",
-      "description": "Tiramisu with mascarpone, coffee and ladyfingers, flavored with marsala, sherry or malaga.",
+      "description": "Tiramisu with mascarpone, coffee and ladyfingers.",
       "yieldLabel": "",
       "prepTime": "",
       "cookTime": "",
@@ -269,13 +244,6 @@
           "unit": "g",
           "notes": "1 box",
           "id": "ingredient-main-5"
-        },
-        {
-          "name": "marsala, sherry or malaga",
-          "quantity": "1",
-          "unit": "tbsp",
-          "notes": "",
-          "id": "ingredient-main-6"
         },
         {
           "name": "cocoa powder",
@@ -338,26 +306,11 @@
               ]
             },
             {
-              "id": "step-0-5",
-              "text": "Mix the coffee with the tablespoon of alcohol.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-4"
-                },
-                {
-                  "ingredientId": "ingredient-main-6"
-                }
-              ]
-            },
-            {
               "id": "step-0-6",
-              "text": "Quickly dip each biscuit into the coffee and alcohol mixture, one side and then the other, without letting it become soggy. Place it in the dish immediately.",
+              "text": "Quickly dip each biscuit into the coffee, one side and then the other, without letting it become soggy. Place it in the dish immediately.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-4"
-                },
-                {
-                  "ingredientId": "ingredient-main-6"
                 }
               ]
             },
@@ -398,5 +351,12 @@
         "Be careful not to overmix the mascarpone, as it should not become too runny."
       ]
     }
+  },
+  "imageCredit": {
+    "alt": "brown powder in stainless steel tray",
+    "photoUrl": "https://unsplash.com/photos/brown-powder-in-stainless-steel-tray-rm8dpxuzPlw?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Kasturi Roy",
+    "photographerUrl": "https://unsplash.com/@stationery_hoe?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

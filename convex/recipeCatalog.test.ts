@@ -161,7 +161,7 @@ describe("bilingual recipe catalog", () => {
     expect(seeded).toMatchObject({
       slug: "cookies-aux-pepites-de-chocolat-et-fleur-de-sel",
       heroImageUrl:
-        "/images/recipes/cookies-aux-pepites-de-chocolat-et-fleur-de-sel.png",
+        "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/478b3cf6-cb85-4e8f-a303-360ff520e49d",
       categories: ["dessert", "sucre"],
       legacyCategoryLabels: [],
     });

@@ -1,6 +1,6 @@
 {
   "slug": "veloute-de-courgettes",
-  "heroImageUrl": "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=1400&q=85",
+  "heroImageUrl": "https://images.unsplash.com/photo-1778104682844-63bf9bf4f3a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHwxMHx8VmVsb3V0JUMzJUE5JTIwZGUlMjBjb3VyZ2V0dGVzfGVufDF8MHx8fDE3ODE3OTUzMzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
   "defaultLocale": "fr",
   "referenceServings": 6,
   "relatedRecipeSlugs": [],
@@ -282,5 +282,12 @@
       "subRecipes": [],
       "notes": []
     }
+  },
+  "imageCredit": {
+    "alt": "A bowl of creamy orange soup with fish and vegetables",
+    "photoUrl": "https://unsplash.com/photos/a-bowl-of-creamy-orange-soup-with-fish-and-vegetables-F9bp_6QmzzM?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Milan Trninic",
+    "photographerUrl": "https://unsplash.com/@wedesignmarbella?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

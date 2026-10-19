@@ -1,6 +1,6 @@
 {
   "slug": "gateau-au-chocolat",
-  "heroImageUrl": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=1400&q=85",
+  "heroImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/5de09eac-a001-49bd-ba64-5659775cf056",
   "defaultLocale": "fr",
   "referenceServings": 6,
   "relatedRecipeSlugs": [],
@@ -247,5 +247,19 @@
       "subRecipes": [],
       "notes": []
     }
+  },
+  "imageCredit": {
+    "alt": "Gâteau au chocolat et à la betterave rouge / Chocolate and beet cake",
+    "attribution": "\"Gâteau au chocolat et à la betterave rouge / Chocolate and beet cake\" by balise42 is licensed under CC BY-SA 2.0. To view a copy of this license, visit https://creativecommons.org/licenses/by-sa/2.0/.",
+    "creator": "balise42",
+    "creatorUrl": "https://www.flickr.com/photos/22722986@N08",
+    "imageUrl": "https://live.staticflickr.com/7144/6802627875_2f10d210b5_b.jpg",
+    "landingUrl": "https://www.flickr.com/photos/22722986@N08/6802627875",
+    "license": "by-sa",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "licenseVersion": "2.0",
+    "provider": "openverse",
+    "source": "flickr",
+    "title": "Gâteau au chocolat et à la betterave rouge / Chocolate and beet cake"
   }
 }
