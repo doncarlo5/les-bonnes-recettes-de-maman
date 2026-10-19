@@ -1,6 +1,6 @@
 {
   "slug": "lasagnes",
-  "heroImageUrl": "/images/recipes/lasagnes.png",
+  "heroImageUrl": "https://images.unsplash.com/photo-1709429790175-b02bb1b19207?auto=format&fit=crop&w=1400&q=85",
   "defaultLocale": "fr",
   "relatedRecipeSlugs": [
     "sauce-bolognaise",
@@ -280,5 +280,12 @@
         "The lasagna can be prepared the day before. In that case, slightly reduce the baking time so it does not overcook when reheated."
       ]
     }
+  },
+  "imageCredit": {
+    "alt": "a white plate topped with lasagna covered in sauce",
+    "photoUrl": "https://unsplash.com/photos/a-white-plate-topped-with-lasagna-covered-in-sauce-flEUTTwGlJQ?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Emanuel Ekström",
+    "photographerUrl": "https://unsplash.com/@emanuelekstrom?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

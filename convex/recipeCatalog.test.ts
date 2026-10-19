@@ -80,7 +80,7 @@ describe("bilingual recipe catalog", () => {
 
     const seeded = source!;
     expect(seeded.categories).toEqual(["sucre"]);
-    expect(seeded.heroImageUrl).toBe("/images/recipes/soupe-de-champagne.png");
+    expect(seeded.heroImageUrl).toBe("https://images.unsplash.com/photo-1578425144925-a3638eb650aa?auto=format&fit=crop&w=1400&q=85");
     expect(seeded.referenceServings).toBeUndefined();
 
     expect(seeded.translations.fr).toMatchObject({
@@ -360,7 +360,7 @@ describe("bilingual recipe catalog", () => {
     const seeded = source!;
     expect(seeded).toMatchObject({
       slug: "mayonnaise",
-      heroImageUrl: "/images/recipes/mayonnaise.png",
+      heroImageUrl: "https://images.unsplash.com/photo-1562114808-b4b33cf60f4f?auto=format&fit=crop&w=1400&q=85",
       categories: ["sale"],
       legacyCategoryLabels: [],
     });
@@ -537,12 +537,12 @@ describe("bilingual recipe catalog", () => {
     const seeded = source!;
     expect(seeded).toMatchObject({
       slug: "sauce-bolognaise",
-      heroImageUrl: "/images/recipes/sauce-bolognaise.png",
+      heroImageUrl: "https://images.unsplash.com/photo-1600803734709-83f30a78e312?auto=format&fit=crop&w=1400&q=85",
       relatedRecipeSlugs: ["lasagnes"],
       categories: ["plat", "sale"],
       legacyCategoryLabels: [],
     });
-    expect(seeded.referenceServings).toBeUndefined();
+    expect(seeded.referenceServings).toBe(6);
     expect(seeded.translations.fr).toMatchObject({
       title: "Sauce bolognaise",
       author: "Maman",
@@ -612,7 +612,7 @@ describe("bilingual recipe catalog", () => {
     const seededClassic = classic!;
     expect(seededClassic).toMatchObject({
       slug: "lasagnes",
-      heroImageUrl: "/images/recipes/lasagnes.png",
+      heroImageUrl: "https://images.unsplash.com/photo-1709429790175-b02bb1b19207?auto=format&fit=crop&w=1400&q=85",
       relatedRecipeSlugs: ["sauce-bolognaise", "lasagnes-vegetariennes"],
       categories: ["plat", "sale"],
     });
@@ -638,7 +638,7 @@ describe("bilingual recipe catalog", () => {
     const seededVegetarian = vegetarian!;
     expect(seededVegetarian).toMatchObject({
       slug: "lasagnes-vegetariennes",
-      heroImageUrl: "/images/recipes/lasagnes-vegetariennes.png",
+      heroImageUrl: "https://images.unsplash.com/photo-1586197138382-e1d1479fbb14?auto=format&fit=crop&w=1400&q=85",
       relatedRecipeSlugs: ["lasagnes"],
       categories: ["plat", "sale"],
     });
@@ -666,7 +666,7 @@ describe("bilingual recipe catalog", () => {
     const seeded = source!;
     expect(seeded).toMatchObject({
       slug: "salade-de-lentilles",
-      heroImageUrl: "/images/recipes/salade-de-lentilles.png",
+      heroImageUrl: "https://images.unsplash.com/photo-1702650657375-934239d8b472?auto=format&fit=crop&w=1400&q=85",
       categories: ["plat", "sale"],
       legacyCategoryLabels: [],
       referenceServings: 4,
@@ -919,7 +919,7 @@ describe("bilingual recipe catalog", () => {
     const seeded = source!;
     expect(seeded).toMatchObject({
       slug: "pates-carbonara",
-      heroImageUrl: "/images/recipes/pates-carbonara.png",
+      heroImageUrl: "https://images.unsplash.com/photo-1633337474564-1d9478ca4e2e?auto=format&fit=crop&w=1400&q=85",
       categories: ["plat", "sale"],
       legacyCategoryLabels: [],
       referenceServings: 2,
@@ -994,7 +994,7 @@ describe("bilingual recipe catalog", () => {
     const seeded = source!;
     expect(seeded).toMatchObject({
       slug: "cake-aux-tomates-sechees-et-a-la-feta",
-      heroImageUrl: "/images/recipes/cake-aux-tomates-sechees-et-a-la-feta.png",
+      heroImageUrl: "https://images.unsplash.com/photo-1624144043330-82dcf58bf8ec?auto=format&fit=crop&w=1400&q=85",
       categories: ["sale"],
       legacyCategoryLabels: [],
       referenceServings: 6,

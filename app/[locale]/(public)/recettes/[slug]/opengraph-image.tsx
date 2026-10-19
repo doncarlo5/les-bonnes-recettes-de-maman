@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import sharp from "sharp";
 import { fetchQuery } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
 import { getDictionary } from "@/i18n/get-dictionary";
@@ -8,7 +9,16 @@ import { siteUrl } from "@/lib/site";
 
 export const alt = "Les bonnes recettes de maman";
 export const size = { width: 1200, height: 630 };
-export const contentType = "image/png";
+export const contentType = "image/jpeg";
+
+async function compressedPreview(image: ImageResponse) {
+  const jpeg = await sharp(Buffer.from(await image.arrayBuffer()))
+    .jpeg({ quality: 85, mozjpeg: true }).toBuffer();
+  return new Response(new Uint8Array(jpeg), { headers: {
+    "Content-Type": contentType,
+    "Cache-Control": "public, max-age=300, s-maxage=3600",
+  } });
+}
 
 export default async function RecipeOpengraphImage({
   params,
@@ -25,9 +35,26 @@ export default async function RecipeOpengraphImage({
 
   const wordmark = dict.site.wordmark;
 
-  // No recipe (or no photo): fall back to a branded cream card.
-  if (!recipe || !recipe.heroImageUrl) {
-    return new ImageResponse(
+  let imageSrc: string | undefined;
+  // Link previews show the recipe photograph, not the AI sharing poster.
+  if (recipe?.heroImageUrl) {
+    try {
+      // Satori cannot embed WebP reliably. Decode and crop the photo first.
+      const response = await fetch(resolveOgImageUrl(recipe.heroImageUrl, siteUrl), {
+        signal: AbortSignal.timeout(10_000),
+      });
+      if (!response.ok) throw new Error("Photo unavailable");
+      const jpeg = await sharp(Buffer.from(await response.arrayBuffer()))
+        .rotate().resize(size.width, size.height, { fit: "cover" }).jpeg({ quality: 90 }).toBuffer();
+      imageSrc = `data:image/jpeg;base64,${jpeg.toString("base64")}`;
+    } catch {
+      // An unavailable photo must not prevent the recipe link from having a card.
+    }
+  }
+
+  // No recipe or usable photo: fall back to a branded cream card.
+  if (!recipe || !imageSrc) {
+    return compressedPreview(new ImageResponse(
       (
         <div
           style={{
@@ -75,24 +102,19 @@ export default async function RecipeOpengraphImage({
         </div>
       ),
       { ...size, fonts },
-    );
+    ));
   }
 
   // Photo card mirroring the recipe detail hero.
-  return new ImageResponse(
+  return compressedPreview(new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex", position: "relative" }}>
         <img
-          src={resolveOgImageUrl(recipe.heroImageUrl, siteUrl)}
+          src={imageSrc}
           alt=""
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
+          width={size.width}
+          height={size.height}
+          style={{ position: "absolute", top: 0, left: 0, objectFit: "cover" }}
         />
         <div
           style={{
@@ -134,7 +156,7 @@ export default async function RecipeOpengraphImage({
           <div
             style={{
               fontFamily: "Newsreader",
-              fontSize: 84,
+              fontSize: recipe.title.length > 55 ? 64 : 84,
               lineHeight: 1.0,
               color: "#FFFFFF",
               maxWidth: 1000,
@@ -142,13 +164,7 @@ export default async function RecipeOpengraphImage({
           >
             {recipe.title}
           </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginTop: 32,
-            }}
-          >
+          <div style={{ display: "flex", alignItems: "center", marginTop: 32 }}>
             <img
               width={40}
               height={40}
@@ -156,13 +172,7 @@ export default async function RecipeOpengraphImage({
               alt=""
               style={{ marginRight: 16 }}
             />
-            <div
-              style={{
-                fontFamily: "Source Sans 3",
-                fontSize: 28,
-                color: "rgba(255,255,255,0.92)",
-              }}
-            >
+            <div style={{ fontFamily: "Source Sans 3", fontSize: 28, color: "rgba(255,255,255,0.92)" }}>
               {wordmark}
             </div>
           </div>
@@ -170,5 +180,5 @@ export default async function RecipeOpengraphImage({
       </div>
     ),
     { ...size, fonts },
-  );
+  ));
 }

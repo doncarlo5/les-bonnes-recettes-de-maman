@@ -1,6 +1,6 @@
 {
   "slug": "soupe-de-champagne",
-  "heroImageUrl": "/images/recipes/soupe-de-champagne.png",
+  "heroImageUrl": "https://images.unsplash.com/photo-1578425144925-a3638eb650aa?auto=format&fit=crop&w=1400&q=85",
   "defaultLocale": "fr",
   "relatedRecipeSlugs": [],
   "categories": [
@@ -202,5 +202,12 @@
       "subRecipes": [],
       "notes": []
     }
+  },
+  "imageCredit": {
+    "alt": "champagne filled glass cup",
+    "photoUrl": "https://unsplash.com/photos/champagne-filled-glass-cup-Ky5ZQEyGD9c?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Louise Lyshøj",
+    "photographerUrl": "https://unsplash.com/@louiogbearnaisen?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

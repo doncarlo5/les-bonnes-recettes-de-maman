@@ -1,6 +1,6 @@
 {
   "slug": "clafoutis-aux-abricots",
-  "heroImageUrl": "/images/recipes/clafoutis-aux-abricots.png",
+  "heroImageUrl": "https://images.unsplash.com/photo-1657821820145-c4a203febfef?auto=format&fit=crop&w=1400&q=85",
   "defaultLocale": "fr",
   "referenceServings": 6,
   "relatedRecipeSlugs": [],
@@ -437,5 +437,12 @@
         "If the apricots are a little tart, sprinkle them with one tablespoon of sugar before pouring in the batter. This balances their flavor without making the clafoutis too sweet."
       ]
     }
+  },
+  "imageCredit": {
+    "alt": "apricot clafoutis baked in a round dish",
+    "photoUrl": "https://unsplash.com/photos/a-pie-with-fruit-on-top-sm-866olZAQ?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Nataliya Melnychuk",
+    "photographerUrl": "https://unsplash.com/@natinati?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

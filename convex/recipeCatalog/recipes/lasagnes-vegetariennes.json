@@ -1,6 +1,6 @@
 {
   "slug": "lasagnes-vegetariennes",
-  "heroImageUrl": "/images/recipes/lasagnes-vegetariennes.png",
+  "heroImageUrl": "https://images.unsplash.com/photo-1586197138382-e1d1479fbb14?auto=format&fit=crop&w=1400&q=85",
   "defaultLocale": "fr",
   "relatedRecipeSlugs": [
     "lasagnes"
@@ -303,5 +303,12 @@
         "This lasagna can be prepared the day before. In that case, slightly reduce the baking time so it does not overcook when reheated."
       ]
     }
+  },
+  "imageCredit": {
+    "alt": "vegetable lasagna in a baking dish",
+    "photoUrl": "https://unsplash.com/photos/brown-and-yellow-dish-on-stainless-steel-tray-k4fxXuvgsrQ?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Kristine Tumanyan",
+    "photographerUrl": "https://unsplash.com/@krstne?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

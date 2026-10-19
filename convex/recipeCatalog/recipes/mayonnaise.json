@@ -1,6 +1,6 @@
 {
   "slug": "mayonnaise",
-  "heroImageUrl": "/images/recipes/mayonnaise.png",
+  "heroImageUrl": "https://images.unsplash.com/photo-1562114808-b4b33cf60f4f?auto=format&fit=crop&w=1400&q=85",
   "defaultLocale": "fr",
   "relatedRecipeSlugs": [],
   "categories": [
@@ -214,5 +214,12 @@
         "For a well-chilled mayonnaise, refrigerate it for 30 min before serving."
       ]
     }
+  },
+  "imageCredit": {
+    "alt": "homemade mayonnaise in a small glass with a spoon",
+    "photoUrl": "https://unsplash.com/photos/close-up-photo-of-white-cream-in-clear-shot-glass-4caIPcmVDII?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Sara Cervera",
+    "photographerUrl": "https://unsplash.com/@saracervera?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

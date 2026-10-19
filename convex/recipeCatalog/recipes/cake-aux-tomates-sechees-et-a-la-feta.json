@@ -1,6 +1,6 @@
 {
   "slug": "cake-aux-tomates-sechees-et-a-la-feta",
-  "heroImageUrl": "/images/recipes/cake-aux-tomates-sechees-et-a-la-feta.png",
+  "heroImageUrl": "https://images.unsplash.com/photo-1624144043330-82dcf58bf8ec?auto=format&fit=crop&w=1400&q=85",
   "defaultLocale": "fr",
   "referenceServings": 6,
   "relatedRecipeSlugs": [],
@@ -387,5 +387,12 @@
         "For the oil, preferably use the oil from the sun-dried tomato jar; otherwise, use olive oil."
       ]
     }
+  },
+  "imageCredit": {
+    "alt": "sliced savory loaf cake on white ceramic plate",
+    "photoUrl": "https://unsplash.com/photos/sliced-bread-on-white-ceramic-plate-NuJ3PzXafZo?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Maiya Simanovich",
+    "photographerUrl": "https://unsplash.com/@indi_grunge?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

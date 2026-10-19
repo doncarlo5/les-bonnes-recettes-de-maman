@@ -1,6 +1,6 @@
 {
   "slug": "salade-de-lentilles",
-  "heroImageUrl": "/images/recipes/salade-de-lentilles.png",
+  "heroImageUrl": "https://images.unsplash.com/photo-1702650657375-934239d8b472?auto=format&fit=crop&w=1400&q=85",
   "defaultLocale": "fr",
   "referenceServings": 4,
   "relatedRecipeSlugs": [],
@@ -336,5 +336,12 @@
         "I add 2 eggs and sometimes, depending on what I have on hand, a few cubes of zucchini, cucumber and/or carrot, cut into very small pieces."
       ]
     }
+  },
+  "imageCredit": {
+    "alt": "lentil salad with herbs and vegetables",
+    "photoUrl": "https://unsplash.com/photos/a-close-up-of-a-plate-of-food-with-a-spoon-7nfjR-hPbbQ?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Alex Bayev",
+    "photographerUrl": "https://unsplash.com/@alexbayev?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

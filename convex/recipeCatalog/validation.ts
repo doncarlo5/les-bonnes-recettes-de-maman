@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { recipeImageCreditSchema } from "../../lib/recipe-image-credit-schema";
 import {
   assertRecipeDraftLimits,
   getRecipeStepReferenceIssues,
@@ -57,6 +58,7 @@ const localizedRecipeSchema = z.strictObject({
 const catalogRecipeSchema = z.strictObject({
   slug: recipeSlugSchema,
   heroImageUrl: z.string(),
+  imageCredit: recipeImageCreditSchema.optional(),
   defaultLocale: z.enum(["fr", "en"]),
   referenceServings: z.number().int().positive().optional(),
   relatedRecipeSlugs: z.array(recipeSlugSchema),

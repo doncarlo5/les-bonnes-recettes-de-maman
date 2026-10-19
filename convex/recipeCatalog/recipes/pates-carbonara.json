@@ -1,6 +1,6 @@
 {
   "slug": "pates-carbonara",
-  "heroImageUrl": "/images/recipes/pates-carbonara.png",
+  "heroImageUrl": "https://images.unsplash.com/photo-1633337474564-1d9478ca4e2e?auto=format&fit=crop&w=1400&q=85",
   "defaultLocale": "fr",
   "referenceServings": 2,
   "relatedRecipeSlugs": [],
@@ -328,5 +328,12 @@
       "subRecipes": [],
       "notes": []
     }
+  },
+  "imageCredit": {
+    "alt": "a white plate topped with spaghetti and bacon",
+    "photoUrl": "https://unsplash.com/photos/a-white-plate-topped-with-spaghetti-and-bacon-fDLBn8X_IlU?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Rob Wicks",
+    "photographerUrl": "https://unsplash.com/@robwicks?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }

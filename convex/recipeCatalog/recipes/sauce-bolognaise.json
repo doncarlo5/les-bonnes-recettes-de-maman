@@ -1,7 +1,8 @@
 {
   "slug": "sauce-bolognaise",
-  "heroImageUrl": "/images/recipes/sauce-bolognaise.png",
+  "heroImageUrl": "https://images.unsplash.com/photo-1600803734709-83f30a78e312?auto=format&fit=crop&w=1400&q=85",
   "defaultLocale": "fr",
+  "referenceServings": 6,
   "relatedRecipeSlugs": [
     "lasagnes"
   ],
@@ -369,5 +370,12 @@
         "This sauce can notably be used to make lasagna."
       ]
     }
+  },
+  "imageCredit": {
+    "alt": "pasta with bolognese sauce in a bowl",
+    "photoUrl": "https://unsplash.com/photos/pasta-dish-in-stainless-steel-bowl-_CO7YZ501g4?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Emanuel Ekström",
+    "photographerUrl": "https://unsplash.com/@emanuelekstrom?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
   }
 }
