@@ -144,7 +144,7 @@ export function RecipePresentation({
         <div className="mx-auto max-w-7xl">
           <RecipeMeta dict={dict} recipe={recipe} />
 
-          <div className="mt-8 lg:mt-12 lg:grid lg:grid-cols-[minmax(18rem,22rem)_minmax(0,65ch)] lg:items-start lg:justify-between lg:gap-12 xl:gap-20">
+          <div className="mt-8 lg:mt-12 lg:grid lg:grid-cols-[minmax(20rem,24rem)_minmax(0,1fr)] lg:items-start lg:gap-14 xl:gap-20">
             <div className="space-y-8 lg:sticky lg:top-24 lg:self-start lg:space-y-10">
               {recipe.equipment.length > 0 ? (
                 <div>
@@ -176,7 +176,7 @@ export function RecipePresentation({
               />
             </div>
 
-            <div className="min-w-0">
+            <div className="min-w-0 lg:max-w-3xl">
               <div className="mt-8 space-y-8 lg:mt-0 lg:space-y-12">
                 {recipe.sections.map((section) => (
                   <div key={section.title}>
