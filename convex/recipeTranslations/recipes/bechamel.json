@@ -1,0 +1,97 @@
+{
+  "slug": "bechamel",
+  "translations": {
+    "pt-br": {
+      "title": "Molho bechamel",
+      "author": "Marmiton",
+      "description": "Molho bechamel cremoso de manteiga, farinha e leite, temperado com noz-moscada, feito na panela ou na versão rápida no micro-ondas.",
+      "yieldLabel": "Cerca de 600 ml",
+      "prepTime": "",
+      "cookTime": "15 min",
+      "restTime": "",
+      "totalTime": "15 min",
+      "timeLabel": "15 min",
+      "temperature": "",
+      "equipment": ["1 panela de fundo grosso", "1 colher de pau", "1 fouet"],
+      "notes": [
+        "Use mais ou menos leite conforme a consistência desejada. Para lasanha, prefira um bechamel mais líquido.",
+        "O leite pode ser substituído por caldo de legumes."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "manteiga", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "farinha de trigo", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "leite", "quantity": "60", "unit": "cl", "notes": "" },
+        "ingredient-main-3": { "name": "sal", "quantity": "", "unit": "", "notes": "a gosto" },
+        "ingredient-main-4": { "name": "pimenta-do-reino", "quantity": "", "unit": "", "notes": "a gosto" },
+        "ingredient-main-5": { "name": "noz-moscada ralada", "quantity": "", "unit": "", "notes": "a gosto" }
+      },
+      "sections": [
+        {
+          "title": "Na panela",
+          "steps": {
+            "step-0-0": "Derreta a manteiga em uma panela de fundo grosso.",
+            "step-0-1": "Junte a farinha e mexa com uma colher de pau, sem deixar dourar, até a mistura engrossar.",
+            "step-0-2": "Despeje o leite aos poucos, sem parar de mexer, até o molho engrossar.",
+            "step-0-3": "Tempere com sal, pimenta e noz-moscada ralada."
+          }
+        },
+        {
+          "title": "Versão rápida no micro-ondas",
+          "steps": {
+            "step-1-0": "Em uma tigela grande, derreta a manteiga por 1 min no micro-ondas e junte a farinha, mexendo bem.",
+            "step-1-1": "Leve o leite à fervura e deixe ferver por alguns instantes.",
+            "step-1-2": "Despeje o leite sobre a mistura de manteiga e farinha, batendo com o fouet, e tempere.",
+            "step-1-3": "Leve de novo ao micro-ondas por 1 min e bata bem. Continue de 30 em 30 s se o molho não estiver grosso o bastante."
+          }
+        }
+      ],
+      "subRecipes": []
+    },
+    "nl-be": {
+      "title": "Bechamelsaus",
+      "author": "Marmiton",
+      "description": "Romige bechamelsaus met boter, bloem en melk, op smaak gebracht met nootmuskaat, in een kookpot of in een snelle versie in de microgolfoven.",
+      "yieldLabel": "Ongeveer 60 cl",
+      "prepTime": "",
+      "cookTime": "15 min",
+      "restTime": "",
+      "totalTime": "15 min",
+      "timeLabel": "15 min",
+      "temperature": "",
+      "equipment": ["1 kookpot met dikke bodem", "1 houten lepel", "1 garde"],
+      "notes": [
+        "Gebruik meer of minder melk naargelang de gewenste dikte. Voor lasagne neem je best een vrij vloeibare bechamel.",
+        "De melk kan vervangen worden door groentebouillon."
+      ],
+      "ingredients": {
+        "ingredient-main-0": { "name": "boter", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-1": { "name": "bloem", "quantity": "50", "unit": "g", "notes": "" },
+        "ingredient-main-2": { "name": "melk", "quantity": "60", "unit": "cl", "notes": "" },
+        "ingredient-main-3": { "name": "zout", "quantity": "", "unit": "", "notes": "naar smaak" },
+        "ingredient-main-4": { "name": "peper", "quantity": "", "unit": "", "notes": "naar smaak" },
+        "ingredient-main-5": { "name": "geraspte nootmuskaat", "quantity": "", "unit": "", "notes": "naar smaak" }
+      },
+      "sections": [
+        {
+          "title": "In de kookpot",
+          "steps": {
+            "step-0-0": "Smelt de boter in een kookpot met dikke bodem.",
+            "step-0-1": "Voeg de bloem toe en roer met een houten lepel, zonder te laten kleuren, tot het mengsel dikker wordt.",
+            "step-0-2": "Giet de melk er beetje bij beetje bij en blijf roeren tot de saus dikker wordt.",
+            "step-0-3": "Breng op smaak met zout, peper en geraspte nootmuskaat."
+          }
+        },
+        {
+          "title": "Snelle versie in de microgolfoven",
+          "steps": {
+            "step-1-0": "Smelt de boter 1 min in de microgolfoven in een grote kom en voeg dan de bloem toe terwijl je goed roert.",
+            "step-1-1": "Breng de melk aan de kook en laat ze even doorkoken.",
+            "step-1-2": "Giet de melk al kloppend op het mengsel van boter en bloem en breng op smaak.",
+            "step-1-3": "Zet nog 1 min in de microgolfoven en klop goed. Ga verder per 30 s als de saus nog niet dik genoeg is."
+          }
+        }
+      ],
+      "subRecipes": []
+    }
+  }
+}

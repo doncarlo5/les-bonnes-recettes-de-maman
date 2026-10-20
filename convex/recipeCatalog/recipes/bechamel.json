@@ -1,0 +1,350 @@
+{
+  "slug": "bechamel",
+  "heroImageUrl": "https://images.unsplash.com/photo-1771905782192-bf8358926386?auto=format&fit=crop&w=1400&q=85",
+  "defaultLocale": "fr",
+  "relatedRecipeSlugs": [
+    "lasagnes",
+    "lasagnes-vegetariennes"
+  ],
+  "categories": [
+    "sale"
+  ],
+  "legacyCategoryLabels": [],
+  "translations": {
+    "fr": {
+      "title": "Béchamel",
+      "author": "Marmiton",
+      "description": "Sauce béchamel onctueuse au beurre, à la farine et au lait, relevée de muscade, à la casserole ou en version express au micro-ondes.",
+      "yieldLabel": "Environ 60 cl",
+      "prepTime": "",
+      "cookTime": "15 min",
+      "restTime": "",
+      "totalTime": "15 min",
+      "timeLabel": "15 min",
+      "temperature": "",
+      "equipment": [
+        "1 casserole à fond épais",
+        "1 cuillère en bois",
+        "1 fouet"
+      ],
+      "ingredients": [
+        {
+          "name": "beurre",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "farine",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "lait",
+          "quantity": "60",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "sel",
+          "quantity": "",
+          "unit": "",
+          "notes": "selon le goût",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "poivre",
+          "quantity": "",
+          "unit": "",
+          "notes": "selon le goût",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "muscade râpée",
+          "quantity": "",
+          "unit": "",
+          "notes": "selon le goût",
+          "id": "ingredient-main-5"
+        }
+      ],
+      "sections": [
+        {
+          "title": "À la casserole",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Faire fondre le beurre dans une casserole à fond épais.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Ajouter la farine et remuer avec une cuillère en bois, sans laisser colorer, jusqu’à ce que le mélange épaississe.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Verser le lait petit à petit sans cesser de remuer, jusqu’à ce que la sauce épaississe.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Assaisonner de sel, de poivre et de muscade râpée.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Version express au micro-ondes",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "Dans un grand récipient, faire fondre le beurre 1 min au micro-ondes, puis ajouter la farine en remuant bien.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-1-1",
+              "text": "Porter le lait à ébullition et le laisser bouillir quelques instants.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-1-2",
+              "text": "Verser le lait sur le mélange beurre-farine en fouettant, puis assaisonner.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-1-3",
+              "text": "Remettre 1 min au micro-ondes, puis bien fouetter. Prolonger par tranches de 30 s si la sauce n’est pas assez épaisse.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "Ajouter plus ou moins de lait selon la consistance voulue. Pour des lasagnes, préférer une béchamel assez liquide.",
+        "Le lait peut être remplacé par du bouillon de légumes."
+      ]
+    },
+    "en": {
+      "title": "Béchamel",
+      "author": "Marmiton",
+      "description": "Smooth béchamel sauce made with butter, flour and milk and seasoned with nutmeg, cooked in a saucepan or as a quick microwave version.",
+      "yieldLabel": "About 600 ml",
+      "prepTime": "",
+      "cookTime": "15 min",
+      "restTime": "",
+      "totalTime": "15 min",
+      "timeLabel": "15 min",
+      "temperature": "",
+      "equipment": [
+        "1 heavy-bottomed saucepan",
+        "1 wooden spoon",
+        "1 whisk"
+      ],
+      "ingredients": [
+        {
+          "name": "butter",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-0"
+        },
+        {
+          "name": "flour",
+          "quantity": "50",
+          "unit": "g",
+          "notes": "",
+          "id": "ingredient-main-1"
+        },
+        {
+          "name": "milk",
+          "quantity": "60",
+          "unit": "cl",
+          "notes": "",
+          "id": "ingredient-main-2"
+        },
+        {
+          "name": "salt",
+          "quantity": "",
+          "unit": "",
+          "notes": "to taste",
+          "id": "ingredient-main-3"
+        },
+        {
+          "name": "pepper",
+          "quantity": "",
+          "unit": "",
+          "notes": "to taste",
+          "id": "ingredient-main-4"
+        },
+        {
+          "name": "grated nutmeg",
+          "quantity": "",
+          "unit": "",
+          "notes": "to taste",
+          "id": "ingredient-main-5"
+        }
+      ],
+      "sections": [
+        {
+          "title": "In a saucepan",
+          "steps": [
+            {
+              "id": "step-0-0",
+              "text": "Melt the butter in a heavy-bottomed saucepan.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Add the flour and stir with a wooden spoon, without letting it brown, until the mixture thickens.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-0-2",
+              "text": "Pour in the milk little by little, stirring constantly, until the sauce thickens.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-0-3",
+              "text": "Season with salt, pepper and grated nutmeg.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "Quick microwave version",
+          "steps": [
+            {
+              "id": "step-1-0",
+              "text": "In a large bowl, melt the butter in the microwave for 1 min, then add the flour and stir well.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
+              "id": "step-1-1",
+              "text": "Bring the milk to the boil and let it boil for a few moments.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
+              "id": "step-1-2",
+              "text": "Pour the milk over the butter and flour mixture while whisking, then season.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
+            },
+            {
+              "id": "step-1-3",
+              "text": "Microwave for 1 more min, then whisk well. Continue in 30-second bursts if the sauce is not thick enough.",
+              "ingredientUses": []
+            }
+          ]
+        }
+      ],
+      "subRecipes": [],
+      "notes": [
+        "Add more or less milk depending on the consistency you want. For lasagna, a fairly runny béchamel works best.",
+        "The milk can be replaced with vegetable stock."
+      ]
+    }
+  },
+  "imageCredit": {
+    "alt": "a whisk mixing a creamy sauce in a bowl",
+    "photoUrl": "https://unsplash.com/photos/whisk-mixing-a-creamy-sauce-in-a-bowl-Vu68ewV35Vk?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "photographerName": "Murphy Stay",
+    "photographerUrl": "https://unsplash.com/@murphyf?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
+    "provider": "unsplash"
+  }
+}

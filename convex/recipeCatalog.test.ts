@@ -613,7 +613,7 @@ describe("bilingual recipe catalog", () => {
     expect(seededClassic).toMatchObject({
       slug: "lasagnes",
       heroImageUrl: "https://images.unsplash.com/photo-1709429790175-b02bb1b19207?auto=format&fit=crop&w=1400&q=85",
-      relatedRecipeSlugs: ["sauce-bolognaise", "lasagnes-vegetariennes"],
+      relatedRecipeSlugs: ["bechamel", "sauce-bolognaise", "lasagnes-vegetariennes"],
       categories: ["plat", "sale"],
     });
     expect(seededClassic.translations.en).toMatchObject({
@@ -639,7 +639,7 @@ describe("bilingual recipe catalog", () => {
     expect(seededVegetarian).toMatchObject({
       slug: "lasagnes-vegetariennes",
       heroImageUrl: "https://images.unsplash.com/photo-1586197138382-e1d1479fbb14?auto=format&fit=crop&w=1400&q=85",
-      relatedRecipeSlugs: ["lasagnes"],
+      relatedRecipeSlugs: ["bechamel", "lasagnes"],
       categories: ["plat", "sale"],
     });
     expect(seededVegetarian.translations.en).toMatchObject({

@@ -2,46 +2,47 @@
 import type { RecipeTranslationFile } from "../recipeLocales";
 import translation0 from "./recipes/amandin.json";
 import translation1 from "./recipes/banana-bread-du-kona-inn.json";
-import translation2 from "./recipes/brownies.json";
-import translation3 from "./recipes/cake-au-chevre-et-courgettes.json";
-import translation4 from "./recipes/cake-aux-tomates-sechees-et-a-la-feta.json";
-import translation5 from "./recipes/cake-chevre-noix-olives.json";
-import translation6 from "./recipes/cake-d-ete-tout-vert.json";
-import translation7 from "./recipes/cake-moelleux-au-citron-de-pierre-herme.json";
-import translation8 from "./recipes/cake-orange.json";
-import translation9 from "./recipes/clafoutis-aux-abricots.json";
-import translation10 from "./recipes/clafoutis-poires-et-framboises.json";
-import translation11 from "./recipes/cocotte-de-cabillaud-aux-courgettes-et-curry.json";
-import translation12 from "./recipes/cookies-aux-pepites-de-chocolat-et-fleur-de-sel.json";
-import translation13 from "./recipes/coulants-au-chocolat.json";
-import translation14 from "./recipes/crumble-aux-pommes-du-verger.json";
-import translation15 from "./recipes/flan-au-lait-concentre-sucre-nestle.json";
-import translation16 from "./recipes/gateau-au-chocolat.json";
-import translation17 from "./recipes/gateau-au-citron.json";
-import translation18 from "./recipes/gateau-aux-pommes.json";
-import translation19 from "./recipes/gateau-renverse-a-l-ananas.json";
-import translation20 from "./recipes/gougeres.json";
-import translation21 from "./recipes/lasagnes-vegetariennes.json";
-import translation22 from "./recipes/lasagnes.json";
-import translation23 from "./recipes/macaron-tante-maria.json";
-import translation24 from "./recipes/mayonnaise.json";
-import translation25 from "./recipes/osso-buco.json";
-import translation26 from "./recipes/pain-de-poisson.json";
-import translation27 from "./recipes/papillotes-de-cabillaud.json";
-import translation28 from "./recipes/pate-feuilletee-maman.json";
-import translation29 from "./recipes/pate-sucree-de-pierre-herme.json";
-import translation30 from "./recipes/pates-carbonara.json";
-import translation31 from "./recipes/poulet-au-four.json";
-import translation32 from "./recipes/salade-de-lentilles.json";
-import translation33 from "./recipes/sauce-bolognaise.json";
-import translation34 from "./recipes/smoothie-banane-et-fruits-rouges.json";
-import translation35 from "./recipes/soupe-de-champagne.json";
-import translation36 from "./recipes/taboule.json";
-import translation37 from "./recipes/tarte-aux-amandes-et-confiture-de-framboises.json";
-import translation38 from "./recipes/tiramisu.json";
-import translation39 from "./recipes/vacherin.json";
-import translation40 from "./recipes/veloute-de-courgettes.json";
-import translation41 from "./recipes/vinaigrette.json";
+import translation2 from "./recipes/bechamel.json";
+import translation3 from "./recipes/brownies.json";
+import translation4 from "./recipes/cake-au-chevre-et-courgettes.json";
+import translation5 from "./recipes/cake-aux-tomates-sechees-et-a-la-feta.json";
+import translation6 from "./recipes/cake-chevre-noix-olives.json";
+import translation7 from "./recipes/cake-d-ete-tout-vert.json";
+import translation8 from "./recipes/cake-moelleux-au-citron-de-pierre-herme.json";
+import translation9 from "./recipes/cake-orange.json";
+import translation10 from "./recipes/clafoutis-aux-abricots.json";
+import translation11 from "./recipes/clafoutis-poires-et-framboises.json";
+import translation12 from "./recipes/cocotte-de-cabillaud-aux-courgettes-et-curry.json";
+import translation13 from "./recipes/cookies-aux-pepites-de-chocolat-et-fleur-de-sel.json";
+import translation14 from "./recipes/coulants-au-chocolat.json";
+import translation15 from "./recipes/crumble-aux-pommes-du-verger.json";
+import translation16 from "./recipes/flan-au-lait-concentre-sucre-nestle.json";
+import translation17 from "./recipes/gateau-au-chocolat.json";
+import translation18 from "./recipes/gateau-au-citron.json";
+import translation19 from "./recipes/gateau-aux-pommes.json";
+import translation20 from "./recipes/gateau-renverse-a-l-ananas.json";
+import translation21 from "./recipes/gougeres.json";
+import translation22 from "./recipes/lasagnes-vegetariennes.json";
+import translation23 from "./recipes/lasagnes.json";
+import translation24 from "./recipes/macaron-tante-maria.json";
+import translation25 from "./recipes/mayonnaise.json";
+import translation26 from "./recipes/osso-buco.json";
+import translation27 from "./recipes/pain-de-poisson.json";
+import translation28 from "./recipes/papillotes-de-cabillaud.json";
+import translation29 from "./recipes/pate-feuilletee-maman.json";
+import translation30 from "./recipes/pate-sucree-de-pierre-herme.json";
+import translation31 from "./recipes/pates-carbonara.json";
+import translation32 from "./recipes/poulet-au-four.json";
+import translation33 from "./recipes/salade-de-lentilles.json";
+import translation34 from "./recipes/sauce-bolognaise.json";
+import translation35 from "./recipes/smoothie-banane-et-fruits-rouges.json";
+import translation36 from "./recipes/soupe-de-champagne.json";
+import translation37 from "./recipes/taboule.json";
+import translation38 from "./recipes/tarte-aux-amandes-et-confiture-de-framboises.json";
+import translation39 from "./recipes/tiramisu.json";
+import translation40 from "./recipes/vacherin.json";
+import translation41 from "./recipes/veloute-de-courgettes.json";
+import translation42 from "./recipes/vinaigrette.json";
 
 // Shapes are checked field by field when translations are applied.
 const file = (value: unknown) => value as RecipeTranslationFile;
@@ -49,44 +50,45 @@ const file = (value: unknown) => value as RecipeTranslationFile;
 export const recipeTranslationFiles: Record<string, RecipeTranslationFile> = {
   "amandin": file(translation0),
   "banana-bread-du-kona-inn": file(translation1),
-  "brownies": file(translation2),
-  "cake-au-chevre-et-courgettes": file(translation3),
-  "cake-aux-tomates-sechees-et-a-la-feta": file(translation4),
-  "cake-chevre-noix-olives": file(translation5),
-  "cake-d-ete-tout-vert": file(translation6),
-  "cake-moelleux-au-citron-de-pierre-herme": file(translation7),
-  "cake-orange": file(translation8),
-  "clafoutis-aux-abricots": file(translation9),
-  "clafoutis-poires-et-framboises": file(translation10),
-  "cocotte-de-cabillaud-aux-courgettes-et-curry": file(translation11),
-  "cookies-aux-pepites-de-chocolat-et-fleur-de-sel": file(translation12),
-  "coulants-au-chocolat": file(translation13),
-  "crumble-aux-pommes-du-verger": file(translation14),
-  "flan-au-lait-concentre-sucre-nestle": file(translation15),
-  "gateau-au-chocolat": file(translation16),
-  "gateau-au-citron": file(translation17),
-  "gateau-aux-pommes": file(translation18),
-  "gateau-renverse-a-l-ananas": file(translation19),
-  "gougeres": file(translation20),
-  "lasagnes-vegetariennes": file(translation21),
-  "lasagnes": file(translation22),
-  "macaron-tante-maria": file(translation23),
-  "mayonnaise": file(translation24),
-  "osso-buco": file(translation25),
-  "pain-de-poisson": file(translation26),
-  "papillotes-de-cabillaud": file(translation27),
-  "pate-feuilletee-maman": file(translation28),
-  "pate-sucree-de-pierre-herme": file(translation29),
-  "pates-carbonara": file(translation30),
-  "poulet-au-four": file(translation31),
-  "salade-de-lentilles": file(translation32),
-  "sauce-bolognaise": file(translation33),
-  "smoothie-banane-et-fruits-rouges": file(translation34),
-  "soupe-de-champagne": file(translation35),
-  "taboule": file(translation36),
-  "tarte-aux-amandes-et-confiture-de-framboises": file(translation37),
-  "tiramisu": file(translation38),
-  "vacherin": file(translation39),
-  "veloute-de-courgettes": file(translation40),
-  "vinaigrette": file(translation41),
+  "bechamel": file(translation2),
+  "brownies": file(translation3),
+  "cake-au-chevre-et-courgettes": file(translation4),
+  "cake-aux-tomates-sechees-et-a-la-feta": file(translation5),
+  "cake-chevre-noix-olives": file(translation6),
+  "cake-d-ete-tout-vert": file(translation7),
+  "cake-moelleux-au-citron-de-pierre-herme": file(translation8),
+  "cake-orange": file(translation9),
+  "clafoutis-aux-abricots": file(translation10),
+  "clafoutis-poires-et-framboises": file(translation11),
+  "cocotte-de-cabillaud-aux-courgettes-et-curry": file(translation12),
+  "cookies-aux-pepites-de-chocolat-et-fleur-de-sel": file(translation13),
+  "coulants-au-chocolat": file(translation14),
+  "crumble-aux-pommes-du-verger": file(translation15),
+  "flan-au-lait-concentre-sucre-nestle": file(translation16),
+  "gateau-au-chocolat": file(translation17),
+  "gateau-au-citron": file(translation18),
+  "gateau-aux-pommes": file(translation19),
+  "gateau-renverse-a-l-ananas": file(translation20),
+  "gougeres": file(translation21),
+  "lasagnes-vegetariennes": file(translation22),
+  "lasagnes": file(translation23),
+  "macaron-tante-maria": file(translation24),
+  "mayonnaise": file(translation25),
+  "osso-buco": file(translation26),
+  "pain-de-poisson": file(translation27),
+  "papillotes-de-cabillaud": file(translation28),
+  "pate-feuilletee-maman": file(translation29),
+  "pate-sucree-de-pierre-herme": file(translation30),
+  "pates-carbonara": file(translation31),
+  "poulet-au-four": file(translation32),
+  "salade-de-lentilles": file(translation33),
+  "sauce-bolognaise": file(translation34),
+  "smoothie-banane-et-fruits-rouges": file(translation35),
+  "soupe-de-champagne": file(translation36),
+  "taboule": file(translation37),
+  "tarte-aux-amandes-et-confiture-de-framboises": file(translation38),
+  "tiramisu": file(translation39),
+  "vacherin": file(translation40),
+  "veloute-de-courgettes": file(translation41),
+  "vinaigrette": file(translation42),
 };
