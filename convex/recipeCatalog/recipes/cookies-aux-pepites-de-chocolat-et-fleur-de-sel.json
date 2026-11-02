@@ -21,7 +21,12 @@
       "timeLabel": "≈ 1 h",
       "temperature": "180 °C",
       "equipment": [
-        "1 plaque de cuisson"
+        "1 casserole",
+        "2 bols, dont 1 grand",
+        "1 cuillère en bois",
+        "film alimentaire",
+        "1 plaque de cuisson",
+        "1 grille"
       ],
       "ingredients": [
         {
@@ -108,7 +113,16 @@
           "steps": [
             {
               "id": "step-0-0",
-              "text": "Dans un bol, mélanger la farine, le bicarbonate, la levure chimique et le sel.",
+              "text": "Faire fondre le beurre dans une casserole à feu moyen, puis le laisser tiédir hors du feu.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "Pendant que le beurre fond, mélanger dans un premier bol la farine, le bicarbonate, la levure chimique et le sel. Hacher grossièrement le chocolat.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-3"
@@ -125,32 +139,23 @@
               ]
             },
             {
-              "id": "step-0-1",
-              "text": "Faire fondre le beurre à feu moyen, puis le verser dans un grand bol.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-0"
-                }
-              ]
-            },
-            {
               "id": "step-0-2",
-              "text": "Ajouter le sucre roux et le sucre en poudre au beurre fondu, puis mélanger jusqu’à obtenir une préparation homogène.",
+              "text": "Verser le beurre fondu dans un second bol, plus grand. Ajouter le sucre roux et le sucre en poudre, puis mélanger jusqu’à obtenir une préparation homogène.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-0"
-                },
-                {
-                  "ingredientId": "ingredient-main-2"
                 },
                 {
                   "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
                 }
               ]
             },
             {
               "id": "step-0-3",
-              "text": "Incorporer l’œuf et les graines de vanille jusqu’à obtenir une texture lisse et brillante.",
+              "text": "Incorporer l’œuf et les graines de vanille dans le grand bol jusqu’à obtenir une texture lisse et brillante.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-7"
@@ -162,12 +167,12 @@
             },
             {
               "id": "step-0-4",
-              "text": "Ajouter les ingrédients secs en deux fois avec une cuillère en bois, en mélangeant juste assez pour les incorporer.",
+              "text": "Verser le contenu du premier bol dans le grand bol en deux fois, en mélangeant à la cuillère en bois juste assez pour incorporer la farine.",
               "ingredientUses": []
             },
             {
               "id": "step-0-5",
-              "text": "Ajouter le chocolat noir grossièrement haché et mélanger une dernière fois sans trop travailler la pâte.",
+              "text": "Ajouter le chocolat haché et mélanger une dernière fois sans trop travailler la pâte.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-9"
@@ -246,7 +251,12 @@
       "timeLabel": "≈ 1 h",
       "temperature": "180 °C",
       "equipment": [
-        "1 baking sheet"
+        "1 saucepan",
+        "2 bowls, 1 of them large",
+        "1 wooden spoon",
+        "plastic wrap",
+        "1 baking sheet",
+        "1 wire rack"
       ],
       "ingredients": [
         {
@@ -333,16 +343,25 @@
           "steps": [
             {
               "id": "step-0-0",
-              "text": "In a bowl, combine the flour, baking soda, baking powder and salt.",
+              "text": "Melt the butter in a saucepan over medium heat, then let it cool slightly off the heat.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-1",
+              "text": "While the butter melts, combine the flour, baking soda, baking powder and salt in a first bowl. Roughly chop the chocolate.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-3"
                 },
                 {
-                  "ingredientId": "ingredient-main-5"
+                  "ingredientId": "ingredient-main-4"
                 },
                 {
-                  "ingredientId": "ingredient-main-4"
+                  "ingredientId": "ingredient-main-5"
                 },
                 {
                   "ingredientId": "ingredient-main-6"
@@ -350,32 +369,23 @@
               ]
             },
             {
-              "id": "step-0-1",
-              "text": "Melt the butter over medium heat, then pour it into a large bowl.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-0"
-                }
-              ]
-            },
-            {
               "id": "step-0-2",
-              "text": "Add the brown sugar and granulated sugar to the melted butter, then mix until smooth.",
+              "text": "Pour the melted butter into a second, larger bowl. Add the brown sugar and granulated sugar, then mix until smooth.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-0"
-                },
-                {
-                  "ingredientId": "ingredient-main-2"
                 },
                 {
                   "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
                 }
               ]
             },
             {
               "id": "step-0-3",
-              "text": "Mix in the egg and vanilla seeds until smooth and glossy.",
+              "text": "Mix the egg and vanilla seeds into the large bowl until smooth and glossy.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-7"
@@ -387,12 +397,12 @@
             },
             {
               "id": "step-0-4",
-              "text": "Add the dry ingredients in two batches with a wooden spoon, mixing only until incorporated.",
+              "text": "Add the contents of the first bowl to the large bowl in two batches, mixing with a wooden spoon only until the flour is incorporated.",
               "ingredientUses": []
             },
             {
               "id": "step-0-5",
-              "text": "Add the roughly chopped dark chocolate and mix once more without overworking the dough.",
+              "text": "Add the chopped chocolate and mix once more without overworking the dough.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-9"
@@ -417,26 +427,12 @@
             {
               "id": "step-2-0",
               "text": "Preheat the oven to 180 °C and line a baking sheet with parchment paper.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-5"
-                },
-                {
-                  "ingredientId": "ingredient-main-4"
-                }
-              ]
+              "ingredientUses": []
             },
             {
               "id": "step-2-1",
               "text": "Shape the dough into large balls with an ice cream scoop or tablespoon, spacing them well apart on the baking sheet.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-5"
-                },
-                {
-                  "ingredientId": "ingredient-main-4"
-                }
-              ]
+              "ingredientUses": []
             },
             {
               "id": "step-2-2",
@@ -450,26 +446,12 @@
             {
               "id": "step-2-3",
               "text": "Bake for 8 min, remove the baking sheet and tap it lightly on the counter to help the cookies spread.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-5"
-                },
-                {
-                  "ingredientId": "ingredient-main-4"
-                }
-              ]
+              "ingredientUses": []
             },
             {
               "id": "step-2-4",
               "text": "Bake for another 2 min, then tap the baking sheet again after removing it from the oven.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-5"
-                },
-                {
-                  "ingredientId": "ingredient-main-4"
-                }
-              ]
+              "ingredientUses": []
             }
           ]
         },

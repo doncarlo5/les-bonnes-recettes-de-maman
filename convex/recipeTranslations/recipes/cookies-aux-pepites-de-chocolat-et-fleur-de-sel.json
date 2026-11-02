@@ -12,7 +12,7 @@
       "totalTime": "≈ 1 h",
       "timeLabel": "≈ 1 h",
       "temperature": "180 °C",
-      "equipment": ["1 assadeira"],
+      "equipment": ["1 panela pequena", "2 tigelas, sendo 1 grande", "1 colher de pau", "filme plástico", "1 assadeira", "1 grade"],
       "notes": [],
       "ingredients": {
         "ingredient-main-0": { "name": "manteiga", "quantity": "200", "unit": "g", "notes": "" },
@@ -31,12 +31,12 @@
         {
           "title": "Preparo da massa",
           "steps": {
-            "step-0-0": "Em uma tigela, misture a farinha, o bicarbonato, o fermento e o sal.",
-            "step-0-1": "Derreta a manteiga em fogo médio e despeje-a em uma tigela grande.",
-            "step-0-2": "Junte o açúcar mascavo e o açúcar refinado à manteiga derretida e misture até obter uma mistura homogênea.",
-            "step-0-3": "Incorpore o ovo e as sementes de baunilha até obter uma textura lisa e brilhante.",
-            "step-0-4": "Acrescente os ingredientes secos em duas vezes com uma colher de pau, misturando só o suficiente para incorporá-los.",
-            "step-0-5": "Junte o chocolate amargo picado grosseiramente e misture uma última vez, sem trabalhar demais a massa."
+            "step-0-0": "Derreta a manteiga em uma panela em fogo médio e deixe amornar fora do fogo.",
+            "step-0-1": "Enquanto a manteiga derrete, misture em uma primeira tigela a farinha, o bicarbonato, o fermento e o sal. Pique o chocolate grosseiramente.",
+            "step-0-2": "Despeje a manteiga derretida em uma segunda tigela, maior. Junte o açúcar mascavo e o açúcar refinado e misture até obter uma mistura homogênea.",
+            "step-0-3": "Incorpore o ovo e as sementes de baunilha na tigela grande até obter uma textura lisa e brilhante.",
+            "step-0-4": "Despeje o conteúdo da primeira tigela na tigela grande em duas vezes, misturando com uma colher de pau só o suficiente para incorporar a farinha.",
+            "step-0-5": "Junte o chocolate picado e misture uma última vez, sem trabalhar demais a massa."
           }
         },
         {
@@ -75,7 +75,7 @@
       "totalTime": "≈ 1 h",
       "timeLabel": "≈ 1 h",
       "temperature": "180 °C",
-      "equipment": ["1 bakplaat"],
+      "equipment": ["1 steelpan", "2 kommen, waarvan 1 grote", "1 houten lepel", "huishoudfolie", "1 bakplaat", "1 rooster"],
       "notes": [],
       "ingredients": {
         "ingredient-main-0": { "name": "boter", "quantity": "200", "unit": "g", "notes": "" },
@@ -94,12 +94,12 @@
         {
           "title": "Het deeg maken",
           "steps": {
-            "step-0-0": "Meng in een kom de bloem, het bicarbonaat, het bakpoeder en het zout.",
-            "step-0-1": "Smelt de boter op middelhoog vuur en giet ze in een grote kom.",
-            "step-0-2": "Voeg de bruine suiker en de kristalsuiker toe aan de gesmolten boter en meng tot een gelijkmatig geheel.",
-            "step-0-3": "Roer het ei en de vanillezaadjes erdoor tot je een glad en glanzend mengsel hebt.",
-            "step-0-4": "Voeg de droge ingrediënten in twee keer toe met een houten lepel en meng net genoeg om ze op te nemen.",
-            "step-0-5": "Voeg de grof gehakte pure chocolade toe en meng een laatste keer zonder het deeg te veel te bewerken."
+            "step-0-0": "Smelt de boter in een steelpan op middelhoog vuur en laat ze van het vuur wat afkoelen.",
+            "step-0-1": "Meng terwijl de boter smelt in een eerste kom de bloem, het bicarbonaat, het bakpoeder en het zout. Hak de chocolade grof.",
+            "step-0-2": "Giet de gesmolten boter in een tweede, grotere kom. Voeg de bruine suiker en de kristalsuiker toe en meng tot een gelijkmatig geheel.",
+            "step-0-3": "Roer het ei en de vanillezaadjes door het mengsel in de grote kom tot het glad en glanzend is.",
+            "step-0-4": "Giet de inhoud van de eerste kom in twee keer in de grote kom en meng met een houten lepel net genoeg om de bloem op te nemen.",
+            "step-0-5": "Voeg de gehakte chocolade toe en meng een laatste keer zonder het deeg te veel te bewerken."
           }
         },
         {
