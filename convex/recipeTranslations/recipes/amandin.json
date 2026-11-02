@@ -13,9 +13,9 @@
       "timeLabel": "35 min",
       "temperature": "160 °C",
       "equipment": ["1 forma de bolo"],
-      "notes": [],
+      "notes": ["Este bolo costuma grudar: forre o fundo da forma com um disco de papel-manteiga. Se não tiver, unte bem o fundo e as laterais com manteiga e polvilhe um pouco de farinha, girando a forma para espalhá-la. Retire o excesso."],
       "ingredients": {
-        "ingredient-main-0": { "name": "açúcar", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-0": { "name": "açúcar", "quantity": "250", "unit": "g", "notes": "" },
         "ingredient-main-1": { "name": "ovos", "quantity": "4", "unit": "", "notes": "claras e gemas separadas" },
         "ingredient-main-2": { "name": "farinha de amêndoas", "quantity": "200", "unit": "g", "notes": "" },
         "ingredient-main-3": { "name": "limão-siciliano", "quantity": "1/2", "unit": "", "notes": "suco + raspas" },
@@ -26,9 +26,9 @@
           "title": "Preparo",
           "steps": {
             "step-0-0": "Preaqueça o forno a 160 °C.",
-            "step-0-1": "Separe as claras das gemas.",
-            "step-0-2": "Junte o açúcar às gemas, depois a farinha de amêndoas e, por fim, o suco de 1/2 limão e as raspas.",
-            "step-0-3": "Bata as claras em neve e incorpore-as delicadamente à mistura de amêndoas."
+            "step-0-1": "Separe as claras das gemas e bata as claras em neve.",
+            "step-0-2": "Bata as gemas com o açúcar. Adicione a farinha de amêndoas, o suco de 1/2 limão-siciliano e as raspas, depois misture com uma colher de pau.",
+            "step-0-3": "Incorpore delicadamente as claras em neve à mistura de amêndoas."
           }
         },
         {
@@ -58,9 +58,9 @@
       "timeLabel": "35 min",
       "temperature": "160 °C",
       "equipment": ["1 taartvorm"],
-      "notes": [],
+      "notes": ["Deze cake kleeft gemakkelijk aan de vorm: bekleed de bodem met een cirkel bakpapier. Heb je geen bakpapier, vet dan de bodem en de zijkanten goed in met boter en bestuif ze licht met bloem. Draai de vorm om de bloem gelijkmatig te verdelen en klop het teveel eruit."],
       "ingredients": {
-        "ingredient-main-0": { "name": "suiker", "quantity": "150", "unit": "g", "notes": "" },
+        "ingredient-main-0": { "name": "suiker", "quantity": "250", "unit": "g", "notes": "" },
         "ingredient-main-1": { "name": "eieren", "quantity": "4", "unit": "", "notes": "eiwitten en dooiers gescheiden" },
         "ingredient-main-2": { "name": "amandelpoeder", "quantity": "200", "unit": "g", "notes": "" },
         "ingredient-main-3": { "name": "citroen", "quantity": "1/2", "unit": "", "notes": "sap + rasp" },
@@ -71,9 +71,9 @@
           "title": "Bereiding",
           "steps": {
             "step-0-0": "Verwarm de oven voor op 160 °C.",
-            "step-0-1": "Scheid de eiwitten van de dooiers.",
-            "step-0-2": "Meng de suiker onder de dooiers, voeg dan het amandelpoeder toe en tot slot het sap van 1/2 citroen en de rasp.",
-            "step-0-3": "Klop de eiwitten stijf en spatel ze voorzichtig onder het amandelmengsel."
+            "step-0-1": "Scheid de eiwitten van de dooiers en klop de eiwitten stijf.",
+            "step-0-2": "Klop de eidooiers met de suiker. Voeg het amandelpoeder, het sap van 1/2 citroen en de rasp toe en meng met een houten lepel.",
+            "step-0-3": "Spatel de stijfgeklopte eiwitten voorzichtig onder het amandelmengsel."
           }
         },
         {

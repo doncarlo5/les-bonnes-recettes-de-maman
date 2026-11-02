@@ -27,7 +27,7 @@
       "ingredients": [
         {
           "name": "sucre",
-          "quantity": "150",
+          "quantity": "250",
           "unit": "g",
           "notes": "",
           "id": "ingredient-main-0"
@@ -72,7 +72,7 @@
             },
             {
               "id": "step-0-1",
-              "text": "Séparer les blancs d’œufs des jaunes.",
+              "text": "Séparez les blancs d’œufs des jaunes, puis battez les blancs en neige.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-1"
@@ -81,23 +81,29 @@
             },
             {
               "id": "step-0-2",
-              "text": "Ajouter le sucre dans les jaunes, puis la poudre d’amandes, puis le jus de 1/2 citron et le zeste.",
+              "text": "Battez les jaunes d’œufs avec le sucre. Ajoutez la poudre d’amandes, le jus de 1/2 citron et le zeste, puis mélangez à la cuillère en bois.",
               "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
                 {
                   "ingredientId": "ingredient-main-2"
                 },
                 {
                   "ingredientId": "ingredient-main-3"
-                },
-                {
-                  "ingredientId": "ingredient-main-0"
                 }
               ]
             },
             {
               "id": "step-0-3",
-              "text": "Monter les blancs en neige et les ajouter délicatement au mélange aux amandes.",
+              "text": "Incorporez délicatement les blancs montés en neige au mélange aux amandes.",
               "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
                 {
                   "ingredientId": "ingredient-main-2"
                 }
@@ -134,7 +140,7 @@
         }
       ],
       "subRecipes": [],
-      "notes": []
+      "notes": ["Ce gâteau attache facilement : tapissez le fond du moule d’un disque de papier cuisson. À défaut, beurrez soigneusement le fond et les parois, puis farinez légèrement en faisant tourner le moule pour répartir la farine. Retirez l’excédent."]
     },
     "en": {
       "title": "Amandin Almond Cake",
@@ -153,7 +159,7 @@
       "ingredients": [
         {
           "name": "sugar",
-          "quantity": "150",
+          "quantity": "250",
           "unit": "g",
           "notes": "",
           "id": "ingredient-main-0"
@@ -198,7 +204,7 @@
             },
             {
               "id": "step-0-1",
-              "text": "Separate the egg whites from the yolks.",
+              "text": "Separate the egg whites from the yolks, then beat the whites until stiff.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-1"
@@ -207,22 +213,25 @@
             },
             {
               "id": "step-0-2",
-              "text": "Add the sugar to the yolks, then the almond flour, then the juice of 1/2 lemon and the zest.",
+              "text": "Beat the egg yolks with the sugar. Add the ground almonds, the juice of 1/2 lemon and the zest, then mix with a wooden spoon.",
               "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
                 {
                   "ingredientId": "ingredient-main-2"
                 },
                 {
                   "ingredientId": "ingredient-main-3"
-                },
-                {
-                  "ingredientId": "ingredient-main-0"
                 }
               ]
             },
             {
               "id": "step-0-3",
-              "text": "Whip the egg whites and gently fold them into the almond mixture.",
+              "text": "Gently fold the beaten egg whites into the almond mixture.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-1"
@@ -263,7 +272,7 @@
         }
       ],
       "subRecipes": [],
-      "notes": []
+      "notes": ["This cake tends to stick: line the bottom of the pan with a circle of baking paper. Alternatively, thoroughly butter the bottom and sides, then dust lightly with flour, turning the pan to coat it evenly. Tap out the excess."]
     }
   },
   "imageCredit": {
