@@ -24,7 +24,7 @@
         "ingredient-main-3": { "name": "açúcar refinado", "quantity": "35", "unit": "g", "notes": "" },
         "ingredient-main-4": { "name": "café", "quantity": "1/2", "unit": "cafeteira", "notes": "" },
         "ingredient-main-5": { "name": "biscoitos champanhe", "quantity": "250", "unit": "g", "notes": "1 caixa" },
-        "ingredient-main-7": { "name": "chocolate em pó", "quantity": "", "unit": "", "notes": "para polvilhar" }
+        "ingredient-main-7": { "name": "cacau em pó sem açúcar", "quantity": "", "unit": "", "notes": "para polvilhar" }
       },
       "sections": [
         {
@@ -39,7 +39,7 @@
             "step-0-6": "Molhe rapidamente cada biscoito no café: de um lado, depois do outro, sem deixar encharcar. Coloque-o imediatamente na travessa.",
             "step-0-7": "Arrume os biscoitos lado a lado e aperte levemente para formar uma camada uniforme.",
             "step-0-8": "Cubra com o creme.",
-            "step-0-9": "Polvilhe com chocolate em pó."
+            "step-0-9": "Polvilhe com cacau em pó sem açúcar."
           }
         },
         {
@@ -74,7 +74,7 @@
         "ingredient-main-3": { "name": "fijne kristalsuiker", "quantity": "35", "unit": "g", "notes": "" },
         "ingredient-main-4": { "name": "koffie", "quantity": "1/2", "unit": "koffiekan", "notes": "" },
         "ingredient-main-5": { "name": "lange vingers", "quantity": "250", "unit": "g", "notes": "1 doos" },
-        "ingredient-main-7": { "name": "cacaopoeder", "quantity": "", "unit": "", "notes": "om te bestrooien" }
+        "ingredient-main-7": { "name": "ongezoet cacaopoeder", "quantity": "", "unit": "", "notes": "om te bestrooien" }
       },
       "sections": [
         {
@@ -89,7 +89,7 @@
             "step-0-6": "Dop elke lange vinger snel in de koffie: eerst de ene kant, dan de andere, zonder dat hij doorweekt raakt. Leg hem meteen in de schotel.",
             "step-0-7": "Leg de koekjes naast elkaar en druk ze lichtjes aan tot een gelijkmatige laag.",
             "step-0-8": "Verdeel het mengsel erover.",
-            "step-0-9": "Bestrooi met cacaopoeder."
+            "step-0-9": "Bestrooi met ongezoet cacaopoeder."
           }
         },
         {

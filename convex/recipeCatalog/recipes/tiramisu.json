@@ -70,7 +70,7 @@
           "id": "ingredient-main-5"
         },
         {
-          "name": "chocolat en poudre",
+          "name": "cacao en poudre non sucré",
           "quantity": "",
           "unit": "",
           "notes": "pour saupoudrer",
@@ -169,7 +169,7 @@
             },
             {
               "id": "step-0-9",
-              "text": "Saupoudrer de chocolat en poudre.",
+              "text": "Saupoudrer de cacao en poudre non sucré.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-7"
@@ -255,7 +255,7 @@
           "id": "ingredient-main-5"
         },
         {
-          "name": "cocoa powder",
+          "name": "unsweetened cocoa powder",
           "quantity": "",
           "unit": "",
           "notes": "for dusting",
@@ -354,7 +354,7 @@
             },
             {
               "id": "step-0-9",
-              "text": "Dust with cocoa powder.",
+              "text": "Dust with unsweetened cocoa powder.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-7"
