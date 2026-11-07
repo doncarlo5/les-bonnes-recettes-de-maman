@@ -48,16 +48,16 @@
         },
         {
           "name": "citron",
-          "quantity": "1/2",
+          "quantity": "1",
           "unit": "",
-          "notes": "jus + zeste",
+          "notes": "jus + zeste : la moitié du jus pour la pâte, le reste pour le glaçage",
           "id": "ingredient-main-3"
         },
         {
           "name": "sucre glace",
-          "quantity": "",
-          "unit": "",
-          "notes": "selon besoin, pour le glaçage facultatif",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "pour le glaçage facultatif",
           "id": "ingredient-main-4"
         }
       ],
@@ -126,7 +126,7 @@
           "steps": [
             {
               "id": "step-2-0",
-              "text": "Mélanger un peu de jus de citron avec du sucre glace et déposer sur le gâteau refroidi.",
+              "text": "Tamiser 100 g de sucre glace dans un bol. Ajouter le jus de citron restant cuillère par cuillère (1 à 2 c. à soupe), en mélangeant, jusqu’à obtenir une pâte épaisse qui coule lentement de la cuillère. Étaler sur le gâteau complètement refroidi.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-3"
@@ -182,16 +182,16 @@
         },
         {
           "name": "lemon",
-          "quantity": "1/2",
+          "quantity": "1",
           "unit": "",
-          "notes": "juice + zest",
+          "notes": "juice + zest: half the juice for the batter, the rest for the glaze",
           "id": "ingredient-main-3"
         },
         {
           "name": "icing sugar",
-          "quantity": "",
-          "unit": "",
-          "notes": "as needed, for the optional glaze",
+          "quantity": "100",
+          "unit": "g",
+          "notes": "for the optional glaze",
           "id": "ingredient-main-4"
         }
       ],
@@ -260,7 +260,7 @@
           "steps": [
             {
               "id": "step-2-0",
-              "text": "Mix a little lemon juice with icing sugar and spread over the cooled cake.",
+              "text": "Sift 100 g of icing sugar into a bowl. Add the remaining lemon juice one spoonful at a time (1 to 2 tbsp), stirring, until you get a thick paste that flows slowly off the spoon. Spread over the completely cooled cake.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-3"

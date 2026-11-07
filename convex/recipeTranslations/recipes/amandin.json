@@ -18,8 +18,8 @@
         "ingredient-main-0": { "name": "açúcar", "quantity": "250", "unit": "g", "notes": "" },
         "ingredient-main-1": { "name": "ovos", "quantity": "4", "unit": "", "notes": "claras e gemas separadas" },
         "ingredient-main-2": { "name": "farinha de amêndoas", "quantity": "200", "unit": "g", "notes": "" },
-        "ingredient-main-3": { "name": "limão-siciliano", "quantity": "1/2", "unit": "", "notes": "suco + raspas" },
-        "ingredient-main-4": { "name": "açúcar de confeiteiro", "quantity": "", "unit": "", "notes": "a gosto, para a cobertura opcional" }
+        "ingredient-main-3": { "name": "limão-siciliano", "quantity": "1", "unit": "", "notes": "suco + raspas: metade do suco para a massa, o resto para a cobertura" },
+        "ingredient-main-4": { "name": "açúcar de confeiteiro", "quantity": "100", "unit": "g", "notes": "para a cobertura opcional" }
       },
       "sections": [
         {
@@ -40,7 +40,7 @@
         {
           "title": "Cobertura opcional",
           "steps": {
-            "step-2-0": "Misture um pouco de suco de limão com açúcar de confeiteiro e espalhe sobre o bolo já frio."
+            "step-2-0": "Peneire 100 g de açúcar de confeiteiro em uma tigela. Acrescente o suco de limão restante colher a colher (1 a 2 colheres de sopa), mexendo, até obter uma pasta grossa que escorra devagar da colher. Espalhe sobre o bolo completamente frio."
           }
         }
       ],
@@ -63,8 +63,8 @@
         "ingredient-main-0": { "name": "suiker", "quantity": "250", "unit": "g", "notes": "" },
         "ingredient-main-1": { "name": "eieren", "quantity": "4", "unit": "", "notes": "eiwitten en dooiers gescheiden" },
         "ingredient-main-2": { "name": "amandelpoeder", "quantity": "200", "unit": "g", "notes": "" },
-        "ingredient-main-3": { "name": "citroen", "quantity": "1/2", "unit": "", "notes": "sap + rasp" },
-        "ingredient-main-4": { "name": "poedersuiker", "quantity": "", "unit": "", "notes": "naar behoefte, voor het glazuur (naar keuze)" }
+        "ingredient-main-3": { "name": "citroen", "quantity": "1", "unit": "", "notes": "sap + rasp: de helft van het sap voor het beslag, de rest voor het glazuur" },
+        "ingredient-main-4": { "name": "bloemsuiker", "quantity": "100", "unit": "g", "notes": "voor het glazuur (naar keuze)" }
       },
       "sections": [
         {
@@ -85,7 +85,7 @@
         {
           "title": "Glazuur (naar keuze)",
           "steps": {
-            "step-2-0": "Meng een beetje citroensap met poedersuiker en verdeel het over de afgekoelde taart."
+            "step-2-0": "Zeef 100 g bloemsuiker in een kom. Voeg lepel per lepel het resterende citroensap toe (1 à 2 el) en roer tot je een dikke pasta krijgt die traag van de lepel loopt. Verdeel over de volledig afgekoelde taart."
           }
         }
       ],
