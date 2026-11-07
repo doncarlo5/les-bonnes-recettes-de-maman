@@ -14,7 +14,8 @@
       "temperature": "",
       "equipment": ["1 batedeira elétrica", "1 espátula de silicone", "1 travessa de servir"],
       "notes": [
-        "Cuidado para não misturar demais o mascarpone: ele não pode ficar muito líquido."
+        "Cuidado para não misturar demais o mascarpone: ele não pode ficar muito líquido.",
+        "Opcional: acrescente 1 colher de sopa de Cointreau (ou outro licor) ao café."
       ],
       "ingredients": {
         "ingredient-main-0": { "name": "mascarpone", "quantity": "250", "unit": "g", "notes": "" },
@@ -62,7 +63,8 @@
       "temperature": "",
       "equipment": ["1 elektrische mixer", "1 pannenlikker", "1 serveerschotel"],
       "notes": [
-        "Let op dat je de mascarpone niet te veel mengt: hij mag niet te vloeibaar worden."
+        "Let op dat je de mascarpone niet te veel mengt: hij mag niet te vloeibaar worden.",
+        "Optioneel: voeg 1 eetlepel Cointreau (of een andere likeur) toe aan de koffie."
       ],
       "ingredients": {
         "ingredient-main-0": { "name": "mascarpone", "quantity": "250", "unit": "g", "notes": "" },
