@@ -6,11 +6,11 @@
       "author": "Maman",
       "description": "Clafoutis de pera, com algumas framboesas opcionais.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "45 a 50 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "45 a 50 min",
+      "totalTime": "1 h 05 a 1 h 10",
+      "timeLabel": "1 h 05 a 1 h 10",
       "temperature": "200 °C e depois 180 °C",
       "equipment": [],
       "notes": [],
@@ -34,7 +34,8 @@
             "step-0-1": "Misture o açúcar, a farinha, a farinha de amêndoas, o sal e a canela.",
             "step-0-2": "Em seguida, acrescente 3 ovos, 20 cl de creme de leite e 20 cl de leite.",
             "step-0-3": "Bata tudo no liquidificador.",
-            "step-0-4": "Coloque as peras na forma e despeje a massa por cima."
+            "step-0-5": "Descasque as peras e corte-as em pedaços.",
+            "step-0-4": "Coloque as peras e as framboesas (opcional) na forma e despeje a massa por cima."
           }
         },
         {
@@ -51,11 +52,11 @@
       "author": "Maman",
       "description": "Clafoutis met peren, met eventueel een paar frambozen erbij.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "45 à 50 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "45 à 50 min",
+      "totalTime": "1 h 05 à 1 h 10",
+      "timeLabel": "1 h 05 à 1 h 10",
       "temperature": "200 °C en daarna 180 °C",
       "equipment": [],
       "notes": [],
@@ -79,7 +80,8 @@
             "step-0-1": "Meng de suiker, de bloem, het amandelpoeder, het zout en de kaneel.",
             "step-0-2": "Voeg daarna 3 eieren, 20 cl room en 20 cl melk toe.",
             "step-0-3": "Mix alles.",
-            "step-0-4": "Leg de peren in de vorm en giet het beslag erover."
+            "step-0-5": "Schil de peren en snijd ze in stukken.",
+            "step-0-4": "Leg de peren en de frambozen (facultatief) in de vorm en giet het beslag erover."
           }
         },
         {

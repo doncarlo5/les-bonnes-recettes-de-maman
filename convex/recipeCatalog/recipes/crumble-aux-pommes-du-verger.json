@@ -18,8 +18,8 @@
       "prepTime": "15 min",
       "cookTime": "35 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "35 min",
+      "totalTime": "50 min",
+      "timeLabel": "50 min",
       "temperature": "180 °C",
       "equipment": [
         "1 plat à gratin"
@@ -130,10 +130,16 @@
                   "ingredientId": "ingredient-main-1"
                 },
                 {
-                  "ingredientId": "ingredient-main-3"
+                  "ingredientId": "ingredient-main-5"
                 },
                 {
-                  "ingredientId": "ingredient-main-5"
+                  "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
                 }
               ]
             },
@@ -154,10 +160,13 @@
                   "ingredientId": "ingredient-main-1"
                 },
                 {
-                  "ingredientId": "ingredient-main-3"
+                  "ingredientId": "ingredient-main-5"
                 },
                 {
-                  "ingredientId": "ingredient-main-5"
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
                 }
               ]
             },
@@ -180,8 +189,8 @@
       "prepTime": "15 min",
       "cookTime": "35 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "35 min",
+      "totalTime": "50 min",
+      "timeLabel": "50 min",
       "temperature": "180 °C",
       "equipment": [
         "1 baking dish"
@@ -189,7 +198,7 @@
       "ingredients": [
         {
           "name": "apples",
-          "quantity": "1,2",
+          "quantity": "1.2",
           "unit": "kg",
           "notes": "",
           "id": "ingredient-main-0"
@@ -289,16 +298,19 @@
               "text": "In a large bowl, mix the flour, almond flour, cinnamon, brown sugar and butter.",
               "ingredientUses": [
                 {
-                  "ingredientId": "ingredient-main-3"
-                },
-                {
-                  "ingredientId": "ingredient-main-4"
+                  "ingredientId": "ingredient-main-1"
                 },
                 {
                   "ingredientId": "ingredient-main-5"
                 },
                 {
                   "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
                 }
               ]
             },
@@ -316,13 +328,16 @@
               "text": "Cover the apples with the flour-almond-butter-brown sugar mixture and bake for about 35 min. After 30 min of baking, if the apples are not completely tender, continue baking, covering the crumble with parchment paper.",
               "ingredientUses": [
                 {
-                  "ingredientId": "ingredient-main-3"
-                },
-                {
-                  "ingredientId": "ingredient-main-4"
+                  "ingredientId": "ingredient-main-1"
                 },
                 {
                   "ingredientId": "ingredient-main-5"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
                 }
               ]
             },

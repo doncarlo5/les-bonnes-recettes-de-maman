@@ -13,11 +13,11 @@
       "author": "Anne Langenvin",
       "description": "Cake salé aux herbes, pesto ou tapenade verte, gruyère et noisettes.",
       "yieldLabel": "1 moule tablette ou 12 mini cakes",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "30 à 40 min selon le format",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "30 à 40 min selon le format",
+      "totalTime": "50 à 60 min",
+      "timeLabel": "50 à 60 min",
       "temperature": "180 °C",
       "equipment": [
         "1 moule à cake ou 12 moules à mini-cakes"
@@ -127,7 +127,10 @@
               "text": "Laver et égoutter les herbes, les ciseler ou les couper à l’éminceur.",
               "ingredientUses": [
                 {
-                  "ingredientId": "ingredient-main-8"
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
                 }
               ]
             },
@@ -166,21 +169,29 @@
               "text": "Terminer par les herbes, la tapenade ou le pesto, les noisettes, et assaisonner si nécessaire.",
               "ingredientUses": [
                 {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
                   "ingredientId": "ingredient-main-8"
                 },
                 {
                   "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                },
+                {
+                  "ingredientId": "ingredient-main-11"
                 }
               ]
             },
             {
               "id": "step-0-6",
               "text": "Verser dans le moule à cake, puis enfourner pendant environ 40 min pour un grand cake ou 30 min pour des petits.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-8"
-                }
-              ]
+              "ingredientUses": []
             },
             {
               "id": "step-0-7",
@@ -200,11 +211,7 @@
             {
               "id": "step-1-0",
               "text": "Accompagner d’une salade verte.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-6"
-                }
-              ]
+              "ingredientUses": []
             }
           ]
         }
@@ -219,11 +226,11 @@
       "author": "Anne Langenvin",
       "description": "Savory herb loaf with green pesto or tapenade, Gruyère and hazelnuts.",
       "yieldLabel": "1 tablet pan or 12 mini loaves",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "30 to 40 min depending on size",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "30 to 40 min depending on size",
+      "totalTime": "50 to 60 min",
+      "timeLabel": "50 to 60 min",
       "temperature": "180 °C",
       "equipment": [
         "1 loaf pan or 12 mini-loaf molds"
@@ -333,7 +340,10 @@
               "text": "Wash and drain the herbs, then snip or slice them finely.",
               "ingredientUses": [
                 {
-                  "ingredientId": "ingredient-main-8"
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
                 }
               ]
             },
@@ -372,21 +382,29 @@
               "text": "Finish with the herbs, tapenade or pesto, hazelnuts, and season if needed.",
               "ingredientUses": [
                 {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
                   "ingredientId": "ingredient-main-8"
                 },
                 {
                   "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
+                },
+                {
+                  "ingredientId": "ingredient-main-11"
                 }
               ]
             },
             {
               "id": "step-0-6",
               "text": "Pour into the loaf pan, then bake for about 40 min for a large loaf or 30 min for small ones.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-8"
-                }
-              ]
+              "ingredientUses": []
             },
             {
               "id": "step-0-7",
@@ -406,11 +424,7 @@
             {
               "id": "step-1-0",
               "text": "Serve with a green salad.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-8"
-                }
-              ]
+              "ingredientUses": []
             }
           ]
         }

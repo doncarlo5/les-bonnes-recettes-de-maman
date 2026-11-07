@@ -62,7 +62,7 @@
           "id": "ingredient-main-4"
         },
         {
-          "name": "œuf",
+          "name": "œufs",
           "quantity": "2",
           "unit": "",
           "notes": "",
@@ -279,7 +279,7 @@
           "id": "ingredient-main-4"
         },
         {
-          "name": "egg",
+          "name": "eggs",
           "quantity": "2",
           "unit": "",
           "notes": "",
@@ -378,7 +378,11 @@
             {
               "id": "step-0-4",
               "text": "Pour into a round cake pan lined with apple slices.",
-              "ingredientUses": []
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                }
+              ]
             },
             {
               "id": "step-0-5",

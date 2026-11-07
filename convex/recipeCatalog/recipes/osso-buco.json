@@ -17,11 +17,11 @@
       "author": "Maman",
       "description": "Osso buco de jarret de veau aux tomates, carottes, vin blanc et bouquet garni.",
       "yieldLabel": "4 personnes",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "45 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "45 min",
+      "totalTime": "1 h 05",
+      "timeLabel": "1 h 05",
       "temperature": "feu doux",
       "equipment": [
         "1 cocotte-minute"
@@ -112,7 +112,14 @@
             {
               "id": "step-0-0",
               "text": "Fariner la viande.",
-              "ingredientUses": []
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
+                }
+              ]
             },
             {
               "id": "step-0-1",
@@ -156,6 +163,12 @@
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-7"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-10"
                 }
               ]
             },
@@ -175,11 +188,11 @@
       "author": "Maman",
       "description": "Veal shank osso buco with tomatoes, carrots, white wine and a bouquet garni.",
       "yieldLabel": "4 people",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "45 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "45 min",
+      "totalTime": "1 h 05",
+      "timeLabel": "1 h 05",
       "temperature": "low heat",
       "equipment": [
         "1 pressure cooker"
@@ -271,6 +284,9 @@
               "id": "step-0-0",
               "text": "Dust the meat with flour.",
               "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                },
                 {
                   "ingredientId": "ingredient-main-8"
                 }

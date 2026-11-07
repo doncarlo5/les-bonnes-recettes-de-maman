@@ -6,13 +6,13 @@
       "author": "Maman",
       "description": "Bolo salgado com queijo de cabra, nozes, azeitonas e comté ralado.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "15 min",
       "cookTime": "30 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "30 min",
+      "totalTime": "45 min",
+      "timeLabel": "45 min",
       "temperature": "180 °C",
-      "equipment": [],
+      "equipment": ["1 tigela grande", "1 forma de bolo inglês"],
       "notes": [],
       "ingredients": {
         "ingredient-main-0": { "name": "farinha de trigo", "quantity": "175", "unit": "g", "notes": "" },
@@ -34,7 +34,8 @@
             "step-0-0": "Preaqueça o forno a 180 °C.",
             "step-0-1": "Misture os ovos, a farinha, o fermento, o sal e a pimenta.",
             "step-0-2": "Acrescente aos poucos o azeite e o leite quente com o queijo ralado.",
-            "step-0-3": "Junte o queijo de cabra amassado, as nozes e as azeitonas."
+            "step-0-3": "Junte o queijo de cabra amassado, as nozes e as azeitonas.",
+            "step-0-4": "Despeje a massa em uma forma de bolo inglês untada com manteiga."
           }
         },
         {
@@ -51,13 +52,13 @@
       "author": "Maman",
       "description": "Hartige cake met geitenkaas, walnoten, olijven en geraspte comté.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "15 min",
       "cookTime": "30 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "30 min",
+      "totalTime": "45 min",
+      "timeLabel": "45 min",
       "temperature": "180 °C",
-      "equipment": [],
+      "equipment": ["1 mengkom", "1 cakevorm"],
       "notes": [],
       "ingredients": {
         "ingredient-main-0": { "name": "bloem", "quantity": "175", "unit": "g", "notes": "" },
@@ -79,7 +80,8 @@
             "step-0-0": "Verwarm de oven voor op 180 °C.",
             "step-0-1": "Meng de eieren, de bloem, het bakpoeder, het zout en de peper.",
             "step-0-2": "Voeg beetje bij beetje de olie en de warme melk met de geraspte kaas toe.",
-            "step-0-3": "Voeg de geprakte geitenkaas, de walnoten en de olijven toe."
+            "step-0-3": "Voeg de geprakte geitenkaas, de walnoten en de olijven toe.",
+            "step-0-4": "Giet het beslag in een ingevette cakevorm."
           }
         },
         {

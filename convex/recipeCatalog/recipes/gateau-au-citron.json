@@ -15,11 +15,11 @@
       "author": "Maman",
       "description": "Gâteau de Vichy coupé en deux disques et garni de crème au citron.",
       "yieldLabel": "6 personnes",
-      "prepTime": "",
+      "prepTime": "30 min",
       "cookTime": "45 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "45 min",
+      "totalTime": "1 h 15",
+      "timeLabel": "1 h 15",
       "temperature": "160 °C",
       "equipment": [
         "1 moule à manqué",
@@ -101,7 +101,11 @@
             {
               "id": "step-0-2",
               "text": "Battre les blancs en neige ferme.",
-              "ingredientUses": []
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
             },
             {
               "id": "step-0-3",
@@ -191,11 +195,11 @@
       "author": "Maman",
       "description": "Vichy-style cake sliced into two layers and filled with lemon cream.",
       "yieldLabel": "6 people",
-      "prepTime": "",
+      "prepTime": "30 min",
       "cookTime": "45 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "45 min",
+      "totalTime": "1 h 15",
+      "timeLabel": "1 h 15",
       "temperature": "160 °C",
       "equipment": [
         "1 round cake pan",
@@ -212,14 +216,14 @@
         },
         {
           "name": "flour",
-          "quantity": "poids de 2 1/2 œufs",
+          "quantity": "weight of 2 1/2 eggs",
           "unit": "",
           "notes": "for the cake",
           "id": "ingredient-main-1"
         },
         {
           "name": "sugar",
-          "quantity": "poids de 4 œufs",
+          "quantity": "weight of 4 eggs",
           "unit": "",
           "notes": "for the cake",
           "id": "ingredient-main-2"
@@ -279,7 +283,7 @@
               "text": "Whip the egg whites until stiff.",
               "ingredientUses": [
                 {
-                  "ingredientId": "ingredient-main-3"
+                  "ingredientId": "ingredient-main-0"
                 }
               ]
             },

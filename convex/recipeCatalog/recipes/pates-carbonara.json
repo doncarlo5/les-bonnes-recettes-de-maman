@@ -87,7 +87,10 @@
               "text": "Faire cuire les pâtes dans une grande casserole d’eau bouillante salée selon les indications du paquet.",
               "ingredientUses": [
                 {
-                  "ingredientId": "ingredient-main-4"
+                  "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
                 }
               ]
             },
@@ -105,13 +108,13 @@
               "text": "Dans un bol, battre les œufs entiers avec le parmesan et du poivre. Saler très légèrement, car les lardons fumés et le parmesan le sont déjà.",
               "ingredientUses": [
                 {
-                  "ingredientId": "ingredient-main-1"
-                },
-                {
                   "ingredientId": "ingredient-main-2"
                 },
                 {
                   "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
                 },
                 {
                   "ingredientId": "ingredient-main-6"
@@ -139,9 +142,6 @@
                 },
                 {
                   "ingredientId": "ingredient-main-3"
-                },
-                {
-                  "ingredientId": "ingredient-main-4"
                 }
               ]
             },
@@ -243,7 +243,7 @@
               "text": "Cook the pasta in a large saucepan of salted boiling water according to the package directions.",
               "ingredientUses": [
                 {
-                  "ingredientId": "ingredient-main-4"
+                  "ingredientId": "ingredient-main-0"
                 },
                 {
                   "ingredientId": "ingredient-main-5"
@@ -263,9 +263,6 @@
               "id": "step-0-2",
               "text": "In a bowl, beat the whole eggs with the parmesan and pepper. Add only a little salt, as the smoked bacon and parmesan are already salty.",
               "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-1"
-                },
                 {
                   "ingredientId": "ingredient-main-2"
                 },
@@ -301,9 +298,6 @@
                 },
                 {
                   "ingredientId": "ingredient-main-3"
-                },
-                {
-                  "ingredientId": "ingredient-main-4"
                 }
               ]
             },

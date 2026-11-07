@@ -6,13 +6,13 @@
       "author": "Jeanine",
       "description": "Creme de abobrinha com batata, alho, cebola, creme de leite e queijo cremoso.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "15 min",
       "cookTime": "15 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "15 min",
+      "totalTime": "30 min",
+      "timeLabel": "30 min",
       "temperature": "",
-      "equipment": [],
+      "equipment": ["1 panela", "1 mixer de mão"],
       "notes": [],
       "ingredients": {
         "ingredient-main-0": { "name": "abobrinhas pequenas", "quantity": "1", "unit": "kg", "notes": "" },
@@ -31,6 +31,7 @@
         {
           "title": "Preparo",
           "steps": {
+            "step-0-3": "Descasque e corte em pedaços as abobrinhas, a batata, a cebola e o alho.",
             "step-0-0": "Cozinhe todos os legumes em 50 cl de água com sal e o tomilho.",
             "step-0-1": "Deixe cozinhar em fogo baixo por 15 min e depois bata no liquidificador.",
             "step-0-2": "Junte o queijo cremoso e o creme de leite, depois tempere com pimenta e acrescente noz-moscada a gosto."
@@ -44,13 +45,13 @@
       "author": "Jeanine",
       "description": "Gebonden courgettesoep met aardappel, look, ui, room en smeerkaas.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "15 min",
       "cookTime": "15 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "15 min",
+      "totalTime": "30 min",
+      "timeLabel": "30 min",
       "temperature": "",
-      "equipment": [],
+      "equipment": ["1 kookpot", "1 staafmixer"],
       "notes": [],
       "ingredients": {
         "ingredient-main-0": { "name": "kleine courgettes", "quantity": "1", "unit": "kg", "notes": "" },
@@ -69,6 +70,7 @@
         {
           "title": "Bereiding",
           "steps": {
+            "step-0-3": "Schil de courgettes, de aardappel, de ui en de look en snijd ze in stukken.",
             "step-0-0": "Kook alle groenten in 50 cl water met zout en de tijm.",
             "step-0-1": "Laat 15 min zachtjes koken en mix dan fijn.",
             "step-0-2": "Voeg de smeerkaas en de room toe, kruid met peper en voeg naar smaak nootmuskaat toe."

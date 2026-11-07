@@ -25,7 +25,8 @@
       "temperature": "th. 7 / 210 °C",
       "equipment": [
         "1 moule à cake",
-        "1 plat pour bain-marie"
+        "1 plat pour bain-marie",
+        "1 robot mixeur"
       ],
       "ingredients": [
         {
@@ -34,6 +35,13 @@
           "unit": "g",
           "notes": "mélange de poissons surgelés sans arêtes",
           "id": "ingredient-main-0"
+        },
+        {
+          "name": "court-bouillon",
+          "quantity": "",
+          "unit": "",
+          "notes": "prêt à l’emploi",
+          "id": "ingredient-main-8"
         },
         {
           "name": "concentré de tomate",
@@ -100,6 +108,9 @@
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
                 }
               ]
             },
@@ -200,7 +211,8 @@
       "temperature": "th. 7 / 210 °C",
       "equipment": [
         "1 loaf pan",
-        "1 roasting dish for the water bath"
+        "1 roasting dish for the water bath",
+        "1 food processor"
       ],
       "ingredients": [
         {
@@ -209,6 +221,13 @@
           "unit": "g",
           "notes": "frozen boneless fish mix",
           "id": "ingredient-main-0"
+        },
+        {
+          "name": "court-bouillon",
+          "quantity": "",
+          "unit": "",
+          "notes": "ready-made",
+          "id": "ingredient-main-8"
         },
         {
           "name": "tomato paste",
@@ -275,6 +294,9 @@
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-0"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
                 }
               ]
             },
@@ -284,6 +306,9 @@
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-1"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
                 },
                 {
                   "ingredientId": "ingredient-main-3"

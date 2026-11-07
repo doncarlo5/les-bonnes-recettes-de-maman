@@ -84,7 +84,11 @@
             {
               "id": "step-0-0",
               "text": "Huiler le moule en couronne.",
-              "ingredientUses": []
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
             },
             {
               "id": "step-0-1",
@@ -114,6 +118,9 @@
               "id": "step-0-3",
               "text": "Battre les blancs en neige en ajoutant à la fin le sucre glace.",
               "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
                 {
                   "ingredientId": "ingredient-main-3"
                 }
@@ -243,6 +250,9 @@
               "id": "step-0-2",
               "text": "Add the vanilla extract and cream.",
               "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
                 {
                   "ingredientId": "ingredient-main-5"
                 }

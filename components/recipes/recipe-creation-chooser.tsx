@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Lightbulb, NotebookPen, Plus } from "lucide-react";
+import { ArrowRight, Lightbulb, NotebookPen, Plus } from "lucide-react";
 import type { Dictionary } from "@/i18n/get-dictionary";
 import type { Locale } from "@/i18n/config";
 import {
@@ -70,6 +70,15 @@ export function RecipeCreationChooser({
             description={dict.creationChoice.ideaDescription}
           />
         </div>
+        {context === "public" ? (
+          <Link
+            href={`/${locale}/idees`}
+            className="type-body-sm group inline-flex min-h-11 items-center gap-1.5 justify-self-start font-semibold text-muted-foreground transition-colors duration-150 hover:text-primary"
+          >
+            {dict.creationChoice.browseIdeas}
+            <ArrowRight aria-hidden className="size-4 transition-transform duration-150 group-hover:translate-x-0.5" />
+          </Link>
+        ) : null}
       </DialogContent>
     </Dialog>
   );

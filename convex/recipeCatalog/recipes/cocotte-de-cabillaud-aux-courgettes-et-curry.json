@@ -103,12 +103,14 @@
           "title": "Préparation",
           "steps": [
             {
+              "id": "step-0-8",
+              "text": "Préchauffer le four à 180 °C.",
+              "ingredientUses": []
+            },
+            {
               "id": "step-0-0",
               "text": "Peler l’oignon et l’émincer.",
               "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-0"
-                },
                 {
                   "ingredientId": "ingredient-main-4"
                 }
@@ -118,9 +120,6 @@
               "id": "step-0-1",
               "text": "Peler les courgettes et les couper en petits cubes.",
               "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-0"
-                },
                 {
                   "ingredientId": "ingredient-main-1"
                 }
@@ -146,13 +145,16 @@
             },
             {
               "id": "step-0-4",
-              "text": "Dans une poêle, faire revenir l’oignon émincé avec les courgettes sur feu moyen pendant 15 à 20 min, jusqu’à ce que les courgettes commencent à fondre.",
+              "text": "Dans une poêle, faire revenir dans l’huile d’olive l’oignon émincé avec les courgettes sur feu moyen pendant 15 à 20 min, jusqu’à ce que les courgettes commencent à fondre.",
               "ingredientUses": [
                 {
-                  "ingredientId": "ingredient-main-1"
+                  "ingredientId": "ingredient-main-5"
                 },
                 {
                   "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-1"
                 }
               ]
             },
@@ -161,7 +163,10 @@
               "text": "Saler, poivrer, saupoudrer de curry et ajouter le persil haché.",
               "ingredientUses": [
                 {
-                  "ingredientId": "ingredient-main-0"
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
+                  "ingredientId": "ingredient-main-3"
                 },
                 {
                   "ingredientId": "ingredient-main-6"
@@ -174,11 +179,7 @@
             {
               "id": "step-0-6",
               "text": "Mélanger et poursuivre la cuisson quelques minutes.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-0"
-                }
-              ]
+              "ingredientUses": []
             },
             {
               "id": "step-0-7",
@@ -193,11 +194,6 @@
               ]
             },
             {
-              "id": "step-0-8",
-              "text": "Préchauffer le four à 180 °C.",
-              "ingredientUses": []
-            },
-            {
               "id": "step-0-9",
               "text": "Verser la préparation dans un grand plat à gratin ou la répartir dans les petites cocottes.",
               "ingredientUses": []
@@ -206,9 +202,6 @@
               "id": "step-0-10",
               "text": "Arroser de crème liquide et saupoudrer de parmesan.",
               "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-0"
-                },
                 {
                   "ingredientId": "ingredient-main-8"
                 },
@@ -336,6 +329,11 @@
           "title": "Preparation",
           "steps": [
             {
+              "id": "step-0-8",
+              "text": "Preheat the oven to 180 °C.",
+              "ingredientUses": []
+            },
+            {
               "id": "step-0-0",
               "text": "Peel and slice the onion.",
               "ingredientUses": [
@@ -373,8 +371,11 @@
             },
             {
               "id": "step-0-4",
-              "text": "In a skillet, sauté the sliced onion with the zucchini over medium heat for 15 to 20 min, until the zucchini start to soften and break down.",
+              "text": "In a skillet, sauté the sliced onion with the zucchini in the olive oil over medium heat for 15 to 20 min, until the zucchini start to soften and break down.",
               "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                },
                 {
                   "ingredientId": "ingredient-main-4"
                 },
@@ -417,11 +418,6 @@
                   "ingredientId": "ingredient-main-1"
                 }
               ]
-            },
-            {
-              "id": "step-0-8",
-              "text": "Preheat the oven to 180 °C.",
-              "ingredientUses": []
             },
             {
               "id": "step-0-9",

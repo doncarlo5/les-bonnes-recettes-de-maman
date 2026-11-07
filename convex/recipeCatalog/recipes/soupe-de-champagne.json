@@ -16,10 +16,12 @@
       "prepTime": "5 min",
       "cookTime": "",
       "restTime": "",
-      "totalTime": "",
+      "totalTime": "5 min",
       "timeLabel": "5 min",
       "temperature": "",
-      "equipment": [],
+      "equipment": [
+        "1 saladier"
+      ],
       "ingredients": [
         {
           "name": "crémant de Loire",
@@ -113,10 +115,12 @@
       "prepTime": "5 min",
       "cookTime": "",
       "restTime": "",
-      "totalTime": "",
+      "totalTime": "5 min",
       "timeLabel": "5 min",
       "temperature": "",
-      "equipment": [],
+      "equipment": [
+        "1 punch bowl"
+      ],
       "ingredients": [
         {
           "name": "Loire Valley Crémant",

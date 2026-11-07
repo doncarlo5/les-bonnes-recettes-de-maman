@@ -15,15 +15,16 @@
       "author": "Maman",
       "description": "Flan au lait concentré sucré cuit au bain-marie avec caramel.",
       "yieldLabel": "6 personnes",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "30 à 45 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "30 à 45 min",
+      "totalTime": "50 min à 1 h 05",
+      "timeLabel": "50 min à 1 h 05",
       "temperature": "170 °C",
       "equipment": [
         "1 moule à cake",
-        "1 plat pour bain-marie"
+        "1 plat pour bain-marie",
+        "1 poêle"
       ],
       "ingredients": [
         {
@@ -88,7 +89,21 @@
             },
             {
               "id": "step-0-3",
-              "text": "Mixer le mélange au plongeur mixeur pendant 5 min.",
+              "text": "Mixer le mélange au mixeur plongeant pendant 5 min.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-1-1",
+              "text": "Faire le caramel avec le sucre dans la poêle, sans eau.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-1-2",
+              "text": "Ne pas remuer.",
               "ingredientUses": []
             },
             {
@@ -99,6 +114,11 @@
             {
               "id": "step-0-5",
               "text": "Verser le mélange doucement.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-1-0",
+              "text": "Le bain-marie doit être bouillant au moment de mettre le flan.",
               "ingredientUses": []
             },
             {
@@ -117,26 +137,6 @@
               "ingredientUses": []
             }
           ]
-        },
-        {
-          "title": "Notes de cuisson",
-          "steps": [
-            {
-              "id": "step-1-0",
-              "text": "Le bain-marie doit être bouillant au moment de mettre le flan.",
-              "ingredientUses": []
-            },
-            {
-              "id": "step-1-1",
-              "text": "Faire le caramel dans la poêle sans eau.",
-              "ingredientUses": []
-            },
-            {
-              "id": "step-1-2",
-              "text": "Ne pas remuer.",
-              "ingredientUses": []
-            }
-          ]
         }
       ],
       "subRecipes": [],
@@ -147,15 +147,16 @@
       "author": "Maman",
       "description": "Sweetened condensed milk flan baked in a water bath with caramel.",
       "yieldLabel": "6 people",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "30 to 45 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "30 to 45 min",
+      "totalTime": "50 min to 1 h 05",
+      "timeLabel": "50 min to 1 h 05",
       "temperature": "170 °C",
       "equipment": [
         "1 loaf pan",
-        "1 roasting dish for the water bath"
+        "1 roasting dish for the water bath",
+        "1 frying pan"
       ],
       "ingredients": [
         {
@@ -224,6 +225,20 @@
               "ingredientUses": []
             },
             {
+              "id": "step-1-1",
+              "text": "Make the caramel with the sugar in the pan, without water.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-3"
+                }
+              ]
+            },
+            {
+              "id": "step-1-2",
+              "text": "Do not stir.",
+              "ingredientUses": []
+            },
+            {
               "id": "step-0-4",
               "text": "Coat the loaf pan with caramel.",
               "ingredientUses": []
@@ -231,6 +246,11 @@
             {
               "id": "step-0-5",
               "text": "Pour the mixture in gently.",
+              "ingredientUses": []
+            },
+            {
+              "id": "step-1-0",
+              "text": "The water bath should be boiling when the flan goes in.",
               "ingredientUses": []
             },
             {
@@ -246,26 +266,6 @@
             {
               "id": "step-0-8",
               "text": "Let cool, refrigerate, and unmold when ready to serve.",
-              "ingredientUses": []
-            }
-          ]
-        },
-        {
-          "title": "Baking Notes",
-          "steps": [
-            {
-              "id": "step-1-0",
-              "text": "The water bath should be boiling when the flan goes in.",
-              "ingredientUses": []
-            },
-            {
-              "id": "step-1-1",
-              "text": "Make the caramel in a pan without water.",
-              "ingredientUses": []
-            },
-            {
-              "id": "step-1-2",
-              "text": "Do not stir.",
               "ingredientUses": []
             }
           ]

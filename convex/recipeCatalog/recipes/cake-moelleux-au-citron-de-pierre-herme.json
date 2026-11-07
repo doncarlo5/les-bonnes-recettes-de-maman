@@ -137,15 +137,12 @@
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-4"
-                },
-                {
-                  "ingredientId": "ingredient-main-8"
                 }
               ]
             },
             {
               "id": "step-0-3",
-              "text": "Ajouter la crème fraîche.",
+              "text": "Ajouter la crème liquide.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-5"
@@ -161,9 +158,6 @@
                 },
                 {
                   "ingredientId": "ingredient-main-7"
-                },
-                {
-                  "ingredientId": "ingredient-main-8"
                 }
               ]
             },
@@ -176,9 +170,6 @@
                 },
                 {
                   "ingredientId": "ingredient-main-1"
-                },
-                {
-                  "ingredientId": "ingredient-main-8"
                 }
               ]
             },
@@ -191,9 +182,6 @@
                 },
                 {
                   "ingredientId": "ingredient-main-1"
-                },
-                {
-                  "ingredientId": "ingredient-main-8"
                 }
               ]
             },
@@ -218,19 +206,12 @@
             {
               "id": "step-0-9",
               "text": "Verser la préparation et cuire environ 60 min.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-8"
-                }
-              ]
+              "ingredientUses": []
             },
             {
               "id": "step-0-10",
               "text": "Préparer le sirop : porter à ébullition l’eau et le sucre.",
               "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-8"
-                },
                 {
                   "ingredientId": "ingredient-main-9"
                 },
@@ -251,11 +232,7 @@
             {
               "id": "step-0-12",
               "text": "Sortir le cake du four et l’imbiber de sirop.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-8"
-                }
-              ]
+              "ingredientUses": []
             },
             {
               "id": "step-0-13",
@@ -400,8 +377,12 @@
             },
             {
               "id": "step-0-3",
-              "text": "Add the crème fraîche.",
-              "ingredientUses": []
+              "text": "Add the heavy cream.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
             },
             {
               "id": "step-0-4",
@@ -453,9 +434,6 @@
               "text": "Butter and flour the loaf pan.",
               "ingredientUses": [
                 {
-                  "ingredientId": "ingredient-main-0"
-                },
-                {
                   "ingredientId": "ingredient-main-8"
                 }
               ]
@@ -494,11 +472,7 @@
             {
               "id": "step-0-13",
               "text": "Let cool on a rack before serving.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-8"
-                }
-              ]
+              "ingredientUses": []
             }
           ]
         }

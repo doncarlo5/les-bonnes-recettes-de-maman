@@ -14,11 +14,11 @@
       "author": "Maman",
       "description": "Brownies au chocolat noir et aux noix, fondants à cœur.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "15 min",
       "cookTime": "20 min",
       "restTime": "2 h 35",
-      "totalTime": "",
-      "timeLabel": "20 min",
+      "totalTime": "35 min + 2 h 35 de repos",
+      "timeLabel": "35 min + 2 h 35 de repos",
       "temperature": "180 °C",
       "equipment": [
         "1 moule rectangulaire de 25 × 18 cm ou 1 moule carré équivalent",
@@ -108,6 +108,9 @@
               "text": "Ajouter le sucre et le sucre vanillé, puis mélanger.",
               "ingredientUses": [
                 {
+                  "ingredientId": "ingredient-main-1"
+                },
+                {
                   "ingredientId": "ingredient-main-3"
                 }
               ]
@@ -180,11 +183,11 @@
       "author": "Maman",
       "description": "Dark chocolate and walnut brownies with a soft, fudgy center.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "15 min",
       "cookTime": "20 min",
       "restTime": "2 h 35",
-      "totalTime": "",
-      "timeLabel": "20 min",
+      "totalTime": "35 min + 2 h 35 resting",
+      "timeLabel": "35 min + 2 h 35 resting",
       "temperature": "180 °C",
       "equipment": [
         "1 rectangular 25 × 18 cm baking pan or equivalent square pan",
@@ -273,6 +276,9 @@
               "id": "step-0-2",
               "text": "Add the sugar and vanilla sugar, then mix.",
               "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
                 {
                   "ingredientId": "ingredient-main-3"
                 }

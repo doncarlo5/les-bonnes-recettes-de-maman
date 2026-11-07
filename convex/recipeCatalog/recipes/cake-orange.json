@@ -15,13 +15,16 @@
       "author": "Maman",
       "description": "Cake à l’orange et au beurre salé avec glaçage ou sirop à l’orange.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "15 min",
       "cookTime": "40 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "40 min",
+      "totalTime": "55 min",
+      "timeLabel": "55 min",
       "temperature": "180 °C",
-      "equipment": [],
+      "equipment": [
+        "1 saladier",
+        "1 moule à cake"
+      ],
       "ingredients": [
         {
           "name": "orange",
@@ -135,7 +138,16 @@
                   "ingredientId": "ingredient-main-2"
                 },
                 {
-                  "ingredientId": "ingredient-main-7"
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Verser la pâte dans un moule à cake beurré.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
                 }
               ]
             }
@@ -159,10 +171,10 @@
               "text": "Pour un glaçage : mélanger du sucre glace avec un peu de jus d’orange.",
               "ingredientUses": [
                 {
-                  "ingredientId": "ingredient-main-8"
+                  "ingredientId": "ingredient-main-6"
                 },
                 {
-                  "ingredientId": "ingredient-main-6"
+                  "ingredientId": "ingredient-main-7"
                 }
               ]
             },
@@ -189,13 +201,16 @@
       "author": "Maman",
       "description": "Orange and salted-butter loaf cake with an orange glaze or syrup.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "15 min",
       "cookTime": "40 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "40 min",
+      "totalTime": "55 min",
+      "timeLabel": "55 min",
       "temperature": "180 °C",
-      "equipment": [],
+      "equipment": [
+        "1 mixing bowl",
+        "1 loaf pan"
+      ],
       "ingredients": [
         {
           "name": "orange",
@@ -309,7 +324,16 @@
                   "ingredientId": "ingredient-main-2"
                 },
                 {
-                  "ingredientId": "ingredient-main-7"
+                  "ingredientId": "ingredient-main-0"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Pour the batter into a buttered loaf pan.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
                 }
               ]
             }
@@ -333,10 +357,10 @@
               "text": "For a glaze: mix icing sugar with a little orange juice.",
               "ingredientUses": [
                 {
-                  "ingredientId": "ingredient-main-8"
+                  "ingredientId": "ingredient-main-6"
                 },
                 {
-                  "ingredientId": "ingredient-main-6"
+                  "ingredientId": "ingredient-main-7"
                 }
               ]
             },

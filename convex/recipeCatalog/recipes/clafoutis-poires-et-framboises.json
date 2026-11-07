@@ -15,11 +15,11 @@
       "author": "Maman",
       "description": "Clafoutis aux poires, avec quelques framboises facultatives.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "45 à 50 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "45 à 50 min",
+      "totalTime": "1 h 05 à 1 h 10",
+      "timeLabel": "1 h 05 à 1 h 10",
       "temperature": "200 °C puis 180 °C",
       "equipment": [],
       "ingredients": [
@@ -145,11 +145,23 @@
               "ingredientUses": []
             },
             {
-              "id": "step-0-4",
-              "text": "Mettre les poires dans le moule, puis verser la pâte.",
+              "id": "step-0-5",
+              "text": "Éplucher les poires et les couper en morceaux.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-9"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Mettre les poires et les framboises (facultatif) dans le moule, puis verser la pâte.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
                 }
               ]
             }
@@ -174,12 +186,12 @@
       "author": "Maman",
       "description": "Pear clafoutis with a few optional raspberries.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "45 to 50 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "45 to 50 min",
-      "temperature": "200 °C puis 180 °C",
+      "totalTime": "1 h 05 to 1 h 10",
+      "timeLabel": "1 h 05 to 1 h 10",
+      "temperature": "200 °C then 180 °C",
       "equipment": [],
       "ingredients": [
         {
@@ -304,11 +316,23 @@
               "ingredientUses": []
             },
             {
-              "id": "step-0-4",
-              "text": "Place the pears in the pan, then pour in the batter.",
+              "id": "step-0-5",
+              "text": "Peel the pears and cut them into pieces.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-9"
+                }
+              ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Place the pears and the raspberries (optional) in the pan, then pour in the batter.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-9"
+                },
+                {
+                  "ingredientId": "ingredient-main-8"
                 }
               ]
             }

@@ -15,11 +15,11 @@
       "author": "Dominique",
       "description": "Gâteau au chocolat simple avec blancs montés en neige.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "30 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "30 min",
+      "totalTime": "50 min",
+      "timeLabel": "50 min",
       "temperature": "180 °C",
       "equipment": [
         "1 moule à gâteau"
@@ -83,6 +83,15 @@
               ]
             },
             {
+              "id": "step-0-5",
+              "text": "Séparer les blancs des jaunes, puis monter les blancs en neige ferme.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
               "id": "step-0-2",
               "text": "Mélanger le sucre et les jaunes d’œufs.",
               "ingredientUses": [
@@ -103,6 +112,9 @@
                 },
                 {
                   "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-2"
                 }
               ]
             },
@@ -132,11 +144,11 @@
       "author": "Dominique",
       "description": "Simple chocolate cake folded with whipped egg whites.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "30 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "30 min",
+      "totalTime": "50 min",
+      "timeLabel": "50 min",
       "temperature": "180 °C",
       "equipment": [
         "1 cake pan"
@@ -200,6 +212,15 @@
               ]
             },
             {
+              "id": "step-0-5",
+              "text": "Separate the egg whites from the yolks, then whisk the whites to stiff peaks.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-2"
+                }
+              ]
+            },
+            {
               "id": "step-0-2",
               "text": "Mix the sugar and egg yolks.",
               "ingredientUses": [
@@ -219,10 +240,10 @@
                   "ingredientId": "ingredient-main-1"
                 },
                 {
-                  "ingredientId": "ingredient-main-2"
+                  "ingredientId": "ingredient-main-4"
                 },
                 {
-                  "ingredientId": "ingredient-main-4"
+                  "ingredientId": "ingredient-main-2"
                 }
               ]
             },

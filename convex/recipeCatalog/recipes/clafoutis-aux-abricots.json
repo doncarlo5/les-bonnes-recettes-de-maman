@@ -15,11 +15,11 @@
       "author": "Maman",
       "description": "Clafoutis aux abricots et à la poudre d’amandes, moelleux et légèrement doré.",
       "yieldLabel": "6 personnes",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "35 à 40 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "35 à 40 min",
+      "totalTime": "55 à 60 min",
+      "timeLabel": "55 à 60 min",
       "temperature": "180 °C",
       "equipment": [
         "1 plat à gratin ou 1 moule de 24 cm"
@@ -117,7 +117,7 @@
               "text": "Beurrer un plat à gratin ou un moule d’environ 24 cm.",
               "ingredientUses": [
                 {
-                  "ingredientId": "ingredient-main-4"
+                  "ingredientId": "ingredient-main-8"
                 }
               ]
             },
@@ -228,11 +228,11 @@
       "author": "Maman",
       "description": "Soft, lightly browned apricot clafoutis made with almond flour.",
       "yieldLabel": "6 people",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "35 to 40 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "35 to 40 min",
+      "totalTime": "55 to 60 min",
+      "timeLabel": "55 to 60 min",
       "temperature": "180 °C",
       "equipment": [
         "1 baking dish or 1 24 cm round pan"
@@ -360,6 +360,9 @@
               "text": "Add the flour, almond flour and pinch of salt.",
               "ingredientUses": [
                 {
+                  "ingredientId": "ingredient-main-3"
+                },
+                {
                   "ingredientId": "ingredient-main-7"
                 },
                 {
@@ -413,11 +416,7 @@
             {
               "id": "step-2-0",
               "text": "Bake for 35 to 40 min, until the top is golden brown and the center is just set.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-9"
-                }
-              ]
+              "ingredientUses": []
             }
           ]
         },

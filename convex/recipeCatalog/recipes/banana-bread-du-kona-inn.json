@@ -332,9 +332,6 @@
               "text": "In another bowl, combine the T45 flour, baking soda and salt. Sift the dry ingredients, ideally several times, then fold them into the banana mixture without overmixing.",
               "ingredientUses": [
                 {
-                  "ingredientId": "ingredient-main-2"
-                },
-                {
                   "ingredientId": "ingredient-main-4"
                 },
                 {
@@ -385,11 +382,7 @@
             {
               "id": "step-2-0",
               "text": "This banana bread freezes very well.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-2"
-                }
-              ]
+              "ingredientUses": []
             }
           ]
         },
@@ -400,9 +393,6 @@
               "id": "step-3-0",
               "text": "Mix 60 g chopped pecans, 2 tbsp dark brown sugar and 1/2 tsp cinnamon.",
               "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-0"
-                },
                 {
                   "ingredientId": "ingredient-main-7"
                 },
@@ -423,11 +413,7 @@
             {
               "id": "step-3-2",
               "text": "Add the remaining batter, sprinkle the rest of the pecan mixture on top and press it in lightly.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-7"
-                }
-              ]
+              "ingredientUses": []
             }
           ]
         }

@@ -17,7 +17,8 @@
     "fullTitle": "Écrire la recette complète",
     "fullDescription": "Commencer une recette privée dans l’administration.",
     "ideaTitle": "Laisser une idée",
-    "ideaDescription": "Noter une envie, un souvenir ou un lien en quelques secondes."
+    "ideaDescription": "Noter une envie, un souvenir ou un lien en quelques secondes.",
+    "browseIdeas": "Voir les idées déjà proposées"
   },
   "home": {
     "eyebrow": "Recettes de famille",

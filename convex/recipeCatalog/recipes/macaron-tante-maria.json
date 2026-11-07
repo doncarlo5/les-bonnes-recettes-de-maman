@@ -15,15 +15,16 @@
       "author": "Tante Maria",
       "description": "Gâteau macaron aux blancs d’œufs, amandes et extrait d’amande amère, servi avec une crème anglaise à la vanille.",
       "yieldLabel": "8 personnes",
-      "prepTime": "",
+      "prepTime": "30 min",
       "cookTime": "45 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "45 min",
+      "totalTime": "1 h 15",
+      "timeLabel": "1 h 15",
       "temperature": "140 °C",
       "equipment": [
         "1 batteur électrique",
-        "1 casserole"
+        "1 casserole",
+        "1 moule à gâteau"
       ],
       "ingredients": [
         {
@@ -138,6 +139,11 @@
                   "ingredientId": "ingredient-main-4"
                 }
               ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Verser la pâte dans un moule beurré.",
+              "ingredientUses": []
             }
           ]
         },
@@ -228,15 +234,16 @@
       "author": "Tante Maria",
       "description": "Macaron-style almond cake made with egg whites and bitter almond extract, served with vanilla custard.",
       "yieldLabel": "8 people",
-      "prepTime": "",
+      "prepTime": "30 min",
       "cookTime": "45 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "45 min",
+      "totalTime": "1 h 15",
+      "timeLabel": "1 h 15",
       "temperature": "140 °C",
       "equipment": [
         "1 electric mixer",
-        "1 saucepan"
+        "1 saucepan",
+        "1 cake pan"
       ],
       "ingredients": [
         {
@@ -342,12 +349,20 @@
               "text": "Then add the almonds, baking powder and bitter almond extract.",
               "ingredientUses": [
                 {
+                  "ingredientId": "ingredient-main-2"
+                },
+                {
                   "ingredientId": "ingredient-main-3"
                 },
                 {
                   "ingredientId": "ingredient-main-4"
                 }
               ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Pour the batter into a buttered cake pan.",
+              "ingredientUses": []
             }
           ]
         },

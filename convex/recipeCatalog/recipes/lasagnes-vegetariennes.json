@@ -17,11 +17,11 @@
       "author": "Maman",
       "description": "Lasagnes végétariennes à la ratatouille, à la béchamel et aux fromages râpés.",
       "yieldLabel": "1 plat",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "30 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "30 min",
+      "totalTime": "50 min",
+      "timeLabel": "50 min",
       "temperature": "200 °C",
       "equipment": [
         "1 plat à gratin"
@@ -82,9 +82,6 @@
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-1"
-                },
-                {
-                  "ingredientId": "ingredient-main-2"
                 }
               ]
             },
@@ -163,11 +160,11 @@
       "author": "Maman",
       "description": "Vegetarian lasagna with ratatouille, béchamel and grated cheeses.",
       "yieldLabel": "1 dish",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "30 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "30 min",
+      "totalTime": "50 min",
+      "timeLabel": "50 min",
       "temperature": "200 °C",
       "equipment": [
         "1 baking dish"
@@ -228,9 +225,6 @@
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-1"
-                },
-                {
-                  "ingredientId": "ingredient-main-2"
                 }
               ]
             },

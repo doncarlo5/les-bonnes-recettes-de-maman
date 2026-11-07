@@ -16,9 +16,9 @@
       "yieldLabel": "Environ 20 gros cookies",
       "prepTime": "≈ 40 min",
       "cookTime": "10 min",
-      "restTime": "",
-      "totalTime": "≈ 1 h",
-      "timeLabel": "≈ 1 h",
+      "restTime": "30 min au réfrigérateur",
+      "totalTime": "≈ 1 h 20",
+      "timeLabel": "≈ 1 h 20",
       "temperature": "180 °C",
       "equipment": [
         "1 casserole",
@@ -135,6 +135,9 @@
                 },
                 {
                   "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
                 }
               ]
             },
@@ -246,9 +249,9 @@
       "yieldLabel": "About 20 large cookies",
       "prepTime": "≈ 40 min",
       "cookTime": "10 min",
-      "restTime": "",
-      "totalTime": "≈ 1 h",
-      "timeLabel": "≈ 1 h",
+      "restTime": "30 min in the refrigerator",
+      "totalTime": "≈ 1 h 20",
+      "timeLabel": "≈ 1 h 20",
       "temperature": "180 °C",
       "equipment": [
         "1 saucepan",
@@ -365,6 +368,9 @@
                 },
                 {
                   "ingredientId": "ingredient-main-6"
+                },
+                {
+                  "ingredientId": "ingredient-main-9"
                 }
               ]
             },

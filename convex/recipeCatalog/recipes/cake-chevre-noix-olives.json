@@ -14,13 +14,16 @@
       "author": "Maman",
       "description": "Cake salé au chèvre, noix, olives et comté râpé.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "15 min",
       "cookTime": "30 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "30 min",
+      "totalTime": "45 min",
+      "timeLabel": "45 min",
       "temperature": "180 °C",
-      "equipment": [],
+      "equipment": [
+        "1 saladier",
+        "1 moule à cake"
+      ],
       "ingredients": [
         {
           "name": "farine",
@@ -159,6 +162,11 @@
                   "ingredientId": "ingredient-main-7"
                 }
               ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Verser la pâte dans un moule à cake beurré.",
+              "ingredientUses": []
             }
           ]
         },
@@ -181,13 +189,16 @@
       "author": "Maman",
       "description": "Savory loaf with goat cheese, walnuts, olives and grated Comté.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "15 min",
       "cookTime": "30 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "30 min",
+      "totalTime": "45 min",
+      "timeLabel": "45 min",
       "temperature": "180 °C",
-      "equipment": [],
+      "equipment": [
+        "1 mixing bowl",
+        "1 loaf pan"
+      ],
       "ingredients": [
         {
           "name": "flour",
@@ -326,6 +337,11 @@
                   "ingredientId": "ingredient-main-7"
                 }
               ]
+            },
+            {
+              "id": "step-0-4",
+              "text": "Pour the batter into a buttered loaf pan.",
+              "ingredientUses": []
             }
           ]
         },

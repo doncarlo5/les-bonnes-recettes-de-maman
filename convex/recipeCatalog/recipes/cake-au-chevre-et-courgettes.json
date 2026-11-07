@@ -14,11 +14,11 @@
       "author": "Mimi",
       "description": "Cake salé au chèvre, courgette, gruyère râpé et cerfeuil.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "30 min",
       "cookTime": "45 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "45 min",
+      "totalTime": "1 h 15",
+      "timeLabel": "1 h 15",
       "temperature": "180 °C",
       "equipment": [
         "1 moule à cake"
@@ -39,7 +39,7 @@
           "id": "ingredient-main-1"
         },
         {
-          "name": "levure",
+          "name": "levure chimique",
           "quantity": "1",
           "unit": "sachet",
           "notes": "",
@@ -120,7 +120,7 @@
             },
             {
               "id": "step-0-1",
-              "text": "Faire rissoler la courgette coupée en rondelles dans l’huile d’olive pendant 15 min, puis disposer sur du sopalin.",
+              "text": "Faire rissoler la courgette coupée en rondelles dans l’huile d’olive pendant 15 min, puis disposer sur du papier absorbant.",
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-7"
@@ -177,6 +177,9 @@
               "text": "Incorporer les courgettes, le chèvre coupé en morceaux et le cerfeuil ciselé.",
               "ingredientUses": [
                 {
+                  "ingredientId": "ingredient-main-7"
+                },
+                {
                   "ingredientId": "ingredient-main-6"
                 },
                 {
@@ -210,11 +213,11 @@
       "author": "Mimi",
       "description": "Savory loaf with goat cheese, zucchini, grated Gruyère and chervil.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "30 min",
       "cookTime": "45 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "45 min",
+      "totalTime": "1 h 15",
+      "timeLabel": "1 h 15",
       "temperature": "180 °C",
       "equipment": [
         "1 loaf pan"
@@ -355,9 +358,6 @@
                   "ingredientId": "ingredient-main-4"
                 },
                 {
-                  "ingredientId": "ingredient-main-8"
-                },
-                {
                   "ingredientId": "ingredient-main-3"
                 }
               ]
@@ -376,10 +376,10 @@
               "text": "Fold in the zucchini, goat cheese pieces and chopped chervil.",
               "ingredientUses": [
                 {
-                  "ingredientId": "ingredient-main-6"
+                  "ingredientId": "ingredient-main-7"
                 },
                 {
-                  "ingredientId": "ingredient-main-7"
+                  "ingredientId": "ingredient-main-6"
                 },
                 {
                   "ingredientId": "ingredient-main-9"

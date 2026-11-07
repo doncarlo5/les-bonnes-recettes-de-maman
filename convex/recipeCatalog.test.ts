@@ -173,7 +173,7 @@ describe("bilingual recipe catalog", () => {
       yieldLabel: "Environ 20 gros cookies",
       prepTime: "≈ 40 min",
       cookTime: "10 min",
-      totalTime: "≈ 1 h",
+      totalTime: "≈ 1 h 20",
       temperature: "180 °C",
     });
     expect(seeded.translations.en).toMatchObject({
@@ -184,7 +184,7 @@ describe("bilingual recipe catalog", () => {
       yieldLabel: "About 20 large cookies",
       prepTime: "≈ 40 min",
       cookTime: "10 min",
-      totalTime: "≈ 1 h",
+      totalTime: "≈ 1 h 20",
       temperature: "180 °C",
     });
     expect(
@@ -216,12 +216,12 @@ describe("bilingual recipe catalog", () => {
         steps.map(({ text }) => text),
       ),
     ).toEqual([
-      "In a bowl, combine the flour, baking soda, baking powder and salt.",
-      "Melt the butter over medium heat, then pour it into a large bowl.",
-      "Add the brown sugar and granulated sugar to the melted butter, then mix until smooth.",
-      "Mix in the egg and vanilla seeds until smooth and glossy.",
-      "Add the dry ingredients in two batches with a wooden spoon, mixing only until incorporated.",
-      "Add the roughly chopped dark chocolate and mix once more without overworking the dough.",
+      "Melt the butter in a saucepan over medium heat, then let it cool slightly off the heat.",
+      "While the butter melts, combine the flour, baking soda, baking powder and salt in a first bowl. Roughly chop the chocolate.",
+      "Pour the melted butter into a second, larger bowl. Add the brown sugar and granulated sugar, then mix until smooth.",
+      "Mix the egg and vanilla seeds into the large bowl until smooth and glossy.",
+      "Add the contents of the first bowl to the large bowl in two batches, mixing with a wooden spoon only until the flour is incorporated.",
+      "Add the chopped chocolate and mix once more without overworking the dough.",
       "Cover the bowl and chill the dough for 30 min.",
       "Preheat the oven to 180 °C and line a baking sheet with parchment paper.",
       "Shape the dough into large balls with an ice cream scoop or tablespoon, spacing them well apart on the baking sheet.",
@@ -573,6 +573,7 @@ describe("bilingual recipe catalog", () => {
       { name: "Herbes de Provence", quantity: "", unit: "", notes: "" },
       { name: "salt", quantity: "", unit: "", notes: "to taste" },
       { name: "pepper", quantity: "", unit: "", notes: "to taste" },
+      { name: "olive oil", quantity: "1", unit: "tbsp", notes: "" },
     ]);
     expect(
       seeded.translations.en.sections[0]?.steps.map(({ text }) => text),
@@ -675,9 +676,9 @@ describe("bilingual recipe catalog", () => {
       title: "Salade de lentilles",
       author: "Maman",
       yieldLabel: "4 personnes",
-      prepTime: "5 min",
+      prepTime: "15 min",
       cookTime: "20 min",
-      totalTime: "25 min",
+      totalTime: "35 min",
     });
     expect(seeded.translations.en).toMatchObject({
       title: "Lentil Salad",
@@ -835,7 +836,7 @@ describe("bilingual recipe catalog", () => {
       title: "Cod Parcels",
       author: "Maman",
       description:
-        "Oven-baked cod parcels served with Polish-style butter sauce.",
+        "Oven-baked cod parcels with lemon and herbs, served with Polish-style butter sauce.",
       cookTime: "30 min",
       temperature: "180 °C",
       equipment: ["parchment paper", "stapler", "SEB sauce maker", "fork"],
@@ -904,11 +905,11 @@ describe("bilingual recipe catalog", () => {
     expect(seeded.relatedRecipeSlugs).toEqual(["mayonnaise"]);
     expect(seeded.translations.fr).toMatchObject({
       restTime: "Jusqu’à complet refroidissement",
-      equipment: ["1 moule à cake", "1 plat pour bain-marie"],
+      equipment: ["1 moule à cake", "1 plat pour bain-marie", "1 robot mixeur"],
     });
     expect(seeded.translations.en).toMatchObject({
       restTime: "Until completely cool",
-      equipment: ["1 loaf pan", "1 roasting dish for the water bath"],
+      equipment: ["1 loaf pan", "1 roasting dish for the water bath", "1 food processor"],
     });
   });
 

@@ -17,7 +17,8 @@
     "fullTitle": "Escrever a receita completa",
     "fullDescription": "Começar uma receita privada na área de administração.",
     "ideaTitle": "Deixar uma ideia",
-    "ideaDescription": "Anote uma vontade, uma lembrança ou um link em poucos segundos."
+    "ideaDescription": "Anote uma vontade, uma lembrança ou um link em poucos segundos.",
+    "browseIdeas": "Ver as ideias já compartilhadas"
   },
   "home": {
     "eyebrow": "Receitas de família",

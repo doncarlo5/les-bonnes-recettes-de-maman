@@ -97,6 +97,12 @@
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-3"
+                },
+                {
+                  "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
                 }
               ]
             }

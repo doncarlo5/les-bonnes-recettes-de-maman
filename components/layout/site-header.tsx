@@ -71,12 +71,6 @@ export function SiteHeader({ locale, dict }: SiteHeaderProps) {
           >
             {dict.nav.recipes}
           </Link>
-          <Link
-            href={`/${locale}/idees`}
-            className="inline-flex min-h-10 items-center transition-colors duration-150 hover:text-primary"
-          >
-            {dict.nav.ideas}
-          </Link>
           <RecipeCreationChooser locale={locale} dict={dict} trigger="header" />
         </nav>
 

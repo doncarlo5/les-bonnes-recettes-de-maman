@@ -14,11 +14,11 @@
       "author": "Maman",
       "description": "Papillotes de cabillaud au citron et aux herbes, accompagnées d’une sauce au beurre blanc polonais.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "15 min",
       "cookTime": "30 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "30 min",
+      "totalTime": "45 min",
+      "timeLabel": "45 min",
       "temperature": "180 °C",
       "equipment": [
         "papier sulfurisé",
@@ -185,11 +185,7 @@
             {
               "id": "step-1-3",
               "text": "Laisser tourner le saucier SEB pendant 12 min, puis servir la sauce avec les papillotes de cabillaud.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-0"
-                }
-              ]
+              "ingredientUses": []
             }
           ]
         }
@@ -203,13 +199,13 @@
     "en": {
       "title": "Cod Parcels",
       "author": "Maman",
-      "description": "Oven-baked cod parcels served with Polish-style butter sauce.",
+      "description": "Oven-baked cod parcels with lemon and herbs, served with Polish-style butter sauce.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "15 min",
       "cookTime": "30 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "30 min",
+      "totalTime": "45 min",
+      "timeLabel": "45 min",
       "temperature": "180 °C",
       "equipment": [
         "parchment paper",
@@ -376,11 +372,7 @@
             {
               "id": "step-1-3",
               "text": "Leave the SEB sauce maker running for 12 min, then serve the sauce with the cod parcels.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-0"
-                }
-              ]
+              "ingredientUses": []
             }
           ]
         }

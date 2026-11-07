@@ -17,7 +17,8 @@
     "fullTitle": "Write the full recipe",
     "fullDescription": "Start a private recipe in the admin workspace.",
     "ideaTitle": "Leave an idea",
-    "ideaDescription": "Save a craving, memory, or link in a few seconds."
+    "ideaDescription": "Save a craving, memory, or link in a few seconds.",
+    "browseIdeas": "See ideas already shared"
   },
   "home": {
     "eyebrow": "Family recipes",

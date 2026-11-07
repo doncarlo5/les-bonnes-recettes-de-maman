@@ -15,11 +15,11 @@
       "author": "Maman",
       "description": "Petits coulants au chocolat noir à servir tièdes avec une boule de glace vanille.",
       "yieldLabel": "Environ 5 coulants",
-      "prepTime": "",
+      "prepTime": "15 min",
       "cookTime": "10 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "10 min",
+      "totalTime": "25 min",
+      "timeLabel": "25 min",
       "temperature": "180 °C",
       "equipment": [
         "5 empreintes à muffins"
@@ -75,11 +75,7 @@
             {
               "id": "step-0-0",
               "text": "Préchauffer le four à 180 °C.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-5"
-                }
-              ]
+              "ingredientUses": []
             },
             {
               "id": "step-0-1",
@@ -105,9 +101,6 @@
                 },
                 {
                   "ingredientId": "ingredient-main-4"
-                },
-                {
-                  "ingredientId": "ingredient-main-5"
                 }
               ]
             },
@@ -126,11 +119,7 @@
             {
               "id": "step-0-4",
               "text": "Répartir dans 5 empreintes à muffins, en forme de petits cupcakes.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-5"
-                }
-              ]
+              "ingredientUses": []
             }
           ]
         },
@@ -140,11 +129,7 @@
             {
               "id": "step-1-0",
               "text": "Cuire 10 min à four chaud à 180 °C.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-5"
-                }
-              ]
+              "ingredientUses": []
             }
           ]
         },
@@ -154,11 +139,7 @@
             {
               "id": "step-2-0",
               "text": "Laisser tiédir, puis passer délicatement une cuillère à soupe entre chaque coulant et son moule pour le démouler sans le casser.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-5"
-                }
-              ]
+              "ingredientUses": []
             },
             {
               "id": "step-2-1",
@@ -182,11 +163,11 @@
       "author": "Maman",
       "description": "Small dark-chocolate lava cakes served warm with a scoop of vanilla ice cream.",
       "yieldLabel": "About 5 lava cakes",
-      "prepTime": "",
+      "prepTime": "15 min",
       "cookTime": "10 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "10 min",
+      "totalTime": "25 min",
+      "timeLabel": "25 min",
       "temperature": "180 °C",
       "equipment": [
         "5 muffin cups"

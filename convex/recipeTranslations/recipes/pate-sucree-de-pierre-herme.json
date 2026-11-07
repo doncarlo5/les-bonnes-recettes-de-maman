@@ -6,11 +6,11 @@
       "author": "Pierre Hermé",
       "description": "Massa doce amanteigada (sablée) para tortas, feita com manteiga em ponto de pomada, açúcar de confeiteiro e farinha de amêndoas.",
       "yieldLabel": "Cerca de 500 g de massa",
-      "prepTime": "",
+      "prepTime": "15 min",
       "cookTime": "",
       "restTime": "2 a 3 h na geladeira, de preferência 1 noite",
-      "totalTime": "2 a 3 h de descanso, sem contar o preparo",
-      "timeLabel": "2 a 3 h de descanso, sem contar o preparo",
+      "totalTime": "15 min + 2 a 3 h de descanso",
+      "timeLabel": "15 min + 2 a 3 h de descanso",
       "temperature": "",
       "equipment": [
         "1 rolo de massa"
@@ -47,11 +47,11 @@
       "author": "Pierre Hermé",
       "description": "Zoet zanddeeg voor taarten, gemaakt met zachte boter, poedersuiker en amandelpoeder.",
       "yieldLabel": "Ongeveer 500 g deeg",
-      "prepTime": "",
+      "prepTime": "15 min",
       "cookTime": "",
       "restTime": "2 à 3 u in de koelkast, idealiter 1 nacht",
-      "totalTime": "2 à 3 u rusten, bereiding niet meegerekend",
-      "timeLabel": "2 à 3 u rusten, bereiding niet meegerekend",
+      "totalTime": "15 min + 2 à 3 u rusten",
+      "timeLabel": "15 min + 2 à 3 u rusten",
       "temperature": "",
       "equipment": [
         "1 deegrol"

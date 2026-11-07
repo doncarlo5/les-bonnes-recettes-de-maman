@@ -15,11 +15,11 @@
       "author": "Maman",
       "description": "Gâteau aux amandes, citron et blancs montés en neige, avec glaçage citron facultatif.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "35 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "35 min",
+      "totalTime": "55 min",
+      "timeLabel": "55 min",
       "temperature": "160 °C",
       "equipment": [
         "1 moule à gâteau"
@@ -140,18 +140,20 @@
         }
       ],
       "subRecipes": [],
-      "notes": ["Ce gâteau attache facilement : tapissez le fond du moule d’un disque de papier cuisson. À défaut, beurrez soigneusement le fond et les parois, puis farinez légèrement en faisant tourner le moule pour répartir la farine. Retirez l’excédent."]
+      "notes": [
+        "Ce gâteau attache facilement : tapissez le fond du moule d’un disque de papier cuisson. À défaut, beurrez soigneusement le fond et les parois, puis farinez légèrement en faisant tourner le moule pour répartir la farine. Retirez l’excédent."
+      ]
     },
     "en": {
       "title": "Amandin Almond Cake",
       "author": "Maman",
       "description": "Almond and lemon cake folded with whipped egg whites, with an optional lemon glaze.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "35 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "35 min",
+      "totalTime": "55 min",
+      "timeLabel": "55 min",
       "temperature": "160 °C",
       "equipment": [
         "1 cake pan"
@@ -272,7 +274,9 @@
         }
       ],
       "subRecipes": [],
-      "notes": ["This cake tends to stick: line the bottom of the pan with a circle of baking paper. Alternatively, thoroughly butter the bottom and sides, then dust lightly with flour, turning the pan to coat it evenly. Tap out the excess."]
+      "notes": [
+        "This cake tends to stick: line the bottom of the pan with a circle of baking paper. Alternatively, thoroughly butter the bottom and sides, then dust lightly with flour, turning the pan to coat it evenly. Tap out the excess."
+      ]
     }
   },
   "imageCredit": {

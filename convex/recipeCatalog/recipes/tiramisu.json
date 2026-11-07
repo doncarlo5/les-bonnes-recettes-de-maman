@@ -15,11 +15,11 @@
       "author": "Agnès",
       "description": "Tiramisu au mascarpone, café et biscuits à la cuillère.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "30 min",
       "cookTime": "",
       "restTime": "10 à 12 h au réfrigérateur",
-      "totalTime": "10 à 12 h de repos, hors préparation",
-      "timeLabel": "10 à 12 h de repos, hors préparation",
+      "totalTime": "30 min + 10 à 12 h de repos",
+      "timeLabel": "30 min + 10 à 12 h de repos",
       "temperature": "",
       "equipment": [
         "1 batteur électrique",
@@ -91,9 +91,21 @@
               ]
             },
             {
+              "id": "step-0-10",
+              "text": "Séparer les blancs des jaunes.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
               "id": "step-0-1",
               "text": "Battre les blancs et ajouter le sucre glace.",
               "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
                 {
                   "ingredientId": "ingredient-main-2"
                 }
@@ -103,6 +115,9 @@
               "id": "step-0-2",
               "text": "Battre les jaunes avec le sucre fin.",
               "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
                 {
                   "ingredientId": "ingredient-main-3"
                 }
@@ -114,9 +129,6 @@
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-0"
-                },
-                {
-                  "ingredientId": "ingredient-main-5"
                 }
               ]
             },
@@ -172,11 +184,7 @@
             {
               "id": "step-1-0",
               "text": "Mettre au frigo 10 à 12 h.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-5"
-                }
-              ]
+              "ingredientUses": []
             }
           ]
         }
@@ -192,11 +200,11 @@
       "author": "Agnès",
       "description": "Tiramisu with mascarpone, coffee and ladyfingers.",
       "yieldLabel": "",
-      "prepTime": "",
+      "prepTime": "30 min",
       "cookTime": "",
       "restTime": "10 to 12 h in the refrigerator",
-      "totalTime": "10 to 12 h resting, excluding preparation",
-      "timeLabel": "10 to 12 h resting, excluding preparation",
+      "totalTime": "30 min + 10 to 12 h resting",
+      "timeLabel": "30 min + 10 to 12 h resting",
       "temperature": "",
       "equipment": [
         "1 electric mixer",
@@ -268,6 +276,15 @@
               ]
             },
             {
+              "id": "step-0-10",
+              "text": "Separate the egg whites from the yolks.",
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                }
+              ]
+            },
+            {
               "id": "step-0-1",
               "text": "Whip the egg whites and add the icing sugar.",
               "ingredientUses": [
@@ -283,6 +300,9 @@
               "id": "step-0-2",
               "text": "Beat the yolks with the caster sugar.",
               "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-1"
+                },
                 {
                   "ingredientId": "ingredient-main-3"
                 }
@@ -312,13 +332,20 @@
               "ingredientUses": [
                 {
                   "ingredientId": "ingredient-main-4"
+                },
+                {
+                  "ingredientId": "ingredient-main-5"
                 }
               ]
             },
             {
               "id": "step-0-7",
               "text": "Arrange the biscuits side by side and press them down lightly to form an even layer.",
-              "ingredientUses": []
+              "ingredientUses": [
+                {
+                  "ingredientId": "ingredient-main-5"
+                }
+              ]
             },
             {
               "id": "step-0-8",

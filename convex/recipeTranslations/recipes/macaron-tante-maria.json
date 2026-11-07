@@ -6,15 +6,16 @@
       "author": "Tante Maria",
       "description": "Bolo macaron de claras, amêndoas e extrato de amêndoa amarga, servido com creme inglês de baunilha.",
       "yieldLabel": "8 pessoas",
-      "prepTime": "",
+      "prepTime": "30 min",
       "cookTime": "45 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "45 min",
+      "totalTime": "1 h 15",
+      "timeLabel": "1 h 15",
       "temperature": "140 °C",
       "equipment": [
         "1 batedeira elétrica",
-        "1 panela"
+        "1 panela",
+        "1 forma de bolo"
       ],
       "notes": [
         "Variação de café: substitua a baunilha por 2 colheres (chá) de extrato de café, acrescentadas fora do fogo."
@@ -38,7 +39,8 @@
             "step-0-0": "Preaqueça o forno a 140 °C.",
             "step-0-1": "Bata as claras em neve bem firme.",
             "step-0-2": "Bata com o açúcar por 5 min na batedeira elétrica.",
-            "step-0-3": "Em seguida, acrescente as amêndoas, o fermento e o extrato de amêndoa amarga."
+            "step-0-3": "Em seguida, acrescente as amêndoas, o fermento e o extrato de amêndoa amarga.",
+            "step-0-4": "Despeje a massa em uma forma untada com manteiga."
           }
         },
         {
@@ -66,15 +68,16 @@
       "author": "Tante Maria",
       "description": "Macarontaart met eiwitten, amandelen en bitteramandelextract, geserveerd met vanilleroomsaus (crème anglaise).",
       "yieldLabel": "8 personen",
-      "prepTime": "",
+      "prepTime": "30 min",
       "cookTime": "45 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "45 min",
+      "totalTime": "1 h 15",
+      "timeLabel": "1 h 15",
       "temperature": "140 °C",
       "equipment": [
         "1 elektrische handmixer",
-        "1 kookpot"
+        "1 kookpot",
+        "1 taartvorm"
       ],
       "notes": [
         "Koffievariant: vervang de vanille door 2 kl koffie-extract, toegevoegd van het vuur af."
@@ -98,7 +101,8 @@
             "step-0-0": "Verwarm de oven voor op 140 °C.",
             "step-0-1": "Klop de eiwitten tot een zeer stevige sneeuw.",
             "step-0-2": "Klop 5 min verder met de suiker met de elektrische mixer.",
-            "step-0-3": "Voeg daarna de amandelen, het bakpoeder en het bitteramandelextract toe."
+            "step-0-3": "Voeg daarna de amandelen, het bakpoeder en het bitteramandelextract toe.",
+            "step-0-4": "Giet het beslag in een beboterde taartvorm."
           }
         },
         {

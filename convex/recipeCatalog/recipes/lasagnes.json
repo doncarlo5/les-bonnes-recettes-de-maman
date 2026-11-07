@@ -18,11 +18,11 @@
       "author": "Maman",
       "description": "Lasagnes familiales à la sauce bolognaise, à la béchamel et aux fromages râpés.",
       "yieldLabel": "1 plat",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "30 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "30 min",
+      "totalTime": "50 min",
+      "timeLabel": "50 min",
       "temperature": "200 °C",
       "equipment": [
         "1 plat à gratin"
@@ -152,11 +152,11 @@
       "author": "Maman",
       "description": "Family-style lasagna with Bolognese sauce, béchamel and grated cheeses.",
       "yieldLabel": "1 dish",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "30 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "30 min",
+      "totalTime": "50 min",
+      "timeLabel": "50 min",
       "temperature": "200 °C",
       "equipment": [
         "1 baking dish"

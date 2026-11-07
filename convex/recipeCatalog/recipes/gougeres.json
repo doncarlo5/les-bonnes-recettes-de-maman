@@ -13,11 +13,11 @@
       "author": "Maman",
       "description": "Gougères au comté, poivre et noix de muscade.",
       "yieldLabel": "Environ 20 gougères",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "30 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "30 min",
+      "totalTime": "50 min",
+      "timeLabel": "50 min",
       "temperature": "190 °C",
       "equipment": [
         "1 casserole",
@@ -117,11 +117,7 @@
             {
               "id": "step-0-3",
               "text": "Laisser 2 min dans la casserole pour l’évaporation de l’eau.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-3"
-                }
-              ]
+              "ingredientUses": []
             },
             {
               "id": "step-0-4",
@@ -171,11 +167,11 @@
       "author": "Maman",
       "description": "Comté gougères with pepper and nutmeg.",
       "yieldLabel": "About 20 gougères",
-      "prepTime": "",
+      "prepTime": "20 min",
       "cookTime": "30 min",
       "restTime": "",
-      "totalTime": "",
-      "timeLabel": "30 min",
+      "totalTime": "50 min",
+      "timeLabel": "50 min",
       "temperature": "190 °C",
       "equipment": [
         "1 saucepan",
@@ -275,11 +271,7 @@
             {
               "id": "step-0-3",
               "text": "Leave in the saucepan for 2 min so the water evaporates.",
-              "ingredientUses": [
-                {
-                  "ingredientId": "ingredient-main-3"
-                }
-              ]
+              "ingredientUses": []
             },
             {
               "id": "step-0-4",
