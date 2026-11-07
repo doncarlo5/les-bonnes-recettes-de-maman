@@ -1,6 +1,6 @@
 {
   "slug": "amandin",
-  "heroImageUrl": "https://images.unsplash.com/photo-1560716060-3c2aa9aa436b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NDIxMjh8MHwxfHNlYXJjaHw1fHxHJUMzJUEydGVhdSUyMGFtYW5kZXN8ZW58MXwwfHx8MTc4NDQ2OTY2NHww&ixlib=rb-4.1.0&q=80&w=1080",
+  "heroImageUrl": "https://festive-lobster-957.eu-west-1.convex.cloud/api/storage/cb119cb0-f973-4368-a299-35d27c107757",
   "defaultLocale": "fr",
   "referenceServings": 6,
   "relatedRecipeSlugs": [],
@@ -278,12 +278,5 @@
         "This cake tends to stick: line the bottom of the pan with a circle of baking paper. Alternatively, thoroughly butter the bottom and sides, then dust lightly with flour, turning the pan to coat it evenly. Tap out the excess."
       ]
     }
-  },
-  "imageCredit": {
-    "alt": "one piece of cookie",
-    "photoUrl": "https://unsplash.com/photos/one-piece-of-cookie-YNj8sMnqkUg?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
-    "photographerName": "Vitaly Eroshenko",
-    "photographerUrl": "https://unsplash.com/@langosto?utm_source=les_bonnes_recettes_de_maman&utm_medium=referral",
-    "provider": "unsplash"
   }
 }
