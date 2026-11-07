@@ -42,7 +42,19 @@
     "viewLabel": "Weergave van de recepten",
     "views": {
       "cards": "Kaartweergave",
-      "list": "Lijstweergave"
+      "list": "Lijstweergave",
+      "shelf": "Boekenplankweergave"
+    },
+    "shelf": {
+      "label": "Receptenplank",
+      "roleDescription": "boekenplank",
+      "hint": "Gebruik de pijltjes links en rechts om door de boeken te bladeren, Enter om het recept te openen.",
+      "previous": "Vorig boek",
+      "next": "Volgend boek",
+      "position": "{current} / {total}",
+      "readRecipe": "Recept lezen",
+      "time": "Tijd",
+      "yield": "Opbrengst"
     },
     "sortLabel": "Recepten sorteren",
     "sorts": {

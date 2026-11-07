@@ -1015,6 +1015,16 @@ async function localizeSummary(
     timeLabel: translation.timeLabel,
     commentCount: (recipeMakeSummary?.makeCount ?? commentSummary?.commentCount ?? 0),
     ingredients: translation.ingredients.map(({ name }) => ({ name })),
+    yieldLabel: resolveYieldLabel({
+      locale,
+      slug: recipe.slug,
+      yieldLabel: translation.yieldLabel,
+      servings: translation.servings,
+    }),
+    stepCount: translation.sections.reduce(
+      (count, section) => count + section.steps.length,
+      0,
+    ),
   };
 }
 

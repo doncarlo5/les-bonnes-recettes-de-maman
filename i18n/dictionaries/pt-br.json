@@ -42,7 +42,19 @@
     "viewLabel": "Modo de exibição das receitas",
     "views": {
       "cards": "Visualização em cartões",
-      "list": "Visualização em lista"
+      "list": "Visualização em lista",
+      "shelf": "Visualização em estante"
+    },
+    "shelf": {
+      "label": "Estante de receitas",
+      "roleDescription": "estante",
+      "hint": "Use as setas para a esquerda e para a direita para percorrer os livros e Enter para abrir a receita.",
+      "previous": "Livro anterior",
+      "next": "Próximo livro",
+      "position": "{current} / {total}",
+      "readRecipe": "Ler a receita",
+      "time": "Tempo",
+      "yield": "Rendimento"
     },
     "sortLabel": "Ordenação das receitas",
     "sorts": {

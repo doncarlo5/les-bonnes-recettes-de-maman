@@ -42,7 +42,19 @@
     "viewLabel": "Mode d’affichage des recettes",
     "views": {
       "cards": "Vue cartes",
-      "list": "Vue liste"
+      "list": "Vue liste",
+      "shelf": "Vue étagère"
+    },
+    "shelf": {
+      "label": "Étagère des recettes",
+      "roleDescription": "étagère",
+      "hint": "Flèches gauche et droite pour parcourir les livres, Entrée pour ouvrir la recette.",
+      "previous": "Livre précédent",
+      "next": "Livre suivant",
+      "position": "{current} / {total}",
+      "readRecipe": "Lire la recette",
+      "time": "Durée",
+      "yield": "Rendement"
     },
     "sortLabel": "Tri des recettes",
     "sorts": {

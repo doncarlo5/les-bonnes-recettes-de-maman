@@ -42,7 +42,19 @@
     "viewLabel": "Recipe display mode",
     "views": {
       "cards": "Card view",
-      "list": "List view"
+      "list": "List view",
+      "shelf": "Shelf view"
+    },
+    "shelf": {
+      "label": "Recipe shelf",
+      "roleDescription": "shelf",
+      "hint": "Use the left and right arrows to browse the books, Enter to open the recipe.",
+      "previous": "Previous book",
+      "next": "Next book",
+      "position": "{current} / {total}",
+      "readRecipe": "Read the recipe",
+      "time": "Time",
+      "yield": "Yield"
     },
     "sortLabel": "Recipe sort",
     "sorts": {

@@ -7,6 +7,7 @@ import {
   CalendarArrowDown,
   CalendarArrowUp,
   LayoutGrid,
+  LibraryBig,
   List,
   Search,
   X,
@@ -23,10 +24,12 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/u
 import type { RecipeSummary } from "./types";
 import { RecipeGrid } from "./recipe-grid";
 import { RecipeListRows } from "./recipe-list-rows";
+import { RecipeShelf } from "./recipe-shelf";
 import { RecipeCreationChooser } from "./recipe-creation-chooser";
 
 const categoryValues = RECIPE_CATEGORIES;
-const viewValues = ["cards", "list"] as const;
+const viewValues = ["cards", "list", "shelf"] as const;
+const viewIcons = { cards: LayoutGrid, list: List, shelf: LibraryBig } as const;
 const sortValues = ["alpha", "date"] as const;
 const sortDirectionValues = ["asc", "desc"] as const;
 const activeToggleClassName =
@@ -200,17 +203,18 @@ export function RecipeListExplorer({
                 onValueChange={(values: string[]) =>
                   values[0] && setView(values[0] as RecipeView)}
                 spacing={1}
-                className="hidden md:flex"
+                className="flex"
                 aria-label={dict.recipeList.viewLabel}
               >
                 {viewValues.map((view) => {
-                  const Icon = view === "cards" ? LayoutGrid : List;
+                  const Icon = viewIcons[view];
                   return (
                     <ToggleGroupItem
                       key={view}
                       value={view}
                       className={cn(
                         "size-10 rounded-full p-0",
+                        view === "list" && "hidden md:inline-flex",
                         activeToggleClassName,
                       )}
                       aria-label={dict.recipeList.views[view]}
@@ -300,7 +304,9 @@ export function RecipeListExplorer({
       </section>
 
       {filteredRecipes.length > 0 ? (
-        activeView === "list" ? (
+        activeView === "shelf" ? (
+          <RecipeShelf locale={locale} dict={dict} recipes={filteredRecipes} />
+        ) : activeView === "list" ? (
           <>
             <div className="md:hidden">
               <RecipeGrid
@@ -458,6 +464,9 @@ function updateUrl({
   }
 
   params.set("view", view);
+  if (view !== "shelf") {
+    params.delete("livre");
+  }
   params.set("sort", sort);
   params.set("order", direction);
 

@@ -98,6 +98,9 @@ export type RecipeSummary = Pick<
 > & {
   ingredients: Array<Pick<Ingredient, "name">>;
   commentCount: number;
+  /** Absent until the backend exposing it is deployed. */
+  yieldLabel?: string;
+  stepCount?: number;
 };
 
 export type EditableRecipeContent = {

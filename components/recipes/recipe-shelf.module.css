@@ -1,0 +1,100 @@
+/* Spine palette: warm, stable per recipe (picked from the slug). */
+.spine {
+  --spine-bg: oklch(0.42 0.12 18);
+  --spine-fg: oklch(0.95 0.02 80);
+  background-color: var(--spine-bg);
+  background-image: linear-gradient(
+    90deg,
+    oklch(0 0 0 / 0.22),
+    transparent 16%,
+    oklch(1 0 0 / 0.1) 48%,
+    transparent 80%,
+    oklch(0 0 0 / 0.26)
+  );
+  color: var(--spine-fg);
+}
+
+.spine::before,
+.spine::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  height: 2px;
+  background: currentColor;
+  opacity: 0.4;
+}
+
+.spine::before {
+  top: 14px;
+}
+
+.spine::after {
+  bottom: 40px;
+}
+
+/* Spines lift on hover and give under the press, on top of the motion transform. */
+.spine {
+  transition: translate 160ms cubic-bezier(0.23, 1, 0.32, 1), scale 120ms ease-out;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .spine:hover {
+    translate: 0 -4px;
+  }
+}
+
+.spine:active {
+  scale: 0.97;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spine {
+    transition: none;
+  }
+
+  .spine:hover {
+    translate: none;
+  }
+}
+
+.tone0 { --spine-bg: oklch(0.42 0.12 18); --spine-fg: oklch(0.95 0.02 80); }
+.tone1 { --spine-bg: oklch(0.58 0.12 45); --spine-fg: oklch(0.98 0.01 80); }
+.tone2 { --spine-bg: oklch(0.80 0.11 85); --spine-fg: oklch(0.28 0.04 60); }
+.tone3 { --spine-bg: oklch(0.50 0.07 130); --spine-fg: oklch(0.96 0.02 95); }
+.tone4 { --spine-bg: oklch(0.42 0.06 215); --spine-fg: oklch(0.95 0.02 80); }
+.tone5 { --spine-bg: oklch(0.90 0.03 85); --spine-fg: oklch(0.32 0.05 30); }
+
+:global(.dark) .spine {
+  filter: brightness(0.82) saturate(0.9);
+}
+
+.spineTitle {
+  writing-mode: vertical-rl;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* French, Brazilian and Belgian shelves read bottom to top. */
+.bottomToTop {
+  transform: rotate(180deg);
+}
+
+.cover {
+  background-color: var(--spine-bg);
+  color: var(--spine-fg);
+}
+
+.face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.plank {
+  background: linear-gradient(
+    to bottom,
+    var(--border),
+    color-mix(in oklch, var(--muted) 70%, var(--border))
+  );
+  box-shadow: 0 10px 18px -12px oklch(0 0 0 / 0.45);
+}
